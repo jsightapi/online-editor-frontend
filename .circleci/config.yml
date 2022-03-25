@@ -56,10 +56,11 @@ jobs:
           command: |
             scp << parameters.source-dir >>/<< parameters.script-file >> root@<< parameters.host >>:<< parameters.target-dir >>/
       - run:
-          name: Commands over SSH without host context
+          name: Docker login and run container refresh script
           no_output_timeout: 5m
           command: |
             ssh -o StrictHostKeyChecking=no -T root@<< parameters.host >> \<< EOF
+              echo $DOCKER_PASSWORD | docker login --username $DOCKER_LOGIN --password-stdin
               /bin/bash << parameters.target-dir >>/<< parameters.script-file>> << parameters.args >>
             EOF
 
