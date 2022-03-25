@@ -1,0 +1,68 @@
+@import 'src/styles/variables';
+
+.dropdown-menu {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  z-index: 4000;
+  display: none;
+  float: left;
+  min-width: 10rem;
+  padding: 1rem 1.8rem 1rem 1.4rem;
+  color: #212529;
+  text-align: left;
+  list-style: none;
+  background-color: #fff;
+  border: 1px solid #e6e6e6;
+  box-shadow: 0 24px 96px rgba(27, 17, 40, 0.04), 0 6px 18px rgba(27, 17, 40, 0.04),
+    0 2px 4px rgba(27, 17, 40, 0.04);
+  border-radius: 8px;
+  outline: none;
+
+  &.show {
+    display: block;
+  }
+
+  .item {
+    margin-bottom: 0.5rem;
+    cursor: pointer;
+    width: 100%;
+    border-radius: 6px;
+    padding: 1rem 4rem 1rem 1rem;
+    text-transform: none;
+
+    .icon-email::before {
+      font-size: 17px;
+      top: 2px;
+      position: relative;
+    }
+
+    &.active {
+      opacity: 1;
+      background: $main-stroke;
+    }
+
+    &:hover {
+      background: $background;
+    }
+
+    &:last-of-type {
+      margin-bottom: 0;
+    }
+  }
+}
+
+.dropdown {
+  .icon-email::before {
+    font-size: 18px;
+    top: 1px;
+    margin-right: -1px;
+    right: 1px;
+    position: relative;
+    transition: none !important;
+  }
+
+  .icon-strikethrough-email::before {
+    transition: none !important;
+  }
+}

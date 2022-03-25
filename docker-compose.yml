@@ -1,0 +1,18 @@
+version: '3.8'
+services:
+  frontend:
+    image: tektosoft/jsight_editor_frontend:latest
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - '8091:80'
+#    networks:
+#      external_network:
+#        aliases:
+#          - frontend
+#
+#networks:
+#  external_network:
+#    external:
+#      name: "jsight_network"

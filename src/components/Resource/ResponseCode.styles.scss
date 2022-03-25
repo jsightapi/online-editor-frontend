@@ -1,0 +1,38 @@
+.response-header {
+  border-bottom: 1px solid #dbdbe1;
+  padding-bottom: 1.2rem;
+  margin-bottom: 2.4rem;
+  margin-top: 4rem;
+  align-items: center;
+
+  .code {
+    font-weight: 600;
+    color: #ffffff;
+    padding: 0.6rem 1.6rem;
+    border-radius: 4px;
+  }
+
+  .code-100 {
+    background-color: #0d93cd;
+  }
+
+  .code-200 {
+    background-color: #79b400;
+  }
+
+  .code-300 {
+    background-color: #6acccb;
+  }
+
+  .code-400 {
+    background-color: #ff5252;
+  }
+
+  .code-500 {
+    background-color: #c83b27;
+  }
+
+  .annotation {
+    margin-left: 1rem;
+  }
+}

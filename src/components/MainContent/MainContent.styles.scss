@@ -1,0 +1,68 @@
+@import 'src/styles/variables';
+
+.main-content {
+  margin-left: $sidenav-width;
+  margin-right: 20%;
+  height: 100%;
+
+  &.scrolling {
+    pre {
+      overflow-x: hidden;
+    }
+  }
+
+  .collapsible-content {
+    > .header {
+      background: hsl(240, 17%, 98%);
+      border-radius: 4px;
+      padding: 0.8rem 4rem 0.8rem 2rem;
+    }
+  }
+
+  h2 {
+    font-size: 2.8rem;
+    line-height: 3.64rem;
+    font-weight: 600;
+    padding-bottom: 1.2rem;
+  }
+
+  hr {
+    width: 100%;
+    height: 1px;
+    background-color: #aab0b7;
+    opacity: 0.5;
+    margin: 0;
+    border: 0;
+  }
+
+  h3 {
+    margin-top: 3.2rem;
+    font-weight: 500;
+    font-size: 2.4rem;
+    line-height: 3.12rem;
+    margin-bottom: 1.2rem;
+  }
+}
+
+.collapsible-content {
+  > .header {
+    font-weight: 500;
+    line-height: 1.8rem;
+  }
+}
+
+.main-body {
+  height: 100%;
+  background: #f8f8fa;
+  border-radius: 32px;
+  padding: 3.6rem 3rem;
+}
+
+.main-resources {
+  height: 100%;
+}
+
+.group-header {
+  padding-left: 3rem;
+  padding-right: 3rem;
+}

@@ -1,0 +1,27 @@
+@import '../../styles/variables';
+
+.query-params {
+  .name {
+    color: $code-key;
+
+    &::before {
+      content: ' ';
+    }
+
+    &::after {
+      content: '';
+    }
+  }
+
+  .value {
+    color: $code-string;
+
+    &::after {
+      content: ' ';
+    }
+  }
+
+  .equal {
+    color: $code-comment;
+  }
+}

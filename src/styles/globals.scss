@@ -1,0 +1,46 @@
+@import './display';
+@import './typography';
+@import '../assets/fonts/fontello/fontello';
+@import './variables';
+
+html {
+  height: 100%;
+  font-size: 62.5%;
+}
+
+body {
+  min-height: 100%;
+  height: 100%;
+  font-size: 1.4rem;
+  font-family: 'IBMPlexSans', serif;
+  color: $main-text;
+  font-weight: normal;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  overflow: hidden;
+  margin: 0;
+}
+
+input,
+textarea,
+button,
+a {
+  outline: none !important;
+  font-family: 'IBMPlexSans', serif;
+}
+
+h1,
+h2,
+h3,
+h4 {
+  margin: 0;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+* {
+  box-sizing: border-box;
+}

@@ -1,0 +1,124 @@
+@import 'src/styles/variables';
+
+.editor-wrapper {
+  position: absolute;
+  top: $app-header-height;
+  height: calc(100% - #{$app-header-height});
+  min-width: 100%;
+  overflow: hidden;
+
+  &.exported {
+    top: 0;
+    height: 100%;
+
+    .sidebar-wrapper {
+      display: block !important;
+    }
+
+    .sidebar-content {
+      padding: 2.45rem 3rem 0;
+    }
+
+    .side-panel {
+      display: none;
+    }
+  }
+
+  &.only-doc {
+    .doc {
+      padding-right: 0;
+      flex-direction: row;
+    }
+  }
+
+  .doc {
+    display: flex;
+    padding-right: 2.4rem;
+    flex: 1 1;
+    flex-direction: row-reverse;
+  }
+
+  .editor-wrapper-inner {
+    width: 100%;
+    display: flex;
+
+    .editor-parent {
+      height: 100%;
+      overflow: hidden;
+
+      .editor {
+        width: 100%;
+        height: 100%;
+      }
+    }
+    .main-content-wrapper {
+      height: 100%;
+      flex: 1;
+      overflow: hidden;
+    }
+
+    .main-content {
+      max-height: 100%;
+      margin-left: 0;
+      margin-right: 0;
+      flex: 1;
+      /* overflow-y: scroll; */
+
+      .main-body {
+        padding: 0;
+        background-color: #ffffff;
+      }
+    }
+  }
+
+  .rules-sidebar {
+    .resource-content,
+    h3,
+    h2 {
+      padding-right: 30%;
+    }
+
+    hr,
+    .methods-tab {
+      width: 70%;
+    }
+  }
+
+  .side-panel {
+    min-width: 2.4rem;
+    overflow: hidden;
+    height: 100vh;
+    background-color: $background;
+    z-index: 3000;
+    user-select: none;
+    position: absolute;
+    top: 0;
+    right: 0;
+
+    &.right-side {
+      border-left: 1px solid #d4d8db;
+    }
+
+    .side-panel-element {
+      cursor: pointer;
+      border-bottom: 1px solid $secondary-text;
+      writing-mode: vertical-rl;
+      text-orientation: mixed;
+      border-bottom: 1px solid #d4d8db;
+      padding: 2rem 0;
+      color: $secondary-text;
+
+      &.active {
+        background-color: #ffffff;
+        color: $main-text;
+      }
+
+      i {
+        transform: rotate(90deg);
+        display: inline-block;
+        margin-bottom: 1rem;
+        font-size: 1rem;
+      }
+    }
+  }
+}

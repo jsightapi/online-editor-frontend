@@ -1,0 +1,105 @@
+@import 'src/styles/variables';
+
+.detail-card {
+  border-radius: 4px;
+  font-family: 'JetBrainsMono', monospace;
+  margin-bottom: 2rem;
+  display: none;
+
+  &.active {
+    display: block;
+  }
+
+  &:last-of-type {
+    margin-bottom: 0;
+  }
+
+  .wrapper-close {
+    justify-content: flex-end;
+  }
+
+  .close-card {
+    color: $code-comment;
+    cursor: pointer;
+    font-size: 1.8rem;
+  }
+
+  > .header {
+    border-top-left-radius: 4px;
+    border-top-right-radius: 4px;
+    justify-content: space-between;
+    background-color: #f0f0f0;
+    border-bottom: 1px solid #d5d5d5;
+    padding: 1.2rem 2rem;
+    line-height: 1.8rem;
+    height: 4.2rem;
+
+    .name {
+      font-weight: 600;
+      color: $code-key;
+    }
+
+    .type {
+      color: $code-string;
+    }
+  }
+
+  .body {
+    padding: 2rem 2.4rem;
+    background-color: $background;
+    overflow: hidden;
+  }
+
+  .btn-expand {
+    color: $secondary-text;
+    padding: 0.5rem 1.4rem;
+    background: #f5f5f5;
+    border: 1px solid #d5d5d5;
+    font-weight: 500;
+    line-height: 2.4rem;
+    box-sizing: border-box;
+    box-shadow: 0 4px 16px rgba(213, 213, 213, 0.25), 0 0 12px rgba(213, 213, 213, 0.04),
+      0 2px 2px rgba(213, 213, 213, 0.05);
+    border-radius: 4px;
+    margin-left: 1.7rem;
+    margin-top: 0.5rem;
+    cursor: pointer;
+
+    i:before {
+      margin-left: 0.7rem;
+      font-size: 1rem;
+    }
+  }
+}
+
+.detail-code-line {
+  display: block;
+
+  span {
+    position: relative;
+    line-height: 2.4rem;
+  }
+
+  .name {
+    color: $code-rule-sat;
+  }
+
+  .punctuation-char {
+    color: $secondary-text;
+  }
+
+  .value {
+    color: $code-rule-value-sat;
+
+    &-string::before,
+    &-string::after {
+      content: '"';
+      color: $code-rule-value;
+    }
+  }
+
+  .comment {
+    color: $code-comment;
+    margin-bottom: 2rem;
+  }
+}

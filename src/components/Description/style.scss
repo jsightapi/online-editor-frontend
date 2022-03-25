@@ -1,0 +1,90 @@
+@import 'src/styles/variables';
+
+.description.markdown {
+  color: $secondary-text;
+
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    font-weight: 700;
+    margin: 0;
+    padding: 0;
+  }
+
+  h1 {
+    font-size: 2.6rem;
+    line-height: 3.8rem;
+  }
+
+  h2 {
+    font-size: 2.4rem;
+    line-height: 3.6rem;
+  }
+
+  h3 {
+    font-size: 2.2rem;
+    line-height: 3.4rem;
+  }
+
+  h4 {
+    font-size: 2rem;
+    line-height: 3.2rem;
+  }
+
+  h5 {
+    font-size: 1.8rem;
+    line-height: 3rem;
+  }
+
+  h6 {
+    font-size: 1.6rem;
+    line-height: 2.8rem;
+  }
+
+  ol,
+  ul {
+    margin-left: 20px;
+    p {
+      margin: 0;
+    }
+  }
+
+  ul {
+    list-style: disc;
+  }
+
+  ol {
+    list-style: decimal;
+  }
+
+  a {
+    text-decoration: underline;
+  }
+
+  p {
+    margin-bottom: 20px;
+  }
+
+  table {
+    border-spacing: 0px;
+    border-collapse: separate;
+    margin: 16px 0;
+    th {
+      border-top: 1px solid black;
+    }
+
+    td,
+    th {
+      border-bottom: 1px solid black;
+      border-right: 1px solid black;
+      padding: 6px;
+      vertical-align: top;
+      &:nth-child(1) {
+        border-left: 1px solid black;
+      }
+    }
+  }
+}

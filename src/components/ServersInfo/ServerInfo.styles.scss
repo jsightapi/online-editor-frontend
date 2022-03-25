@@ -1,0 +1,48 @@
+@import 'src/styles/variables';
+
+.server-info {
+  margin-top: 3.2rem;
+
+  .before {
+    color: $main-grey;
+    width: 4.7rem;
+    padding-right: 1.2rem;
+    text-align: right;
+    margin-top: 0.2rem;
+  }
+
+  .title {
+    font-size: 1.6rem;
+    font-weight: 600;
+    line-height: 2.1rem;
+  }
+
+  .annotation {
+    font-size: 14px;
+    margin-left: 16px;
+    color: $secondary-text;
+  }
+
+  .base-url {
+    color: $secondary-text;
+    margin-top: 0.8rem;
+  }
+
+  .content {
+    width: 100%;
+    div {
+      display: flex;
+      align-items: center;
+    }
+  }
+
+  .base-url-variables {
+    margin-top: 1.6rem;
+  }
+}
+
+.doc-sidebar {
+  .server-info {
+    padding-right: 35%;
+  }
+}

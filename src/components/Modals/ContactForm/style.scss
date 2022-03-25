@@ -1,0 +1,50 @@
+.contact-modal {
+  &__header {
+    display: flex;
+    justify-content: space-between;
+  }
+
+  &__title {
+    font-size: 21px;
+    font-style: normal;
+    font-weight: 600;
+    line-height: 27px;
+  }
+
+  &__closeIcon {
+    i {
+      font-size: 2rem;
+      color: #323232;
+      opacity: 0.35;
+    }
+  }
+
+  &__body {
+    padding-top: 16px;
+    padding-bottom: 32px;
+    h4 {
+      font-size: 16px;
+      font-weight: 500;
+      &:first-of-type {
+        margin-top: 40px;
+      }
+      &:not(&:first-of-type) {
+        margin-top: 24px;
+      }
+    }
+    p {
+      font-size: 14px;
+      line-height: 21px;
+      color: #6a7681;
+    }
+    a:hover {
+      text-decoration: underline;
+    }
+  }
+
+  &__frame {
+    right: 32px;
+    bottom: 0px;
+    position: absolute;
+  }
+}

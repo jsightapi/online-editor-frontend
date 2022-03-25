@@ -1,0 +1,22 @@
+@import 'src/styles/variables';
+
+.collapsible-content {
+  > .header {
+    span {
+      cursor: pointer;
+
+      > i {
+        font-size: 1rem;
+        margin-right: 1.5rem;
+
+        &:before {
+          color: #aab0b7;
+        }
+      }
+
+      [class^='icon-arrow-down']:before {
+        color: $main-text;
+      }
+    }
+  }
+}

@@ -1,0 +1,256 @@
+@import 'src/styles/variables';
+
+.code-line:not(.extreme) {
+  .number:before {
+    counter-increment: num-counter; /* Increase counter value */
+    content: counter(num-counter); /* Show value of counter */
+  }
+}
+
+.shortcut-lines {
+  display: none;
+
+  .code-line {
+    background-color: $main-stroke;
+  }
+}
+
+.code-line {
+  display: block;
+  padding-right: 1.6rem;
+
+  &.inherited {
+    background-color: $main-stroke;
+
+    &.inherited-hidden {
+      display: none;
+      + .shortcut-lines {
+        display: none;
+      }
+    }
+
+    &.inherited-hover {
+      background-color: #faf0e6;
+    }
+
+    .number:before {
+      counter-increment: none !important;
+      content: ' ' !important;
+    }
+  }
+
+  &.expanded {
+    + .shortcut-lines {
+      display: block;
+      + .shortcut-lines {
+        display: block;
+      }
+    }
+  }
+
+  &:hover {
+    background-color: #eeeeee;
+  }
+
+  &.extreme {
+    height: 2rem;
+    &:last-child {
+      height: 1rem;
+    }
+
+    .number {
+      margin-top: 0;
+      height: 2rem;
+    }
+
+    &:hover {
+      background-color: inherit;
+    }
+  }
+
+  &.selected {
+    background-color: $main-stroke;
+  }
+
+  .required {
+    color: #be1d1d;
+    opacity: 0.5;
+    width: 2.4rem;
+    font-size: 0.6rem;
+    text-align: center;
+    line-height: 1.8rem;
+    display: inline-block;
+    top: -0.2rem;
+
+    &.not {
+      i:before {
+        content: ' ';
+      }
+    }
+  }
+
+  .type-value {
+    color: #ceb18e;
+    user-select: none;
+  }
+
+  .clickable-value {
+    cursor: pointer;
+    text-decoration: underline;
+    color: #ceb18e;
+    padding: 0 0.4rem 0.3rem;
+
+    &.expanded {
+      color: $secondary-text;
+      background-color: $main-stroke;
+      text-decoration: none;
+    }
+
+    &.hovered {
+      background-color: #faf0e6;
+    }
+  }
+
+  span {
+    position: relative;
+    line-height: 2.4rem;
+  }
+
+  .number {
+    font-family: 'IBMPlexSans', serif;
+    display: inline-block;
+    padding-right: 1.6rem;
+    border-right: 1px solid #d5d5d5;
+    user-select: none;
+    text-align: right;
+    width: 5.3rem;
+
+    &:before {
+      font-weight: normal;
+      font-size: 1.4rem;
+      content: ' ';
+    }
+  }
+
+  .punctuation-char {
+    color: $secondary-text;
+  }
+
+  .name {
+    color: $code-key;
+
+    &.shortcut-key {
+      color: #ceb18e;
+    }
+
+    &:not(.shortcut-key) {
+      &::before,
+      &::after {
+        content: '"';
+      }
+    }
+  }
+
+  .value-string {
+    color: $code-string;
+
+    &::before,
+    &::after {
+      content: '"';
+      color: $secondary-text;
+    }
+  }
+
+  .value-number {
+    color: $code-number;
+  }
+
+  .value-boolean {
+    color: $code-boolean;
+  }
+
+  .value-null {
+    color: $code-string;
+  }
+
+  .rule-name {
+    color: $code-rule;
+  }
+
+  .rule-value {
+    color: $code-rule-value;
+
+    &-string::before,
+    &-string::after {
+      content: '"';
+      color: $code-rule-value;
+    }
+  }
+
+  .comment {
+    color: $code-comment;
+
+    .notes-collapsed {
+      display: inline-block;
+      background: #b1b7be;
+      color: white;
+      width: 26px;
+      height: 16px;
+      position: relative;
+      border-radius: 3px;
+      font-size: 0.8rem;
+      text-align: center;
+      padding: 0.2rem 0.4rem;
+      font-weight: 600;
+      line-height: 1.6rem;
+      letter-spacing: 0.1em;
+      box-shadow: 0 4px 8px rgba(177, 183, 190, 0.5);
+      cursor: pointer;
+      left: 6px;
+    }
+  }
+
+  .rules {
+    align-items: center;
+
+    .name {
+      color: $code-rule;
+
+      &::after,
+      &::before {
+        content: '';
+      }
+    }
+
+    .value {
+      color: $code-rule-value;
+    }
+
+    .array-item {
+      color: $code-rule-value;
+    }
+
+    .rules-collapsed {
+      border-radius: 4px;
+      color: #ffffff;
+      padding: 0.2rem 0.4rem;
+      font-weight: 600;
+      font-size: 1.2rem;
+      line-height: 1.6rem;
+      letter-spacing: 0.1em;
+      height: 1.7rem;
+
+      &.base {
+        background: #44a4dc;
+        box-shadow: 0 4px 8px rgba(68, 164, 220, 0.5);
+        cursor: pointer;
+      }
+
+      &.enum {
+        background: #ddb585;
+        box-shadow: 0 4px 8px rgba(221, 181, 133, 0.5);
+        cursor: pointer;
+      }
+    }
+  }
+}

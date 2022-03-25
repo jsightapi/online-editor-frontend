@@ -1,0 +1,113 @@
+.params-table {
+  border-spacing: 0;
+  border-radius: 4px 4px 0 0;
+  overflow: hidden;
+  position: relative;
+  margin-bottom: 2.4rem;
+
+  thead {
+    background-color: #f0f0f0;
+
+    th {
+      border: 0;
+      border-bottom: 1px solid #d5d5d5;
+      text-transform: uppercase;
+      color: #aab0b7;
+      font-weight: 400;
+      text-align: left;
+      padding: 0.625rem 0;
+
+      &:first-of-type {
+        padding-left: 3.6rem;
+      }
+
+      &:last-of-type {
+        width: 1%;
+        white-space: nowrap;
+      }
+    }
+  }
+  tbody {
+    tr {
+      td:first-of-type {
+        padding-left: 3.6rem;
+      }
+      &.divider {
+        td {
+          position: absolute;
+          width: 100%;
+          padding: 0px;
+          border-bottom: 1px solid #f0f0f2;
+        }
+      }
+      td:nth-child(2) {
+        padding-right: 16px;
+      }
+      td:nth-child(3) {
+        max-width: 700px;
+      }
+    }
+
+    td {
+      vertical-align: top;
+      padding: 3rem 0 2rem;
+      line-height: 2.4rem;
+      .code-font {
+        font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New', monospace;
+      }
+    }
+
+    .param-key {
+      font-family: 'JetBrainsMono', serif;
+      font-weight: 400;
+      color: #e86a32;
+      padding: 0.9rem 1.6rem;
+      border: 1px solid #d5d5d5;
+      border-radius: 4px;
+      background-color: #fafafa;
+      margin-left: 2rem;
+      margin-right: 1.5rem;
+      flex-shrink: 0;
+
+      &-symbol {
+        font-size: 1.4em;
+      }
+    }
+    .nested-param {
+      width: 12px;
+      height: 2px;
+      background: #d5d5d5;
+      flex-shrink: 0;
+    }
+  }
+  tfoot {
+    border-bottom: 1px solid #dbdbe1;
+    background-color: #f0f0f0;
+
+    td {
+      height: 37px;
+      font-size: 1.2rem;
+      text-align: right;
+      padding: 0.95rem 20px 0.95rem 0;
+      color: #6a7681;
+    }
+  }
+
+  .rules {
+    font-family: 'JetBrainsMono', serif;
+    font-weight: 400;
+    line-height: 2.4rem;
+
+    .name {
+      color: #1a9ce7;
+    }
+
+    .punctuation-char {
+      color: #4e4c51;
+    }
+
+    .value {
+      color: #e4a355;
+    }
+  }
+}

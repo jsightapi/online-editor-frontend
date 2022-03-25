@@ -1,0 +1,26 @@
+@import 'src/styles/variables';
+
+.btn {
+  padding-left: 2.4rem;
+  padding-right: 2.4rem;
+  border-radius: 4px;
+  font-weight: 500;
+  font-size: 1.4rem;
+  line-height: 1.8rem;
+
+  &.shadow {
+    color: $secondary-text;
+    border: 1px $secondary-stroke solid;
+    box-shadow: 0 4px 16px rgba(213, 213, 213, 0.25), 0 0 12px rgba(213, 213, 213, 0.04),
+      0 2px 2px rgba(213, 213, 213, 0.05);
+  }
+
+  &.black {
+    background-color: $main-text;
+    color: #fff;
+  }
+
+  i {
+    margin-right: 0.8rem;
+  }
+}

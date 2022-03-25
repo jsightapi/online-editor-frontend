@@ -1,0 +1,109 @@
+import React, {useState} from 'react';
+import * as monaco from 'monaco-editor';
+import {useEffect, useRef} from 'react';
+import './Editor.styles.scss';
+
+import {createOnigScanner, createOnigString, loadWASM} from 'vscode-oniguruma';
+import {SimpleLanguageInfoProvider} from 'textmate/providers';
+import {registerLanguages} from 'textmate/register';
+import {rehydrateRegexps} from 'textmate/configuration';
+import VsCodeDarkTheme from 'textmate/themes/vs-dark-plus-theme';
+
+import type {LanguageId} from 'textmate/register';
+import type {ScopeName, TextMateGrammar, ScopeNameInfo} from 'textmate/providers';
+
+import('textmate/themes/jsight-dark.json').then((data: any) => {
+  monaco.editor.defineTheme('jsight-dark', data);
+  monaco.editor.setTheme('jsight-dark');
+});
+
+main('python');
+
+function initializeEditor(
+  element: HTMLDivElement,
+  options: monaco.editor.IStandaloneEditorConstructionOptions
+) {
+  return monaco.editor.create(element, options);
+}
+
+function getEditorValue(editor: any) {
+  return editor.getValue();
+}
+
+function onContentChange({editor, setContent}: any) {
+  const content = getEditorValue(editor);
+  setContent(content);
+}
+
+export const Editor = ({content, setContent, errorRow}: any) => {
+  const ref = useRef<HTMLDivElement | null>(null);
+  const jsightEditor = useRef<monaco.editor.IStandaloneCodeEditor | null>(null);
+  const [oldRow, setOldRow] = useState<number | undefined>();
+  const [decorations, setDecorations] = useState<any>();
+
+  useEffect(() => {
+    if (ref.current) {
+      const editor = initializeEditor(ref.current, {
+        value: content,
+        language: 'yaml',
+        theme: 'jsight-dark',
+        fontSize: 14,
+        lineHeight: 21,
+        fontFamily: 'JetBrainsMono',
+        codeLens: false,
+        scrollbar: {useShadows: false, vertical: 'hidden'},
+        contextmenu: false,
+        renderLineHighlight: 'none',
+        minimap: {enabled: false},
+        overviewRulerLanes: 0,
+        wordBasedSuggestions: false,
+        padding: {
+          top: 20,
+          bottom: 20,
+        },
+      });
+
+      editor
+        ?.getModel()
+        ?.onDidChangeContent((event) => onContentChange({event, editor, setContent}));
+
+      if (jsightEditor) {
+        jsightEditor.current = editor;
+      }
+    }
+  }, []);
+
+  // process errors
+  useEffect(() => {
+    errorRow && setOldRow(errorRow);
+    // Remove highlight error if there is no error
+    if (oldRow) {
+      const oldDecorations = jsightEditor.current?.deltaDecorations(decorations, [
+        {
+          range: new monaco.Range(oldRow, 0, oldRow, 0),
+          options: {},
+        },
+      ]);
+      setDecorations(oldDecorations);
+    }
+    // Highlight row if error exists
+    if (errorRow) {
+      const oldDecorations = jsightEditor.current?.deltaDecorations(
+        [],
+        [
+          {
+            range: new monaco.Range(errorRow, 0, errorRow, 0),
+            options: {
+              isWholeLine: true,
+              linesDecorationsClassName: 'errorLine',
+              className: 'errorHoleLine',
+            },
+          },
+        ]
+      );
+      setDecorations(oldDecorations);
+    }
+  }, [errorRow]);
+
+  return <div className="editor" ref={ref} />;
+};

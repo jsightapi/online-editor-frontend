@@ -1,0 +1,8 @@
+node_modules
+.nginx
+build
+Dockerfile
+yarn.lock
+yarn-error.log
+.git
+.idea

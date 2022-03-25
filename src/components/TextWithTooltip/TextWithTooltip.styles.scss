@@ -1,0 +1,42 @@
+@import 'src/styles/variables';
+
+.text-with-tooltip {
+  cursor: pointer;
+  position: relative;
+  display: inline-block;
+  max-width: 100%;
+
+  .full-text {
+    display: none;
+    position: absolute;
+    background: #f5f5f5;
+    border-radius: 4px;
+    border: 1px solid #d5d5d5;
+    box-shadow: 3px 2px 2px #d5d5d5;
+    padding: 2px 5px;
+    right: 0;
+    top: -30px;
+
+    &::after {
+      content: ' ';
+      position: absolute;
+      top: 100%; /* At the bottom of the tooltip */
+      right: 20%;
+      margin-left: -5px;
+      border-width: 5px;
+      border-style: solid;
+      border-color: $main-text transparent transparent transparent;
+    }
+  }
+
+  .cut-text {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 100%;
+  }
+}
+
+.text-with-tooltip:hover .full-text {
+  display: block;
+}

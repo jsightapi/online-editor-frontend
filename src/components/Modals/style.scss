@@ -1,0 +1,24 @@
+.r-modal-overlay {
+  background: rgb(0, 0, 0, 0.35);
+  display: flex;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 100000;
+}
+
+.r-modal {
+  max-width: 90vw;
+  max-height: 90vh;
+  padding: 40px 32px 40px;
+  width: 526px;
+  margin: auto;
+  background: white;
+  border-radius: 4px;
+  overflow: auto;
+  position: relative;
+  border: unset;
+  outline: unset;
+}

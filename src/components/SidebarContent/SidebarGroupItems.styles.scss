@@ -1,0 +1,57 @@
+@import 'src/styles/variables';
+
+.sidebar-items {
+  margin-top: 3.65rem;
+
+  h3 {
+    color: #aab0b7;
+    font-size: 1.4rem;
+    line-height: 1.82rem;
+    text-transform: uppercase;
+    font-weight: 400;
+  }
+
+  .number {
+    color: #aab0b7;
+  }
+
+  ul {
+    list-style: none none;
+  }
+
+  > ul {
+    padding-left: 0;
+    margin-top: 1.6rem;
+
+    > li {
+      padding: 1.6rem 0;
+      border-bottom: 1px solid #efecf2;
+
+      span {
+        cursor: pointer;
+      }
+
+      &:last-of-type {
+        border-bottom: 0;
+      }
+    }
+  }
+
+  ul.collapse {
+    font-size: 1.4rem;
+    padding-left: 3.2rem;
+
+    > li {
+      margin-top: 1.6rem;
+
+      span {
+        cursor: pointer;
+      }
+
+      &.active {
+        font-weight: 600;
+        border-right: 3px solid #8338ff;
+      }
+    }
+  }
+}

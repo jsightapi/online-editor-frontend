@@ -1,0 +1,51 @@
+@tailwind base;
+@import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@200;400;600;700&display=swap');
+@tailwind components;
+@tailwind utilities;
+@import 'src/styles/variables';
+
+html,
+body {
+  @apply font-display;
+}
+.brd {
+  border: 1px solid red;
+}
+
+.errorLine {
+  background: $secondary-red;
+  opacity: 0.65;
+}
+
+.errorHoleLine {
+  background: $secondary-red;
+  opacity: 0.65;
+  position: relative;
+}
+
+.errorHoleLine::before {
+  content: '';
+  display: block;
+  top: 4px;
+  right: 12px;
+  position: absolute;
+  border: transparent 0.6em solid;
+  border-bottom-color: $sidenav-background-color;
+  border-bottom-width: 1em;
+  border-top-width: 0;
+}
+
+.errorHoleLine::after {
+  display: block;
+  position: absolute;
+  top: 5px;
+  right: 14px;
+  width: 12px;
+  height: 10px;
+  text-align: center;
+  content: '!';
+  font-size: 0.75em;
+  font-weight: bold;
+  color: $secondary-red;
+  opacity: 0.65;
+}

@@ -1,0 +1,105 @@
+.backdrop-modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 2040;
+  width: 100vw;
+  height: 100vh;
+  background-color: #000;
+  opacity: 0.35;
+}
+
+.modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 2050;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  outline: 0;
+  display: block; // none
+
+  .modal-inner {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+  }
+}
+
+.settings-wrapper {
+  backdrop-filter: blur(40px);
+  border-radius: 26px;
+  overflow: hidden;
+  background: rgba(255, 255, 255, 0.25);
+  padding: 1.2rem;
+  border: 0;
+}
+
+.settings {
+  border: 0;
+  background-color: #fff;
+  border-radius: 16px;
+  padding: 2.8rem;
+
+  .header {
+    margin-bottom: 2.4rem;
+    justify-content: space-between;
+
+    .close {
+      color: #323232;
+      opacity: 0.35;
+      cursor: pointer;
+      font-size: 2rem;
+    }
+  }
+
+  .title {
+    font-weight: 600;
+    font-size: 2.1rem;
+    line-height: 2.7rem;
+  }
+
+  .item {
+    margin-bottom: 3.2rem;
+    width: 46.2rem;
+
+    .settings-group-title {
+      font-weight: 500;
+      font-size: 1.6rem;
+      line-height: 2.1rem;
+      margin-bottom: 1.6rem;
+    }
+
+    .settings-group {
+      border: 1px solid #bfbfbf;
+      border-radius: 4px;
+      overflow: hidden;
+      background-color: #f8f8fa;
+
+      button {
+        margin: 0;
+        border: 0;
+        opacity: 0.25;
+        padding: 0.9rem 3.2rem 0.8rem;
+        flex: 1 1 auto;
+        cursor: pointer;
+        border-right: 1px solid #bfbfbf;
+
+        &:last-of-type {
+          border-right: 0;
+        }
+
+        i {
+          margin-right: 1rem;
+        }
+
+        &.active {
+          background-color: #fff;
+          opacity: 1;
+        }
+      }
+    }
+  }
+}
