@@ -24,7 +24,37 @@ executors:
 
 
 jobs:
-  deploy:
+  refresh-container:
+    executor: docker-small
+    parameters:
+      host:
+        type: string
+      port:
+        type: string
+      name:
+        type: string
+      image:
+        type: string
+    steps:
+      - checkout
+      - add_ssh_keys:
+          fingerprints:
+            - 2d:42:e7:f4:a5:9c:5a:70:10:bc:83:54:a9:93:2d:b2
+      - run:
+          name: Docker login and refresh container
+          no_output_timeout: 5m
+          command: |
+            ssh -o StrictHostKeyChecking=no -T root@<< parameters.host >> \<< EOF
+              echo $DOCKER_PASSWORD | docker login --username $DOCKER_LOGIN --password-stdin
+              echo "Removing current container"
+              docker rm -f << parameters.name >>
+              echo "Building from image << parameters.image >>
+              docker run --name << parameters.name >> --pull always -d --restart unless-stopped -p << parameters.port >>:80 << parameters.image >>
+              echo "Cleaning out old images"
+              docker image prune -f
+            EOF
+
+  ssh-script: # for moving to orb
     executor: docker-small
     parameters:
       host:
@@ -136,15 +166,10 @@ workflows:
         pattern: "^release-.*"
         value: << pipeline.git.tag >>
     jobs:
-      - shellcheck/check:
-          dir: scripts
+      - get-version-numbers:
           filters: &release-tag-filter
             tags:
               only: /^release-.*/
-      - get-version-numbers:
-          filters: *release-tag-filter
-          requires:
-           - shellcheck/check
       - docker/publish:
           filters: *release-tag-filter
           requires:
@@ -153,9 +178,8 @@ workflows:
           context: online-editor-development
           image: jsight/online-editor-frontend
           tag: '${FULL_VERSION_TAG},${MAJOR_VERSION_TAG},latest'
-          attach-at: /tmp/workspace
-          dockerfile: Dockerfile
           extra_build_args: '--build-arg GTM_ID=${PROD_GTM_ID}'
+          attach-at: /tmp/workspace
           before_build:
             - run:
                 name: Read version number tags from workspace
@@ -168,18 +192,19 @@ workflows:
           type: approval
           requires:
             - docker/publish
-      - deploy:
+      - refresh-cointainer:
           filters: *release-tag-filter
           requires:
-             - approve-production-deploy
+            - approve-production-deploy
           context: online-editor-development
           host: ${HOST_PROD}
-          script-file: refresh-container.sh
-          args: '-i jsight/online-editor-frontend:latest -p 8091'
+          port: 8091
+          name: online-editor-frontend
+          image: jsight/online-editor-frontend:latest
       - notify-telegram:
           filters: *release-tag-filter
           requires:
-            - deploy
+            - refresh-cointainer
           context: online-editor-development
           message: Production editor frontend updated from tag << pipeline.git.tag >>
 
@@ -189,26 +214,22 @@ workflows:
         pattern: "^rc/.*"
         value: << pipeline.git.branch >>
     jobs:
-      - shellcheck/check:
-          dir: scripts
       - docker/publish:
-          requires:
-            - shellcheck/check
           context: online-editor-development
           executor: vm-medium
           image: jsight/dev-online-editor-frontend
           tag: '<< pipeline.parameters.image-tag >>,stage_latest'
-          dockerfile: Dockerfile
-      - deploy:
+      - refresh-cointainer:
           requires:
             - docker/publish
           context: online-editor-development
           host: ${HOST_STAGE}
-          script-file: refresh-container.sh
-          args: '-i jsight/dev-online-editor-frontend:<< pipeline.parameters.image-tag >> -p 8091'
+          port: 8091
+          name: online-editor-frontend
+          image: jsight/dev-online-editor-frontend:<< pipeline.parameters.image-tag >>
       - notify-telegram:
           requires:
-            - deploy
+            - refresh-cointainer
           context: online-editor-development
           message: Stage editor frontend updated from branch ${CIRCLE_BRANCH} (commit ${CIRCLE_SHA1})
 
@@ -216,26 +237,22 @@ workflows:
     when:
       equal: [ dev, << pipeline.git.branch >>]
     jobs:
-      - shellcheck/check:
-          dir: scripts
       - docker/publish:
-          requires:
-            - shellcheck/check
           context: online-editor-development
           executor: vm-medium
           image: jsight/dev-online-editor-frontend
-          dockerfile: Dockerfile
           tag: '<< pipeline.parameters.image-tag >>,dev_latest'
-      - deploy:
+      - refresh-cointainer:
           requires:
             - docker/publish
           context: online-editor-development
           host: ${HOST_DEV}
-          script-file: refresh-container.sh
-          args: '-i jsight/dev-online-editor-frontend:<< pipeline.parameters.image-tag >> -p 8091'
+          port: 8091
+          name: online-editor-frontend
+          image: jsight/dev-online-editor-frontend:<< pipeline.parameters.image-tag >>
       - notify-telegram:
           requires:
-            - deploy
+            - refresh-cointainer
           context: online-editor-development
           message: Dev editor frontend updated from branch ${CIRCLE_BRANCH} (commit ${CIRCLE_SHA1})
 
@@ -247,27 +264,23 @@ workflows:
     jobs:
       - approve-go-crazy:
           type: approval
-      - shellcheck/check:
-          requires:
-            - approve-go-crazy
-          dir: scripts
       - docker/publish:
           requires:
-            - shellcheck/check
+            - approve-go-crazy
           context: online-editor-development
           executor: vm-medium
           image: jsight/dev-online-editor-frontend
-          dockerfile: Dockerfile
           tag: '<< pipeline.parameters.image-tag >>,dev_latest'
-      - deploy:
+      - refresh-cointainer:
           requires:
             - docker/publish
           context: online-editor-development
           host: ${HOST_CRAZY}
-          script-file: refresh-container.sh
-          args: '-i jsight/dev-online-editor-frontend:<< pipeline.parameters.image-tag >> -p 8091'
+          port: 8091
+          name: online-editor-frontend
+          image: jsight/dev-online-editor-frontend:<< pipeline.parameters.image-tag >>
       - notify-telegram:
           requires:
-            - deploy
+            - refresh-cointainer
           context: online-editor-development
           message: Experimental (crazy) editor frontend updated from branch ${CIRCLE_BRANCH} (commit ${CIRCLE_SHA1})
