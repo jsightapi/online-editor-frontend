@@ -31,7 +31,7 @@ jobs:
         type: string
       port:
         type: string
-      name:
+      container-name:
         type: string
       image:
         type: string
@@ -47,9 +47,9 @@ jobs:
             ssh -o StrictHostKeyChecking=no -T root@<< parameters.host >> \<< EOF
               echo $DOCKER_PASSWORD | docker login --username $DOCKER_LOGIN --password-stdin
               echo "Removing current container"
-              docker rm -f << parameters.name >>
+              docker rm -f << parameters.container-name >>
               echo "Building from image << parameters.image >>
-              docker run --name << parameters.name >> --pull always -d --restart unless-stopped -p << parameters.port >>:80 << parameters.image >>
+              docker run --name << parameters.container-name >> --pull always -d --restart unless-stopped -p << parameters.port >>:80 << parameters.image >>
               echo "Cleaning out old images"
               docker image prune -f
             EOF
@@ -199,7 +199,7 @@ workflows:
           context: online-editor-development
           host: ${HOST_PROD}
           port: 8091
-          name: online-editor-frontend
+          container-name: online-editor-frontend
           image: jsight/online-editor-frontend:latest
       - notify-telegram:
           filters: *release-tag-filter
@@ -225,7 +225,7 @@ workflows:
           context: online-editor-development
           host: ${HOST_STAGE}
           port: 8091
-          name: online-editor-frontend
+          container-name: online-editor-frontend
           image: jsight/dev-online-editor-frontend:<< pipeline.parameters.image-tag >>
       - notify-telegram:
           requires:
@@ -248,7 +248,7 @@ workflows:
           context: online-editor-development
           host: ${HOST_DEV}
           port: 8091
-          name: online-editor-frontend
+          container-name: online-editor-frontend
           image: jsight/dev-online-editor-frontend:<< pipeline.parameters.image-tag >>
       - notify-telegram:
           requires:
@@ -277,7 +277,7 @@ workflows:
           context: online-editor-development
           host: ${HOST_CRAZY}
           port: 8091
-          name: online-editor-frontend
+          container-name: online-editor-frontend
           image: jsight/dev-online-editor-frontend:<< pipeline.parameters.image-tag >>
       - notify-telegram:
           requires:
