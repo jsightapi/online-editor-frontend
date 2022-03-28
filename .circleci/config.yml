@@ -30,7 +30,7 @@ jobs:
       host:
         type: string
       port:
-        type: string
+        type: integer
       container-name:
         type: string
       image:
@@ -48,7 +48,7 @@ jobs:
               echo $DOCKER_PASSWORD | docker login --username $DOCKER_LOGIN --password-stdin
               echo "Removing current container"
               docker rm -f << parameters.container-name >>
-              echo "Building from image << parameters.image >>
+              echo "Building from image << parameters.image >>"
               docker run --name << parameters.container-name >> --pull always -d --restart unless-stopped -p << parameters.port >>:80 << parameters.image >>
               echo "Cleaning out old images"
               docker image prune -f
@@ -192,7 +192,7 @@ workflows:
           type: approval
           requires:
             - docker/publish
-      - refresh-cointainer:
+      - refresh-container:
           filters: *release-tag-filter
           requires:
             - approve-production-deploy
@@ -204,7 +204,7 @@ workflows:
       - notify-telegram:
           filters: *release-tag-filter
           requires:
-            - refresh-cointainer
+            - refresh-container
           context: online-editor-development
           message: Production editor frontend updated from tag << pipeline.git.tag >>
 
@@ -219,7 +219,7 @@ workflows:
           executor: vm-medium
           image: jsight/dev-online-editor-frontend
           tag: '<< pipeline.parameters.image-tag >>,stage_latest'
-      - refresh-cointainer:
+      - refresh-container:
           requires:
             - docker/publish
           context: online-editor-development
@@ -229,7 +229,7 @@ workflows:
           image: jsight/dev-online-editor-frontend:<< pipeline.parameters.image-tag >>
       - notify-telegram:
           requires:
-            - refresh-cointainer
+            - refresh-container
           context: online-editor-development
           message: Stage editor frontend updated from branch ${CIRCLE_BRANCH} (commit ${CIRCLE_SHA1})
 
@@ -242,7 +242,7 @@ workflows:
           executor: vm-medium
           image: jsight/dev-online-editor-frontend
           tag: '<< pipeline.parameters.image-tag >>,dev_latest'
-      - refresh-cointainer:
+      - refresh-container:
           requires:
             - docker/publish
           context: online-editor-development
@@ -252,7 +252,7 @@ workflows:
           image: jsight/dev-online-editor-frontend:<< pipeline.parameters.image-tag >>
       - notify-telegram:
           requires:
-            - refresh-cointainer
+            - refresh-container
           context: online-editor-development
           message: Dev editor frontend updated from branch ${CIRCLE_BRANCH} (commit ${CIRCLE_SHA1})
 
@@ -271,7 +271,7 @@ workflows:
           executor: vm-medium
           image: jsight/dev-online-editor-frontend
           tag: '<< pipeline.parameters.image-tag >>,dev_latest'
-      - refresh-cointainer:
+      - refresh-container:
           requires:
             - docker/publish
           context: online-editor-development
@@ -281,6 +281,6 @@ workflows:
           image: jsight/dev-online-editor-frontend:<< pipeline.parameters.image-tag >>
       - notify-telegram:
           requires:
-            - refresh-cointainer
+            - refresh-container
           context: online-editor-development
           message: Experimental (crazy) editor frontend updated from branch ${CIRCLE_BRANCH} (commit ${CIRCLE_SHA1})
