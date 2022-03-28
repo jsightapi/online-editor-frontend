@@ -45,6 +45,9 @@ jobs:
           no_output_timeout: 5m
           command: |
             ssh -o StrictHostKeyChecking=no -T root@<< parameters.host >> \<< EOF
+              set -e
+              echo "Host name on next line.."
+              hostname
               echo $DOCKER_PASSWORD | docker login --username $DOCKER_LOGIN --password-stdin
               echo "Removing current container"
               docker rm -f << parameters.container-name >>
