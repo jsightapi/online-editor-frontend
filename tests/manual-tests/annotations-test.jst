@@ -1,0 +1,54 @@
+JSIGHT 0.3
+
+INFO
+  Description
+    Check all the annotations below in the main field and in details cards.
+
+SERVER @prod /* This
+                          is a field
+                          with a very long note. It must be:
+                          1) cutted with ... in th end in "Collapse rules" mode,
+                          2) it must NOT have line breaks inside. */
+
+
+GET /cats /* This
+                          is a field
+                          with a very long note. It must be:
+                          1) cutted with ... in th end in "Collapse rules" mode,
+                          2) it must NOT have line breaks inside. */
+  200 /* This
+                          is a field
+                          with a very long note. It must be:
+                          1) cutted with ... in th end in "Collapse rules" mode,
+                          2) it must NOT have line breaks inside. */
+    "OK" /* This
+                          is a field
+                          with a very long note. It must be:
+                          1) cutted with ... in th end in "Collapse rules" mode,
+                          2) it must NOT have line breaks inside. */                         
+
+TYPE @testExtraLongAnnotationInObject /* This
+                          is a field
+                          with a very long note. It must be:
+                          1) cutted with ... in th end in "Collapse rules" mode,
+                          2) it must NOT have line breaks inside. */
+{
+  "key": "value" /* {optional: true, nullable: true} - This
+                          is a field
+                          with a very long note. It must be:
+                          1) cutted with ... in th end in "Collapse rules" mode,
+                          2) it must NOT have line breaks inside. */
+}
+
+TYPE @testExtraLongAnnotationInArray /* This
+                          is a field
+                          with a very long note. It must be:
+                          1) cutted with ... in th end in "Collapse rules" mode,
+                          2) it must NOT have line breaks inside. */
+[
+  "value" /* {nullable: true, minLength: 1} - This
+                          is a field
+                          with a very long note. It must be:
+                          1) cutted with ... in th end in "Collapse rules" mode,
+                          2) it must NOT have line breaks inside. */
+]

@@ -1,0 +1,69 @@
+JSIGHT 0.3
+
+INFO
+  Title "Bottom margin tests"
+  Description
+  (
+    Remove directives one by one from the bottom and check their bottom margin.
+    
+    -
+    -
+    -
+    -
+    -
+    -
+    -
+    -
+    -
+    -
+    -
+    -
+    -
+    -
+    -
+    -
+    -
+    -
+    -
+    -
+    -
+    -
+    -
+    -
+    -
+    -
+    -
+    -
+    -
+    -
+    -
+    -
+    -
+    -
+    Check INFO Description bottom margin.
+  )
+
+SERVER @checkServerBottomMargin // Check SERVER bottom margin
+  BaseUrl http://check-BaseUrl-bottom-margin
+
+GET /check-method-bottom-margin/{var}
+  Description
+  (
+    Check method description bottom margin.
+  )
+
+Path
+  {
+    "var": "Check path bottom margin" // Check path bottom margin.
+  }
+  Query
+  {
+    "Check query bottom margin": 0
+  }
+  200
+    "Check body bottom margin"      
+  201 empty // Check empty body bottom margin.
+  203 any   // Check any body bottom margin.
+
+TYPE @checkTypeMargin
+{}

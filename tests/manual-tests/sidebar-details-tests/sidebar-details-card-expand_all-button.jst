@@ -1,0 +1,27 @@
+JSIGHT 0.3
+
+TYPE @checkExpandAllForEnum /* Check that Expand all button in the card works.
+                              Should appear after 5-th element
+                              and expand/collapse all after 5-th.
+                            */
+{
+  "noButtonExpected": "always_shown_1", // {enum: ["always_shown_1","always_shown_2","always_shown_3","always_shown_4", "always_shown_5"]}
+  "oneElementCollapsible": "collapsible_1", // {enum: ["always_shown_1","always_shown_2","always_shown_3","always_shown_4", "always_shown_5", "collapsible_1"]}
+  "manyElements": 1 // {enum: [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15]}
+}
+
+TYPE @checkExpandAllForOr /* Check that Expand all button in the card works.
+                              Should appear after 5-th or (object type)
+                              and expand/collapse all after 5-th (array type)
+                            */
+{
+  "or": "or" /* {or: [
+                   {type: "string"},
+                   {type: "boolean"},
+                   {type: "integer"},
+                   {type: "float"},
+                   {type: "object"},
+                   {type: "array"}
+                 ]}
+             */
+}

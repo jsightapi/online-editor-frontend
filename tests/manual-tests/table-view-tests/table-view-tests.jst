@@ -1,0 +1,223 @@
+JSIGHT 0.3
+
+# TYPES
+
+POST /types/test-rule-type-standard-types
+  Query
+    {
+      "integerPositive" : 1,    // {type: "integer"}
+      "floatPositive1"  : 1.2,  // {type: "float"}
+      "boolean1"        : true, // {type: "boolean"}
+      "array": [ // {type: "array"}
+        "array item" // {type: "string"}
+      ],
+      "object": { // {type: "object"}
+        "objectField": null // {type: null}
+      },
+      "decimal" : 43.21, // {type: "decimal", precision: 2}
+      "email": "name@domain.com", // {type: "email"}
+      "uri": "https://domain.com/", // {type: "uri"}
+      "date": "2021-12-16", // {type: "date"}
+      "datetime": "2006-01-02T15:04:05+07:00", // {type: "datetime"}
+      "uuid": "550e8400-e29b-41d4-a716-446655440000", // {type: "uuid"}
+      "enumPlain": "white", // {type: "enum", enum: ["white", "black"]}
+      "enumMixed": 2.3, // {type: "enum", enum: [1, 2.3, "a", "b", true, false, null]}
+      "mixed": "abc", // {type: "mixed", or: [{type: "string"}, {type: "integer", min: 0}]}
+      "any": 456 // {type: "any"}
+    }
+
+POST /types/test-scalar-types-by-example // Correspondence between the JSON and JSight Schema data types
+  Query
+    {
+      "string": "some string and escaped characters \" \\ \/ \b \f \n \r \t \u043f\u0440\u0438\u0432\u0435\u0442",
+      "integerPositive": 1,
+      "integerNegative": -123,
+      "integerZero": 0,
+      "floatPositive1": 1.2,
+      "floatPositive2": 1.23,
+      "floatNegative": -1.2,
+      "decimalPositive1": 0.12, // {precision: 2}
+      "decimalPositive2": 0.1,  // {precision: 1}
+      "decimalNegative": -0.12, // {precision: 2}
+      "boolean1": true,
+      "boolean2": false,
+      "null": null,
+      "object": {
+        "key": "value"
+      },
+      "array": [
+        1, // Integer.
+        2.3, // Float.
+        "abc", // String.
+        true, // Boolean.
+        false, // Boolean.
+        null // Null.
+      ]
+    }
+
+# Test omitting rule `type`
+POST /types/testRuleTypeIsOmmitedProperty // Check that there is no type rule in table view column `Description`.
+  Query
+    {
+      "typeRuleOnly": 1, // {type: "integer"} - Must be no rules below.
+      "typeWithOtherRules": "some string" /* {optional: true, nullable: true, type: "string"}
+                                             - Must be only `optional: true, nullable: true` */
+    }
+
+POST /types/testRuleTypeIsOmmitedArray // Check that there is no type rule in table view column `Description`.
+  Query
+    [
+      1, // {type: "integer"} - Must be no rules below.
+      "some string" /* {nullable: true, type: "string"}
+                                             - Must be only `nullable: true` */
+    ]
+
+POST /types/testRuleTypeIsOmmitedScalar1 // Check that there is no type rule in table view column `Description`.
+  Query
+    "some string" /* {nullable: true, type: "string"}
+                                             - Must be only `nullable: true` */
+
+POST /types/testRuleTypeIsOmmitedScalar2 // Check that there is no type rule in table view column `Description`.
+  Query
+    "some string" /* {type: "string"} - Must be no rules below. */
+
+# SCALARS IN THE ROOT
+
+POST /scalar/string
+  Query
+    "some string" // {minLength: 0} - Scalar string.
+
+POST /scalar/boolean
+  Query
+    true // {const: true} - Scalar boolean.
+
+POST /scalar/integer
+  Query
+    12 // {min: 1} - Scalar integer.  
+
+POST /scalar/float
+  Query
+    12.0 // {min: 1.1} - Scalar float.
+
+POST /scalar/decimal
+  Query
+    12.34 // {precision: 2} - Scalar decimal.
+
+POST /scalar/null
+  Query
+    null // {const: true} - Scalar null.
+
+POST /scalar/enum
+  Query
+    "A" // {enum: ["A", null, 1, true]} - Scalar enum.
+
+POST /scalar/mixed
+  Query
+    "A" /* {or: [
+              {type: "integer"}, 
+              {type: "string"}
+            ]}
+          - Scalar mixed.
+        */
+
+POST /scalar/email
+  Query
+    "tom@cats.ru" // {type: "email"}          
+
+POST /scalar/user-type
+  Query
+    @cat // {nullable: true} - Scalar user type.
+
+POST /scalar/several-user-types
+  Query
+    @cat | @dog // {type: "mixed"} - Scalar several user types.
+
+POST /scalar/notation-regex
+  200 regex
+    /.*/
+
+# ARRAY in the root
+
+POST /array/empty
+  Query
+    [] // {minItems: 0} - Empty array.
+
+POST /array/everything
+  Query
+    [ // {maxItems: 200} - Array of everything.
+      1, // Integer.
+      "some string", // String.
+      { // Internal object.
+        "id": 1 // {min: 1} - Identificator.
+      },
+      true, // Boolean.
+      1.5,  // Float.
+      1.123, // {precision: 3} - Decimal.
+      @cat, // Type reference.
+      @dog | @cat, // Several types reference.
+      [ // Internal array.
+        "string"
+      ]    
+    ]
+
+# OBJECT in the root
+
+POST /object/everything
+  Query
+    { // {additionalProperties: true} - Object of everything.
+      "field1": 1, // Integer.
+      "field2": [  // Internal array.
+        "string" // String.
+      ],
+      "field3": { // Internal object.
+        "field31": true // Boolean.
+      },
+      "field4": @cat, // Cat.
+      "field5": @cat | @dog, // Cat or dog.
+      @catId: @cat // {optional: true} - Cat with id in the key.
+      # "@catId": "@cat" // Check that it differs from the previous line! TODO: uncomment when bug is fixed.
+    } 
+
+# Check field order in object
+
+POST /object/field-order // Compare field order with Code View. Must be the same.
+  Query
+    { // {allOf: "@parentType"}
+      "childField3": 3
+    }
+
+TYPE @parentType // Miss it. It is helpful type for previous test.
+{
+  "parentField1": 1,
+  "parentField2": 2
+}
+
+# Check different rules
+
+POST /rules/different
+  Query
+    {
+      "or1" : 1,   // {or: [{type: "integer"}, {type: "string"}]}
+      "or2" : "1", // {or: ["@catId", "@dogId"]}
+      "enum": 1    // {enum: [1, 2, 1.0, "3", "4", true, false, null]}
+    }
+
+# helpfull types
+TYPE @STOP_HERE // Thank you for testing! No need to check below.
+  {}
+
+TYPE @cat
+{
+  "catField": 1
+}  
+
+TYPE @dog
+{
+  "dogField": "string"
+}
+
+TYPE @catId
+  "catString"
+
+TYPE @dogId
+  "dogString"  

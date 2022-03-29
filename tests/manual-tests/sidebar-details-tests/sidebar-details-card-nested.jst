@@ -1,0 +1,17 @@
+JSIGHT 0.3
+
+# Check that sidebar opens in nested types
+TYPE @checkSideBarOpensInNested // Click on the type and call the card from line that appeared
+{
+  "expandThis": @nestedType
+}
+
+TYPE @checkSidebarNotClosingWhenOpenNested // 1. Click on the long commentary to open details card. 2. Expand @nestedType and check that details card is retained.
+{
+  "expandThis": @nestedType // This is a long commentary.
+}
+
+TYPE @nestedType
+{
+  "checkSideBarOpens": 12 // {optional: false, nullable: true}
+}

@@ -1,0 +1,51 @@
+JSIGHT 0.3
+
+GET /check-headers-and-body
+  Request
+    PASTE @headers
+    PASTE @body
+  200
+    PASTE @headers
+    PASTE @body
+  201
+    PASTE @headersAndBody
+  PASTE @errors
+
+URL /check-crud/1
+  PASTE @crud
+
+URL /check-crud/2
+  PASTE @crud
+
+MACRO @headers
+  Headers
+  {
+    "Check this header": "header"
+  }
+
+MACRO @body
+(
+  Body
+    "Check this body"
+)
+
+MACRO @headersAndBody
+  PASTE @headers
+  PASTE @body
+
+MACRO @errors
+  400
+    PASTE @headers
+    PASTE @body
+  401
+    PASTE @headers
+    PASTE @body
+  402
+    PASTE @headers
+    PASTE @body
+
+MACRO @crud
+  GET
+  PUT
+  PATCH
+  DELETE

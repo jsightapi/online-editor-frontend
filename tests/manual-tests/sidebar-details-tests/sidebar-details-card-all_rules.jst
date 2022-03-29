@@ -1,0 +1,169 @@
+JSIGHT 0.3
+
+INFO
+  Description
+     1. Check that all rules are displayed in a details card correctly
+     (quotes, signs, syntax).
+
+     2. Check that details card is shown only in "Collapse rules" mode. But not in "Inline rules" mode.
+
+TYPE @nullable_optional
+  {
+    "nullableOptional": 1, // {nullable: true, optional: true}
+    "notNullableNotOptional": 1 // {nullable: false, optional: false}
+  }
+
+TYPE @min_max
+  {
+    "minMaxPositive": 1, // {min: 1, max: 1000000}
+    "minMaxNegative": -10, // {min: -1000, max: -1}
+    "minMaxZero": 0, // {min: 0, max: 0}
+    "withType": 1 // {type: "integer", min: 0}
+  }
+
+TYPE @exclusiveMinimum_exclusiveMaximum
+  {
+    "exclMin": 1, // {min: 0, exclusiveMinimum: true}
+    "exclMax": 9, // {max: 10, exclusiveMaximum: true}
+    "inclMin": 0, // {min: 0, exclusiveMinimum: false}
+    "inclMax": 10 // {max: 10, exclusiveMaximum: false}
+  }
+
+TYPE @precision
+  {
+    "precision": 1.22 // {type: "decimal", precision: 2}
+  }
+
+TYPE @minLength_maxLength
+  {
+    "length": "string" // {minLength: 1, maxLength: 1000}
+  }
+
+TYPE @regex
+  {
+    "shortRegex": "string123", // {regex: "[\\s*A-Za-z.* ]+", optional: false}
+    "longRegex": "string123" // {regex: "[\\s*.*(A-Za-z)? \\d\\d\\d]+", optional: false}
+  }
+
+TYPE @minItems_maxItems
+{
+  "data": [ // {minItems: 1, maxItems: 100}
+    1
+  ]
+}
+
+
+TYPE @or
+{
+  "orPrimitives": "abc", /* {or: [
+                     {type: "string" , maxLength: 3},
+                     {type: "integer", min: 0},
+                     {type: "integer", max: 0}
+                   ]} */
+
+  "orUserTypes": 123, /* {or: [
+                       {type: "@dogId"},
+                       {type: "@catId"}
+                     ], nullable: false} */
+
+  "orWithArray": 123, // {or: ["@dogId", "@catId"], nullable: false}
+
+  "orMixedSyntax": "abc", /* {or: [
+                                "@cat",
+                                {type: "string", maxLength: 3}
+                              ]} */
+
+ "orByValue": 123 /* {or: [
+                        {min: 100},
+                        {type: "string"}
+                      ]} */
+
+  # TODO: or objects
+}
+
+
+TYPE @additionalProperties
+{
+  "enabled": { // {additionalProperties: true, nullable: false}
+  },
+  "disabled": { // {additionalProperties: false, nullable: false}
+  },
+  "string": { // {additionalProperties: "string", nullable: false}
+  },
+  "integer": { // {additionalProperties: "integer", nullable: false}
+  },
+  "float": { // {additionalProperties: "float", nullable: false}
+  },
+  "decimal": { // {additionalProperties: "decimal", nullable: false}
+  },
+  "boolean": { // {additionalProperties: "boolean", nullable: false}
+  },
+  "object": { // {additionalProperties: "object", nullable: false}
+  },
+  "array": { // {additionalProperties: "array", nullable: false}
+  },
+  "null": { // {additionalProperties: "null", nullable: false}
+  },
+  "email": { // {additionalProperties: "email", nullable: false}
+  },
+  "uri": { // {additionalProperties: "uri", nullable: false}
+  },
+  "uuid": { // {additionalProperties: "uuid", nullable: false}
+  },
+  "date": { // {additionalProperties: "date", nullable: false}
+  },
+  "datetime": { // {additionalProperties: "datetime", nullable: false}
+  },
+  "enum": { // {additionalProperties: "enum", nullable: false}
+  },
+  "mixed": { // {additionalProperties: "mixed", nullable: false}
+  },
+  "any": { // {additionalProperties: "any", nullable: false}
+  },
+  "userType": { // {additionalProperties: "@cat", nullable: false}
+  }
+
+  # Req. status is TODO.
+  # "customObject": { // {additionalProperties: {..something..}, nullable: false}
+  # }
+}
+
+TYPE @const
+{
+  "constTrue": "OK", // {const: true, optional: true}
+  "constFalse": "OK" // {const: false, optional: true}
+}
+
+TYPE @enum
+{
+  "data": 3 /* { type: "enum", enum: [
+                  1.2,
+                  3,
+                  "abc",
+                  true,
+                  false,
+                  null]} */
+}
+
+TYPE @allOf
+{
+  "oneAllOf": { // {allOf: "@cat", nullable: true}
+  },
+  "manyAllOf": { // {allOf: ["@cat","@dog"], nullable: true}
+  }
+}
+
+
+# HELPER-TYPES
+
+TYPE @catId
+  1
+
+TYPE @dogId
+  2
+
+TYPE @cat
+  {}
+
+TYPE @dog
+  {}
