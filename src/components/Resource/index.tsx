@@ -9,13 +9,11 @@ interface ResourceProps {
   index: number;
 }
 
-export const Resource: FC<ResourceProps> = ({resource, resourceKey, style, index}) => {
-  return (
-    <div className="resource-wrapper" style={style}>
-      <h3>{resource.path}</h3>
-      {resource.methods && (
-        <ResourceMethods resourceKey={resourceKey} methods={resource.methods} index={index} />
-      )}
-    </div>
-  );
-};
+export const Resource: FC<ResourceProps> = ({resource, resourceKey, style, index}) => (
+  <div className="resource-wrapper" style={style}>
+    <h3>{resource.path}</h3>
+    {resource.methods && (
+      <ResourceMethods resourceKey={resourceKey} methods={resource.methods} index={index} />
+    )}
+  </div>
+);

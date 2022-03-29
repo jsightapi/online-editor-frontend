@@ -11,7 +11,6 @@ import {
   UserTypesType,
 } from './getResources.model';
 
-
 // get resources with methods
 const getResources = (resources: {[key: string]: string[]}, resourceMethods: ResourceMethodsType) =>
   map(resources, (resource, path) => ({
@@ -56,7 +55,6 @@ export const getUserType = (typeName?: string, userTypes?: UserTypesType) => {
 export const getUserEnum = (typeName?: string, userEnums?: UserEnumsType) => {
   return typeName && userEnums && userEnums.hasOwnProperty(typeName) ? userEnums[typeName] : null;
 };
-
 
 export const createJdocList = (jdocExchange: JDocType): [any[], number[]] => {
   const {tags, resourceMethods, userTypes, info, servers, userEnums} = jdocExchange;
