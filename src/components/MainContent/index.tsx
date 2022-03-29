@@ -111,7 +111,7 @@ export const MainContent: FC<MainContentProps> = React.memo(
       const {info, servers, tags, resourceMethods, userTypes, userEnums} = jdocExchange;
       const resources = getTreeResources(tags, resourceMethods);
 
-      const jdocList: any[] = [];
+      const jdocList: JSX.Element[] = [];
       const jdocPositions: string[] = [];
 
       if (info) {
@@ -125,6 +125,7 @@ export const MainContent: FC<MainContentProps> = React.memo(
       }
 
       if (resources.length) {
+        let index = 0;
         resources.map((item, resourceIndex) => {
           jdocList.push(
             <div className="group-header">
@@ -140,12 +141,13 @@ export const MainContent: FC<MainContentProps> = React.memo(
                 resourceKey={`${resourceIndex}-${itemIndex}`}
                 key={`${resourceIndex}-${itemIndex}-${resource.path}`}
                 resource={resource}
-                index={itemIndex}
+                index={index + itemIndex}
               />
             );
             jdocPositions.push(`${resource.path.slice(1).replace(/({|})/gi, '-')}`);
             setResourceState((prev) => [...prev, {method: ''}]);
           });
+          index += item.resources.length;
         });
       }
 
