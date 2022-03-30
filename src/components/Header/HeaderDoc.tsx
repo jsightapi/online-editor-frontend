@@ -11,6 +11,7 @@ interface HeaderDocProps {
 export const HeaderDoc: FC<HeaderDocProps> = ({setViewMode}) => {
   const jdocData = useContext(JDocContext);
   const [saveHtml] = useExport();
+  const title = jdocData?.info?.title;
 
   return (
     <div className="app-header">
@@ -20,7 +21,7 @@ export const HeaderDoc: FC<HeaderDocProps> = ({setViewMode}) => {
         </Button>
         <div className="doc-title">
           <i className="icon-preview" />
-          Previewing — {jdocData?.info?.title}
+          Previewing{title ? ` — ${title}` : ''}
         </div>
         <Button icon="download" className="shadow" onClick={saveHtml}>
           Download
