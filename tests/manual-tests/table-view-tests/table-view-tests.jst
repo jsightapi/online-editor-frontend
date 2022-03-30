@@ -196,11 +196,21 @@ TYPE @parentType // Miss it. It is helpful type for previous test.
 
 POST /rules/different
   Query
-    {
-      "or1" : 1,   // {or: [{type: "integer"}, {type: "string"}]}
-      "or2" : "1", // {or: ["@catId", "@dogId"]}
-      "enum": 1    // {enum: [1, 2, 1.0, "3", "4", true, false, null]}
-    }
+  {
+    "or1" : 1,   // {or: [{type: "integer"}, {type: "string"}]}
+    "or2" : "1", // {or: ["@catId", "@dogId"]}
+    "enum": 1    // {enum: [1, 2, 1.0, "3", "4", true, false, null]}
+  }
+
+# Check extra long Description
+
+POST /size/long-description
+  Query
+  {
+    "longDescription": "description" /* Here is an extra long description, which is so long, 
+                                        that  it is hardly imagine how long it is. That's long! 
+                                        Just very very very very long. */
+  }  
 
 # helpfull types
 TYPE @STOP_HERE // Thank you for testing! No need to check below.

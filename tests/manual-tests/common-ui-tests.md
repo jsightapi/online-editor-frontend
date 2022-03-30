@@ -1,5 +1,9 @@
 # UI tests
 
+## Console errors
+
+1. Open developer console, check that there are no errors in different modes.
+
 ## Clean reload
 
 1. Start Example should be in the code editor.
@@ -81,3 +85,4 @@ Code content should not be changed.
 ## Preview mode
 
 1. Check API Title in Preview mode. Also check when it is empty.
+2. Check that "Powered by JSight" panel click directs to editor page.
