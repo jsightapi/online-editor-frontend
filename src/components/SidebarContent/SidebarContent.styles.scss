@@ -21,6 +21,7 @@
 
   &.side-left {
     left: 0;
+    padding-bottom: 7.8rem;
   }
 
   &.side-right {
@@ -53,7 +54,8 @@
   height: $footer-height;
   width: $sidenav-width;
   z-index: 3040;
-  padding: 0.9rem 3rem 2.2rem;
+  padding: 0.9rem 3rem 2.3rem;
+  background-color: $sidenav-background-color;
 
   .btn-settings {
     padding: 1.2rem 2.4rem;
@@ -85,6 +87,7 @@
 
     span {
       color: #1b1128;
+      margin-left: 0.3rem;
     }
   }
 }
