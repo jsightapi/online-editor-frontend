@@ -84,10 +84,10 @@ export const SidebarContent: FC<SidebarContentProps> = ({side, isShowSettings, i
           {/*  <i className="icon-settings" />*/}
           {/*  Settings*/}
           {/*</button>*/}
-          <div className="copyright d-flex">
+          <a href="https://jsight.io" className="copyright d-flex">
             <img src={logo} alt="JSight logo" />
-            Powered by <span> JSight.io</span>
-          </div>
+            Powered by <span>JSight.io</span>
+          </a>
         </div>
       )}
     </div>
