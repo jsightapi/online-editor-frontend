@@ -2,11 +2,12 @@ import React, {FC, useContext, useMemo} from 'react';
 import {getTreeResources} from 'api/getResources';
 import {SidebarGroupRoutes} from './SidebarGroupRoutes';
 import {SidebarReusables} from './SidebarReusables';
-import {GlobalSettingsContext} from '../Layout';
+// import {GlobalSettingsContext} from '../Layout';
 import {JDocContext, SidebarContext} from 'screens/Editor';
 import logo from '../../assets/images/icon-jsight.png';
 import clsx from 'clsx';
 import './SidebarContent.styles.scss';
+const {isExport} = window as any;
 
 interface SidebarContentProps {
   theme?: 'light' | 'dark';
@@ -15,8 +16,8 @@ interface SidebarContentProps {
   isShow: boolean;
 }
 
-export const SidebarContent: FC<SidebarContentProps> = ({theme, side, isShowSettings, isShow}) => {
-  const {setIsOpen, isOpen} = useContext(GlobalSettingsContext);
+export const SidebarContent: FC<SidebarContentProps> = ({side, isShowSettings, isShow}) => {
+  // const {setIsOpen, isOpen} = useContext(GlobalSettingsContext);
   const jdocData = useContext(JDocContext);
   const {setCurrentDocSidebar} = useContext(SidebarContext);
 
@@ -25,9 +26,9 @@ export const SidebarContent: FC<SidebarContentProps> = ({theme, side, isShowSett
     [jdocData]
   );
 
-  const toggleShowSettings = () => {
-    setIsOpen(!isOpen);
-  };
+  // const toggleShowSettings = () => {
+  //   setIsOpen(!isOpen);
+  // };
 
   const sidebarClasses = useMemo(
     () =>
@@ -49,9 +50,11 @@ export const SidebarContent: FC<SidebarContentProps> = ({theme, side, isShowSett
           {/*<a href="#">*/}
           {/*  <i className="icon-arrow-left" />*/}
           {/*</a>*/}
-          <button onClick={() => setCurrentDocSidebar(null)}>
-            <i className="icon-close" />
-          </button>
+          {!(side === 'left' || isExport) && (
+            <button onClick={() => setCurrentDocSidebar(null)}>
+              <i className="icon-close" />
+            </button>
+          )}
         </div>
         <div className="sidebar-items">
           <h3>Resources</h3>
