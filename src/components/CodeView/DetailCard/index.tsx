@@ -3,10 +3,10 @@ import {RulesType, RuleType} from 'api/getResources.model';
 import {map} from 'lodash';
 import {DetailEnum} from './DetailEnum';
 import {TextWithTooltip} from 'components/TextWithTooltip';
-import {SidebarContext} from 'screens/Editor';
 import {MainContext} from 'components/MainContent';
 import {formatNotes} from '../utils/formatNotes';
 import './DetailCard.scss';
+import {SidebarContext} from 'store';
 
 interface DetailCardProps {
   name: string;

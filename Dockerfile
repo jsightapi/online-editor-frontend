@@ -9,7 +9,7 @@ RUN npm i -g npm@8
 WORKDIR /app
 # Copy all files from current directory to working dir in image
 COPY . .
-RUN npm i --legacy-peer-deps && npm run build
+RUN npm i --legacy-peer-deps && npm run build-export && npm run build
 
 # nginx state for serving content
 FROM nginx:alpine

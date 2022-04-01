@@ -5,8 +5,8 @@ import {HeaderLogo} from './HeaderLogo';
 import {DocsMenu} from './MenuItems/DocsMenu';
 import {FileMenu} from './MenuItems/FileMenu';
 import './Header.styles.scss';
-import {editorModeType} from 'screens/Editor';
 import {useExport} from 'hooks/useExport';
+import {editorModeType} from 'types';
 
 interface HeaderProps {
   setInitialContent(content: string): void;

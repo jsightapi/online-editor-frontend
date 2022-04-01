@@ -1,26 +1,20 @@
-import React, {useState, FC, useEffect, useMemo, startTransition, useCallback} from 'react';
+import React, {useState, FC, useEffect, useMemo, useCallback, startTransition} from 'react';
 import clsx from 'clsx';
 import {toast, ToastContainer} from 'react-toastify';
-import {Resizable} from 're-resizable';
-import {Editor} from 'components/Editor';
-import {useDebounce} from 'hooks/useDebounce';
-import {getJDocExchange} from 'api/getJDocExchange';
 import {JDocType} from 'api/getResources.model';
 import {MainContent} from 'components/MainContent';
 import {Layout} from 'components/Layout';
-import {showError} from 'utils/getError';
-import {ErrorType} from 'types/error';
-import {Header} from 'components/Header';
-import {initCats} from 'screens/Editor/initCats';
-import {initDogs} from 'screens/Editor/initDogs';
-import {initPigs} from 'screens/Editor/initPigs';
 import './Editor.styles.scss';
 import 'react-toastify/dist/ReactToastify.css';
 import {ContactForm} from 'components/Modals/ContactForm';
-import {HeaderDoc} from 'components/Header/HeaderDoc';
+import {HeaderDoc} from 'components/Header/HeaderDoc.export';
 import {screenWidthMultiplier} from 'utils/screenWidthMultiplier';
-import {editorModeType, SidebarDocType} from 'types';
+import {editorModeType, ErrorType, SidebarDocType} from 'types';
 import {JDocContext, SidebarContext} from 'store';
+import {getJDocExchange} from 'api/getJDocExchange';
+import {showError} from 'utils/getError';
+import {useDebounce} from 'hooks/useDebounce';
+import {initCats} from 'screens/Editor/initCats';
 
 const {isExport} = window as any;
 
@@ -33,14 +27,9 @@ export const EditorScreen: FC = () => {
   const [codeContentsSidebar] = useState<boolean>(false);
   //documentation sidebar on the right
   const [currentDocSidebar, setCurrentDocSidebar] = useState<SidebarDocType>(null);
-  const [jsightCode, setJsightCode] = useState<string>(
-    localStorage.getItem('jsightCode') || initCats
-  );
+  const [jsightCode] = useState<string>(localStorage.getItem('jsightCode') || initCats);
   const [jdocExchange, setJdocExchange] = useState<JDocType>();
-  const [errorRow, setErrorRow] = useState<number | undefined>();
-  const [scrollToRow, setScrollToRow] = useState<boolean>(false);
   const jsightCodeDebounced = useDebounce<string>(jsightCode, 600);
-  const [reloadEditor, setReloadEditor] = useState<boolean>(false);
   const [contactModalVisible, setContactModalVisible] = useState<boolean>(false);
   const isEditor = useMemo(() => viewMode === 'editor', [viewMode]);
 
@@ -54,17 +43,7 @@ export const EditorScreen: FC = () => {
       ? localStorage.getItem('editorWidth') || getEditorWidth(screenWidth)
       : getEditorWidth(screenWidth);
 
-  const [editorWidth, setEditorWidth] = useState<number | string>(editorWidthFinal);
-
-  const onEditorResize = (ref: HTMLElement) => {
-    const newWidth = ref.getBoundingClientRect().width / screenWidthMultiplier(screenWidth);
-    localStorage.setItem('editorWidth', newWidth.toString());
-    setEditorWidth(newWidth);
-  };
-
-  const setContent = (value: string) => {
-    startTransition(() => setJsightCode(value));
-  };
+  const [editorWidth] = useState<number | string>(editorWidthFinal);
 
   useEffect(() => {
     const oldScreenWidth = localStorage.getItem('oldScreenWidth');
@@ -80,20 +59,14 @@ export const EditorScreen: FC = () => {
           const jdocExchange = await getJDocExchange(jsightCodeDebounced);
           startTransition(() => setJdocExchange(jdocExchange));
           toast.dismiss();
-          setErrorRow(undefined);
         } catch (error) {
           showError(error as ErrorType, () => {
             if (!(error as ErrorType).Line) {
               return;
             }
-
-            setScrollToRow(true);
-            setTimeout(() => setScrollToRow(false), 500);
           });
-          (error as ErrorType).Line && setErrorRow((error as ErrorType).Line);
         } finally {
           localStorage.setItem('jsightCode', jsightCodeDebounced);
-          setReloadEditor(false);
         }
       } else {
         // @ts-ignore
@@ -114,45 +87,13 @@ export const EditorScreen: FC = () => {
     [codeContentsSidebar, currentDocSidebar]
   );
 
-  const setInitJsightCode = (code: string) => {
-    setJsightCode(code);
-    setReloadEditor(true);
-  };
-
-  const setInitialContent = (content: string) => {
-    localStorage.removeItem('jsightCode');
-    switch (content) {
-      case 'cats':
-        setInitJsightCode(initCats);
-        return;
-      case 'dogs':
-        setInitJsightCode(initDogs);
-        return;
-      case 'pigs':
-        setInitJsightCode(initPigs);
-        return;
-      default:
-        setInitJsightCode(initCats);
-        return;
-    }
-  };
-
   const setDocSidebar = useCallback((sidebar: SidebarDocType) => {
     setCurrentDocSidebar((prev) => (prev === sidebar ? null : sidebar));
   }, []);
 
   return (
     <JDocContext.Provider value={jdocExchange}>
-      {!isExport &&
-        (isEditor ? (
-          <Header
-            setInitialContent={setInitialContent}
-            setViewMode={setViewMode}
-            setContactModalVisible={setContactModalVisible}
-          />
-        ) : (
-          <HeaderDoc setViewMode={setViewMode} />
-        ))}
+      <HeaderDoc setViewMode={setViewMode} />
       <div
         className={clsx('d-flex editor-wrapper', {
           'only-doc': !isEditor,
@@ -163,29 +104,6 @@ export const EditorScreen: FC = () => {
           value={{currentDocSidebar, setCurrentDocSidebar, currentUrl, setCurrentUrl}}
         >
           <div className={classes}>
-            {isEditor && (
-              <Resizable
-                bounds="parent"
-                boundsByDirection={false}
-                minWidth="0.5vw"
-                minHeight="100%"
-                handleStyles={{
-                  left: {cursor: 'default'},
-                  top: {cursor: 'default'},
-                  bottom: {cursor: 'default'},
-                }}
-                size={{width: editorWidth, height: 'auto'}}
-                onResizeStop={(e, dir, ref) => onEditorResize(ref)}
-              >
-                <Editor
-                  content={jsightCode}
-                  setContent={setContent}
-                  errorRow={errorRow}
-                  scrollToRow={scrollToRow}
-                  reload={reloadEditor}
-                />
-              </Resizable>
-            )}
             <div
               className="doc"
               style={{

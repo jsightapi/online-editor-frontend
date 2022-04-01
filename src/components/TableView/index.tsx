@@ -5,7 +5,7 @@ import {ControlElements} from '../ControlElements';
 import {PlainRow} from 'components/TableView/PlainRow';
 import './TableView.styles.scss';
 import {getUserType} from 'api/getResources';
-import {JDocContext} from 'screens/Editor';
+import {JDocContext} from 'store';
 
 interface TableViewProps {
   keyBlock: string;
