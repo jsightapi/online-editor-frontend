@@ -3,10 +3,10 @@ import {getTreeResources} from 'api/getResources';
 import {SidebarGroupRoutes} from './SidebarGroupRoutes';
 import {SidebarReusables} from './SidebarReusables';
 // import {GlobalSettingsContext} from '../Layout';
-import {JDocContext, SidebarContext} from 'screens/Editor';
 import logo from '../../assets/images/icon-jsight.png';
 import clsx from 'clsx';
 import './SidebarContent.styles.scss';
+import {JDocContext, SidebarContext} from 'store';
 const {isExport} = window as any;
 
 interface SidebarContentProps {

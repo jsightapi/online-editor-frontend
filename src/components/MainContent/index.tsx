@@ -11,7 +11,7 @@ import {JDocType} from 'api/getResources.model';
 import {Virtuoso} from 'react-virtuoso';
 
 import './MainContent.styles.scss';
-import {SidebarContext} from 'screens/Editor';
+import {SidebarContext} from 'store';
 
 interface SelectedLineType {
   keyBlock: string;

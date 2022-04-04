@@ -11,7 +11,7 @@ WORKDIR /app
 COPY package.json .
 RUN npm i --legacy-peer-deps
 COPY . .
-RUN npm run build
+RUN npm run build-export && npm run build
 
 # nginx state for serving content
 FROM nginx:alpine
