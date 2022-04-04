@@ -1,165 +1,13 @@
 version: 2.1
 orbs:
   docker: circleci/docker@2.0.3
-  shellcheck: circleci/shellcheck@2.0.0
+  common: jsight/common-ci@1.0.1
 
 
 parameters:
   image-tag:
     type: string
     default: ${CIRCLE_BRANCH/\//_}_${CIRCLE_SHA1}
-
-
-executors:
-  vm-medium:
-    machine:
-      image: ubuntu-2004:current
-      docker_layer_caching: true
-    resource_class: medium
-
-  docker-small:
-    docker:
-      - image: cimg/base:2022.03
-    resource_class: small
-
-
-jobs:
-  refresh-container:
-    executor: docker-small
-    parameters:
-      host:
-        type: string
-      port:
-        type: integer
-      container-name:
-        type: string
-      image:
-        type: string
-    steps:
-      - checkout
-      - add_ssh_keys:
-          fingerprints:
-            - 2d:42:e7:f4:a5:9c:5a:70:10:bc:83:54:a9:93:2d:b2
-      - run:
-          name: Docker login and refresh container
-          no_output_timeout: 5m
-          command: |
-            ssh -o StrictHostKeyChecking=no -T root@<< parameters.host >> \<< EOF
-              set -e
-              echo "Host name on next line.."
-              hostname
-              echo $DOCKER_PASSWORD | docker login --username $DOCKER_LOGIN --password-stdin
-              echo "Removing current container"
-              docker rm -f << parameters.container-name >>
-              echo "Building from image << parameters.image >>"
-              docker run --name << parameters.container-name >> --pull always -d --restart unless-stopped -p << parameters.port >>:80 << parameters.image >>
-              echo "Cleaning out old images"
-              docker image prune -f
-            EOF
-
-  ssh-script: # for moving to orb
-    executor: docker-small
-    parameters:
-      host:
-        type: string
-      source-dir:
-        type: string
-        default: 'scripts'
-      script-file:
-        type: string
-        default: 'deploy.sh'
-      target-dir:
-        type: string
-        default: '/deployment-scripts/${CIRCLE_PROJECT_REPONAME}'
-      args:
-        type: string
-        default: ''
-    steps:
-      - checkout
-      - add_ssh_keys:
-          fingerprints:
-            - 2d:42:e7:f4:a5:9c:5a:70:10:bc:83:54:a9:93:2d:b2
-      - run:
-          name: Mkdir for deployment script file
-          no_output_timeout: 1m
-          command: ssh -o StrictHostKeyChecking=no -T root@<< parameters.host >> "mkdir -p << parameters.target-dir >>"
-      - run:
-          name: Scp deployment script file
-          no_output_timeout: 1m
-          command: |
-            scp << parameters.source-dir >>/<< parameters.script-file >> root@<< parameters.host >>:<< parameters.target-dir >>/
-      - run:
-          name: Docker login and run container refresh script
-          no_output_timeout: 5m
-          command: |
-            ssh -o StrictHostKeyChecking=no -T root@<< parameters.host >> \<< EOF
-              echo $DOCKER_PASSWORD | docker login --username $DOCKER_LOGIN --password-stdin
-              /bin/bash << parameters.target-dir >>/<< parameters.script-file>> << parameters.args >>
-            EOF
-
-  notify-telegram:
-    docker:
-      - image: khaliq/pingme:latest
-    resource_class: small
-    parameters:
-      message:
-        type: string
-      title:
-        type: string
-        default: ''
-      token:
-        type: string
-        default: ${TELEGRAM_TOKEN}
-      chat-id:
-        type: string
-        default: '${TELEGRAM_CHAT_ID}'
-    steps:
-      - run:
-          name: Notify
-          command: |
-            pingme telegram \
-            --msg "<< parameters.message >>" \
-            --title "<< parameters.title >>" \
-            --token "<< parameters.token >>" \
-            --channel "<< parameters.chat-id >>"
-
-  get-version-numbers:
-    executor: docker-small
-    parameters:
-      git-tag:
-        type: string
-        default: $CIRCLE_TAG
-    steps:
-      - get-ver-num:
-          git-tag: << parameters.git-tag >>
-      - persist_to_workspace:
-          root: workspace
-          paths:
-            - full-version
-            - major-version
-
-
-commands:
-  get-ver-num:
-    parameters:
-      git-tag:
-        type: string
-        default: $CIRCLE_TAG
-    steps:
-      - run:
-          name: Parse versions from tag
-          command: |
-              if ! [[ "<< parameters.git-tag >>" =~ ^[A-Za-z]+-[0-9]+\.[0-9]+$ ]]
-              then
-                echo "unsupported tag: << parameters.git-tag >>"
-                exit 1
-              fi
-              full_version=$(echo "<< parameters.git-tag >>" | cut -d "-" -f2)
-              major_version=$(echo $full_version | cut -d "." -f1)
-              echo "Parsed versions: $full_version , $major_version"
-              mkdir -p workspace
-              echo $full_version > workspace/full-version
-              echo $major_version > workspace/major-version
 
 
 workflows:
@@ -169,7 +17,7 @@ workflows:
         pattern: "^release-.*"
         value: << pipeline.git.tag >>
     jobs:
-      - get-version-numbers:
+      - common/save-version-numbers:
           filters: &release-tag-filter
             tags:
               only: /^release-.*/
@@ -177,7 +25,7 @@ workflows:
           filters: *release-tag-filter
           requires:
             - get-version-numbers
-          executor: vm-medium
+          executor: common/vm-medium
           context: online-editor-development
           image: jsight/online-editor-frontend
           tag: '${FULL_VERSION_TAG},${MAJOR_VERSION_TAG},latest'
@@ -195,7 +43,7 @@ workflows:
           type: approval
           requires:
             - docker/publish
-      - refresh-container:
+      - common/refresh-container:
           filters: *release-tag-filter
           requires:
             - approve-production-deploy
@@ -204,10 +52,10 @@ workflows:
           port: 8091
           container-name: online-editor-frontend
           image: jsight/online-editor-frontend:latest
-      - notify-telegram:
+      - common/notify-telegram:
           filters: *release-tag-filter
           requires:
-            - refresh-container
+            - common/refresh-container
           context: online-editor-development
           message: Production editor frontend updated from tag << pipeline.git.tag >>
 
@@ -219,10 +67,10 @@ workflows:
     jobs:
       - docker/publish:
           context: online-editor-development
-          executor: vm-medium
+          executor: common/vm-medium
           image: jsight/dev-online-editor-frontend
           tag: '<< pipeline.parameters.image-tag >>,stage_latest'
-      - refresh-container:
+      - common/refresh-container:
           requires:
             - docker/publish
           context: online-editor-development
@@ -230,9 +78,9 @@ workflows:
           port: 8091
           container-name: online-editor-frontend
           image: jsight/dev-online-editor-frontend:<< pipeline.parameters.image-tag >>
-      - notify-telegram:
+      - common/notify-telegram:
           requires:
-            - refresh-container
+            - common/refresh-container
           context: online-editor-development
           message: Stage editor frontend updated from branch ${CIRCLE_BRANCH} (commit ${CIRCLE_SHA1})
 
@@ -242,10 +90,10 @@ workflows:
     jobs:
       - docker/publish:
           context: online-editor-development
-          executor: vm-medium
+          executor: common/vm-medium
           image: jsight/dev-online-editor-frontend
           tag: '<< pipeline.parameters.image-tag >>,dev_latest'
-      - refresh-container:
+      - common/refresh-container:
           requires:
             - docker/publish
           context: online-editor-development
@@ -253,9 +101,9 @@ workflows:
           port: 8091
           container-name: online-editor-frontend
           image: jsight/dev-online-editor-frontend:<< pipeline.parameters.image-tag >>
-      - notify-telegram:
+      - common/notify-telegram:
           requires:
-            - refresh-container
+            - common/refresh-container
           context: online-editor-development
           message: Dev editor frontend updated from branch ${CIRCLE_BRANCH} (commit ${CIRCLE_SHA1})
 
@@ -271,10 +119,10 @@ workflows:
           requires:
             - approve-go-crazy
           context: online-editor-development
-          executor: vm-medium
+          executor: common/vm-medium
           image: jsight/dev-online-editor-frontend
           tag: '<< pipeline.parameters.image-tag >>,dev_latest'
-      - refresh-container:
+      - common/refresh-container:
           requires:
             - docker/publish
           context: online-editor-development
@@ -282,8 +130,31 @@ workflows:
           port: 8091
           container-name: online-editor-frontend
           image: jsight/dev-online-editor-frontend:<< pipeline.parameters.image-tag >>
-      - notify-telegram:
+      - common/notify-telegram:
           requires:
-            - refresh-container
+            - common/refresh-container
           context: online-editor-development
           message: Experimental (crazy) editor frontend updated from branch ${CIRCLE_BRANCH} (commit ${CIRCLE_SHA1})
+
+  ci-test:
+    when:
+      equal: [ orb_ci, << pipeline.git.branch >> ]
+    jobs:
+      - docker/publish:
+          context: online-editor-development
+          executor: common/vm-medium
+          image: jsight/dev-online-editor-frontend
+          tag: '<< pipeline.parameters.image-tag >>,ci_latest'
+      - common/refresh-container:
+          requires:
+            - docker/publish
+          context: online-editor-development
+          host: ${HOST_CRAZY}
+          port: 8091
+          container-name: online-editor-frontend
+          image: jsight/dev-online-editor-frontend:<< pipeline.parameters.image-tag >>
+      - common/notify-telegram:
+          requires:
+            - common/refresh-container
+          context: online-editor-development
+          message: Crazy editor frontend updated from branch ${CIRCLE_BRANCH} (commit ${CIRCLE_SHA1})

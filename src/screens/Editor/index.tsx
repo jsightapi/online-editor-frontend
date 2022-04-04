@@ -49,6 +49,11 @@ export const EditorScreen: FC = () => {
     return (screenWidth / 2 - SCROLLBAR_WIDTH) / screenWidthMultiplier(screenWidth);
   };
 
+  const getDocWidth = (screenWidth: number) => {
+    const editorWidthNumber = typeof editorWidth === 'string' ? parseInt(editorWidth) : editorWidth;
+    return screenWidth - editorWidthNumber;
+  };
+
   const editorWidthFinal =
     localStorage.getItem('oldScreenWidth') === screenWidth.toString()
       ? localStorage.getItem('editorWidth') || getEditorWidth(screenWidth)
@@ -189,7 +194,7 @@ export const EditorScreen: FC = () => {
             <div
               className="doc"
               style={{
-                width: typeof editorWidth === 'string' ? parseInt(editorWidth) : editorWidth,
+                width: getDocWidth(screenWidth),
               }}
             >
               {jdocExchange ? (
