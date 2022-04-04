@@ -55,7 +55,7 @@ export const MainContent: FC<MainContentProps> = React.memo(
     const divRef = useRef<HTMLDivElement | null>(null);
     const virtuosoRef = useRef<any>(null);
     const [selectedLine, setSelectedLine] = useState<SelectedLineType | null>(null);
-    const [jdocList, setJdocList] = useState<any>([]);
+    const [jdocList, setJdocList] = useState<JSX.Element[]>([]);
     const [jdocPositions, setJdocPositions] = useState<any>([]);
     const {path} = useParams<MainRouterParams>();
     const {currentUrl} = useContext(SidebarContext);
@@ -113,6 +113,8 @@ export const MainContent: FC<MainContentProps> = React.memo(
 
       const jdocList: JSX.Element[] = [];
       const jdocPositions: string[] = [];
+
+      jdocList.push(<div className="space-header" />);
 
       if (info) {
         jdocList.push(<ApiInfo apiInfo={info} key="apiInfo" />);
