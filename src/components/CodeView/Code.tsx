@@ -16,9 +16,8 @@ import {createPortal} from 'react-dom';
 import {RightRules} from 'components/CodeView/RightRules';
 import {map} from 'lodash';
 import {SchemaViewContext} from 'components/SchemaView';
-import {MainContext} from 'components/MainContent';
 import {RegexView} from 'components/CodeView/RegexView';
-import {SidebarContext} from 'store';
+import {MainContext, SidebarContext} from 'store';
 
 export interface AnnotationType {
   name: string; // name of the related property (shown in the card)
@@ -202,6 +201,7 @@ export const Code: FC<CodeProps> = ({schema, tab, codeViewRef, keyBlock}) => {
   // when active live with rules is changed
   useEffect(() => {
     if (selectedLine && currentDocSidebar !== 'content') {
+      console.log('setCurrentDocSidebar');
       setCurrentDocSidebar('rules');
     } else {
       setHeight((codeViewRef.current?.getBoundingClientRect().height || 0) + 65);
