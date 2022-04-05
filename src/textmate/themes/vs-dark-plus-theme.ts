@@ -6,188 +6,234 @@ export default {
   name: 'Dark+ (default dark)',
   settings: [
     {
+      name: 'Basic text color',
+      scope: 'source.jsight',
       settings: {
-        foreground: '#D4D4D4',
-        background: '#1E1E1E',
+        foreground: '#e6e6e6',
       },
     },
     {
-      name: 'Function declarations',
-      scope: [
-        'entity.name.function',
-        'support.function',
-        'support.constant.handlebars',
-        'source.powershell variable.other.member',
-        'entity.name.operator.custom-literal',
-      ],
+      name: 'Comment line',
+      scope: 'comment.line.jsight',
       settings: {
-        foreground: '#DCDCAA',
+        foreground: '#7a7a7a',
       },
     },
     {
-      name: 'Types declaration and references',
-      scope: [
-        'meta.return-type',
-        'support.class',
-        'support.type',
-        'entity.name.type',
-        'entity.name.namespace',
-        'entity.other.attribute',
-        'entity.name.scope-resolution',
-        'entity.name.class',
-        'storage.type.numeric.go',
-        'storage.type.byte.go',
-        'storage.type.boolean.go',
-        'storage.type.string.go',
-        'storage.type.uintptr.go',
-        'storage.type.error.go',
-        'storage.type.rune.go',
-        'storage.type.cs',
-        'storage.type.generic.cs',
-        'storage.type.modifier.cs',
-        'storage.type.variable.cs',
-        'storage.type.annotation.java',
-        'storage.type.generic.java',
-        'storage.type.java',
-        'storage.type.object.array.java',
-        'storage.type.primitive.array.java',
-        'storage.type.primitive.java',
-        'storage.type.token.java',
-        'storage.type.groovy',
-        'storage.type.annotation.groovy',
-        'storage.type.parameters.groovy',
-        'storage.type.generic.groovy',
-        'storage.type.object.array.groovy',
-        'storage.type.primitive.array.groovy',
-        'storage.type.primitive.groovy',
-      ],
+      name: 'Comment block',
+      scope: 'comment.block.jsight',
       settings: {
-        foreground: '#4EC9B0',
+        foreground: '#7a7a7a',
       },
     },
     {
-      name: 'Types declaration and references, TS grammar specific',
-      scope: [
-        'meta.type.cast.expr',
-        'meta.type.new.expr',
-        'support.constant.math',
-        'support.constant.dom',
-        'support.constant.json',
-        'entity.other.inherited-class',
-      ],
+      name: 'Todos in comments',
+      scope: 'jsight.comment.todo',
       settings: {
-        foreground: '#4EC9B0',
+        foreground: '#e6d200',
       },
     },
     {
-      name: 'Control flow / Special keywords',
-      scope: [
-        'keyword.control',
-        'source.cpp keyword.operator.new',
-        'keyword.operator.delete',
-        'keyword.other.using',
-        'keyword.other.operator',
-        'entity.name.operator',
-      ],
+      name: 'JSight technical root directives (JSIGHT, INCLUDE, ..)',
+      scope: 'keyword.other.jsight.directive.root.technical',
       settings: {
-        foreground: '#C586C0',
+        foreground: '#ff553f',
       },
     },
     {
-      name: 'Variable and parameter name',
-      scope: [
-        'variable',
-        'meta.definition.variable.name',
-        'support.variable',
-        'entity.name.variable',
-      ],
+      name: 'JSight technical root directives ( MACRO, PASTE.)',
+      scope: 'keyword.other.jsight.directive.root.technical.macro',
       settings: {
-        foreground: '#9CDCFE',
+        foreground: '#ff4ffc',
       },
     },
     {
-      name: 'Constants and enums',
-      scope: ['variable.other.constant', 'variable.other.enummember'],
+      name: 'JSight API root directives (URL, INFO, TAG, ..)',
+      scope: 'keyword.jsight.directive.root.api',
       settings: {
-        foreground: '#51B6C4',
+        foreground: '#ff553f',
       },
     },
     {
-      name: 'Object keys, TS grammar specific',
-      scope: 'meta.object-literal.key',
+      name: 'JSight method directives',
+      scope: 'keyword.jsight.directive.method',
       settings: {
-        foreground: '#9CDCFE',
+        foreground: '#48cccb',
       },
     },
     {
-      name: 'CSS property value',
-      scope: [
-        'support.constant.property-value',
-        'support.constant.font-name',
-        'support.constant.media-type',
-        'support.constant.media',
-        'constant.other.color.rgb-value',
-        'constant.other.rgb-value',
-        'support.constant.color',
-      ],
+      name: 'JSight inner directives (Description, Body, Title, BaseUrl, etc..)',
+      scope: 'keyword.control.jsight.directive.inner',
       settings: {
-        foreground: '#CE9178',
+        foreground: '#b1dd58',
       },
     },
     {
-      name: 'Regular expression groups',
-      scope: [
-        'punctuation.definition.group.regexp',
-        'punctuation.definition.group.assertion.regexp',
-        'punctuation.definition.character-class.regexp',
-        'punctuation.character.set.begin.regexp',
-        'punctuation.character.set.end.regexp',
-        'keyword.operator.negation.regexp',
-        'support.other.parenthesis.regexp',
-      ],
+      name: 'JSight various name parameters (@serverName, @macroName etc..)',
+      scope: 'entity.other.attribute-name.jsight.parameter.name',
       settings: {
-        foreground: '#CE9178',
+        foreground: '#ff8070',
       },
     },
     {
-      scope: [
-        'constant.character.character-class.regexp',
-        'constant.other.character-class.set.regexp',
-        'constant.other.character-class.regexp',
-        'constant.character.set.regexp',
-      ],
+      name: 'JSight macro name parameters (@macroName)',
+      scope: 'entity.other.attribute-name.jsight.parameter.name.macro',
       settings: {
-        foreground: '#d16969',
+        foreground: '#ff73fd',
       },
     },
     {
-      scope: ['keyword.operator.or.regexp', 'keyword.control.anchor.regexp'],
+      name: 'JSight type name definition (TYPE @userType)',
+      scope: 'entity.other.attribute-name.jsight.parameter.name.usertype.definition',
       settings: {
-        foreground: '#DCDCAA',
+        foreground: '#ff8070',
       },
     },
     {
-      scope: 'keyword.operator.quantifier.regexp',
+      name: 'JSight type name link (Body @userType)',
+      scope: 'entity.other.attribute-name.jsight.parameter.name.usertype.link',
       settings: {
-        foreground: '#d7ba7d',
+        foreground: '#ffd47f',
       },
     },
     {
-      scope: 'constant.character',
+      name: 'JSight directive parameter path (/cats/{id})',
+      scope: 'entity.other.attribute-name.jsight.parameter.path',
       settings: {
-        foreground: '#569cd6',
+        foreground: '#ff8070',
       },
     },
     {
-      scope: 'constant.character.escape',
+      name: 'JSight directive parameter path param ({id})',
+      scope: 'entity.other.attribute-name.jsight.parameter.path.param',
       settings: {
-        foreground: '#d7ba7d',
+        fontStyle: 'italic',
       },
     },
     {
-      scope: 'entity.name.label',
+      name: 'JSight notation parameters (jsight, regex)',
+      scope: 'constant.language.jsight.parameter.notation',
       settings: {
-        foreground: '#C8C8C8',
+        foreground: '#cdb6f4',
+      },
+    },
+    {
+      name: 'JSight regex body (/.*/)',
+      scope: 'string.regexp.jsight',
+      settings: {
+        foreground: '#cdb6f4',
+      },
+    },
+    {
+      name: 'JSight Query format parameters (htmlFormEncoded, noFormat)',
+      scope: 'constant.language.jsight.parameter.query.format',
+      settings: {
+        foreground: '#cdb6f4',
+      },
+    },
+    {
+      name: 'JSight various string parameters (query example string, api title)',
+      scope: 'string.quoted.double.jsight',
+      settings: {
+        foreground: '#6e9cf0',
+      },
+    },
+    {
+      name: 'JSchema basic color (punctuation)',
+      scope: 'source.jschema',
+      settings: {
+        foreground: '#e6e6e6',
+      },
+    },
+    {
+      name: 'JSchema annotation basic',
+      scope: 'support.jschema.annotation',
+      settings: {
+        foreground: '#a6a6a6',
+      },
+    },
+    {
+      name: 'JSchema comment line',
+      scope: 'comment.line.jschema',
+      settings: {
+        foreground: '#7a7a7a',
+      },
+    },
+    {
+      name: 'JSchema comment block',
+      scope: 'comment.block.jschema',
+      settings: {
+        foreground: '#7a7a7a',
+      },
+    },
+    {
+      name: 'Todos in jschema comments',
+      scope: 'jschema.comment.todo',
+      settings: {
+        foreground: '#e6d200',
+      },
+    },
+    {
+      name: 'JSchema keys',
+      scope: 'keyword.jschema.key',
+      settings: {
+        foreground: '#f09450',
+      },
+    },
+    {
+      name: 'JSchema usertype keys',
+      scope: 'keyword.jschema.key.usertype',
+      settings: {
+        foreground: '#f09450',
+      },
+    },
+    {
+      name: 'JSchema string values',
+      scope: 'string.quoted.double.json.jschema.value.string',
+      settings: {
+        foreground: '#6e9cf0',
+      },
+    },
+    {
+      name: 'JSchema number values',
+      scope: 'constant.numeric.json.jschema.value.number',
+      settings: {
+        foreground: '#ffb756',
+      },
+    },
+    {
+      name: 'JSchema constant values',
+      scope: 'constant.language.json.jschema.value.constant',
+      settings: {
+        foreground: '#fd8484',
+      },
+    },
+    {
+      name: 'JSchema usertype value (@cat)',
+      scope: 'entity.other.attribute-name.jschema.value.subschema',
+      settings: {
+        foreground: '#ffd47f',
+      },
+    },
+    {
+      name: 'JSchema rules keys',
+      scope: 'support.type.property-name.jschema.rule.key',
+      settings: {
+        foreground: '#6ab3dd',
+      },
+    },
+    {
+      name: 'JSchema rules values (all values)',
+      scope: 'constant.language.jschema.rule.value',
+      settings: {
+        foreground: '#e4b265',
+      },
+    },
+    {
+      name: 'JSchema subschema (usertype) rule value (@cat)',
+      scope: 'entity.other.attribute-name.jschema.rule.value.subschema',
+      settings: {
+        foreground: '#ffd47f',
       },
     },
     {
@@ -229,7 +275,7 @@ export default {
     {
       scope: [
         'constant.numeric',
-        'entity.name.operator.custom-literal.number',
+        'variable.other.enummember',
         'keyword.operator.plus.exponent',
         'keyword.operator.minus.exponent',
       ],
@@ -270,7 +316,6 @@ export default {
         'entity.other.attribute-name.pseudo-class.css',
         'entity.other.attribute-name.pseudo-element.css',
         'source.css.less entity.other.attribute-name.id',
-        'entity.other.attribute-name.attribute.scss',
         'entity.other.attribute-name.scss',
       ],
       settings: {
@@ -307,6 +352,12 @@ export default {
       scope: 'markup.italic',
       settings: {
         fontStyle: 'italic',
+      },
+    },
+    {
+      scope: 'markup.strikethrough',
+      settings: {
+        fontStyle: 'strikethrough',
       },
     },
     {
@@ -401,7 +452,7 @@ export default {
       },
     },
     {
-      scope: ['string', 'entity.name.operator.custom-literal.string', 'meta.embedded.assembly'],
+      scope: ['string', 'meta.embedded.assembly'],
       settings: {
         foreground: '#ce9178',
       },
@@ -437,7 +488,7 @@ export default {
     },
     {
       name: 'Reset JavaScript string interpolation expression',
-      scope: 'meta.template.expression',
+      scope: ['meta.template.expression'],
       settings: {
         foreground: '#d4d4d4',
       },
@@ -457,6 +508,12 @@ export default {
     },
     {
       scope: 'keyword',
+      settings: {
+        foreground: '#569cd6',
+      },
+    },
+    {
+      scope: 'keyword.control',
       settings: {
         foreground: '#569cd6',
       },
