@@ -2,6 +2,7 @@ version: 2.1
 orbs:
   docker: circleci/docker@2.0.3
   common: jsight/common-ci@1.0.1
+  jira: circleci/jira@1.3.1
 
 
 parameters:
@@ -101,6 +102,11 @@ workflows:
           port: 8091
           container-name: online-editor-frontend
           image: jsight/dev-online-editor-frontend:<< pipeline.parameters.image-tag >>
+          post-steps:
+            - jira/notify:
+                job_type: deployment
+                environment_type: Testing # Testing, Production
+                environment: Experimental # Test, Production, Staging
       - common/notify-telegram:
           requires:
             - common/refresh-container
