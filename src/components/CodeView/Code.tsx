@@ -201,7 +201,6 @@ export const Code: FC<CodeProps> = ({schema, tab, codeViewRef, keyBlock}) => {
   // when active live with rules is changed
   useEffect(() => {
     if (selectedLine && currentDocSidebar !== 'content') {
-      console.log('setCurrentDocSidebar');
       setCurrentDocSidebar('rules');
     } else {
       setHeight((codeViewRef.current?.getBoundingClientRect().height || 0) + 65);
