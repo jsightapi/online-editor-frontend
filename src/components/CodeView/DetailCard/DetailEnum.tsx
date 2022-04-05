@@ -1,8 +1,8 @@
-import React, {FC, useContext, useEffect, useMemo, useState} from 'react';
+import React, {FC, useContext, useEffect, useMemo} from 'react';
 import {SchemaJSightContentType} from 'api/getResources.model';
 import {DetailObject} from './DetailObject';
 import clsx from 'clsx';
-import {MainContext} from 'components/MainContent';
+import {MainContext} from 'store';
 
 interface DetailEnumProps {
   keyBlock: string;
