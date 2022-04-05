@@ -105,7 +105,7 @@ workflows:
           post-steps:
             - jira/notify:
                 job_type: deployment
-                environment_type: Testing # Testing, Production
+                environment_type: testing
                 environment: Experimental # Test, Production, Staging
       - common/notify-telegram:
           requires:
@@ -136,6 +136,11 @@ workflows:
           port: 8091
           container-name: online-editor-frontend
           image: jsight/dev-online-editor-frontend:<< pipeline.parameters.image-tag >>
+          post-steps:
+            - jira/notify:
+                job_type: deployment
+                environment_type: testing
+                environment: Experimental # Test, Production, Staging
       - common/notify-telegram:
           requires:
             - common/refresh-container
