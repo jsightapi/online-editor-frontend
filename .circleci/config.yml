@@ -1,7 +1,7 @@
 version: 2.1
 orbs:
   docker: circleci/docker@2.0.3
-  common: jsight/common-ci@1.0.1
+  common: jsight/common-ci@1.1.0
   jira: circleci/jira@1.3.1
 
 
@@ -50,9 +50,14 @@ workflows:
             - approve-production-deploy
           context: online-editor-development
           host: ${HOST_PROD}
-          port: 8091
+          host-port: 8091
           container-name: online-editor-frontend
           image: jsight/online-editor-frontend:latest
+          post-steps:
+            - jira/notify:
+                job_type: deployment
+                environment_type: production
+                environment: Production
       - common/notify-telegram:
           filters: *release-tag-filter
           requires:
@@ -76,9 +81,14 @@ workflows:
             - docker/publish
           context: online-editor-development
           host: ${HOST_STAGE}
-          port: 8091
+          host-port: 8091
           container-name: online-editor-frontend
           image: jsight/dev-online-editor-frontend:<< pipeline.parameters.image-tag >>
+          post-steps:
+            - jira/notify:
+                job_type: deployment
+                environment_type: staging
+                environment: Staging
       - common/notify-telegram:
           requires:
             - common/refresh-container
@@ -99,14 +109,14 @@ workflows:
             - docker/publish
           context: online-editor-development
           host: ${HOST_DEV}
-          port: 8091
+          host-port: 8091
           container-name: online-editor-frontend
           image: jsight/dev-online-editor-frontend:<< pipeline.parameters.image-tag >>
           post-steps:
             - jira/notify:
                 job_type: deployment
                 environment_type: testing
-                environment: Experimental # Test, Production, Staging
+                environment: Test
       - common/notify-telegram:
           requires:
             - common/refresh-container
@@ -127,13 +137,13 @@ workflows:
           context: online-editor-development
           executor: common/vm-medium
           image: jsight/dev-online-editor-frontend
-          tag: '<< pipeline.parameters.image-tag >>,dev_latest'
+          tag: '<< pipeline.parameters.image-tag >>,experimental_latest'
       - common/refresh-container:
           requires:
             - docker/publish
           context: online-editor-development
           host: ${HOST_CRAZY}
-          port: 8091
+          host-port: 8091
           container-name: online-editor-frontend
           image: jsight/dev-online-editor-frontend:<< pipeline.parameters.image-tag >>
           post-steps:
@@ -161,7 +171,7 @@ workflows:
             - docker/publish
           context: online-editor-development
           host: ${HOST_CRAZY}
-          port: 8091
+          host-port: 8091
           container-name: online-editor-frontend
           image: jsight/dev-online-editor-frontend:<< pipeline.parameters.image-tag >>
       - common/notify-telegram:
