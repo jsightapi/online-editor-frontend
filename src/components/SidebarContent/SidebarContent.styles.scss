@@ -32,19 +32,27 @@
     cursor: pointer;
   }
 
-  .sidebar-header {
-    i {
-      color: #6a7681;
-      line-height: 2.34rem;
-    }
-  }
-
   h2 {
     font-size: 1.8rem;
     line-height: 2.34rem;
     font-weight: 700;
     display: inline-block;
     margin-left: 1rem;
+  }
+}
+
+.sidebar-rules-close {
+  position: absolute;
+  top: 25px;
+  right: 65px;
+  z-index: 100;
+}
+
+.sidebar-rules-close,
+.sidebar-header {
+  i {
+    color: #6a7681;
+    line-height: 2.34rem;
   }
 }
 

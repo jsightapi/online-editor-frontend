@@ -28,7 +28,7 @@ export const MainContent: FC<MainContentProps> = React.memo(
     const [jdocList, setJdocList] = useState<JSX.Element[]>([]);
     const [jdocPositions, setJdocPositions] = useState<any>([]);
     const {path} = useParams<MainRouterParams>();
-    const {currentUrl} = useContext(SidebarContext);
+    const {currentUrl, currentDocSidebar, setCurrentDocSidebar} = useContext(SidebarContext);
     const [overscan, setOverscan] = useState(480);
     const [schemasView, setSchemasView] = useState<SchemaViewType[]>([]);
     const [resourceState, setResourceState] = useState<ResourceState[]>([]);
@@ -206,6 +206,17 @@ export const MainContent: FC<MainContentProps> = React.memo(
               setResourceState,
             }}
           >
+            {currentDocSidebar === 'rules' && (
+              <button
+                className="sidebar-rules-close"
+                onClick={() => {
+                  setCurrentDocSidebar(null);
+                  setSelectedLine(null);
+                }}
+              >
+                <i className="icon-close" />
+              </button>
+            )}
             <Virtuoso
               data={jdocList}
               itemContent={(_, item) => item}
