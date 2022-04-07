@@ -3,7 +3,7 @@ import {Link, useParams} from 'react-router-dom';
 import {MainRouterParams} from 'types/router';
 import {CollapsibleContent} from '../CollapsibleContent';
 import clsx from 'clsx';
-import {SidebarContext} from 'screens/Editor';
+import {SidebarContext} from 'store';
 const {isExport} = window as any;
 
 interface SidebarReusablesProps {

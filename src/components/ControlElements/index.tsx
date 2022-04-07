@@ -4,9 +4,9 @@ import {DropdownToggle} from '../Dropdown/DropdownToggle';
 import {DropdownMenu} from '../Dropdown/DropdownMenu';
 import clsx from 'clsx';
 import {ButtonDisabled} from 'components/ControlElements/ButtonDisabled';
-import {MainContext} from 'components/MainContent';
 import {GlobalSettingsContext} from 'components/Layout';
 import './ControlElements.styles.scss';
+import {MainContext} from 'store';
 
 interface ControlElementsProps {
   ableChangeView?: boolean;

@@ -1,4 +1,4 @@
-import React, {createContext, FC, useRef, useState, useEffect, useContext} from 'react';
+import React, {FC, useRef, useState, useEffect, useContext} from 'react';
 import {useParams} from 'react-router-dom';
 import {MainRouterParams} from 'types/router';
 import {ApiInfo} from 'components/ApiInfo';
@@ -11,39 +11,8 @@ import {JDocType} from 'api/getResources.model';
 import {Virtuoso} from 'react-virtuoso';
 
 import './MainContent.styles.scss';
-import {SidebarContext} from 'screens/Editor';
-
-interface SelectedLineType {
-  keyBlock: string;
-  numberLine: string;
-}
-
-interface SchemaViewType {
-  key: string;
-  collapsedRules?: boolean;
-  expandedTypes?: boolean;
-  viewType?: string;
-  expandDetailCard?: boolean;
-}
-
-interface ResourceState {
-  method: string;
-}
-
-interface MainContextInterface {
-  selectedLine: SelectedLineType | null;
-  setSelectedLine: React.Dispatch<React.SetStateAction<SelectedLineType | null>>;
-  schemasView: SchemaViewType[];
-  setCollapsedRules: (key: string, value: boolean) => void;
-  setExpandedTypes: (key: string, value: boolean) => void;
-  setViewType: (key: string, value: string) => void;
-  setExpandDetailCard: (key: string, value: boolean) => void;
-  showRightSidebar: boolean;
-  resourceState: ResourceState[];
-  setResourceState: React.Dispatch<React.SetStateAction<ResourceState[]>>;
-}
-
-export const MainContext = createContext({} as MainContextInterface);
+import {SidebarContext, MainContext} from 'store';
+import {ResourceState, SchemaViewType, SelectedLineType} from 'store/MainStore';
 
 interface MainContentProps {
   jdocExchange: JDocType;
@@ -53,9 +22,10 @@ interface MainContentProps {
 export const MainContent: FC<MainContentProps> = React.memo(
   ({jdocExchange, showRightSidebar}) => {
     const divRef = useRef<HTMLDivElement | null>(null);
+    const {currentDocSidebar} = useContext(SidebarContext);
     const virtuosoRef = useRef<any>(null);
     const [selectedLine, setSelectedLine] = useState<SelectedLineType | null>(null);
-    const [jdocList, setJdocList] = useState<any>([]);
+    const [jdocList, setJdocList] = useState<JSX.Element[]>([]);
     const [jdocPositions, setJdocPositions] = useState<any>([]);
     const {path} = useParams<MainRouterParams>();
     const {currentUrl} = useContext(SidebarContext);
@@ -68,6 +38,12 @@ export const MainContent: FC<MainContentProps> = React.memo(
     useEffect(() => {
       setOverscan(window.innerHeight / 2);
     }, []);
+
+    useEffect(() => {
+      if (currentDocSidebar === 'content') {
+        setSelectedLine(null);
+      }
+    }, [currentDocSidebar]);
 
     const updateSchemaView = (
       keyBlock: string,
@@ -113,6 +89,8 @@ export const MainContent: FC<MainContentProps> = React.memo(
 
       const jdocList: JSX.Element[] = [];
       const jdocPositions: string[] = [];
+
+      jdocList.push(<div className="space-header" />);
 
       if (info) {
         jdocList.push(<ApiInfo apiInfo={info} key="apiInfo" />);

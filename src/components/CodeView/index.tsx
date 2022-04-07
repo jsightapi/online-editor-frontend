@@ -5,8 +5,8 @@ import {CollapsibleContent} from '../CollapsibleContent';
 import {CodeViewBaseComponent} from './CodeViewBaseComponent';
 import {EnumView} from './EnumView';
 import {SchemaView} from 'components/SchemaView';
-import {JDocContext} from 'screens/Editor';
 import './CodeView.styles.scss';
+import {JDocContext} from 'store';
 
 interface UsedUserElementProps {
   value: string;
