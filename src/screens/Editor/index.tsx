@@ -21,6 +21,7 @@ import {HeaderDoc} from 'components/Header/HeaderDoc';
 import {screenWidthMultiplier} from 'utils/screenWidthMultiplier';
 import {editorModeType, SidebarDocType} from 'types';
 import {JDocContext, SidebarContext} from 'store';
+import {onOrientationChange} from 'utils/onOrientationChange';
 
 const {isExport} = window as any;
 
@@ -54,17 +55,19 @@ export const EditorScreen: FC = () => {
     return screenWidth - editorWidthNumber;
   };
 
-  const editorWidthFinal =
-    localStorage.getItem('oldScreenWidth') === screenWidth.toString()
-      ? localStorage.getItem('editorWidth') || getEditorWidth(screenWidth)
-      : getEditorWidth(screenWidth);
+  const editorWidthFinal = () => localStorage.getItem('editorWidth') || getEditorWidth(screenWidth);
 
-  const [editorWidth, setEditorWidth] = useState<number | string>(editorWidthFinal);
+  const [editorWidth, setEditorWidth] = useState<number | string>(editorWidthFinal());
 
   const onEditorResize = (ref: HTMLElement) => {
     const newWidth = ref.getBoundingClientRect().width / screenWidthMultiplier(screenWidth);
-    localStorage.setItem('editorWidth', newWidth.toString());
-    setEditorWidth(newWidth);
+    const screenWidthWithMultiplier = screenWidth / screenWidthMultiplier(screenWidth);
+    const minWidth = screenWidthWithMultiplier * 0.2;
+    const maxWidth = screenWidthWithMultiplier * 0.8;
+    const finalNewWidth =
+      newWidth > maxWidth ? maxWidth : newWidth < minWidth ? minWidth : newWidth;
+    localStorage.setItem('editorWidth', finalNewWidth.toString());
+    setEditorWidth(finalNewWidth);
   };
 
   const setContent = (value: string) => {
@@ -72,10 +75,13 @@ export const EditorScreen: FC = () => {
   };
 
   useEffect(() => {
-    const oldScreenWidth = localStorage.getItem('oldScreenWidth');
-    if (screenWidth.toString() !== oldScreenWidth) {
-      localStorage.setItem('oldScreenWidth', screenWidth.toString());
-    }
+    const changeWidth = () => {
+      const width = getEditorWidth(screenWidth);
+      localStorage.setItem('editorWidth', width.toString());
+      setEditorWidth(width);
+    };
+
+    onOrientationChange(changeWidth);
   });
 
   useEffect(() => {
