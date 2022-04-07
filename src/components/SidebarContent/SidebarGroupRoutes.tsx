@@ -16,7 +16,6 @@ interface SidebarGroupRoutesProps {
 export const SidebarGroupRoutes: FC<SidebarGroupRoutesProps> = ({item, index}) => {
   const {path} = useParams<MainRouterParams>();
   const {setCurrentUrl, currentUrl} = useContext(SidebarContext);
-  console.log('currentUrl', currentUrl);
 
   return (
     <li>
