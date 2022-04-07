@@ -158,8 +158,8 @@ export const EditorScreen: FC = () => {
 
   return (
     <JDocContext.Provider value={jdocExchange}>
-      {!isExport &&
-        (isEditor ? (
+      {!isExport ? (
+        isEditor ? (
           <Header
             setInitialContent={setInitialContent}
             setViewMode={setViewMode}
@@ -167,7 +167,10 @@ export const EditorScreen: FC = () => {
           />
         ) : (
           <HeaderDoc setViewMode={setViewMode} />
-        ))}
+        )
+      ) : (
+        <div />
+      )}
       <div
         className={clsx('d-flex editor-wrapper', {
           'only-doc': !isEditor,
