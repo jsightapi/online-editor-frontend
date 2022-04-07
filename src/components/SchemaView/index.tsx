@@ -4,7 +4,7 @@ import {SchemaType} from 'api/getResources.model';
 import {CodeView} from '../CodeView';
 import {GlobalSettingsContext} from '../Layout';
 import {ExampleView} from 'components/ExampleView';
-import {MainContext} from 'components/MainContent';
+import {MainContext} from 'store';
 
 interface SchemaViewContextInterface {
   collapsedRules: boolean;

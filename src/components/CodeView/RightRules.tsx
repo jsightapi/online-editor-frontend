@@ -1,8 +1,7 @@
 import React, {forwardRef, useContext, useMemo, useEffect, useState} from 'react';
 import {DetailCard} from '../CodeView/DetailCard';
 import {AnnotationType} from './Code';
-import {MainContext} from '../MainContent';
-import {SidebarContext} from 'store';
+import {MainContext, SidebarContext} from 'store';
 
 interface RightRulesProps {
   annotations: AnnotationType[];

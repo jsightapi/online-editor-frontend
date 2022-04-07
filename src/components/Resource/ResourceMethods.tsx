@@ -6,7 +6,7 @@ import {ResponseCode} from './ResponseCode';
 import {GlobalSettingsContext} from '../Layout';
 import './ResourceMethods.styles.scss';
 import {Description} from '../Description';
-import {MainContext} from 'components/MainContent';
+import {MainContext} from 'store';
 
 interface ResourceMethodsProps {
   methods: ResourceType[];

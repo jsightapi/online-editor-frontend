@@ -146,6 +146,10 @@ export const EditorScreen: FC = () => {
     setCurrentDocSidebar((prev) => (prev === sidebar ? null : sidebar));
   }, []);
 
+  const handleSetContent = () => {
+    setDocSidebar('content');
+  };
+
   return (
     <JDocContext.Provider value={jdocExchange}>
       {!isExport ? (
