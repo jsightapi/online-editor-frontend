@@ -15,7 +15,8 @@ interface SidebarGroupRoutesProps {
 
 export const SidebarGroupRoutes: FC<SidebarGroupRoutesProps> = ({item, index}) => {
   const {path} = useParams<MainRouterParams>();
-  const {setCurrentUrl} = useContext(SidebarContext);
+  const {setCurrentUrl, currentUrl} = useContext(SidebarContext);
+  console.log('currentUrl', currentUrl);
 
   return (
     <li>
@@ -28,7 +29,7 @@ export const SidebarGroupRoutes: FC<SidebarGroupRoutesProps> = ({item, index}) =
             const linkTo = route.path.replace(/({|})/gi, '-');
             return typeof route.path === 'string' ? (
               <li
-                className={clsx([{active: linkTo.substring(1) === path}])}
+                className={clsx([{active: linkTo.substring(1) === (isExport ? currentUrl : path)}])}
                 key={`${index}${key}${route}`}
               >
                 {isExport ? (
