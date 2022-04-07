@@ -4,7 +4,7 @@ import {useShowDetailInfo} from '../hooks/useShowDetailInfo';
 import {RulesType} from 'api/getResources.model';
 import {MainContext} from 'components/MainContent';
 import {SchemaViewContext} from 'components/SchemaView';
-import {SidebarContext} from 'screens/Editor';
+import {SidebarContext} from 'store';
 
 interface SelectionLineArgs {
   numberLine: string;

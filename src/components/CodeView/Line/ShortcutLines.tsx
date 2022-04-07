@@ -1,9 +1,9 @@
 import React, {FC, useContext, useMemo} from 'react';
-import {JDocContext} from 'screens/Editor';
 import {getUserEnum, getUserType} from 'api/getResources';
 import {LinesCollection} from '../LinesCollection';
 import {UserEnumType, UserTypeType} from 'api/getResources.model';
 import {RegexView} from 'components/CodeView/RegexView';
+import {JDocContext} from 'store';
 
 interface ShortcutLinesProps {
   schemasNames: string[];

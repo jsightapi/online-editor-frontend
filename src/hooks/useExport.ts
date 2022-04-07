@@ -1,6 +1,6 @@
 import {useContext} from 'react';
-import {JDocContext} from 'screens/Editor';
 import {find} from 'lodash';
+import {JDocContext} from 'store';
 
 export function useExport() {
   const jdocData = useContext(JDocContext);
@@ -11,11 +11,18 @@ export function useExport() {
     for (let i = 0; i < styles.length; ++i) {
       stylesResult += `<style>${styles[i].innerHTML}</style>`;
     }
-    const scripts = document.querySelectorAll('script');
-    const script = find(scripts, (script) => script.src.indexOf('static/js') !== -1)?.src;
+
     const linkStyles = document.querySelectorAll('link');
     const linkStyle = find(linkStyles, (style) => style.href.indexOf('static/css') !== -1)?.href;
     const hostName = window.location.protocol + '//' + window.location.host;
+
+    let script = '';
+    if (process.env.NODE_ENV !== 'production') {
+      const scripts = document.querySelectorAll('script');
+      script = find(scripts, (script) => script.src.indexOf('static/js') !== -1)?.src || '';
+    } else {
+      script = hostName + '/static/js/export-main.js';
+    }
 
     if (script) {
       return `<!DOCTYPE html>
