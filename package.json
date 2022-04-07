@@ -35,7 +35,9 @@
   },
   "scripts": {
     "start": "react-app-rewired start",
-    "build": "prettier --write ./src && react-app-rewired build",
+    "one": "./scripts/save-export-js.sh",
+    "build-export": "prettier --write ./src && GENERATE_SOURCEMAP=false REACT_VIEW_TYPE=doc react-app-rewired build && ./scripts/save-export-js.sh",
+    "build": "GENERATE_SOURCEMAP=false react-app-rewired build && ./scripts/return-export-js.sh",
     "test": "react-app-rewired test",
     "eject": "react-scripts eject"
   },
@@ -81,7 +83,7 @@
     "monaco-editor-webpack-plugin": "^7.0.1",
     "postcss": "^8.4.4",
     "prettier": "^2.2.1",
-    "react-app-rewired": "^2.1.11",
+    "react-app-rewired": "^2.2.1",
     "tailwindcss": "^3.0.1"
   }
 }

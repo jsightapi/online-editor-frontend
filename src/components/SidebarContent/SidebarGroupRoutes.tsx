@@ -5,7 +5,7 @@ import clsx from 'clsx';
 import {MainRouterParams} from 'types/router';
 import {CollapsibleContent} from '../CollapsibleContent';
 import './SidebarGroupItems.styles.scss';
-import {SidebarContext} from 'screens/Editor';
+import {SidebarContext} from 'store';
 const {isExport} = window as any;
 
 interface SidebarGroupRoutesProps {
