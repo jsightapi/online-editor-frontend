@@ -22,7 +22,6 @@ interface MainContentProps {
 export const MainContent: FC<MainContentProps> = React.memo(
   ({jdocExchange, showRightSidebar}) => {
     const divRef = useRef<HTMLDivElement | null>(null);
-    const {currentDocSidebar} = useContext(SidebarContext);
     const virtuosoRef = useRef<any>(null);
     const [selectedLine, setSelectedLine] = useState<SelectedLineType | null>(null);
     const [jdocList, setJdocList] = useState<JSX.Element[]>([]);

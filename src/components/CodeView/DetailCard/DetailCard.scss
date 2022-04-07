@@ -17,11 +17,13 @@
   .wrapper-close {
     background: #fff;
     justify-content: flex-end;
+    z-index: 9999;
 
     &::before {
       content: ' ';
+      pointer-events: none;
       position: absolute;
-      top: -300px;
+      top: -270px;
       height: 300px;
       width: 100%;
       background: -moz-linear-gradient(
@@ -47,9 +49,10 @@
 
     &::after {
       content: ' ';
+      pointer-events: none;
       position: absolute;
-      bottom: -30px;
-      height: 30px;
+      bottom: -100px;
+      height: 100px;
       width: 100%;
 
       background: -moz-linear-gradient(
@@ -78,6 +81,7 @@
     color: $code-comment;
     cursor: pointer;
     font-size: 1.8rem;
+    z-index: 9999;
   }
 
   > .header {
