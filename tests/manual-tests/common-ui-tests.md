@@ -78,6 +78,13 @@ Code content should not be changed.
 2. Scroll up or down and come back.
 3. Check that schema section is in the same state as it was before scroll.
 
+### Details card
+
+1. Check that you can close details card using either cross-mark near the top right corner of card
+   or with the cross-mark at the top right corner of rendered document panel.
+2. Check that these two cross-marks (see above) do not interfere each other when scrolling document
+   up and down.
+
 ## Examples
 
 1. Check links in each example.
