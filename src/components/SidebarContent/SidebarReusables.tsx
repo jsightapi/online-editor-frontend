@@ -13,7 +13,7 @@ interface SidebarReusablesProps {
 
 export const SidebarReusables: FC<SidebarReusablesProps> = ({title, values}) => {
   const {path} = useParams<MainRouterParams>();
-  const {setCurrentUrl} = useContext(SidebarContext);
+  const {setCurrentUrl, currentUrl} = useContext(SidebarContext);
 
   return (
     <li>
@@ -23,7 +23,10 @@ export const SidebarReusables: FC<SidebarReusablesProps> = ({title, values}) => 
       >
         <ul className="collapse">
           {values.map((value) => (
-            <li className={clsx([{active: value === path}])} key={`reusable-route-${value}`}>
+            <li
+              className={clsx([{active: value === (isExport ? currentUrl : path)}])}
+              key={`reusable-route-${value}`}
+            >
               {isExport ? (
                 <span
                   onClick={() => {

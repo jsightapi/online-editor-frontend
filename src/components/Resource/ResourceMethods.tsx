@@ -1,4 +1,4 @@
-import React, {useContext, useMemo, FC} from 'react';
+import React, {useContext, useMemo, FC, useEffect} from 'react';
 import {ResourceType} from 'api/getResources.model';
 import clsx from 'clsx';
 import {ResourceBlock} from './ResourceBlock';
@@ -20,8 +20,17 @@ export const ResourceMethods: FC<ResourceMethodsProps> = ({methods, resourceKey,
 
   const currentMethod = useMemo(() => {
     const method = resourceState[index].method;
+
     return methods.find((item) => (method ? item.httpMethod === method : true));
   }, [index, methods, resourceState]);
+
+  useEffect(() => {
+    if (!currentMethod?.httpMethod) {
+      setResourceState((prev) =>
+        prev.map((prevItem, i) => (i === index ? {method: methods[0].httpMethod} : prevItem))
+      );
+    }
+  }, [methods]);
 
   const pathQueriesViewMode = useMemo(
     () => (pathQueriesCode ? 'code' : 'table'),
