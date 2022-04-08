@@ -186,7 +186,7 @@ export const MainContent: FC<MainContentProps> = React.memo(
 
       if (~index && virtuosoRef?.current && (prevCurrentUrl !== currentUrl || prevPath !== path)) {
         virtuosoRef.current.scrollToIndex({
-          index,
+          index: index + 1,
           align: 'start',
           behavior: 'auto',
         });
