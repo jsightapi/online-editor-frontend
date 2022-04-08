@@ -39,7 +39,7 @@ export const ShortcutLines: FC<ShortcutLinesProps> = ({
       <span className="shortcut-lines">
         <RegexView
           tab={tab}
-          content={(userType as UserTypeType).schema.content as unknown as string}
+          content={((userType as UserTypeType).schema.content as unknown) as string}
         />
       </span>
     );

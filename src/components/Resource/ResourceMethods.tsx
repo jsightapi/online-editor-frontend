@@ -32,15 +32,13 @@ export const ResourceMethods: FC<ResourceMethodsProps> = ({methods, resourceKey,
     }
   }, [methods]);
 
-  const pathQueriesViewMode = useMemo(
-    () => (pathQueriesCode ? 'code' : 'table'),
-    [pathQueriesCode]
-  );
+  const pathQueriesViewMode = useMemo(() => (pathQueriesCode ? 'code' : 'table'), [
+    pathQueriesCode,
+  ]);
 
-  const headersBodiesViewMode = useMemo(
-    () => (headersBodiesCode ? 'code' : 'table'),
-    [headersBodiesCode]
-  );
+  const headersBodiesViewMode = useMemo(() => (headersBodiesCode ? 'code' : 'table'), [
+    headersBodiesCode,
+  ]);
 
   return (
     <>
