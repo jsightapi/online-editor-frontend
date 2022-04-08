@@ -209,7 +209,7 @@ export const Code: FC<CodeProps> = ({schema, tab, codeViewRef, keyBlock}) => {
     // eslint-disable-next-line
   }, [selectedLine]);
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     const wrapper = divRulesRef.current?.closest<HTMLDivElement>('.resource-content');
     const rightOffset = wrapper ? parseInt(getComputedStyle(wrapper).paddingRight) : 0;
     setRightOffset(rightOffset);
