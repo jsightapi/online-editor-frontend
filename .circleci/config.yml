@@ -124,7 +124,7 @@ workflows:
 
   ci-test:
     when:
-      equal: [ orb_ci, << pipeline.git.branch >> ]
+      equal: [ ci-test, << pipeline.git.branch >> ]
     jobs:
       - docker/publish:
           <<: *dev-publish
@@ -133,7 +133,5 @@ workflows:
           <<: *dev-refresh
           host: ${HOST_CRAZY}
       - common/notify-telegram:
-          requires:
-            - common/refresh-container
-          context: *common-context
+          <<: *dev-notify
           message: Crazy editor frontend updated from branch ${CIRCLE_BRANCH} (commit ${CIRCLE_SHA1})
