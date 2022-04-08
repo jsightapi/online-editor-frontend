@@ -13,6 +13,7 @@ import {Virtuoso} from 'react-virtuoso';
 import './MainContent.styles.scss';
 import {SidebarContext, MainContext} from 'store';
 import {ResourceState, SchemaViewType, SelectedLineType} from 'store/MainStore';
+import {usePrevious} from 'hooks/usePrevious';
 
 interface MainContentProps {
   jdocExchange: JDocType;
@@ -28,10 +29,13 @@ export const MainContent: FC<MainContentProps> = React.memo(
     const [jdocList, setJdocList] = useState<JSX.Element[]>([]);
     const [jdocPositions, setJdocPositions] = useState<any>([]);
     const {path} = useParams<MainRouterParams>();
-    const {currentUrl} = useContext(SidebarContext);
+    const {currentUrl, currentDocSidebar, setCurrentDocSidebar} = useContext(SidebarContext);
     const [overscan, setOverscan] = useState(480);
     const [schemasView, setSchemasView] = useState<SchemaViewType[]>([]);
     const [resourceState, setResourceState] = useState<ResourceState[]>([]);
+
+    const prevPath = usePrevious(path);
+    const prevCurrentUrl = usePrevious(currentUrl);
 
     const {isExport} = window as any;
 
@@ -180,9 +184,9 @@ export const MainContent: FC<MainContentProps> = React.memo(
 
       const index = jdocPositions.indexOf(`${currentPath?.replace(/({|})/gi, '-')}`);
 
-      if (~index && virtuosoRef?.current) {
+      if (~index && virtuosoRef?.current && (prevCurrentUrl !== currentUrl || prevPath !== path)) {
         virtuosoRef.current.scrollToIndex({
-          index,
+          index: index + 1,
           align: 'start',
           behavior: 'auto',
         });
@@ -206,6 +210,17 @@ export const MainContent: FC<MainContentProps> = React.memo(
               setResourceState,
             }}
           >
+            {currentDocSidebar === 'rules' && (
+              <button
+                className="sidebar-rules-close"
+                onClick={() => {
+                  setCurrentDocSidebar(null);
+                  setSelectedLine(null);
+                }}
+              >
+                <i className="icon-close" />
+              </button>
+            )}
             <Virtuoso
               data={jdocList}
               itemContent={(_, item) => item}
