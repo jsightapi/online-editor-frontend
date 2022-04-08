@@ -10,7 +10,7 @@
 }
 
 @function calcShift($scale) {
-  @return -((100% / $scale)/2 - ((100% / $scale) * ($scale/2)));
+  @return -((100% / $scale) / 2 - ((100% / $scale) * ($scale / 2)));
 }
 
 @media screen and (max-width: 1040px) {

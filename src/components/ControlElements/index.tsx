@@ -55,15 +55,13 @@ export const ControlElements: FC<ControlElementsProps> = ({
     }
   }, [viewType]);
 
-  const iconRules = useMemo(
-    () => (collapsedRules ? 'icon-braces-number' : 'icon-braces-dots'),
-    [collapsedRules]
-  );
+  const iconRules = useMemo(() => (collapsedRules ? 'icon-braces-number' : 'icon-braces-dots'), [
+    collapsedRules,
+  ]);
 
-  const iconTypes = useMemo(
-    () => (expandedTypes ? 'icon-email' : 'icon-strikethrough-email'),
-    [expandedTypes]
-  );
+  const iconTypes = useMemo(() => (expandedTypes ? 'icon-email' : 'icon-strikethrough-email'), [
+    expandedTypes,
+  ]);
 
   const isHideCopy = false;
   const isExampleView = false;

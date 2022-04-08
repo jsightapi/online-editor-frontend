@@ -336,7 +336,7 @@ export const Code: FC<CodeProps> = ({schema, tab, codeViewRef, keyBlock}) => {
       </CodeContext.Provider>
     );
   } else if (schema.notation === 'regex') {
-    return <RegexView tab={0} content={schema.content as unknown as string} />;
+    return <RegexView tab={0} content={(schema.content as unknown) as string} />;
   } else {
     return null;
   }

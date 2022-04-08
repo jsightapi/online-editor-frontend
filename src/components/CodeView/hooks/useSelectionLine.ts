@@ -34,10 +34,10 @@ export function useSelectionLine({
 
   const isShowDetailInfo = useShowDetailInfo(rules, notes);
 
-  const isSelected = useMemo(
-    () => selectedLine?.numberLine === numberLine,
-    [numberLine, selectedLine]
-  );
+  const isSelected = useMemo(() => selectedLine?.numberLine === numberLine, [
+    numberLine,
+    selectedLine,
+  ]);
 
   const isHovered = useMemo(
     () =>

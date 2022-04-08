@@ -139,7 +139,7 @@ const getSchemaProperties = (
 
   switch (jsonType) {
     case 'object':
-      const objectProperties = schema?.content.properties;
+      const objectProperties = schema.content.properties;
       const objectPropertiesLength = objectProperties ? Object.keys(objectProperties).length : null;
       return {properties: objectProperties, jsonType, itemsLength: objectPropertiesLength};
 
@@ -192,17 +192,17 @@ export const TableView: React.FC<TableViewProps> = ({keyBlock, schema, format, d
 
   const renderRegexNotation = isRegexNotation
     ? renderRow({
-        property: {
+        property: ({
           type: 'string',
           rules: {regex: {scalarValue: schema?.content}},
           note: (
             <span className="detail-code-line code-font">
-              <span className="name">{schema.notation}</span>
+              <span className="name">{schema?.notation}</span>
               <span className="punctuation-char">{`:\u00A0`}</span>
-              <span className="value">{schema.content}</span>
+              <span className="value">{schema?.content}</span>
             </span>
           ),
-        } as unknown as SchemaJSightContentType,
+        } as unknown) as SchemaJSightContentType,
         key: '<root>',
         isNestedChild: false,
         level: 1,
