@@ -201,6 +201,7 @@ export const Code: FC<CodeProps> = ({schema, tab, codeViewRef, keyBlock}) => {
   // when active live with rules is changed
   useEffect(() => {
     if (selectedLine && currentDocSidebar !== 'content') {
+      console.log('setCurrentDocSidebar');
       setCurrentDocSidebar('rules');
     } else {
       setHeight((codeViewRef.current?.getBoundingClientRect().height || 0) + 65);
@@ -208,7 +209,7 @@ export const Code: FC<CodeProps> = ({schema, tab, codeViewRef, keyBlock}) => {
     // eslint-disable-next-line
   }, [selectedLine]);
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     const wrapper = divRulesRef.current?.closest<HTMLDivElement>('.resource-content');
     const rightOffset = wrapper ? parseInt(getComputedStyle(wrapper).paddingRight) : 0;
     setRightOffset(rightOffset);
