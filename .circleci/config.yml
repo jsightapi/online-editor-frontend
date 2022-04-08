@@ -1,7 +1,7 @@
 version: 2.1
 orbs:
   docker: circleci/docker@2.0.3
-  common: jsight/common-ci@1.0.1
+  common: jsight/common-ci@1.2.4
 
 
 parameters:
@@ -24,9 +24,9 @@ workflows:
       - docker/publish:
           filters: *release-tag-filter
           requires:
-            - get-version-numbers
+            - common/save-version-numbers
           executor: common/vm-medium
-          context: online-editor-development
+          context: &common-context online-editor-development
           image: jsight/online-editor-frontend
           tag: '${FULL_VERSION_TAG},${MAJOR_VERSION_TAG},latest'
           extra_build_args: '--build-arg GTM_ID=${PROD_GTM_ID}'
@@ -47,16 +47,17 @@ workflows:
           filters: *release-tag-filter
           requires:
             - approve-production-deploy
-          context: online-editor-development
+          context: *common-context
           host: ${HOST_PROD}
-          port: 8091
+          host-port: 8091
           container-name: online-editor-frontend
-          image: jsight/online-editor-frontend:latest
+          image: jsight/online-editor-frontend
+          tag: latest
       - common/notify-telegram:
           filters: *release-tag-filter
           requires:
             - common/refresh-container
-          context: online-editor-development
+          context: *common-context
           message: Production editor frontend updated from tag << pipeline.git.tag >>
 
   rc-branch:
@@ -65,23 +66,26 @@ workflows:
         pattern: "^rc/.*"
         value: << pipeline.git.branch >>
     jobs:
-      - docker/publish:
-          context: online-editor-development
+      - docker/publish: &dev-publish
+          context: *common-context
           executor: common/vm-medium
-          image: jsight/dev-online-editor-frontend
+          image: &dev-image jsight/dev-online-editor-frontend
           tag: '<< pipeline.parameters.image-tag >>,stage_latest'
-      - common/refresh-container:
+
+      - common/refresh-container: &dev-refresh
           requires:
             - docker/publish
-          context: online-editor-development
-          host: ${HOST_STAGE}
-          port: 8091
+          context: *common-context
           container-name: online-editor-frontend
-          image: jsight/dev-online-editor-frontend:<< pipeline.parameters.image-tag >>
-      - common/notify-telegram:
+          host-port: 8091
+          host: ${HOST_STAGE}
+          image: *dev-image
+          tag: << pipeline.parameters.image-tag >>
+
+      - common/notify-telegram: &dev-notify
           requires:
             - common/refresh-container
-          context: online-editor-development
+          context: *common-context
           message: Stage editor frontend updated from branch ${CIRCLE_BRANCH} (commit ${CIRCLE_SHA1})
 
   dev-branch:
@@ -89,22 +93,13 @@ workflows:
       equal: [ dev, << pipeline.git.branch >>]
     jobs:
       - docker/publish:
-          context: online-editor-development
-          executor: common/vm-medium
-          image: jsight/dev-online-editor-frontend
+          <<: *dev-publish
           tag: '<< pipeline.parameters.image-tag >>,dev_latest'
       - common/refresh-container:
-          requires:
-            - docker/publish
-          context: online-editor-development
+          <<: *dev-refresh
           host: ${HOST_DEV}
-          port: 8091
-          container-name: online-editor-frontend
-          image: jsight/dev-online-editor-frontend:<< pipeline.parameters.image-tag >>
       - common/notify-telegram:
-          requires:
-            - common/refresh-container
-          context: online-editor-development
+          <<: *dev-notify
           message: Dev editor frontend updated from branch ${CIRCLE_BRANCH} (commit ${CIRCLE_SHA1})
 
   experimental:
@@ -116,24 +111,15 @@ workflows:
       - approve-go-crazy:
           type: approval
       - docker/publish:
+          <<: *dev-publish
           requires:
             - approve-go-crazy
-          context: online-editor-development
-          executor: common/vm-medium
-          image: jsight/dev-online-editor-frontend
-          tag: '<< pipeline.parameters.image-tag >>,dev_latest'
+          tag: '<< pipeline.parameters.image-tag >>'
       - common/refresh-container:
-          requires:
-            - docker/publish
-          context: online-editor-development
+          <<: *dev-refresh
           host: ${HOST_CRAZY}
-          port: 8091
-          container-name: online-editor-frontend
-          image: jsight/dev-online-editor-frontend:<< pipeline.parameters.image-tag >>
       - common/notify-telegram:
-          requires:
-            - common/refresh-container
-          context: online-editor-development
+          <<: *dev-notify
           message: Experimental (crazy) editor frontend updated from branch ${CIRCLE_BRANCH} (commit ${CIRCLE_SHA1})
 
   ci-test:
@@ -141,20 +127,13 @@ workflows:
       equal: [ orb_ci, << pipeline.git.branch >> ]
     jobs:
       - docker/publish:
-          context: online-editor-development
-          executor: common/vm-medium
-          image: jsight/dev-online-editor-frontend
+          <<: *dev-publish
           tag: '<< pipeline.parameters.image-tag >>,ci_latest'
       - common/refresh-container:
-          requires:
-            - docker/publish
-          context: online-editor-development
+          <<: *dev-refresh
           host: ${HOST_CRAZY}
-          port: 8091
-          container-name: online-editor-frontend
-          image: jsight/dev-online-editor-frontend:<< pipeline.parameters.image-tag >>
       - common/notify-telegram:
           requires:
             - common/refresh-container
-          context: online-editor-development
+          context: *common-context
           message: Crazy editor frontend updated from branch ${CIRCLE_BRANCH} (commit ${CIRCLE_SHA1})
