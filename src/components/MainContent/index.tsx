@@ -9,11 +9,11 @@ import {isEqual, map} from 'lodash';
 import {ReusableResource} from 'components/Resource/ReusableResource';
 import {JDocType} from 'api/getResources.model';
 import {Virtuoso} from 'react-virtuoso';
-
-import './MainContent.styles.scss';
 import {SidebarContext, MainContext} from 'store';
 import {ResourceState, SchemaViewType, SelectedLineType} from 'store/MainStore';
 import {usePrevious} from 'hooks/usePrevious';
+
+import './MainContent.styles.scss';
 
 interface MainContentProps {
   jdocExchange: JDocType;
