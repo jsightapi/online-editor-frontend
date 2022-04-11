@@ -3,7 +3,7 @@ JSIGHT 0.3
 GET /highest-possible-card/{goToCodeView}
   Path
     {
-      "goToCodeView": "1" // {optional: true, nullable: true, enum: ["1", "2", "3", "4", "5",6,7,8,9,9,10]}
+      "goToCodeView": "1" // {optional: true, nullable: true, enum: ["1", "2", "3", "4", "5", 5, 6, 7 , 8 , 9, 10]}
     }
 
   200 # This one potentially overlaps with previous card but from another block.
@@ -29,6 +29,6 @@ GET /4 // dummy to create scroll
 GET /card-at-the-bottom
   200
     {
-      "enum": "1", // {optional: true, nullable:false, enum: ["1", "2", "3", "4", "5", 6,7,8,9,9,10]} - some text to make card even bigger longer higher
+      "enum": "1", // {optional: true, nullable:false, enum: ["1", "2", "3", "4", "5", 6, 7, 8, 9, 10]} - some text to make card even bigger longer higher
       "enum2": "1" // {or: [{type: "string"},{type: "integer"},{type: "float"},{type: "float"},{type: "float"},{type: "float"},{type: "float"}]}
     }
