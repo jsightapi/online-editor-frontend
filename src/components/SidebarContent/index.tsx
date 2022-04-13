@@ -2,7 +2,6 @@ import React, {FC, useContext, useMemo} from 'react';
 import {getTreeResources} from 'api/getResources';
 import {SidebarGroupRoutes} from './SidebarGroupRoutes';
 import {SidebarReusables} from './SidebarReusables';
-// import {GlobalSettingsContext} from '../Layout';
 import logo from '../../assets/images/icon-jsight.png';
 import clsx from 'clsx';
 import './SidebarContent.styles.scss';

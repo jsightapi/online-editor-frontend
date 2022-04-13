@@ -3,7 +3,7 @@ import {ResourcesType} from 'api/getResources.model';
 import {Link, useParams} from 'react-router-dom';
 import clsx from 'clsx';
 import {MainRouterParams} from 'types/router';
-import {CollapsibleContent} from '../CollapsibleContent';
+import {CollapsibleContent} from '../CollapsibleContent/CollapsibleContentNew';
 import './SidebarGroupItems.styles.scss';
 import {SidebarContext} from 'store';
 const {isExport} = window as any;
