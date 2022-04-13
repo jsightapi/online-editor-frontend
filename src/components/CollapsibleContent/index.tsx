@@ -1,5 +1,5 @@
 import React, {FC, useState} from 'react';
-import useCollapse from 'react-collapsed';
+import {Collapse} from 'react-collapse';
 import './CollapsibleConent.scss';
 
 interface CollapsibleContentProps {
@@ -12,24 +12,22 @@ export const CollapsibleContent: FC<CollapsibleContentProps> = ({
   title,
   rightContent,
 }) => {
-  const [isExpanded, setExpanded] = useState(false);
-  const {getCollapseProps, getToggleProps} = useCollapse({isExpanded});
+  const [isOpen, setIsOpen] = useState<boolean>(false);
+
+  const toggle = () => {
+    setIsOpen((prev) => !prev);
+  };
 
   return (
     <div className="collapsible-content">
       <div className="d-flex header">
-        <span
-          className="flex-auto"
-          {...getToggleProps({
-            onClick: () => setExpanded((prevExpanded) => !prevExpanded),
-          })}
-        >
-          <i className={isExpanded ? 'icon-arrow-down' : 'icon-arrow-right'} />
+        <span className="flex-auto" onClick={toggle}>
+          <i className={isOpen ? 'icon-arrow-down' : 'icon-arrow-right'} />
           {title}
         </span>
         {rightContent}
       </div>
-      <div {...getCollapseProps()}>{children}</div>
+      <Collapse isOpened={isOpen}>{children}</Collapse>
     </div>
   );
 };
