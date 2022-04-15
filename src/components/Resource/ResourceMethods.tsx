@@ -7,6 +7,7 @@ import {GlobalSettingsContext} from '../Layout';
 import './ResourceMethods.styles.scss';
 import {Description} from '../Description';
 import {MainContext} from 'store';
+import {ResourceMethodsTabs} from 'components/Resource/ResourceMethodsTabs';
 
 interface ResourceMethodsProps {
   methods: ResourceType[];
@@ -15,7 +16,7 @@ interface ResourceMethodsProps {
 }
 
 export const ResourceMethods: FC<ResourceMethodsProps> = ({methods, resourceKey, index}) => {
-  const {headersBodiesCode, pathQueriesCode} = useContext(GlobalSettingsContext);
+  const {headersBodiesCode, pathQueriesCode, tabs} = useContext(GlobalSettingsContext);
   const {resourceState, setResourceState} = useContext(MainContext);
 
   const currentMethod = useMemo(() => {
@@ -40,35 +41,40 @@ export const ResourceMethods: FC<ResourceMethodsProps> = ({methods, resourceKey,
     headersBodiesCode,
   ]);
 
+  const setHttpMethod = (method: string) => {
+    setResourceState((prev) => prev.map((prevItem, i) => (i === index ? {method} : prevItem)));
+  };
+
+  const getDisplayValue = (httpMethod: string) =>
+    tabs ? (httpMethod === currentMethod?.httpMethod ? 'block' : 'none') : 'block';
+
   return (
     <>
-      <div className="methods-tab d-flex">
-        {methods.map((item) => (
-          <button
-            onClick={(e) => {
-              e.preventDefault();
-              setResourceState((prev) =>
-                prev.map((prevItem, i) => (i === index ? {method: item.httpMethod} : prevItem))
-              );
-            }}
-            key={`tab-${item.httpMethod}-${item.path}`}
-            className={clsx([
-              {active: currentMethod?.httpMethod === item.httpMethod},
-              item.httpMethod.toLowerCase(),
-            ])}
-          >
-            {item.httpMethod}
-          </button>
-        ))}
-      </div>
+      {tabs && (
+        <ResourceMethodsTabs
+          methods={methods}
+          setHttpMethod={setHttpMethod}
+          currentHttpMethod={currentMethod?.httpMethod}
+        />
+      )}
       {methods.map((item, indexMethod) => (
         <div
           key={`resource-${item.httpMethod}-${item.path}`}
           className="resource-content"
-          style={{display: item.httpMethod === currentMethod?.httpMethod ? 'block' : 'none'}}
+          style={{
+            display: getDisplayValue(item.httpMethod),
+          }}
         >
-          {item.annotation && <h4 className="item-annotation">{item.annotation}</h4>}
-          <Description markdown={item.description} />
+          {!tabs && (
+            <div className="d-flex method-label-wrapper">
+              <div className={clsx(['method-label', item.httpMethod.toLowerCase()])}>
+                {item.httpMethod}
+              </div>
+              {item.annotation && <h4 className="item-annotation">{item.annotation}</h4>}
+            </div>
+          )}
+          {item.annotation && tabs && <h4 className="item-annotation">{item.annotation}</h4>}
+          {item.description && <Description markdown={item.description} />}
           {item.pathVariables && (
             <ResourceBlock
               title="Path parameters"
