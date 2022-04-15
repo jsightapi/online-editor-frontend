@@ -6,3 +6,5 @@ yarn.lock
 yarn-error.log
 .git
 .idea
+.circleci
+.vscode
