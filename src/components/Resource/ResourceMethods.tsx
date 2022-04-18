@@ -1,4 +1,4 @@
-import React, {useContext, useMemo, FC} from 'react';
+import React, {useContext, useMemo, FC, useEffect} from 'react';
 import {ResourceType} from 'api/getResources.model';
 import clsx from 'clsx';
 import {ResourceBlock} from './ResourceBlock';
@@ -6,7 +6,7 @@ import {ResponseCode} from './ResponseCode';
 import {GlobalSettingsContext} from '../Layout';
 import './ResourceMethods.styles.scss';
 import {Description} from '../Description';
-import {MainContext} from 'components/MainContent';
+import {MainContext} from 'store';
 
 interface ResourceMethodsProps {
   methods: ResourceType[];
@@ -20,18 +20,25 @@ export const ResourceMethods: FC<ResourceMethodsProps> = ({methods, resourceKey,
 
   const currentMethod = useMemo(() => {
     const method = resourceState[index].method;
+
     return methods.find((item) => (method ? item.httpMethod === method : true));
   }, [index, methods, resourceState]);
 
-  const pathQueriesViewMode = useMemo(
-    () => (pathQueriesCode ? 'code' : 'table'),
-    [pathQueriesCode]
-  );
+  useEffect(() => {
+    if (!currentMethod?.httpMethod) {
+      setResourceState((prev) =>
+        prev.map((prevItem, i) => (i === index ? {method: methods[0].httpMethod} : prevItem))
+      );
+    }
+  }, [methods]);
 
-  const headersBodiesViewMode = useMemo(
-    () => (headersBodiesCode ? 'code' : 'table'),
-    [headersBodiesCode]
-  );
+  const pathQueriesViewMode = useMemo(() => (pathQueriesCode ? 'code' : 'table'), [
+    pathQueriesCode,
+  ]);
+
+  const headersBodiesViewMode = useMemo(() => (headersBodiesCode ? 'code' : 'table'), [
+    headersBodiesCode,
+  ]);
 
   return (
     <>

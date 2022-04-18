@@ -3,7 +3,7 @@ import {ResourcesType} from 'api/getResources.model';
 import {Link, useParams} from 'react-router-dom';
 import clsx from 'clsx';
 import {MainRouterParams} from 'types/router';
-import {CollapsibleContent} from '../CollapsibleContent';
+import {CollapsibleContent} from '../CollapsibleContent/CollapsibleContentNew';
 import './SidebarGroupItems.styles.scss';
 import {SidebarContext} from 'store';
 const {isExport} = window as any;
@@ -15,7 +15,7 @@ interface SidebarGroupRoutesProps {
 
 export const SidebarGroupRoutes: FC<SidebarGroupRoutesProps> = ({item, index}) => {
   const {path} = useParams<MainRouterParams>();
-  const {setCurrentUrl} = useContext(SidebarContext);
+  const {setCurrentUrl, currentUrl} = useContext(SidebarContext);
 
   return (
     <li>
@@ -28,7 +28,7 @@ export const SidebarGroupRoutes: FC<SidebarGroupRoutesProps> = ({item, index}) =
             const linkTo = route.path.replace(/({|})/gi, '-');
             return typeof route.path === 'string' ? (
               <li
-                className={clsx([{active: linkTo.substring(1) === path}])}
+                className={clsx([{active: linkTo.substring(1) === (isExport ? currentUrl : path)}])}
                 key={`${index}${key}${route}`}
               >
                 {isExport ? (

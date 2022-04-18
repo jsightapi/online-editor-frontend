@@ -1,4 +1,4 @@
-import React, {createContext, FC, useRef, useState, useEffect, useContext} from 'react';
+import React, {FC, useRef, useState, useEffect, useContext} from 'react';
 import {useParams} from 'react-router-dom';
 import {MainRouterParams} from 'types/router';
 import {ApiInfo} from 'components/ApiInfo';
@@ -9,41 +9,11 @@ import {isEqual, map} from 'lodash';
 import {ReusableResource} from 'components/Resource/ReusableResource';
 import {JDocType} from 'api/getResources.model';
 import {Virtuoso} from 'react-virtuoso';
+import {SidebarContext, MainContext} from 'store';
+import {ResourceState, SchemaViewType, SelectedLineType} from 'store/MainStore';
+import {usePrevious} from 'hooks/usePrevious';
 
 import './MainContent.styles.scss';
-import {SidebarContext} from 'store';
-
-interface SelectedLineType {
-  keyBlock: string;
-  numberLine: string;
-}
-
-interface SchemaViewType {
-  key: string;
-  collapsedRules?: boolean;
-  expandedTypes?: boolean;
-  viewType?: string;
-  expandDetailCard?: boolean;
-}
-
-interface ResourceState {
-  method: string;
-}
-
-interface MainContextInterface {
-  selectedLine: SelectedLineType | null;
-  setSelectedLine: React.Dispatch<React.SetStateAction<SelectedLineType | null>>;
-  schemasView: SchemaViewType[];
-  setCollapsedRules: (key: string, value: boolean) => void;
-  setExpandedTypes: (key: string, value: boolean) => void;
-  setViewType: (key: string, value: string) => void;
-  setExpandDetailCard: (key: string, value: boolean) => void;
-  showRightSidebar: boolean;
-  resourceState: ResourceState[];
-  setResourceState: React.Dispatch<React.SetStateAction<ResourceState[]>>;
-}
-
-export const MainContext = createContext({} as MainContextInterface);
 
 interface MainContentProps {
   jdocExchange: JDocType;
@@ -58,16 +28,25 @@ export const MainContent: FC<MainContentProps> = React.memo(
     const [jdocList, setJdocList] = useState<JSX.Element[]>([]);
     const [jdocPositions, setJdocPositions] = useState<any>([]);
     const {path} = useParams<MainRouterParams>();
-    const {currentUrl} = useContext(SidebarContext);
+    const {currentUrl, currentDocSidebar, setCurrentDocSidebar} = useContext(SidebarContext);
     const [overscan, setOverscan] = useState(480);
     const [schemasView, setSchemasView] = useState<SchemaViewType[]>([]);
     const [resourceState, setResourceState] = useState<ResourceState[]>([]);
+
+    const prevPath = usePrevious(path);
+    const prevCurrentUrl = usePrevious(currentUrl);
 
     const {isExport} = window as any;
 
     useEffect(() => {
       setOverscan(window.innerHeight / 2);
     }, []);
+
+    useEffect(() => {
+      if (currentDocSidebar === 'content') {
+        setSelectedLine(null);
+      }
+    }, [currentDocSidebar]);
 
     const updateSchemaView = (
       keyBlock: string,
@@ -204,9 +183,9 @@ export const MainContent: FC<MainContentProps> = React.memo(
 
       const index = jdocPositions.indexOf(`${currentPath?.replace(/({|})/gi, '-')}`);
 
-      if (~index && virtuosoRef?.current) {
+      if (~index && virtuosoRef?.current && (prevCurrentUrl !== currentUrl || prevPath !== path)) {
         virtuosoRef.current.scrollToIndex({
-          index,
+          index: index + 1,
           align: 'start',
           behavior: 'auto',
         });
@@ -230,6 +209,17 @@ export const MainContent: FC<MainContentProps> = React.memo(
               setResourceState,
             }}
           >
+            {currentDocSidebar === 'rules' && (
+              <button
+                className="sidebar-rules-close"
+                onClick={() => {
+                  setCurrentDocSidebar(null);
+                  setSelectedLine(null);
+                }}
+              >
+                <i className="icon-close" />
+              </button>
+            )}
             <Virtuoso
               data={jdocList}
               itemContent={(_, item) => item}

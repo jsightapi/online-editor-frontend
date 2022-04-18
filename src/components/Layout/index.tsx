@@ -1,6 +1,7 @@
 import React, {createContext, useState, FC} from 'react';
 import {SidebarContent} from '../SidebarContent';
 import {Settings} from '../Settings';
+import {MainContext} from 'store/MainStore';
 
 interface GlobalSettingsContextInterface {
   isOpen: boolean;
