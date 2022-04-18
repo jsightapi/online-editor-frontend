@@ -44,8 +44,8 @@
 .sidebar-rules-close {
   position: absolute;
   top: 25px;
-  right: 65px;
-  z-index: 9998;
+  right: 40px;
+  z-index: 998;
 }
 
 .sidebar-rules-close,
@@ -64,6 +64,16 @@
   z-index: 3040;
   padding: 0.9rem 3rem 2.3rem;
   background-color: $sidenav-background-color;
+
+  &.is-open {
+    background-color: transparent;
+    .copyright {
+      color: #fff;
+      span {
+        color: #fff;
+      }
+    }
+  }
 
   .btn-settings {
     padding: 1.2rem 2.4rem;
