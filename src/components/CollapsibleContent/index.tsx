@@ -5,6 +5,7 @@ import './CollapsibleConent.scss';
 interface CollapsibleContentProps {
   title: string | JSX.Element;
   rightContent?: JSX.Element;
+  children?: React.ReactNode;
 }
 
 export const CollapsibleContent: FC<CollapsibleContentProps> = ({
