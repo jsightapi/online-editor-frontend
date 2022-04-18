@@ -14,6 +14,7 @@ import {ResourceState, SchemaViewType, SelectedLineType} from 'store/MainStore';
 import {usePrevious} from 'hooks/usePrevious';
 
 import './MainContent.styles.scss';
+import {GlobalSettingsContext} from 'components/Layout';
 
 interface MainContentProps {
   jdocExchange: JDocType;
@@ -29,6 +30,9 @@ export const MainContent: FC<MainContentProps> = React.memo(
     const [jdocPositions, setJdocPositions] = useState<any>([]);
     const {path} = useParams<MainRouterParams>();
     const {currentUrl, currentDocSidebar, setCurrentDocSidebar} = useContext(SidebarContext);
+    const {headersBodiesCode, pathQueriesCode, typesExpand, rulesExpand} = useContext(
+      GlobalSettingsContext
+    );
     const [overscan, setOverscan] = useState(480);
     const [schemasView, setSchemasView] = useState<SchemaViewType[]>([]);
     const [resourceState, setResourceState] = useState<ResourceState[]>([]);
@@ -37,6 +41,50 @@ export const MainContent: FC<MainContentProps> = React.memo(
     const prevCurrentUrl = usePrevious(currentUrl);
 
     const {isExport} = window as any;
+
+    useEffect(() => {
+      setSchemasView((prev) => {
+        return prev.map((item) => {
+          if (item.typeBlock === 'header-body') {
+            item['viewType'] = headersBodiesCode ? 'code' : 'table';
+          }
+          return item;
+        });
+      });
+    }, [headersBodiesCode]);
+
+    useEffect(() => {
+      setSchemasView((prev) => {
+        return prev.map((item) => {
+          if (item.typeBlock === 'path-query') {
+            item['viewType'] = pathQueriesCode ? 'code' : 'table';
+          }
+          return item;
+        });
+      });
+    }, [pathQueriesCode]);
+
+    useEffect(() => {
+      setSchemasView((prev) => {
+        return prev.map((item) => {
+          return {
+            ...item,
+            expandedTypes: typesExpand,
+          };
+        });
+      });
+    }, [typesExpand]);
+
+    useEffect(() => {
+      setSchemasView((prev) => {
+        return prev.map((item) => {
+          return {
+            ...item,
+            collapsedRules: !rulesExpand,
+          };
+        });
+      });
+    }, [rulesExpand]);
 
     useEffect(() => {
       setOverscan(window.innerHeight / 2);
@@ -51,7 +99,7 @@ export const MainContent: FC<MainContentProps> = React.memo(
     const updateSchemaView = (
       keyBlock: string,
       value: any,
-      property: 'collapsedRules' | 'expandedTypes' | 'viewType' | 'expandDetailCard'
+      property: 'collapsedRules' | 'expandedTypes' | 'viewType' | 'expandDetailCard' | 'typeBlock'
     ) => {
       setSchemasView((prev) => {
         if (prev.find((item) => item.key === keyBlock)) {
@@ -84,6 +132,10 @@ export const MainContent: FC<MainContentProps> = React.memo(
 
     const setExpandDetailCard = (keyBlock: string, value: boolean) => {
       updateSchemaView(keyBlock, value, 'expandDetailCard');
+    };
+
+    const setTypeBlock = (keyBlock: string, value: string | undefined) => {
+      updateSchemaView(keyBlock, value, 'typeBlock');
     };
 
     useEffect(() => {
@@ -207,6 +259,7 @@ export const MainContent: FC<MainContentProps> = React.memo(
               setViewType,
               resourceState,
               setResourceState,
+              setTypeBlock,
             }}
           >
             {currentDocSidebar === 'rules' && (

@@ -79,6 +79,7 @@ export const ResourceMethods: FC<ResourceMethodsProps> = ({methods, resourceKey,
             <ResourceBlock
               title="Path parameters"
               keyBlock={`${resourceKey}-${indexMethod}-1`}
+              typeBlock={'path-query'}
               type={pathQueriesViewMode}
               data={{
                 format: 'json',
@@ -99,6 +100,7 @@ export const ResourceMethods: FC<ResourceMethodsProps> = ({methods, resourceKey,
             <ResourceBlock
               keyBlock={`${resourceKey}-${indexMethod}-3`}
               title="Query"
+              typeBlock={'path-query'}
               hideTitle={!!item.query?.example}
               type={pathQueriesViewMode}
               data={item.query}
@@ -110,7 +112,8 @@ export const ResourceMethods: FC<ResourceMethodsProps> = ({methods, resourceKey,
                 <ResourceBlock
                   keyBlock={`${resourceKey}-${indexMethod}-4`}
                   title="Request headers"
-                  type={pathQueriesViewMode}
+                  typeBlock={'header-body'}
+                  type={headersBodiesViewMode}
                   data={item.request.headers}
                   directiveType="header"
                 />
@@ -118,6 +121,7 @@ export const ResourceMethods: FC<ResourceMethodsProps> = ({methods, resourceKey,
               <ResourceBlock
                 keyBlock={`${resourceKey}-${indexMethod}-5`}
                 title="Request body"
+                typeBlock={'header-body'}
                 type={headersBodiesViewMode}
                 data={item.request.body}
               />
@@ -132,14 +136,16 @@ export const ResourceMethods: FC<ResourceMethodsProps> = ({methods, resourceKey,
                   {response.headers && (
                     <ResourceBlock
                       keyBlock={`${resourceKey}-${indexMethod}-6-rh-${index}`}
+                      typeBlock={'header-body'}
                       title="Response headers"
-                      type={pathQueriesViewMode}
+                      type={headersBodiesViewMode}
                       data={response.headers}
                       directiveType="header"
                     />
                   )}
                   <ResourceBlock
                     keyBlock={`${resourceKey}-${indexMethod}-6-rb-${index}`}
+                    typeBlock={'header-body'}
                     title="Response body"
                     type={headersBodiesViewMode}
                     data={response.body}

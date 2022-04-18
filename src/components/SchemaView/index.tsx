@@ -1,10 +1,11 @@
-import React, {createContext, FC, useContext, useLayoutEffect, useMemo} from 'react';
+import React, {createContext, FC, useContext, useEffect, useLayoutEffect, useMemo} from 'react';
 import {TableView} from '../TableView';
 import {SchemaType} from 'api/getResources.model';
 import {CodeView} from '../CodeView';
 import {GlobalSettingsContext} from '../Layout';
 import {ExampleView} from 'components/ExampleView';
 import {MainContext} from 'store';
+import {usePrevious} from 'hooks/usePrevious';
 
 interface SchemaViewContextInterface {
   collapsedRules: boolean;
@@ -24,6 +25,7 @@ interface SchemaViewProps {
   example?: string;
   keyBlock: string;
   directiveType?: string;
+  typeBlock?: string;
 }
 
 export const SchemaView: FC<SchemaViewProps> = ({
@@ -36,9 +38,12 @@ export const SchemaView: FC<SchemaViewProps> = ({
   isCollapsible,
   keyBlock,
   directiveType,
+  typeBlock,
 }) => {
   const {typesExpand, rulesExpand} = useContext(GlobalSettingsContext);
-  const {schemasView, setCollapsedRules, setViewType, setExpandedTypes} = useContext(MainContext);
+  const {schemasView, setCollapsedRules, setViewType, setExpandedTypes, setTypeBlock} = useContext(
+    MainContext
+  );
 
   const collapsedRules = useMemo(() => {
     const schemaView = schemasView.find((item) => item.key === keyBlock);
@@ -59,11 +64,24 @@ export const SchemaView: FC<SchemaViewProps> = ({
     return schemaView && schemaView.viewType ? schemaView.viewType : type;
   }, [schemasView, keyBlock, type]);
 
+  // useEffect(() => {
+  //   setViewType(keyBlock, type);
+  // }, [keyBlock, type]);
+  //
+  // useEffect(() => {
+  //   setExpandedTypes(keyBlock, typesExpand);
+  // }, [typesExpand, keyBlock]);
+  //
+  // useEffect(() => {
+  //   setCollapsedRules(keyBlock, !rulesExpand);
+  // }, [rulesExpand, keyBlock]);
+
   useLayoutEffect(() => {
     if (!schemasView.find((item) => item.key === keyBlock)) {
       setExpandedTypes(keyBlock, typesExpand);
       setCollapsedRules(keyBlock, !rulesExpand);
       setViewType(keyBlock, type);
+      setTypeBlock(keyBlock, typeBlock);
     }
   }, [typesExpand, rulesExpand, type, keyBlock]);
 
