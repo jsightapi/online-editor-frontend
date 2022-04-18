@@ -53,16 +53,25 @@ export const Editor = ({content, setContent, errorRow, scrollToRow, reload}: any
   const [oldRow, setOldRow] = useState<number | undefined>();
   const [decorations, setDecorations] = useState<any>();
 
-  const language = 'jsight';
-  const languages: monaco.languages.ILanguageExtensionPoint[] = [{id: language}];
+  const languagesList = ['jsight', 'jschema', 'markdown'];
+  const currentLanguage = 'jsight';
 
-  const grammars: {[scopeName: string]: ScopeNameInfo} = {
-    [`source.${language}`]: {
-      language,
-      path: `${language}.tmLanguage.json`,
-    },
-  };
+  const languages: monaco.languages.ILanguageExtensionPoint[] = languagesList.map((id) => ({
+    id,
+  }));
 
+  // TODO: "source.${language} is not correct for markdown. MD scope is "text.html.markdown".
+  // TODO: temporarily fixed inside grammar files
+  const grammars: {[scopeName: string]: ScopeNameInfo} = languagesList.reduce(
+      (grammars, language) => ({
+        ...grammars,
+        [`source.${language}`]: {
+          language,
+          path: `grammars/${language}/${language}.tmLanguage.json`,
+        },
+      }),
+      {}
+  );
   useEffect(() => {
     (async () => {
       const fetchGrammar = async (scopeName: ScopeName): Promise<TextMateGrammar> => {
@@ -77,7 +86,7 @@ export const Editor = ({content, setContent, errorRow, scrollToRow, reload}: any
       const fetchConfiguration = async (
         language: LanguageId
       ): Promise<monaco.languages.LanguageConfiguration> => {
-        const uri = `/${language}.json`;
+        const uri = `/grammars/${language}/language-configuration.json`;
         const response = await fetch(uri);
         const rawConfiguration = await response.text();
         return rehydrateRegexps(rawConfiguration);
@@ -111,7 +120,7 @@ export const Editor = ({content, setContent, errorRow, scrollToRow, reload}: any
       if (ref.current) {
         const editor = initializeEditor(ref.current, {
           value: content,
-          language,
+          language: currentLanguage,
           theme: 'jsight-dark',
           fontSize: 14,
           lineHeight: 21,

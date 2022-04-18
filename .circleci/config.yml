@@ -1,6 +1,7 @@
 version: 2.1
 orbs:
   docker: circleci/docker@2.0.3
+  jira: circleci/jira@1.3.1
   common: jsight/common-ci@1.2.4
 
 
@@ -53,6 +54,12 @@ workflows:
           container-name: online-editor-frontend
           image: jsight/online-editor-frontend
           tag: latest
+          post-steps:
+            - jira/notify:
+                job_type: deployment
+                environment_type: production
+                environment: Production
+
       - common/notify-telegram:
           filters: *release-tag-filter
           requires:
@@ -81,6 +88,11 @@ workflows:
           host: ${HOST_STAGE}
           image: *dev-image
           tag: << pipeline.parameters.image-tag >>
+          post-steps:
+            - jira/notify:
+                job_type: deployment
+                environment_type: staging
+                environment: Staging
 
       - common/notify-telegram: &dev-notify
           requires:
@@ -98,6 +110,11 @@ workflows:
       - common/refresh-container:
           <<: *dev-refresh
           host: ${HOST_DEV}
+          post-steps:
+            - jira/notify:
+                job_type: deployment
+                environment_type: testing
+                environment: Test
       - common/notify-telegram:
           <<: *dev-notify
           message: Dev editor frontend updated from branch ${CIRCLE_BRANCH} (commit ${CIRCLE_SHA1})
@@ -118,6 +135,12 @@ workflows:
       - common/refresh-container:
           <<: *dev-refresh
           host: ${HOST_CRAZY}
+          post-steps:
+            - jira/notify:
+                job_type: deployment
+                environment_type: testing
+                environment: Experimental # Test, Production, Staging
+
       - common/notify-telegram:
           <<: *dev-notify
           message: Experimental (crazy) editor frontend updated from branch ${CIRCLE_BRANCH} (commit ${CIRCLE_SHA1})
