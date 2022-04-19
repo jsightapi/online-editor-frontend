@@ -25,6 +25,21 @@ export function useExport() {
     }
 
     if (script) {
+      const scriptText = await fetch(script).then(async (response) => {
+        if (response.ok) {
+          return await response.text();
+        }
+      });
+
+      let cssText: string | undefined = '';
+      if (linkStyle) {
+        cssText = await fetch(linkStyle).then(async (response) => {
+          if (response.ok) {
+            return await response.text();
+          }
+        });
+      }
+
       return `<!DOCTYPE html>
         <html lang="en">
           <head>
@@ -64,9 +79,11 @@ export function useExport() {
                 window.isExport = true;
                 var jdoc = ${JSON.stringify(jdocData)}
             </script>
-            <script defer src="${script}"></script>
+            <script type="module">
+                ${scriptText}
+            </script>
             <link href="${linkStyle}" rel="stylesheet">
-            ${stylesResult}
+            ${cssText ? `<style>${cssText}</style>` : ''}
           </head>
           <body>
             <div id="root"></div>
