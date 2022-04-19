@@ -1,7 +1,6 @@
 import React, {createContext, useState, FC} from 'react';
 import {SidebarContent} from '../SidebarContent';
 import {Settings} from '../Settings';
-import {MainContext} from 'store/MainStore';
 
 interface GlobalSettingsContextInterface {
   isOpen: boolean;
@@ -52,7 +51,7 @@ export const Layout: FC<LayoutProps> = ({children, isShowSidebar, isShowSettings
       }}
     >
       <>
-        {/*{isShowSettings && <Settings />}*/}
+        {isShowSettings && <Settings />}
         <SidebarContent side={side} isShowSettings={isShowSettings} isShow={isShowSidebar} />
       </>
       {children}

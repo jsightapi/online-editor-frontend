@@ -6,6 +6,7 @@ interface ResourceBlockProps {
   title: string;
   hideTitle?: boolean;
   type: string;
+  typeBlock?: string;
   keyBlock: string;
   data: {
     format?: string;
@@ -22,6 +23,7 @@ export const ResourceBlock: FC<ResourceBlockProps> = ({
   keyBlock,
   hideTitle,
   directiveType,
+  typeBlock,
 }) => {
   const renderView = () => {
     const notation = data.schema?.notation;
@@ -32,7 +34,13 @@ export const ResourceBlock: FC<ResourceBlockProps> = ({
         return <div className="content-state">No content allowed</div>;
       default:
         return (
-          <SchemaView {...data} keyBlock={keyBlock} type={type} directiveType={directiveType} />
+          <SchemaView
+            {...data}
+            keyBlock={keyBlock}
+            typeBlock={typeBlock}
+            type={type}
+            directiveType={directiveType}
+          />
         );
     }
   };

@@ -3,9 +3,11 @@ import {getTreeResources} from 'api/getResources';
 import {SidebarGroupRoutes} from './SidebarGroupRoutes';
 import {SidebarReusables} from './SidebarReusables';
 import logo from '../../assets/images/icon-jsight.png';
+import logoWhite from '../../assets/images/icon_jsight_white.png';
 import clsx from 'clsx';
 import './SidebarContent.styles.scss';
 import {JDocContext, SidebarContext} from 'store';
+import {GlobalSettingsContext} from 'components/Layout';
 const {isExport} = window as any;
 
 interface SidebarContentProps {
@@ -16,7 +18,7 @@ interface SidebarContentProps {
 }
 
 export const SidebarContent: FC<SidebarContentProps> = ({side, isShowSettings, isShow}) => {
-  // const {setIsOpen, isOpen} = useContext(GlobalSettingsContext);
+  const {setIsOpen, isOpen} = useContext(GlobalSettingsContext);
   const jdocData = useContext(JDocContext);
   const {setCurrentDocSidebar} = useContext(SidebarContext);
 
@@ -25,9 +27,9 @@ export const SidebarContent: FC<SidebarContentProps> = ({side, isShowSettings, i
     [jdocData]
   );
 
-  // const toggleShowSettings = () => {
-  //   setIsOpen(!isOpen);
-  // };
+  const toggleShowSettings = () => {
+    setIsOpen(!isOpen);
+  };
 
   const sidebarClasses = useMemo(
     () =>
@@ -38,6 +40,8 @@ export const SidebarContent: FC<SidebarContentProps> = ({side, isShowSettings, i
       }),
     [side]
   );
+
+  const footerClasses = useMemo(() => clsx(['sidebar-footer', {'is-open': isOpen}]), [isOpen]);
 
   return (
     <div className={clsx('sidebar-wrapper', {'is-show': isShow})}>
@@ -78,13 +82,13 @@ export const SidebarContent: FC<SidebarContentProps> = ({side, isShowSettings, i
         )}
       </div>
       {isShowSettings && (
-        <div className="sidebar-footer">
-          {/*<button onClick={toggleShowSettings} className="btn-settings d-flex">*/}
-          {/*  <i className="icon-settings" />*/}
-          {/*  Settings*/}
-          {/*</button>*/}
+        <div className={footerClasses}>
+          <button onClick={toggleShowSettings} className="btn-settings d-flex">
+            <i className="icon-settings" />
+            Settings
+          </button>
           <a href="https://jsight.io" className="copyright d-flex">
-            <img src={logo} alt="JSight logo" />
+            <img src={isOpen ? logoWhite : logo} alt="JSight logo" />
             Powered by <span>JSight.io</span>
           </a>
         </div>
