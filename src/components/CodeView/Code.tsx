@@ -2,7 +2,6 @@ import React, {
   createContext,
   FC,
   MutableRefObject,
-  useCallback,
   useContext,
   useEffect,
   useLayoutEffect,
@@ -52,7 +51,6 @@ export interface SchemaData {
 
 interface CodeContextInterface {
   schemaData: SchemaData[];
-  setSchemaData: React.Dispatch<React.SetStateAction<SchemaData[]>>;
   updateAnnotations(value: AnnotationType, additional: boolean, parentNumber?: string): void;
   hiddenInheritedSchemas: SchemaLinePosition[]; // hidden inherited schemes (may be multiple)
   hideInheritedSchema(value: SchemaLinePosition): void;
@@ -72,6 +70,11 @@ interface CodeProps {
   codeViewRef: React.MutableRefObject<HTMLDivElement | null>;
 }
 
+const emptySchemaData = {
+  detailAnnotations: [],
+  children: [],
+};
+
 export const Code: FC<CodeProps> = ({schema, tab, codeViewRef, keyBlock}) => {
   const divRulesRef = useRef<HTMLDivElement | null>(null);
   const [topOffset, setTopOffset] = useState<number>(0);
@@ -79,40 +82,49 @@ export const Code: FC<CodeProps> = ({schema, tab, codeViewRef, keyBlock}) => {
   const [hiddenInheritedSchemas, setHiddenInheritedSchemas] = useState<SchemaLinePosition[]>([]);
   const [hoveredSchema, setHoveredSchema] = useState<SchemaLinePosition | null>(null);
   const [height, setHeight] = useState<number>(0);
-  const [schemaData, setSchemaData] = useState<SchemaData[]>([
-    {
-      detailAnnotations: [],
-      children: [],
-    },
-  ]);
-  const {selectedLine} = useContext(MainContext);
+  const {selectedLine, setSchemasData, schemasData} = useContext(MainContext);
   const {expandedTypes} = useContext(SchemaViewContext);
   const {currentDocSidebar, setCurrentDocSidebar} = useContext(SidebarContext);
+  const [isFirst, setIsFirst] = useState<boolean>(true);
+
+  const schemaData = useMemo(
+    () => (schemasData.hasOwnProperty(keyBlock) ? schemasData[keyBlock] : [emptySchemaData]),
+    [keyBlock, schemasData]
+  );
 
   useLayoutEffect(() => {
-    setSchemaData([
-      {
-        detailAnnotations: [],
-        children: [],
-      },
-    ]);
-  }, [schema.content]);
+    if (!schemasData[keyBlock]) {
+      setSchemasData((prev) => {
+        return {
+          ...prev,
+          [keyBlock]: [emptySchemaData],
+        };
+      });
+    }
+  }, [keyBlock, schema.content]);
 
   useLayoutEffect(() => {
     if (!expandedTypes) {
-      setSchemaData((prev) => [
-        {
-          ...prev[0],
-          children: [],
-        },
-      ]);
+      setSchemasData((prev) => {
+        return {
+          ...prev,
+          [keyBlock]: isFirst
+            ? prev[keyBlock]
+            : [
+                {
+                  ...prev[keyBlock][0],
+                  children: [],
+                },
+              ],
+        };
+      });
+      setIsFirst(false);
     }
   }, [expandedTypes]);
 
   const annotations = useMemo(() => {
     const getAnnotations = (schemaData: SchemaData[]) => {
       let annotations: AnnotationType[] = [];
-
       schemaData.map((item) => {
         annotations = [...annotations, ...item.detailAnnotations];
         if (item.children.length > 0) {
@@ -151,47 +163,48 @@ export const Code: FC<CodeProps> = ({schema, tab, codeViewRef, keyBlock}) => {
     }
   };
 
-  const updateAnnotations = useCallback(
-    (value: AnnotationType, additional: boolean, numberLine?: string) => {
-      const addAnnotation = (
-        currentData: SchemaData[],
-        value: AnnotationType,
-        parentNumber?: string
-      ): SchemaData[] => {
-        return currentData.map((item) => {
-          if (parentNumber === item.numberLine) {
-            return {
-              ...item,
-              detailAnnotations: updateExistAnnotation(item.detailAnnotations, value),
-            };
-          } else if (item.children.length > 0) {
-            return {
-              ...item,
-              children: addAnnotation(item.children, value, parentNumber),
-            };
-          } else {
-            return item;
-          }
-        });
-      };
-
-      const removeAnnotation = (currentData: SchemaData[], numberLine: string): SchemaData[] => {
-        return currentData.map((item) => {
+  const updateAnnotations = (value: AnnotationType, additional: boolean, numberLine?: string) => {
+    const addAnnotation = (
+      currentData: SchemaData[],
+      value: AnnotationType,
+      parentNumber?: string
+    ): SchemaData[] => {
+      return currentData.map((item) => {
+        if (parentNumber === item.numberLine) {
           return {
             ...item,
-            detailAnnotations: item.detailAnnotations.filter(
-              (annotation) => annotation.numberLine !== numberLine
-            ),
+            detailAnnotations: updateExistAnnotation(item.detailAnnotations, value),
           };
-        });
-      };
+        } else if (item.children.length > 0) {
+          return {
+            ...item,
+            children: addAnnotation(item.children, value, parentNumber),
+          };
+        } else {
+          return item;
+        }
+      });
+    };
 
-      additional
-        ? setSchemaData((prev) => addAnnotation(prev, value, numberLine))
-        : setSchemaData((prev) => removeAnnotation(prev, value.numberLine));
-    },
-    []
-  );
+    const removeAnnotation = (currentData: SchemaData[], numberLine: string): SchemaData[] => {
+      return currentData.map((item) => {
+        return {
+          ...item,
+          detailAnnotations: item.detailAnnotations.filter(
+            (annotation) => annotation.numberLine !== numberLine
+          ),
+        };
+      });
+    };
+
+    additional
+      ? setSchemasData((prev) => {
+          return {...prev, [keyBlock]: addAnnotation(prev[keyBlock], value, numberLine)};
+        })
+      : setSchemasData((prev) => {
+          return {...prev, [keyBlock]: removeAnnotation(prev[keyBlock], value.numberLine)};
+        });
+  };
 
   // block height is changed when schema is collapsed/expanded
   useEffect(() => {
@@ -301,11 +314,11 @@ export const Code: FC<CodeProps> = ({schema, tab, codeViewRef, keyBlock}) => {
       level: 0,
       schemasNames: [],
     });
+
     return (
       <CodeContext.Provider
         value={{
           schemaData,
-          setSchemaData,
           hiddenInheritedSchemas,
           hideInheritedSchema,
           showInheritedSchema,

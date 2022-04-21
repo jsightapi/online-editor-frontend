@@ -15,6 +15,14 @@ import {usePrevious} from 'hooks/usePrevious';
 
 import './MainContent.styles.scss';
 import {GlobalSettingsContext} from 'components/Layout';
+import {SchemaData} from 'components/CodeView/Code';
+
+type SchemaPropertyType =
+  | 'collapsedRules'
+  | 'expandedTypes'
+  | 'viewType'
+  | 'expandDetailCard'
+  | 'typeBlock';
 
 interface MainContentProps {
   jdocExchange: JDocType;
@@ -35,6 +43,7 @@ export const MainContent: FC<MainContentProps> = React.memo(
     );
     const [overscan, setOverscan] = useState(480);
     const [schemasView, setSchemasView] = useState<SchemaViewType[]>([]);
+    const [schemasData, setSchemasData] = useState<{[key: string]: SchemaData[]}>({});
     const [resourceState, setResourceState] = useState<ResourceState[]>([]);
 
     const prevPath = usePrevious(path);
@@ -96,11 +105,7 @@ export const MainContent: FC<MainContentProps> = React.memo(
       }
     }, [currentDocSidebar]);
 
-    const updateSchemaView = (
-      keyBlock: string,
-      value: any,
-      property: 'collapsedRules' | 'expandedTypes' | 'viewType' | 'expandDetailCard' | 'typeBlock'
-    ) => {
+    const updateSchemaView = (keyBlock: string, value: any, property: SchemaPropertyType) => {
       setSchemasView((prev) => {
         if (prev.find((item) => item.key === keyBlock)) {
           return prev.map((item) => {
@@ -260,6 +265,8 @@ export const MainContent: FC<MainContentProps> = React.memo(
               resourceState,
               setResourceState,
               setTypeBlock,
+              setSchemasData,
+              schemasData,
             }}
           >
             {currentDocSidebar === 'rules' && (

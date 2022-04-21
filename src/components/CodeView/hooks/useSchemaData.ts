@@ -1,5 +1,6 @@
-import {useContext, useMemo} from 'react';
+import {useContext, useMemo, useState} from 'react';
 import {CodeContext, SchemaData} from 'components/CodeView/Code';
+import {MainContext} from 'store';
 
 interface useSchemaDataArgs {
   numberLine: string;
@@ -7,7 +8,9 @@ interface useSchemaDataArgs {
 }
 
 export function useSchemaData({numberLine, parentNumber}: useSchemaDataArgs) {
-  const {schemaData, setSchemaData} = useContext(CodeContext);
+  const {keyBlock, schemaData} = useContext(CodeContext);
+  const {setSchemasData} = useContext(MainContext);
+  const [isFirst, setIsFirst] = useState<boolean>(true);
 
   const currentSchema = useMemo(() => {
     const getSchema = (schemas: SchemaData[]): string | null => {
@@ -24,12 +27,31 @@ export function useSchemaData({numberLine, parentNumber}: useSchemaDataArgs) {
 
   const setCurrentSchema = (value: string | null, expandTypesMode = false) => {
     if (currentSchema === value && !expandTypesMode) {
-      setSchemaData((prev) => removeSchemaData(prev, numberLine));
+      setSchemasData((prev) => {
+        return {
+          ...prev,
+          [keyBlock]: removeSchemaData(prev[keyBlock], numberLine),
+        };
+      });
     } else if (value) {
-      setSchemaData((prev) => addSchemaData(prev, value, [], parentNumber, expandTypesMode));
+      setSchemasData((prev) => {
+        return {
+          ...prev,
+          [keyBlock]: addSchemaData(prev[keyBlock], value, [], parentNumber, expandTypesMode),
+        };
+      });
     } else {
-      setSchemaData((prev) => removeSchemaData(prev, numberLine));
+      setSchemasData((prev) => {
+        return {
+          ...prev,
+          [keyBlock]:
+            prev.hasOwnProperty(keyBlock) && isFirst
+              ? prev[keyBlock]
+              : removeSchemaData(schemaData, numberLine),
+        };
+      });
     }
+    setIsFirst(false);
   };
 
   const removeSchemaData = (schemas: SchemaData[], numberLine: string): SchemaData[] => {

@@ -64,18 +64,6 @@ export const SchemaView: FC<SchemaViewProps> = ({
     return schemaView && schemaView.viewType ? schemaView.viewType : type;
   }, [schemasView, keyBlock, type]);
 
-  // useEffect(() => {
-  //   setViewType(keyBlock, type);
-  // }, [keyBlock, type]);
-  //
-  // useEffect(() => {
-  //   setExpandedTypes(keyBlock, typesExpand);
-  // }, [typesExpand, keyBlock]);
-  //
-  // useEffect(() => {
-  //   setCollapsedRules(keyBlock, !rulesExpand);
-  // }, [rulesExpand, keyBlock]);
-
   useLayoutEffect(() => {
     if (!schemasView.find((item) => item.key === keyBlock)) {
       setExpandedTypes(keyBlock, typesExpand);
