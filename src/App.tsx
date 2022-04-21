@@ -4,7 +4,10 @@ import Modal from 'react-modal';
 import EditorScreen from './screens/Editor';
 import './styles/globals.scss';
 import './components/Modals/style.scss';
-Modal.setAppElement('#root');
+const {isExport} = window as any;
+if (isExport) {
+  Modal.setAppElement('#root');
+}
 
 const App: FC = () => {
   return (
