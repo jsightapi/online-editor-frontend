@@ -122,6 +122,7 @@ workflows:
           <<: *dev-notify
           message: Experimental (crazy) editor frontend updated from branch ${CIRCLE_BRANCH} (commit ${CIRCLE_SHA1})
 
+
   ci-test:
     when:
       equal: [ ci-test, << pipeline.git.branch >> ]
