@@ -238,10 +238,12 @@ export const EditorScreen: FC = () => {
         </SidebarContext.Provider>
         <ToastContainer rtl={true} position="bottom-right" />
       </div>
-      <ContactForm
-        modalIsOpen={contactModalVisible}
-        onClose={() => setContactModalVisible(false)}
-      />
+      {!isExport && (
+        <ContactForm
+          modalIsOpen={contactModalVisible}
+          onClose={() => setContactModalVisible(false)}
+        />
+      )}
     </JDocContext.Provider>
   );
 };
