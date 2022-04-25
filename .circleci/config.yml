@@ -28,7 +28,7 @@ workflows:
           tag: '${FULL_VERSION},${MAJOR_VERSION},latest' # values available thx to pre-steps
           extra_build_args: '--build-arg GTM_ID=${PROD_GTM_ID}'
           pre-steps:
-            - common/parse-version-numbers
+            - common/parse-versions
       - approve-production-deploy:
           filters: *release-tag-filter
           type: approval
