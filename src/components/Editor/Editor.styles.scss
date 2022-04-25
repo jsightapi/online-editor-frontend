@@ -1,13 +1,5 @@
-@tailwind base;
-@import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@200;400;600;700&display=swap');
-@tailwind components;
-@tailwind utilities;
 @import 'src/styles/variables';
 
-html,
-body {
-  @apply font-display;
-}
 .brd {
   border: 1px solid red;
 }
@@ -29,10 +21,9 @@ body {
   top: 4px;
   right: 12px;
   position: absolute;
-  border: transparent 0.6em solid;
-  border-bottom-color: $sidenav-background-color;
-  border-bottom-width: 1em;
+  border: 0.6em solid transparent;
   border-top-width: 0;
+  border-bottom: 1em $sidenav-background-color;
 }
 
 .errorHoleLine::after {
