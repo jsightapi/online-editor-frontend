@@ -10,7 +10,7 @@ TYPE @testSectionButtonsZIndex /* 1) Open a details card.
   
 # Test long one-line schemas
 TYPE @testOneLineLongSchema // Test that it looks normally in code view and does not overlap notation label.
-  "veryLongSchemaJustExtremelyLongveryLongSchemaJustExtremelyLong" // {type: "string"}
+  "veryLongSchemaJustExtremelyLongveryLongSchemaJustExtremelyLongveryLongSchemaJustExtremelyLongveryLongSchemaJustExtremelyLong" // {type: "string"}
 
 # Test TYPES By Example
 
@@ -387,6 +387,28 @@ TYPE @testAllOflevels // Test the fields order: 1-1-2-2-3-3.
 { // {allOf: "@level2"}
   "level3Field1": 3,
   "level3Field2": 3
+}
+
+# Test multiple allOf order
+
+TYPE @testMultipleAllOfOrder1 // Must be 1-2-3-4.
+{ // {allOf: ["@allOf1", "@allOf2"]} 
+}
+
+TYPE @testMultipleAllOfOrder2 // Must be 3-4-2-1.
+{ // {allOf: ["@allOf2", "@allOf1"]}
+}
+
+TYPE @allOf1
+{
+  "1": 1,
+  "2": 2
+}
+
+TYPE @allOf2
+{
+  "3": 3,
+  "4": 4
 }
 
 # Test rules together
