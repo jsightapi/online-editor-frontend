@@ -395,17 +395,17 @@ TYPE @testMultipleAllOfOrder1 // Must be 1-2-3-4.
 { // {allOf: ["@allOf1", "@allOf2"]} 
 }
 
-TYPE @testMultipleAllOfOrder2 // Must be 3-4-2-1.
+TYPE @testMultipleAllOfOrder2 // Must be 3-4-1-2.
 { // {allOf: ["@allOf2", "@allOf1"]}
 }
 
-TYPE @allOf1
+TYPE @allOf1 // Skip it.
 {
   "1": 1,
   "2": 2
 }
 
-TYPE @allOf2
+TYPE @allOf2 // Skip it.
 {
   "3": 3,
   "4": 4

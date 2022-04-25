@@ -212,6 +212,14 @@ POST /size/long-description
                                         Just very very very very long. */
   }  
 
+# Check extra long Key
+
+POST /size/long-description
+  Query
+  {
+    "thisIsTheExtraLongKeySoExtraLongThatItIsJustUnbelievablyLong": "description"
+  }  
+
 # helpfull types
 TYPE @STOP_HERE // Thank you for testing! No need to check below.
   {}
