@@ -1,7 +1,8 @@
 version: 2.1
 orbs:
   docker: circleci/docker@2.0.3
-  common: jsight/common-ci@1.2.4
+  jira: circleci/jira@1.3.1
+  common: jsight/common-ci@1.3.0
 
 
 parameters:
@@ -17,27 +18,17 @@ workflows:
         pattern: "^release-.*"
         value: << pipeline.git.tag >>
     jobs:
-      - common/save-version-numbers:
+      - docker/publish:
           filters: &release-tag-filter
             tags:
               only: /^release-.*/
-      - docker/publish:
-          filters: *release-tag-filter
-          requires:
-            - common/save-version-numbers
           executor: common/vm-medium
           context: &common-context online-editor-development
           image: jsight/online-editor-frontend
-          tag: '${FULL_VERSION_TAG},${MAJOR_VERSION_TAG},latest'
+          tag: '${FULL_VERSION},${MAJOR_VERSION},latest' # values available thx to pre-steps
           extra_build_args: '--build-arg GTM_ID=${PROD_GTM_ID}'
-          attach-at: /tmp/workspace
-          before_build:
-            - run:
-                name: Read version number tags from workspace
-                command: |
-                  echo "Versions read: $(cat /tmp/workspace/full-version) , $(cat /tmp/workspace/major-version)"
-                  echo "export FULL_VERSION_TAG=$(cat /tmp/workspace/full-version)" >> $BASH_ENV
-                  echo "export MAJOR_VERSION_TAG=$(cat /tmp/workspace/major-version)" >> $BASH_ENV
+          pre-steps:
+            - common/parse-versions
       - approve-production-deploy:
           filters: *release-tag-filter
           type: approval
@@ -53,6 +44,12 @@ workflows:
           container-name: online-editor-frontend
           image: jsight/online-editor-frontend
           tag: latest
+          post-steps:
+            - jira/notify:
+                job_type: deployment
+                environment_type: production
+                environment: Production
+
       - common/notify-telegram:
           filters: *release-tag-filter
           requires:
@@ -81,6 +78,11 @@ workflows:
           host: ${HOST_STAGE}
           image: *dev-image
           tag: << pipeline.parameters.image-tag >>
+          post-steps:
+            - jira/notify:
+                job_type: deployment
+                environment_type: staging
+                environment: Staging
 
       - common/notify-telegram: &dev-notify
           requires:
@@ -98,6 +100,11 @@ workflows:
       - common/refresh-container:
           <<: *dev-refresh
           host: ${HOST_DEV}
+          post-steps:
+            - jira/notify:
+                job_type: deployment
+                environment_type: testing
+                environment: Test
       - common/notify-telegram:
           <<: *dev-notify
           message: Dev editor frontend updated from branch ${CIRCLE_BRANCH} (commit ${CIRCLE_SHA1})
@@ -118,10 +125,14 @@ workflows:
       - common/refresh-container:
           <<: *dev-refresh
           host: ${HOST_CRAZY}
+          post-steps:
+            - jira/notify:
+                job_type: deployment
+                environment_type: testing
+                environment: Experimental # Test, Production, Staging
       - common/notify-telegram:
           <<: *dev-notify
           message: Experimental (crazy) editor frontend updated from branch ${CIRCLE_BRANCH} (commit ${CIRCLE_SHA1})
-
 
   ci-test:
     when:
