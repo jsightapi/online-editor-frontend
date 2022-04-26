@@ -1,0 +1,417 @@
+JSIGHT 0.3
+
+INFO
+  Title "\"Catsbook\" social network API"
+  Description
+  (
+    **Catsbook** social network API.
+    
+    # API purpose
+
+    This example uses all the features of
+    *JSight API 0.3* language.
+
+    Among others:
+
+    - one, 
+    - two,
+    - three.
+
+    And lets look on the table:
+
+    ## The table
+
+    | Header  | Header  |
+    | ------- | ------- |
+    | Cell    | Cell    |
+    | Cell    | Cell    |
+  )
+  Version 1.0
+
+SERVER @DEV // Developers server.
+  BaseUrl "192.168.0.100"
+
+SERVER @PROD
+  BaseUrl "https://{env}.catsbook.com/api/{version}/{locale}/"
+
+#------------------------------------------- CATS ------------------------------------------------------
+
+URL /cats
+
+  GET /* Get all 
+         the cats. */
+    Query "page=1&per_page=50&filter[size]=XXL"
+    {
+      "page": 1,
+      "per_page": 50,  // {optional: true, max: 100}
+      "filter": {      // {optional: true}
+        "size": "XXL", // {optional: true } - Cat size filter. # TODO: enum: "@catSizeEnum"
+        "age" : 12     // {optional: true                      } - Cat age filter.
+      }
+    }
+
+    200 // Cat’s list.
+      Headers
+        { # we shouldn't forget to add "additionalProperties: true" to JDoc Exchange Schema
+          "Content-Type": "application/json" // {const: true}
+        }
+      Body [@cat]
+      
+    500
+      { # Body omited
+        "ErrorMessage" : "Something is terribly wrong!"
+      }
+
+      Headers
+        {} // {allOf: "@standardHeaders"}
+
+    500
+      @serverError # Body omited
+  
+  POST // Create a new cat.
+    Description
+      You must be very carefull
+      when creating a new cat.
+
+      Do not be disturbed!
+    
+    Request @cat
+
+    200 @cat
+
+    PASTE @commonErrors
+
+URL /cats/{id}
+(
+  Path
+  {
+    "id": @catId // Cat’s id.
+  }
+
+  GET // Get a cat by it’s id.
+    Description
+      Returns a cat’s definition by it’s id.
+
+    200 @cat // Take your cat!
+
+    500 @serverError
+
+    404 empty
+
+  PUT // Update cat completely.
+    
+    Request jsight
+      @cat
+
+    200
+      Body @cat
+    
+    500 any
+
+  PATCH // Change cat’s mood status.
+    Request
+      { # Request and Body are omited.
+        "moodStatus": "happy" // {enum: ["happy", "gloomy"]}
+      }
+
+    200
+      Body # Body without parameters.
+        {
+          "moodStatus": "happy" // {enum: ["happy", "gloomy"]}
+        }
+
+    500
+      Body regex
+        /Error/
+
+  DELETE // Delete a cat.
+    Query "force=1" htmlFormEncoded
+    {
+      "force": 1 // {optional: true, enum: [0,1]} - Means, should API delete a cat if it has some friends.
+    }
+
+    # we do not specify responses, which mean that any response is possible.
+)
+
+URL /cats/friends
+  GET
+    200 [@cat]
+    #TODO: @COMMON_ERRORS_DIR
+
+URL "/cats/enemies"
+  GET
+    200
+      [ // {type: "array", maxItems: 100}
+        @pig,
+        @dog | @pig
+      ]
+
+
+URL /cats/astronauts
+  GET // Get all the cats-astronauts.
+    200
+      Body jsight
+        {} // {allOf: ["@cat", "@astronaut"]}
+
+#------------------------------------------- PETS ------------------------------------------------------
+
+GET /pets // Get all pets.
+  Query htmlFormEncoded
+    @standardQuery
+  
+  200 [@pet]
+
+GET /pets/{passportNumber} // Get all pets by passport number.
+  Path
+    @petPathVariables
+
+  200 [@pet]
+
+#------------------------------------------- DOGS ------------------------------------------------------
+
+URL /dogs
+
+  GET // Get all dogs (paged list).
+    Query
+    { // {allOf: "@standardQuery"}
+      "page": 1,
+      "per_page": 50,   // {type: "integer", max: 100, optional: true}
+      "filter": {       // {optional: true}
+        "age"    : 12,  // {optional: true} - Dog age filter.
+        "canHunt": true /* {type: "boolean", optional: true} 
+                           - Hunting ability filter. */
+      }
+    }
+
+    200
+      [ // {minItems: 0, maxItems: 100}
+        @dog
+      ]
+
+  POST // Create a new dog.
+    Request
+      Headers
+        @standardHeaders
+      Body @dog
+
+      # no responses specified — it means that any response is possible.
+
+GET /dogs/{id} // Get a dog by it’s id.
+  200 @dog
+
+POST /dogs/{id} // Replace a dog completely (exact copy of PUT /dogs/{id} method).
+  Request
+    @dog
+
+  200 @dog
+
+PATCH /dogs/{id}
+  Request
+  { # Body is omited.
+    "moodStatus": "happy"
+  }
+  Headers
+  { // {allOf: "@standardHeaders"}
+    "Content-type": "application/json"
+  }
+
+  200 // Status is successfully changed.
+    "OK" // {const: true}
+
+URL /dogs/{id}
+  # Path is not specified deliberately.
+
+  PUT # Annotation is not specified.
+    Request
+      Headers 
+      {
+        "Content-type": "application/json" // {const: true}
+      }
+
+      Body 
+      { // {allOf: "@pet"}
+        "id"             : "DOG-123", // {type: "string", regex: "DOG-\\d+"}
+        "canHunt"        : false,
+        "maxToothLength" : 0.013
+      }
+
+    200 @dog
+
+GET /extremely-wierd-endpoint
+  Query "myVeryStrange[way]of%20query=string\\encoding" noFormat
+    {
+      "myVeryStrange": [
+        "way"
+      ],
+      "of query": "string\\encoding"
+    }
+
+  200 
+    @very_strange_type_123
+
+#------------------------------------------- TYPES ------------------------------------------------------    
+
+TYPE @cat // A cat.
+{ // {allOf: "@pet"}
+  "id"                 : "CAT-123", // {type: "@catId"} - Cat’s id.
+  "size"               : "XXL",     // # TODO: {enum: "@catSizeEnum"}
+  "tailHeight"         : 0.743,     // {type: "float"}
+  "friends"            : @catList,  // {optional: true} # here we check recursive types.
+  "enemies": {
+    "dogs": { // {additionalProperties: true}
+      @dogId: @dog // {optional: true}
+    }
+  },
+  "playing": {
+    "likesToPlay"        : true,
+    "prefferedMouseColor": "white"   // {enum: ["white", "gray"]}
+  }
+}
+
+TYPE @dog /* A dog. */
+{ // {allOf: "@pet"}
+  "id"             : "DOG-123", // {type: "string", regex: "DOG-\\d+"}
+  "canHunt"        : false,
+  "maxToothLength" : 0.013
+}
+
+TYPE @pig // A pig.
+{ // {allOf: "@animal"}
+  "id": "PIG-123",
+  "lastWashTime" : "2006-01-02T15:04:05+07:00" // { type: "datetime"}
+}
+
+TYPE @pet
+{ // {allOf: "@animal"}
+  "passportNumber": 1234123212, /* {or: [
+                                    {type: "integer"},
+                                    {type: "string" , minLength: 10, maxLength: 10}
+                                 ]} */
+  "name"          : "Thomas the Great",
+  "email"         : "thomas@catsbook.com",             // {type: "email"}
+  "website"       : "http://www.thomas-the-great.com", // {type: "uri", nullable: true}
+  # One pet can have several owners.
+  "owners"        : [ // Owners
+    {                 // Owner
+      "id"   : "550e8400-e29b-41d4-a716-446655440000", // {type: "uuid"} - Owners id. # Some text comment.
+      "name" : "John"
+    }
+  ]
+}
+
+TYPE @animal
+{
+  "type"       : @animalType,
+  "moodStatus" : "happy", // {type: "enum", enum: ["happy", "gloomy"]}
+  ###
+    `age` is calculated by `birthday`.
+  ###
+  "age"        : 12,  // {min:    0, max: 600}
+  "weight"     : 2.5, /* {min:    0, exclusiveMinimum: true, 
+                          max: 6000, exclusiveMaximum: false} */
+  "birthday"   : "2006-01-02" // {type: "date"}
+}
+
+TYPE @astronaut jsight // An astronaut.
+{ // {type: "object"}
+  "spaceSuitSize": 4,      // {min: 1, max: 5}
+  "salary"       : 422.34, // {precision: 2}
+  "taxes"        : 12.34   // {type: "decimal", precision: 2}
+}
+
+TYPE @catId regex
+  /CAT-\d+/
+
+TYPE @dogId
+  "DOG-12341" // {regex: "DOG-\\d+", minLength: 4, maxLength: 255}
+
+TYPE @animalType jsight
+  "cat" /* {enum: [
+            "cat",
+            "dog",
+            "pig",
+            "frog"
+          ]} 
+        */
+
+###
+TODO:
+  "cat" /* 
+            {enum: [
+              // Domestic
+              "cat", // Cat
+              "dog", // Dog
+              "pig", // Pig
+              /* Wild */
+              "frog" /* Frog */
+            ]}
+        */
+###        
+
+TYPE @very_strange_type_123 jsight
+{
+  "nullField"         : null,
+  "wierdEnum"         : 1 , // {enum: [1, 2, "a", "b", true, false, null]}
+  "anyField"          : {}, // {type: "any"}
+  "astronautHtmlForm" : "spaceSuitSize=4&salary=422.34&taxes=12.34" # TODO: /* 
+                             # {serializeFormat: "htmlFormEncoded", serializedType: "@astronaut"} */
+}
+
+TYPE @serverError
+{
+  "errorCode"   : 123,
+  "errorMessage": "All is bad"
+}
+
+TYPE @standardQuery
+{
+  "debug": 1 // {const: true, optional: true}
+}
+
+TYPE @standardHeaders
+{
+  "Authorization": "bearer asdfasdfasdfasdf" // {optional: true}
+}
+
+### 
+Here we check block comments.
+TODO: We need more perfect tests of block comments.
+###
+
+TYPE @petPathVariables
+{
+  "passportNumber": 12312312
+}
+
+TYPE @catList
+[
+  @cat
+]
+
+#------------------------------------------------- ENUMS -----------------------------------------------
+
+### 
+TODO:
+ENUM @catSizeEnum // Cat’s sizes.
+[
+  // Small cats.
+  "S",
+  "M",
+  // Normal cats.
+  "L",
+  /* Huge 
+  cats */
+  "XL",
+  "XXL"
+]
+###
+
+
+#--------------------------------------------------- MACROS ------------------------------------
+MACRO @commonErrors
+(
+  404
+    Body regex
+      /Bad request./
+  500 any
+)
