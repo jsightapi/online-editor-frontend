@@ -11,12 +11,6 @@
 9. Details card tests.
 10. Table View tests.
 
-# Heading tests
-
-1. Check the API title at the preview heading pane.
-  - Check preview heading pane when title is empty.
-2. Check "Back to editor" button.
-
 # Contents Sidebar tests
 
 1. Check positioning after item click.

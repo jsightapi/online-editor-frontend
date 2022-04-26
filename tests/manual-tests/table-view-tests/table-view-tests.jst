@@ -7,7 +7,7 @@ POST /types/test-rule-type-standard-types
     {
       "integerPositive" : 1,    // {type: "integer"}
       "floatPositive1"  : 1.2,  // {type: "float"}
-      "boolean1"        : true, // {type: "boolean"}
+      "boolean"        : true, // {type: "boolean"}
       "array": [ // {type: "array"}
         "array item" // {type: "string"}
       ],
@@ -214,7 +214,7 @@ POST /size/long-description
 
 # Check extra long Key
 
-POST /size/long-description
+POST /size/long-key
   Query
   {
     "thisIsTheExtraLongKeySoExtraLongThatItIsJustUnbelievablyLong": "description"

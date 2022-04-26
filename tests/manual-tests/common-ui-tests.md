@@ -63,7 +63,7 @@ Code content should not be changed.
 
 ### Check smooth scroll up and down
 
-### Check scroll up and down using Pg Up, Pg Down
+### Check scroll up and down using Pg Up, Pg Down, Cursor Down Arrow, Cursor Up Arrow
 
 ### Check support window
 
@@ -78,6 +78,12 @@ Code content should not be changed.
 2. Scroll up or down and come back.
 3. Check that schema section is in the same state as it was before scroll.
 
+### Servers section must remember its state
+
+1. Open Servers section.
+2. Scroll down deeply and come back.
+3. Check Servers section is still opened.
+
 ### Details card
 
 1. Check that you can close details card using either cross-mark near the top right corner of card
@@ -88,8 +94,3 @@ Code content should not be changed.
 ## Examples
 
 1. Check links in each example.
-
-## Preview mode
-
-1. Check API Title in Preview mode. Also check when it is empty.
-2. Check that "Powered by JSight" panel click directs to editor page.
