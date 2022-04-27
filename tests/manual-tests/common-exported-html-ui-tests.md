@@ -25,3 +25,7 @@
 # Logo
 
 1. Check that "Powered by JSight" panel click directs to editor page.
+
+# Upload
+
+1. Review all resources, which are uploaded during opening the HTML file.
