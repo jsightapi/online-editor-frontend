@@ -31,3 +31,11 @@
 # Logo
 
 1. Check that "Powered by JSight" panel click directs to editor page.
+
+# Code Editor and Preview
+
+1. Enter some long code in the code editor.
+2. Scroll down the editor panel.
+3. Switch to the preview mode.
+4. Come back to the editor mode.
+5. Check, that the vertical scroll position of the code editor stayed the same.
