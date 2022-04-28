@@ -2,9 +2,8 @@ import {useContext, useMemo} from 'react';
 import {CodeContext} from 'components/CodeView/Code';
 import {useShowDetailInfo} from '../hooks/useShowDetailInfo';
 import {RulesType} from 'api/getResources.model';
-import {MainContext} from 'components/MainContent';
 import {SchemaViewContext} from 'components/SchemaView';
-import {SidebarContext} from 'screens/Editor';
+import {MainContext, SidebarContext} from 'store';
 
 interface SelectionLineArgs {
   numberLine: string;
@@ -35,10 +34,10 @@ export function useSelectionLine({
 
   const isShowDetailInfo = useShowDetailInfo(rules, notes);
 
-  const isSelected = useMemo(
-    () => selectedLine?.numberLine === numberLine,
-    [numberLine, selectedLine]
-  );
+  const isSelected = useMemo(() => selectedLine?.numberLine === numberLine, [
+    numberLine,
+    selectedLine,
+  ]);
 
   const isHovered = useMemo(
     () =>

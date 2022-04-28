@@ -16,9 +16,8 @@ import {createPortal} from 'react-dom';
 import {RightRules} from 'components/CodeView/RightRules';
 import {map} from 'lodash';
 import {SchemaViewContext} from 'components/SchemaView';
-import {SidebarContext} from 'screens/Editor';
-import {MainContext} from 'components/MainContent';
 import {RegexView} from 'components/CodeView/RegexView';
+import {MainContext, SidebarContext} from 'store';
 
 export interface AnnotationType {
   name: string; // name of the related property (shown in the card)
@@ -209,7 +208,7 @@ export const Code: FC<CodeProps> = ({schema, tab, codeViewRef, keyBlock}) => {
     // eslint-disable-next-line
   }, [selectedLine]);
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     const wrapper = divRulesRef.current?.closest<HTMLDivElement>('.resource-content');
     const rightOffset = wrapper ? parseInt(getComputedStyle(wrapper).paddingRight) : 0;
     setRightOffset(rightOffset);
@@ -336,7 +335,7 @@ export const Code: FC<CodeProps> = ({schema, tab, codeViewRef, keyBlock}) => {
       </CodeContext.Provider>
     );
   } else if (schema.notation === 'regex') {
-    return <RegexView tab={0} content={schema.content as unknown as string} />;
+    return <RegexView tab={0} content={(schema.content as unknown) as string} />;
   } else {
     return null;
   }

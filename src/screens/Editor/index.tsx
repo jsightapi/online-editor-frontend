@@ -1,12 +1,4 @@
-import React, {
-  useState,
-  FC,
-  useEffect,
-  useMemo,
-  createContext,
-  startTransition,
-  useCallback,
-} from 'react';
+import React, {useState, FC, useEffect, useMemo, startTransition, useCallback} from 'react';
 import clsx from 'clsx';
 import {toast, ToastContainer} from 'react-toastify';
 import {Resizable} from 're-resizable';
@@ -26,30 +18,18 @@ import './Editor.styles.scss';
 import 'react-toastify/dist/ReactToastify.css';
 import {ContactForm} from 'components/Modals/ContactForm';
 import {HeaderDoc} from 'components/Header/HeaderDoc';
-import {AppProps} from 'App';
 import {screenWidthMultiplier} from 'utils/screenWidthMultiplier';
+import {editorModeType, SidebarDocType} from 'types';
+import {JDocContext, SidebarContext} from 'store';
+import {onOrientationChange} from 'utils/onOrientationChange';
 
 const {isExport} = window as any;
 
 const SCROLLBAR_WIDTH = 20;
 
-export type SidebarDocType = 'content' | 'rules' | null;
-
-interface SidebarContextInterface {
-  currentDocSidebar: SidebarDocType;
-  setCurrentDocSidebar: React.Dispatch<React.SetStateAction<SidebarDocType>>;
-  currentUrl: string | null;
-  setCurrentUrl: React.Dispatch<React.SetStateAction<string | null>>;
-}
-
-export type editorModeType = 'editor' | 'doc';
-
-export const JDocContext = createContext({} as JDocType | undefined);
-export const SidebarContext = createContext({} as SidebarContextInterface);
-
-export const EditorScreen: FC<AppProps> = ({onlyDoc}) => {
+export const EditorScreen: FC = () => {
   const [currentUrl, setCurrentUrl] = useState<string | null>(null);
-  const [viewMode, setViewMode] = useState<editorModeType>(onlyDoc || isExport ? 'doc' : 'editor');
+  const [viewMode, setViewMode] = useState<editorModeType>(isExport ? 'doc' : 'editor');
   // left sidebar
   const [codeContentsSidebar] = useState<boolean>(false);
   //documentation sidebar on the right
@@ -70,17 +50,24 @@ export const EditorScreen: FC<AppProps> = ({onlyDoc}) => {
     return (screenWidth / 2 - SCROLLBAR_WIDTH) / screenWidthMultiplier(screenWidth);
   };
 
-  const editorWidthFinal =
-    localStorage.getItem('oldScreenWidth') === screenWidth.toString()
-      ? localStorage.getItem('editorWidth') || getEditorWidth(screenWidth)
-      : getEditorWidth(screenWidth);
+  const getDocWidth = (screenWidth: number) => {
+    const editorWidthNumber = typeof editorWidth === 'string' ? parseInt(editorWidth) : editorWidth;
+    return screenWidth - editorWidthNumber;
+  };
 
-  const [editorWidth, setEditorWidth] = useState<number | string>(editorWidthFinal);
+  const editorWidthFinal = () => localStorage.getItem('editorWidth') || getEditorWidth(screenWidth);
+
+  const [editorWidth, setEditorWidth] = useState<number | string>(editorWidthFinal());
 
   const onEditorResize = (ref: HTMLElement) => {
     const newWidth = ref.getBoundingClientRect().width / screenWidthMultiplier(screenWidth);
-    localStorage.setItem('editorWidth', newWidth.toString());
-    setEditorWidth(newWidth);
+    const screenWidthWithMultiplier = screenWidth / screenWidthMultiplier(screenWidth);
+    const minWidth = screenWidthWithMultiplier * 0.2;
+    const maxWidth = screenWidthWithMultiplier * 0.8;
+    const finalNewWidth =
+      newWidth > maxWidth ? maxWidth : newWidth < minWidth ? minWidth : newWidth;
+    localStorage.setItem('editorWidth', finalNewWidth.toString());
+    setEditorWidth(finalNewWidth);
   };
 
   const setContent = (value: string) => {
@@ -88,10 +75,13 @@ export const EditorScreen: FC<AppProps> = ({onlyDoc}) => {
   };
 
   useEffect(() => {
-    const oldScreenWidth = localStorage.getItem('oldScreenWidth');
-    if (screenWidth.toString() !== oldScreenWidth) {
-      localStorage.setItem('oldScreenWidth', screenWidth.toString());
-    }
+    const changeWidth = () => {
+      const width = getEditorWidth(screenWidth);
+      localStorage.setItem('editorWidth', width.toString());
+      setEditorWidth(width);
+    };
+
+    onOrientationChange(changeWidth);
   });
 
   useEffect(() => {
@@ -162,10 +152,14 @@ export const EditorScreen: FC<AppProps> = ({onlyDoc}) => {
     setCurrentDocSidebar((prev) => (prev === sidebar ? null : sidebar));
   }, []);
 
+  const handleSetContent = () => {
+    setDocSidebar('content');
+  };
+
   return (
     <JDocContext.Provider value={jdocExchange}>
-      {!isExport &&
-        (isEditor ? (
+      {!isExport ? (
+        isEditor ? (
           <Header
             setInitialContent={setInitialContent}
             setViewMode={setViewMode}
@@ -173,7 +167,10 @@ export const EditorScreen: FC<AppProps> = ({onlyDoc}) => {
           />
         ) : (
           <HeaderDoc setViewMode={setViewMode} />
-        ))}
+        )
+      ) : (
+        <div />
+      )}
       <div
         className={clsx('d-flex editor-wrapper', {
           'only-doc': !isEditor,
@@ -210,7 +207,7 @@ export const EditorScreen: FC<AppProps> = ({onlyDoc}) => {
             <div
               className="doc"
               style={{
-                width: typeof editorWidth === 'string' ? parseInt(editorWidth) : editorWidth,
+                width: getDocWidth(screenWidth),
               }}
             >
               {jdocExchange ? (
@@ -241,10 +238,12 @@ export const EditorScreen: FC<AppProps> = ({onlyDoc}) => {
         </SidebarContext.Provider>
         <ToastContainer rtl={true} position="bottom-right" />
       </div>
-      <ContactForm
-        modalIsOpen={contactModalVisible}
-        onClose={() => setContactModalVisible(false)}
-      />
+      {!isExport && (
+        <ContactForm
+          modalIsOpen={contactModalVisible}
+          onClose={() => setContactModalVisible(false)}
+        />
+      )}
     </JDocContext.Provider>
   );
 };

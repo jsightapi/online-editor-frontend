@@ -152,7 +152,7 @@ export const Editor = ({content, setContent, errorRow, scrollToRow, reload}: any
         provider.injectCSS();
       }
 
-      document.fonts.onloadingdone = () => monaco.editor.remeasureFonts();
+      (document as any).fonts.onloadingdone = () => monaco.editor.remeasureFonts();
     })();
     // eslint-disable-next-line
   }, []);

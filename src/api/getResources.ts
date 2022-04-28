@@ -11,14 +11,6 @@ import {
   UserTypesType,
 } from './getResources.model';
 
-export const jdoc: JDocType = (window as any).jdoc;
-
-// mock data
-export const _userTypes = jdoc.userTypes;
-export const _userEnums = jdoc.userEnums;
-export const apiInfo: ApiInfoType | undefined = jdoc.info;
-export const serversInfo: ServersInfoType | undefined = jdoc.servers;
-
 // get resources with methods
 const getResources = (resources: {[key: string]: string[]}, resourceMethods: ResourceMethodsType) =>
   map(resources, (resource, path) => ({
@@ -63,10 +55,6 @@ export const getUserType = (typeName?: string, userTypes?: UserTypesType) => {
 export const getUserEnum = (typeName?: string, userEnums?: UserEnumsType) => {
   return typeName && userEnums && userEnums.hasOwnProperty(typeName) ? userEnums[typeName] : null;
 };
-
-export const resources = (() => {
-  return getTreeResources(jdoc.tags, jdoc.resourceMethods);
-})();
 
 export const createJdocList = (jdocExchange: JDocType): [any[], number[]] => {
   const {tags, resourceMethods, userTypes, info, servers, userEnums} = jdocExchange;

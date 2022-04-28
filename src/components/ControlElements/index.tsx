@@ -4,9 +4,9 @@ import {DropdownToggle} from '../Dropdown/DropdownToggle';
 import {DropdownMenu} from '../Dropdown/DropdownMenu';
 import clsx from 'clsx';
 import {ButtonDisabled} from 'components/ControlElements/ButtonDisabled';
-import {MainContext} from 'components/MainContent';
 import {GlobalSettingsContext} from 'components/Layout';
 import './ControlElements.styles.scss';
+import {MainContext} from 'store';
 
 interface ControlElementsProps {
   ableChangeView?: boolean;
@@ -55,15 +55,13 @@ export const ControlElements: FC<ControlElementsProps> = ({
     }
   }, [viewType]);
 
-  const iconRules = useMemo(
-    () => (collapsedRules ? 'icon-braces-number' : 'icon-braces-dots'),
-    [collapsedRules]
-  );
+  const iconRules = useMemo(() => (collapsedRules ? 'icon-braces-number' : 'icon-braces-dots'), [
+    collapsedRules,
+  ]);
 
-  const iconTypes = useMemo(
-    () => (expandedTypes ? 'icon-email' : 'icon-strikethrough-email'),
-    [expandedTypes]
-  );
+  const iconTypes = useMemo(() => (expandedTypes ? 'icon-email' : 'icon-strikethrough-email'), [
+    expandedTypes,
+  ]);
 
   const isHideCopy = false;
   const isExampleView = false;

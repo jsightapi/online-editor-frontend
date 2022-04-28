@@ -1,0 +1,1683 @@
+JSIGHT 0.3
+
+INFO
+  Description
+    Delete types one by one and check that every type raises an
+    error in a right line.
+
+  Version 1.0
+
+# Object
+
+TYPE @testWrongRules
+{
+  "object": {} /* {type: "object",
+                        enum: ["white", "black"]}                            
+                }*/
+}
+
+TYPE @testWrongRules
+{
+  "object": {} /* {type: "object",
+                        maxItems: 10,
+                }*/
+}
+
+TYPE @testWrongRules
+{
+  "object": {} /* {type: "object",
+                        minItems: 0,
+                }*/
+}
+
+TYPE @testWrongRules
+{
+  "object": {} /* {type: "object",
+                        regex: "^[A-Za-z]+$",
+                }*/
+}
+
+TYPE @testWrongRules
+{
+  "object": {} /* {type: "object",
+                        maxLength: 100
+                }*/
+}
+
+TYPE @testWrongRules
+{
+  "object": {} /* {type: "object",
+                        minLength: 0, 
+                }*/
+}
+
+TYPE @testWrongRules
+{
+  "object": {} /* {type: "object",
+                        precision: 2,
+                }*/
+}
+
+TYPE @testWrongRules
+{
+  "object": {} /* {type: "object",
+                        max: 1,
+                }*/
+}
+
+TYPE @testWrongRules
+{
+  "object": {} /* {type: "object",
+                        min: 0,
+                }*/
+}
+
+TYPE @testWrongRules
+{
+  "object": {} /* {type: "object",
+                        or: [{type: "string"}, {type: "integer"}],
+                }*/
+}
+
+TYPE @testWrongRules
+{
+  "object": {} /* {type: "object",
+                        const: true
+                }*/
+}
+
+# array
+TYPE @testWrongRules
+{
+  "array" : [   /* {type: "array",
+                        const: true,
+                }*/
+    "item"
+  ]
+}
+
+TYPE @testWrongRules
+{
+  "array" : [   /* {type: "array",
+                        min: 0,
+                }*/
+    "item"
+  ]
+}
+
+TYPE @testWrongRules
+{
+  "array" : [   /* {type: "array",
+                        max: 1,
+                }*/
+    "item"
+  ]
+}
+
+TYPE @testWrongRules
+{
+  "array" : [   /* {type: "array",
+                        exclusiveMinimum: true,
+                }*/
+    "item"
+  ]
+}
+
+TYPE @testWrongRules
+{
+  "array" : [   /* {type: "array",
+                        exclusiveMaximum: true,
+                }*/
+    "item"
+  ]
+}
+
+TYPE @testWrongRules
+{
+  "array" : [   /* {type: "array",
+                        precision: 2,
+                }*/
+    "item"
+  ]
+}
+
+TYPE @testWrongRules
+{
+  "array" : [   /* {type: "array",
+                        minLength: 0, 
+                }*/
+    "item"
+  ]
+}
+
+TYPE @testWrongRules
+{
+  "array" : [   /* {type: "array",
+                        maxLength: 100, 
+                }*/
+    "item"
+  ]
+}
+
+TYPE @testWrongRules
+{
+  "array" : [   /* {type: "array",
+                        regex: "^[A-Za-z]+$",
+                }*/
+    "item"
+  ]
+}
+
+TYPE @testWrongRules
+{
+  "array" : [   /* {type: "array",
+                        or: [{type: "string"}, {type: "integer"}],
+                }*/
+    "item"
+  ]
+}
+
+TYPE @testWrongRules
+{
+  "array" : [   /* {type: "array",
+                        additionalProperties: true, 
+                }*/
+    "item"
+  ]
+}
+
+TYPE @testWrongRules
+{
+  "array" : [   /* {type: "array",
+                        allOf: "@cat",
+                }*/
+    "item"
+  ]
+}
+
+TYPE @testWrongRules
+{
+  "array" : [   /* {type: "array",
+                        enum: ["white", "black"]}                            
+                }*/
+    "item"
+  ]
+}
+
+# integer
+
+TYPE @testWrongRules
+{
+  "integer": 1 /* {type: "integer",
+                        precision: 2,
+                }*/
+}
+
+TYPE @testWrongRules
+{
+  "integer": 1 /* {type: "integer",
+                        minLength: 0, 
+                }*/
+}
+
+TYPE @testWrongRules
+{
+  "integer": 1 /* {type: "integer",
+                        maxLength: 100, 
+                }*/
+}
+
+TYPE @testWrongRules
+{
+  "integer": 1 /* {type: "integer",
+                        regex: "^[A-Za-z]+$",
+                }*/
+}
+
+TYPE @testWrongRules
+{
+  "integer": 1 /* {type: "integer",
+                        minItems: 0,
+                }*/
+}
+
+TYPE @testWrongRules
+{
+  "integer": 1 /* {type: "integer",
+                        maxItems: 10,
+                }*/
+}
+
+TYPE @testWrongRules
+{
+  "integer": 1 /* {type: "integer",
+                        or: [{type: "string"}, {type: "integer"}],
+                }*/
+}
+
+TYPE @testWrongRules
+{
+  "integer": 1 /* {type: "integer",
+                        additionalProperties: true, 
+                }*/
+}
+
+TYPE @testWrongRules
+{
+  "integer": 1 /* {type: "integer",
+                        allOf: "@cat",
+                }*/
+}
+
+TYPE @testWrongRules
+{
+  "integer": 1 /* {type: "integer",
+                        enum: ["white", "black"]}                            
+                }*/
+}
+
+# float
+
+TYPE @testWrongRules
+{
+  "float": 1.2 /* {type: "float",
+                        precision: 1
+                  }*/
+}
+
+TYPE @testWrongRules
+{
+  "float": 1.2 /* {type: "float",
+                        minLength: 0
+                  }*/
+}
+
+TYPE @testWrongRules
+{
+  "float": 1.2 /* {type: "float",
+                        maxLength: 100
+                  }*/
+}
+
+TYPE @testWrongRules
+{
+  "float": 1.2 /* {type: "float",
+                        regex: "^[A-Za-z]+$"
+                  }*/
+}
+
+TYPE @testWrongRules
+{
+  "float": 1.2 /* {type: "float",
+                        minItems: 0
+                  }*/
+}
+
+TYPE @testWrongRules
+{
+  "float": 1.2 /* {type: "float",
+                        maxItems: 10
+                  }*/
+}
+
+TYPE @testWrongRules
+{
+  "float": 1.2 /* {type: "float",
+                        or: [{type: "string"}, {type: "float"}]
+                  }*/
+}
+
+TYPE @testWrongRules
+{
+  "float": 1.2 /* {type: "float",
+                        additionalProperties: true
+                  }*/
+}
+
+TYPE @testWrongRules
+{
+  "float": 1.2 /* {type: "float",
+                        allOf: "@cat"
+                  }*/
+}
+
+TYPE @testWrongRules
+{
+  "float": 1.2 /* {type: "float",
+                        enum: [1.2, 1.3]                            
+                  }*/
+}
+
+# decimal
+
+TYPE @testWrongRules
+{
+  "decimal": 1.23 /* {type: "decimal", precision: 2,
+                        minLength: 0, 
+                }*/
+}
+
+TYPE @testWrongRules
+{
+  "decimal": 1.23 /* {type: "decimal", precision: 2,
+                        maxLength: 100, 
+                }*/
+}
+
+TYPE @testWrongRules
+{
+  "decimal": 1.23 /* {type: "decimal", precision: 2,
+                        regex: "^[A-Za-z]+$",
+                }*/
+}
+
+TYPE @testWrongRules
+{
+  "decimal": 1.23 /* {type: "decimal", precision: 2,
+                        minItems: 0,
+                }*/
+}
+
+TYPE @testWrongRules
+{
+  "decimal": 1.23 /* {type: "decimal", precision: 2,
+                        maxItems: 10,
+                }*/
+}
+
+TYPE @testWrongRules
+{
+  "decimal": 1.23 /* {type: "decimal", precision: 2,
+                        or: [{type: "string"}, {type: "integer"}],
+                }*/
+}
+
+TYPE @testWrongRules
+{
+  "decimal": 1.23 /* {type: "decimal", precision: 2,
+                        additionalProperties: true, 
+                }*/
+}
+
+TYPE @testWrongRules
+{
+  "decimal": 1.23 /* {type: "decimal", precision: 2,
+                        allOf: "@cat",
+                }*/
+}
+
+TYPE @testWrongRules
+{
+  "decimal": 1.23 /* {type: "decimal", precision: 2,
+                        enum: ["white", "black"]}                            
+                }*/
+}
+
+# boolean
+
+TYPE @testWrongRules
+{
+  "boolean": true /* {type: "boolean",
+                        min: 0,
+                }*/
+}
+
+TYPE @testWrongRules
+{
+  "boolean": true /* {type: "boolean",
+                        max: 1,
+                }*/
+}
+
+TYPE @testWrongRules
+{
+  "boolean": true /* {type: "boolean",
+                        exclusiveMinimum: true,
+                }*/
+}
+
+TYPE @testWrongRules
+{
+  "boolean": true /* {type: "boolean",
+                        exclusiveMaximum: true,
+                }*/
+}
+
+TYPE @testWrongRules
+{
+  "boolean": true /* {type: "boolean",
+                        precision: 2,
+                }*/
+}
+
+TYPE @testWrongRules
+{
+  "boolean": true /* {type: "boolean",
+                        minLength: 0, 
+                }*/
+}
+
+TYPE @testWrongRules
+{
+  "boolean": true /* {type: "boolean",
+                        maxLength: 100, 
+                }*/
+}
+
+TYPE @testWrongRules
+{
+  "boolean": true /* {type: "boolean",
+                        regex: "^[A-Za-z]+$",
+                }*/
+}
+
+TYPE @testWrongRules
+{
+  "boolean": true /* {type: "boolean",
+                        minItems: 0,
+                }*/
+}
+
+TYPE @testWrongRules
+{
+  "boolean": true /* {type: "boolean",
+                        maxItems: 10,
+                }*/
+}
+
+TYPE @testWrongRules
+{
+  "boolean": true /* {type: "boolean",
+                        or: [{type: "string"}, {type: "integer"}],
+                }*/
+}
+
+TYPE @testWrongRules
+{
+  "boolean": true /* {type: "boolean",
+                        additionalProperties: true, 
+                }*/
+}
+
+TYPE @testWrongRules
+{
+  "boolean": true /* {type: "boolean",
+                        allOf: "@cat",
+                }*/
+}
+
+TYPE @testWrongRules
+{
+  "boolean": true /* {type: "boolean",
+                        enum: ["white", "black"]}                            
+                }*/
+}
+
+# string
+
+TYPE @testWrongRules
+{
+  "string": "value" /* {type: "string",
+                        min: 0,
+                }*/
+}
+
+TYPE @testWrongRules
+{
+  "string": "value" /* {type: "string",
+                        max: 1,
+                }*/
+}
+
+TYPE @testWrongRules
+{
+  "string": "value" /* {type: "string",
+                        exclusiveMinimum: true,
+                }*/
+}
+
+TYPE @testWrongRules
+{
+  "string": "value" /* {type: "string",
+                        exclusiveMaximum: true,
+                }*/
+}
+
+TYPE @testWrongRules
+{
+  "string": "value" /* {type: "string",
+                        precision: 2,
+                }*/
+}
+
+TYPE @testWrongRules
+{
+  "string": "value" /* {type: "string",
+                        minItems: 0,
+                }*/
+}
+
+TYPE @testWrongRules
+{
+  "string": "value" /* {type: "string",
+                        maxItems: 10,
+                }*/
+}
+
+TYPE @testWrongRules
+{
+  "string": "value" /* {type: "string",
+                        or: [{type: "string"}, {type: "integer"}],
+                }*/
+}
+
+TYPE @testWrongRules
+{
+  "string": "value" /* {type: "string",
+                        additionalProperties: true, 
+                }*/
+}
+
+TYPE @testWrongRules
+{
+  "string": "value" /* {type: "string",
+                        allOf: "@cat",
+                }*/
+}
+
+TYPE @testWrongRules
+{
+  "string": "value" /* {type: "string",
+                        enum: ["white", "black"]}                            
+                }*/
+}
+
+# email
+
+TYPE @testWrongRules
+{
+  "email": "t@t.com" /* {type: "email",
+                        min: 0,
+                }*/
+}
+
+TYPE @testWrongRules
+{
+  "email": "t@t.com" /* {type: "email",
+                        max: 1,
+                }*/
+}
+
+TYPE @testWrongRules
+{
+  "email": "t@t.com" /* {type: "email",
+                        exclusiveMinimum: true,
+                }*/
+}
+
+TYPE @testWrongRules
+{
+  "email": "t@t.com" /* {type: "email",
+                        exclusiveMaximum: true,
+                }*/
+}
+
+TYPE @testWrongRules
+{
+  "email": "t@t.com" /* {type: "email",
+                        precision: 2,
+                }*/
+}
+
+TYPE @testWrongRules
+{
+  "email": "t@t.com" /* {type: "email",
+                        minLength: 0, 
+                }*/
+}
+
+TYPE @testWrongRules
+{
+  "email": "t@t.com" /* {type: "email",
+                        maxLength: 100, 
+                }*/
+}
+
+TYPE @testWrongRules
+{
+  "email": "t@t.com" /* {type: "email",
+                        regex: ".*",
+                }*/
+}
+
+TYPE @testWrongRules
+{
+  "email": "t@t.com" /* {type: "email",
+                        minItems: 0,
+                }*/
+}
+
+TYPE @testWrongRules
+{
+  "email": "t@t.com" /* {type: "email",
+                        maxItems: 10,
+                }*/
+}
+
+# uri
+
+TYPE @testWrongRules
+{
+  "uri": "http://t.com" /* {type: "uri",
+                        min: 0,
+                }*/
+}
+
+TYPE @testWrongRules
+{
+  "uri": "http://t.com" /* {type: "uri",
+                        max: 1,
+                }*/
+}
+
+TYPE @testWrongRules
+{
+  "uri": "http://t.com" /* {type: "uri",
+                        exclusiveMinimum: true,
+                }*/
+}
+
+TYPE @testWrongRules
+{
+  "uri": "http://t.com" /* {type: "uri",
+                        exclusiveMaximum: true,
+                }*/
+}
+
+TYPE @testWrongRules
+{
+  "uri": "http://t.com" /* {type: "uri",
+                        precision: 2,
+                }*/
+}
+
+TYPE @testWrongRules
+{
+  "uri": "http://t.com" /* {type: "uri",
+                        minLength: 0, 
+                }*/
+}
+
+TYPE @testWrongRules
+{
+  "uri": "http://t.com" /* {type: "uri",
+                        maxLength: 100, 
+                }*/
+}
+
+TYPE @testWrongRules
+{
+  "uri": "http://t.com" /* {type: "uri",
+                        regex: ".*",
+                }*/
+}
+
+TYPE @testWrongRules
+{
+  "uri": "http://t.com" /* {type: "uri",
+                        minItems: 0,
+                }*/
+}
+
+TYPE @testWrongRules
+{
+  "uri": "http://t.com" /* {type: "uri",
+                        maxItems: 10,
+                }*/
+}
+
+TYPE @testWrongRules
+{
+  "uri": "http://t.com" /* {type: "uri",
+                        or: [{type: "string"}, {type: "integer"}],
+                }*/
+}
+
+TYPE @testWrongRules
+{
+  "uri": "http://t.com" /* {type: "uri",
+                        additionalProperties: true, 
+                }*/
+}
+
+TYPE @testWrongRules
+{
+  "uri": "http://t.com" /* {type: "uri",
+                        allOf: "@cat",
+                }*/
+}
+
+TYPE @testWrongRules
+{
+  "uri": "http://t.com" /* {type: "uri",
+                        enum: ["white", "black"]}                            
+                }*/
+}
+
+# date
+
+TYPE @testWrongRules
+{
+  "date": "2021-12-16" /* {type: "date",
+                        min: 0,
+                }*/
+}
+
+TYPE @testWrongRules
+{
+  "date": "2021-12-16" /* {type: "date",
+                        max: 1,
+                }*/
+}
+
+TYPE @testWrongRules
+{
+  "date": "2021-12-16" /* {type: "date",
+                        exclusiveMinimum: true,
+                }*/
+}
+
+TYPE @testWrongRules
+{
+  "date": "2021-12-16" /* {type: "date",
+                        exclusiveMaximum: true,
+                }*/
+}
+
+TYPE @testWrongRules
+{
+  "date": "2021-12-16" /* {type: "date",
+                        precision: 2,
+                }*/
+}
+
+TYPE @testWrongRules
+{
+  "date": "2021-12-16" /* {type: "date",
+                        minLength: 0, 
+                }*/
+}
+
+TYPE @testWrongRules
+{
+  "date": "2021-12-16" /* {type: "date",
+                        maxLength: 100, 
+                }*/
+}
+
+TYPE @testWrongRules
+{
+  "date": "2021-12-16" /* {type: "date",
+                        regex: ".*",
+                }*/
+}
+
+TYPE @testWrongRules
+{
+  "date": "2021-12-16" /* {type: "date",
+                        minItems: 0,
+                }*/
+}
+
+TYPE @testWrongRules
+{
+  "date": "2021-12-16" /* {type: "date",
+                        maxItems: 10,
+                }*/
+}
+
+TYPE @testWrongRules
+{
+  "date": "2021-12-16" /* {type: "date",
+                        or: [{type: "string"}, {type: "integer"}],
+                }*/
+}
+
+TYPE @testWrongRules
+{
+  "date": "2021-12-16" /* {type: "date",
+                        additionalProperties: true, 
+                }*/
+}
+
+TYPE @testWrongRules
+{
+  "date": "2021-12-16" /* {type: "date",
+                        allOf: "@cat",
+                }*/
+}
+
+TYPE @testWrongRules
+{
+  "date": "2021-12-16" /* {type: "date",
+                        enum: ["white", "black"]}                            
+                }*/
+}
+
+# datetime
+
+TYPE @testWrongRules
+{
+  "datetime": "2006-01-02T15:04:05+07:00" /* {type: "datetime",
+                        min: 0,
+                          }*/
+}
+
+TYPE @testWrongRules
+{
+  "datetime": "2006-01-02T15:04:05+07:00" /* {type: "datetime",
+                        max: 1,
+                          }*/
+}
+
+TYPE @testWrongRules
+{
+  "datetime": "2006-01-02T15:04:05+07:00" /* {type: "datetime",
+                        exclusiveMinimum: true,
+                          }*/
+}
+
+TYPE @testWrongRules
+{
+  "datetime": "2006-01-02T15:04:05+07:00" /* {type: "datetime",
+                        exclusiveMaximum: true,
+                          }*/
+}
+
+TYPE @testWrongRules
+{
+  "datetime": "2006-01-02T15:04:05+07:00" /* {type: "datetime",
+                        precision: 2,
+                          }*/
+}
+
+TYPE @testWrongRules
+{
+  "datetime": "2006-01-02T15:04:05+07:00" /* {type: "datetime",
+                        minLength: 0, 
+                          }*/
+}
+
+TYPE @testWrongRules
+{
+  "datetime": "2006-01-02T15:04:05+07:00" /* {type: "datetime",
+                        maxLength: 100, 
+                          }*/
+}
+
+TYPE @testWrongRules
+{
+  "datetime": "2006-01-02T15:04:05+07:00" /* {type: "datetime",
+                        regex: ".*",
+                          }*/
+}
+
+TYPE @testWrongRules
+{
+  "datetime": "2006-01-02T15:04:05+07:00" /* {type: "datetime",
+                        minItems: 0,
+                          }*/
+}
+
+TYPE @testWrongRules
+{
+  "datetime": "2006-01-02T15:04:05+07:00" /* {type: "datetime",
+                        maxItems: 10,
+                          }*/
+}
+
+TYPE @testWrongRules
+{
+  "datetime": "2006-01-02T15:04:05+07:00" /* {type: "datetime",
+                        or: [{type: "string"}, {type: "integer"}],
+                          }*/
+}
+
+TYPE @testWrongRules
+{
+  "datetime": "2006-01-02T15:04:05+07:00" /* {type: "datetime",
+                        additionalProperties: true, 
+                          }*/
+}
+
+TYPE @testWrongRules
+{
+  "datetime": "2006-01-02T15:04:05+07:00" /* {type: "datetime",
+                        allOf: "@cat",
+                          }*/
+}
+
+TYPE @testWrongRules
+{
+  "datetime": "2006-01-02T15:04:05+07:00" /* {type: "datetime",
+                        enum: ["white", "black"]}                            
+                          }*/
+}
+
+# uuid
+
+TYPE @testWrongRules
+{
+  "uuid": "550e8400-e29b-41d4-a716-446655440000" /* {type: "uuid",
+                        min: 0,
+                          }*/
+}
+
+TYPE @testWrongRules
+{
+  "uuid": "550e8400-e29b-41d4-a716-446655440000" /* {type: "uuid",
+                        max: 1,
+                          }*/
+}
+
+TYPE @testWrongRules
+{
+  "uuid": "550e8400-e29b-41d4-a716-446655440000" /* {type: "uuid",
+                        exclusiveMinimum: true,
+                          }*/
+}
+
+TYPE @testWrongRules
+{
+  "uuid": "550e8400-e29b-41d4-a716-446655440000" /* {type: "uuid",
+                        exclusiveMaximum: true,
+                          }*/
+}
+
+TYPE @testWrongRules
+{
+  "uuid": "550e8400-e29b-41d4-a716-446655440000" /* {type: "uuid",
+                        precision: 2,
+                          }*/
+}
+
+TYPE @testWrongRules
+{
+  "uuid": "550e8400-e29b-41d4-a716-446655440000" /* {type: "uuid",
+                        minLength: 0, 
+                          }*/
+}
+
+TYPE @testWrongRules
+{
+  "uuid": "550e8400-e29b-41d4-a716-446655440000" /* {type: "uuid",
+                        maxLength: 100, 
+                          }*/
+}
+
+TYPE @testWrongRules
+{
+  "uuid": "550e8400-e29b-41d4-a716-446655440000" /* {type: "uuid",
+                        regex: ".*",
+                          }*/
+}
+
+TYPE @testWrongRules
+{
+  "uuid": "550e8400-e29b-41d4-a716-446655440000" /* {type: "uuid",
+                        minItems: 0,
+                          }*/
+}
+
+TYPE @testWrongRules
+{
+  "uuid": "550e8400-e29b-41d4-a716-446655440000" /* {type: "uuid",
+                        maxItems: 10,
+                          }*/
+}
+
+TYPE @testWrongRules
+{
+  "uuid": "550e8400-e29b-41d4-a716-446655440000" /* {type: "uuid",
+                        or: [{type: "string"}, {type: "integer"}],
+                          }*/
+}
+
+TYPE @testWrongRules
+{
+  "uuid": "550e8400-e29b-41d4-a716-446655440000" /* {type: "uuid",
+                        additionalProperties: true, 
+                          }*/
+}
+
+TYPE @testWrongRules
+{
+  "uuid": "550e8400-e29b-41d4-a716-446655440000" /* {type: "uuid",
+                        allOf: "@cat",
+                          }*/
+}
+
+TYPE @testWrongRules
+{
+  "uuid": "550e8400-e29b-41d4-a716-446655440000" /* {type: "uuid",
+                        enum: ["white", "black"]}                            
+                          }*/
+}
+
+# enum
+
+TYPE @testWrongRules
+{
+  "enum": "white" /* {enum: ["white", "black"],
+                        min: 0,
+                }*/
+}
+
+TYPE @testWrongRules
+{
+  "enum": "white" /* {enum: ["white", "black"],
+                        max: 1,
+                }*/
+}
+
+TYPE @testWrongRules
+{
+  "enum": "white" /* {enum: ["white", "black"],
+                        exclusiveMinimum: true,
+                }*/
+}
+
+TYPE @testWrongRules
+{
+  "enum": "white" /* {enum: ["white", "black"],
+                        exclusiveMaximum: true,
+                }*/
+}
+
+TYPE @testWrongRules
+{
+  "enum": "white" /* {enum: ["white", "black"],
+                        precision: 2,
+                }*/
+}
+
+TYPE @testWrongRules
+{
+  "enum": "white" /* {enum: ["white", "black"],
+                        minLength: 0, 
+                }*/
+}
+
+TYPE @testWrongRules
+{
+  "enum": "white" /* {enum: ["white", "black"],
+                        maxLength: 100, 
+                }*/
+}
+
+TYPE @testWrongRules
+{
+  "enum": "white" /* {enum: ["white", "black"],
+                        regex: ".*",
+                }*/
+}
+
+TYPE @testWrongRules
+{
+  "enum": "white" /* {enum: ["white", "black"],
+                        minItems: 0,
+                }*/
+}
+
+TYPE @testWrongRules
+{
+  "enum": "white" /* {enum: ["white", "black"],
+                        maxItems: 10,
+                }*/
+}
+
+TYPE @testWrongRules
+{
+  "enum": "white" /* {enum: ["white", "black"],
+                        or: [{type: "string"}, {type: "integer"}],
+                }*/
+}
+
+TYPE @testWrongRules
+{
+  "enum": "white" /* {enum: ["white", "black"],
+                        additionalProperties: true, 
+                }*/
+}
+
+TYPE @testWrongRules
+{
+  "enum": "white" /* {enum: ["white", "black"],
+                        allOf: "@cat",
+                }*/
+}
+
+# mixed
+
+TYPE @testWrongRules
+{
+  "mixed": "abc" /* {or: [{type: "string"}, {type: "integer"}],
+                        const: true,
+                }*/
+}
+
+TYPE @testWrongRules
+{
+  "mixed": "abc" /* {or: [{type: "string"}, {type: "integer"}],
+                        min: 0,
+                }*/
+}
+
+TYPE @testWrongRules
+{
+  "mixed": "abc" /* {or: [{type: "string"}, {type: "integer"}],
+                        max: 1,
+                }*/
+}
+
+TYPE @testWrongRules
+{
+  "mixed": "abc" /* {or: [{type: "string"}, {type: "integer"}],
+                        exclusiveMinimum: true,
+                }*/
+}
+
+TYPE @testWrongRules
+{
+  "mixed": "abc" /* {or: [{type: "string"}, {type: "integer"}],
+                        exclusiveMaximum: true,
+                }*/
+}
+
+TYPE @testWrongRules
+{
+  "mixed": "abc" /* {or: [{type: "string"}, {type: "integer"}],
+                        precision: 2,
+                }*/
+}
+
+TYPE @testWrongRules
+{
+  "mixed": "abc" /* {or: [{type: "string"}, {type: "integer"}],
+                        minLength: 0, 
+                }*/
+}
+
+TYPE @testWrongRules
+{
+  "mixed": "abc" /* {or: [{type: "string"}, {type: "integer"}],
+                        maxLength: 100, 
+                }*/
+}
+
+TYPE @testWrongRules
+{
+  "mixed": "abc" /* {or: [{type: "string"}, {type: "integer"}],
+                        regex: ".*",
+                }*/
+}
+
+TYPE @testWrongRules
+{
+  "mixed": "abc" /* {or: [{type: "string"}, {type: "integer"}],
+                        minItems: 0,
+                }*/
+}
+
+TYPE @testWrongRules
+{
+  "mixed": "abc" /* {or: [{type: "string"}, {type: "integer"}],
+                        maxItems: 10,
+                }*/
+}
+
+TYPE @testWrongRules
+{
+  "mixed": "abc" /* {or: [{type: "string"}, {type: "integer"}],
+                        additionalProperties: true, 
+                }*/
+}
+
+TYPE @testWrongRules
+{
+  "mixed": "abc" /* {or: [{type: "string"}, {type: "integer"}],
+                        allOf: "@cat",
+                }*/
+}
+
+TYPE @testWrongRules
+{
+  "mixed": "abc" /* {or: [{type: "string"}, {type: "integer"}],
+                        enum: ["white", "black"]}                            
+                }*/
+}
+
+# any
+
+TYPE @testWrongRules
+{
+  "any": 456 /* {type: "any",
+                        min: 0,
+                }*/
+}
+
+TYPE @testWrongRules
+{
+  "any": 456 /* {type: "any",
+                        max: 1,
+                }*/
+}
+
+TYPE @testWrongRules
+{
+  "any": 456 /* {type: "any",
+                        exclusiveMinimum: true,
+                }*/
+}
+
+TYPE @testWrongRules
+{
+  "any": 456 /* {type: "any",
+                        exclusiveMaximum: true,
+                }*/
+}
+
+TYPE @testWrongRules
+{
+  "any": 456 /* {type: "any",
+                        precision: 2,
+                }*/
+}
+
+TYPE @testWrongRules
+{
+  "any": 456 /* {type: "any",
+                        minLength: 0, 
+                }*/
+}
+
+TYPE @testWrongRules
+{
+  "any": 456 /* {type: "any",
+                        maxLength: 100, 
+                }*/
+}
+
+TYPE @testWrongRules
+{
+  "any": 456 /* {type: "any",
+                        regex: ".*",
+                }*/
+}
+
+TYPE @testWrongRules
+{
+  "any": 456 /* {type: "any",
+                        minItems: 0,
+                }*/
+}
+
+TYPE @testWrongRules
+{
+  "any": 456 /* {type: "any",
+                        maxItems: 10,
+                }*/
+}
+
+TYPE @testWrongRules
+{
+  "any": 456 /* {type: "any",
+                        or: [{type: "string"}, {type: "integer"}],
+                }*/
+}
+
+TYPE @testWrongRules
+{
+  "any": 456 /* {type: "any",
+                        additionalProperties: true, 
+                }*/
+}
+
+TYPE @testWrongRules
+{
+  "any": 456 /* {type: "any",
+                        allOf: "@cat",
+                }*/
+}
+
+TYPE @testWrongRules
+{
+  "any": 456 /* {type: "any",
+                        enum: ["white", "black"]}                            
+                }*/
+}
+
+# null
+
+TYPE @testWrongRules
+{
+  "null": null /* {type: "null",
+                        min: 0,
+              }*/
+}
+
+TYPE @testWrongRules
+{
+  "null": null /* {type: "null",
+                        max: 1,
+              }*/
+}
+
+TYPE @testWrongRules
+{
+  "null": null /* {type: "null",
+                        exclusiveMinimum: true,
+              }*/
+}
+
+TYPE @testWrongRules
+{
+  "null": null /* {type: "null",
+                        exclusiveMaximum: true,
+              }*/
+}
+
+TYPE @testWrongRules
+{
+  "null": null /* {type: "null",
+                        precision: 2,
+              }*/
+}
+
+TYPE @testWrongRules
+{
+  "null": null /* {type: "null",
+                        minLength: 0, 
+              }*/
+}
+
+TYPE @testWrongRules
+{
+  "null": null /* {type: "null",
+                        maxLength: 100, 
+              }*/
+}
+
+TYPE @testWrongRules
+{
+  "null": null /* {type: "null",
+                        regex: ".*",
+              }*/
+}
+
+TYPE @testWrongRules
+{
+  "null": null /* {type: "null",
+                        minItems: 0,
+              }*/
+}
+
+TYPE @testWrongRules
+{
+  "null": null /* {type: "null",
+                        maxItems: 10,
+              }*/
+}
+
+TYPE @testWrongRules
+{
+  "null": null /* {type: "null",
+                        or: [{type: "string"}, {type: "integer"}],
+              }*/
+}
+
+TYPE @testWrongRules
+{
+  "null": null /* {type: "null",
+                        additionalProperties: true, 
+              }*/
+}
+
+TYPE @testWrongRules
+{
+  "null": null /* {type: "null",
+                        allOf: "@cat",
+              }*/
+}
+
+TYPE @testWrongRules
+{
+  "null": null /* {type: "null",
+                        enum: ["white", "black"]}                            
+              }*/
+}
+
+# user type reference
+
+TYPE @testWrongRules
+{
+  "userType1": @cat  /* {
+                        type: "@cat",
+                }*/
+}
+
+TYPE @testWrongRules
+{
+  "userType1": @cat  /* {
+                        min: 0,
+                }*/
+}
+
+TYPE @testWrongRules
+{
+  "userType1": @cat  /* {
+                        max: 1,
+                }*/
+}
+
+TYPE @testWrongRules
+{
+  "userType1": @cat  /* {
+                        exclusiveMinimum: true,
+                }*/
+}
+
+TYPE @testWrongRules
+{
+  "userType1": @cat  /* {
+                        exclusiveMaximum: true,
+                }*/
+}
+
+TYPE @testWrongRules
+{
+  "userType1": @cat  /* {
+                        precision: 2,
+                }*/
+}
+
+TYPE @testWrongRules
+{
+  "userType1": @cat  /* {
+                        minLength: 0, 
+                }*/
+}
+
+TYPE @testWrongRules
+{
+  "userType1": @cat  /* {
+                        maxLength: 100, 
+                }*/
+}
+
+TYPE @testWrongRules
+{
+  "userType1": @cat  /* {
+                        regex: ".*",
+                }*/
+}
+
+TYPE @testWrongRules
+{
+  "userType1": @cat  /* {
+                        minItems: 0,
+                }*/
+}
+
+TYPE @testWrongRules
+{
+  "userType1": @cat  /* {
+                        maxItems: 10,
+                }*/
+}
+
+TYPE @testWrongRules
+{
+  "userType1": @cat  /* {
+                        or: [{type: "string"}, {type: "integer"}],
+                }*/
+}
+
+TYPE @testWrongRules
+{
+  "userType1": @cat  /* {
+                        additionalProperties: true, 
+                }*/
+}
+
+TYPE @testWrongRules
+{
+  "userType1": @cat  /* {
+                        allOf: "@cat",
+                }*/
+}
+
+TYPE @testWrongRules
+{
+  "userType1": @cat  /* {
+                        enum: ["white", "black"]}                            
+                }*/
+}
+
+# user type
+
+TYPE @testWrongRules
+{
+  "userType2": 12 /* {type: "@catId",
+                        const: true,
+                }*/
+}
+
+TYPE @testWrongRules
+{
+  "userType2": 12 /* {type: "@catId",
+                        min: 0,
+                }*/
+}
+
+TYPE @testWrongRules
+{
+  "userType2": 12 /* {type: "@catId",
+                        max: 1,
+                }*/
+}
+
+TYPE @testWrongRules
+{
+  "userType2": 12 /* {type: "@catId",
+                        exclusiveMinimum: true,
+                }*/
+}
+
+TYPE @testWrongRules
+{
+  "userType2": 12 /* {type: "@catId",
+                        exclusiveMaximum: true,
+                }*/
+}
+
+TYPE @testWrongRules
+{
+  "userType2": 12 /* {type: "@catId",
+                        precision: 2,
+                }*/
+}
+
+TYPE @testWrongRules
+{
+  "userType2": 12 /* {type: "@catId",
+                        minLength: 0, 
+                }*/
+}
+
+TYPE @testWrongRules
+{
+  "userType2": 12 /* {type: "@catId",
+                        maxLength: 100, 
+                }*/
+}
+
+TYPE @testWrongRules
+{
+  "userType2": 12 /* {type: "@catId",
+                        regex: ".*",
+                }*/
+}
+
+TYPE @testWrongRules
+{
+  "userType2": 12 /* {type: "@catId",
+                        minItems: 0,
+                }*/
+}
+
+TYPE @testWrongRules
+{
+  "userType2": 12 /* {type: "@catId",
+                        maxItems: 10,
+                }*/
+}
+
+TYPE @testWrongRules
+{
+  "userType2": 12 /* {type: "@catId",
+                        or: [{type: "string"}, {type: "integer"}],
+                }*/
+}
+
+TYPE @testWrongRules
+{
+  "userType2": 12 /* {type: "@catId",
+                        additionalProperties: true, 
+                }*/
+}
+
+TYPE @testWrongRules
+{
+  "userType2": 12 /* {type: "@catId",
+                        allOf: "@cat",
+                }*/
+}
+
+TYPE @testWrongRules
+{
+  "userType2": 12 /* {type: "@catId",
+                        enum: ["white", "black"]}                            
+                }*/
+}
+
+# Helpfull types
+
+TYPE @cat
+{
+  "catId": @catId,
+  "catName": "Tom"
+}
+
+TYPE @catId
+  12 // {min: 1}

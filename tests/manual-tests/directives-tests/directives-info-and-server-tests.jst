@@ -1,0 +1,22 @@
+JSIGHT 0.3
+
+INFO
+  Title "Check API title here"
+  Version "Check API Version here (1.0)."
+  Description
+    Check API description here.
+
+SERVER @testCommon
+  BaseUrl "https://pets.com/api/1.0"
+
+SERVER @testAnnotation // Check server's annotation.
+  BaseUrl "https://192.168.0.100/1.0"
+
+SERVER @testMutilineAnnotation /* Check server's 
+                                  multiline annotation. */
+  BaseUrl "https://192.168.0.100/1.0"
+
+  SERVER @testLongAnnotation /* Check server's 
+                                  multiline annotation which is so long, so extremely long.
+                                  so perfectly long, so longly long. */
+  BaseUrl "https://192.168.0.100/1.0"
