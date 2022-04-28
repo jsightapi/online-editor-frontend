@@ -174,7 +174,7 @@ export const EditorScreen: FC = () => {
         })}
       >
         <SidebarContext.Provider
-          value={{currentDocSidebar, setCurrentDocSidebar, currentUrl, setCurrentUrl}}
+          value={{editorWidth, currentDocSidebar, setCurrentDocSidebar, currentUrl, setCurrentUrl}}
         >
           <div className={classes}>
             {isEditor && (

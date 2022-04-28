@@ -31,7 +31,7 @@ export const RightRules = forwardRef<HTMLDivElement, RightRulesProps>(
     const {currentDocSidebar} = useContext(SidebarContext);
     const {selectedLine} = useContext(MainContext);
 
-    const rightWidth = useMemo(() => rightOffset - 30, [rightOffset]);
+    const rightWidth = useMemo(() => rightOffset - 6, [rightOffset]);
     const offsetLeft = useMemo(() => -rightWidth - 18, [rightWidth]);
 
     const [rulesDataWithoutAnnotations, setRulesDataWithoutAnnotations] = useState({
