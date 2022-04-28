@@ -164,7 +164,6 @@ export const Code: FC<CodeProps> = ({schema, tab, codeViewRef, keyBlock}) => {
   };
 
   const updateAnnotations = (value: AnnotationType, additional: boolean, numberLine?: string) => {
-    console.log('updateAnnotations', keyBlock);
     const addAnnotation = (
       currentData: SchemaData[],
       value: AnnotationType,
