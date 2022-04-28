@@ -1,0 +1,63 @@
+JSIGHT 0.3
+
+INFO
+  Description
+    Check that all types are detected and displayed
+    correctly in right upper corner of the details card.
+    Every property has a pair of rules to make card appear.
+
+TYPE @implicitTypes
+{
+  "boolean": true, // {optional: true, nullable: true}
+  "null": null, // {optional: true, nullable: true}
+  "string": "someString", // {optional: true, nullable: true}
+  "stringEscaped": "some \"escaped\" string", // {optional: true, nullable: true}
+  "object": {}, // {optional: true, nullable: true}
+  "array": [], // {optional: true, nullable: true}
+  "integerPositive" : 1, // {optional: true, nullable: true}
+  "integerZero"     : 0, // {optional: true, nullable: true}
+  "integerNegative" : -1, // {optional: true, nullable: true}
+  "floatPositive"  : 1.1, // {optional: true, nullable: true}
+  "floatNegative"   : -1.1, // {optional: true, nullable: true}
+  "floatZero"   : 0.1 // {optional: true, nullable: true}
+}
+
+
+TYPE @rootObject
+{ // {additionalProperties: true, nullable: false} - should have type object
+}
+
+TYPE @rootArray
+[ // {minItems: 1, maxItems: 10} - should have type array
+  1
+]
+
+TYPE @rootScalar
+  "OK" // {regex: "^OK$", nullable: true, minLength: 2}
+
+TYPE @explicitInnerTypes
+{
+  "decimal": 1.12, // {type: "decimal", precision: 2}
+  "any": 1.12, // {type: "any", optional: true}
+  "email": "some@mail.com", // {type: "email", optional: true}
+  "uri": "http://cats.com", // {type: "uri", optional: true}
+  "uuid": "550e8400-e29b-41d4-a716-446655440000", // {type: "uuid", optional: true}
+  "date": "2006-01-02", // {type: "date", optional: true}
+  "datetime": "2006-01-02T15:04:05+07:00", // {type: "datetime", optional: true}
+  "enum": 1, // {type: "enum", enum: [1,2]}
+  "mixed": 1.12 // {type: "mixed", or: [{type: "integer"}, {type: "float"}]}
+}
+
+TYPE @userTypes
+{
+  "cat": @cat, // {optional: true, nullable: true}
+  "dog": @dog, // {optional: true, nullable: true}
+  "catOrDog": @cat | @dog // {optional: true, nullable: true} - Should be type mixed
+}
+
+# HELPING TYPES
+TYPE @cat
+{}
+
+TYPE @dog
+{}
