@@ -1,4 +1,4 @@
-import React, {useContext, FC, useMemo, useRef, useEffect} from 'react';
+import React, {useContext, FC, useRef, useEffect} from 'react';
 import {RulesType} from 'api/getResources.model';
 import {reduce} from 'lodash';
 import {RuleItem} from './RuleItem';
@@ -67,7 +67,7 @@ export const Rules: FC<RulesProps> = ({
         spanRef: rulesSpanRef,
         note,
       },
-      isShowDetailInfo,
+      isShowDetailInfo, // if true - add, otherwise - delete
       parentNumber
     );
   }, [
@@ -79,7 +79,6 @@ export const Rules: FC<RulesProps> = ({
     propType,
     note,
     typeName,
-    updateAnnotations,
     isShowDetailInfo,
     itemIndex,
   ]);
