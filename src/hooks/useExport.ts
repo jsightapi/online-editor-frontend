@@ -12,32 +12,37 @@ export function useExport() {
       stylesResult += `<style>${styles[i].innerHTML}</style>`;
     }
 
-    const linkStyles = document.querySelectorAll('link');
-    const linkStyle = find(linkStyles, (style) => style.href.indexOf('static/css') !== -1)?.href;
     const hostName = window.location.protocol + '//' + window.location.host;
 
-    let script = '';
+    let scriptLink = '';
+    let styleLink = '';
     if (process.env.NODE_ENV !== 'production') {
       const scripts = document.querySelectorAll('script');
-      script = find(scripts, (script) => script.src.indexOf('static/js') !== -1)?.src || '';
+      scriptLink = find(scripts, (script) => script.src.indexOf('static/js') !== -1)?.src || '';
+      const links = document.querySelectorAll('link');
+      styleLink = find(links, (style) => style.href.indexOf('static/css') !== -1)?.href || '';
     } else {
-      script = hostName + '/static/js/export-main.js';
+      scriptLink = hostName + '/static/js/export-main.js';
+      styleLink = hostName + '/static/css/export-main.css';
     }
 
-    if (script) {
-      const scriptText = await fetch(script).then(async (response) => {
+    if (scriptLink) {
+      const scriptText = await fetch(scriptLink).then(async (response) => {
         if (response.ok) {
           return await response.text();
         }
       });
 
       let cssText: string | undefined = '';
-      if (linkStyle) {
-        cssText = await fetch(linkStyle).then(async (response) => {
+      if (styleLink) {
+        cssText = await fetch(styleLink).then(async (response) => {
           if (response.ok) {
             return await response.text();
           }
         });
+        if (cssText) {
+          cssText = cssText.replaceAll('../../', `${hostName}/`);
+        }
       }
 
       return `<!DOCTYPE html>
@@ -82,7 +87,6 @@ export function useExport() {
             <script type="module">
                 ${scriptText}
             </script>
-            <link href="${linkStyle}" rel="stylesheet">
             ${cssText ? `<style>${cssText}</style>` : ''}
           </head>
           <body>
