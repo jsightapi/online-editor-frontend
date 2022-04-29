@@ -1,5 +1,5 @@
 import React, {FC, useMemo, useRef, useState} from 'react';
-import {SchemaJSightContentType} from 'api/getResources.model';
+import {SchemaJSightContentType} from 'types/exchange';
 import {PropName} from 'components/CodeView/Line/Element/PropName';
 import {getScalarClassName} from '../utils/getScalarClassName';
 import {Rules} from './Rules';

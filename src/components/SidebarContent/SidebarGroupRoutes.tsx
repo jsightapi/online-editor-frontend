@@ -1,5 +1,5 @@
 import React, {FC, useContext} from 'react';
-import {ResourcesType} from 'api/getResources.model';
+import {ResourcesType} from 'types/exchange';
 import {Link, useParams} from 'react-router-dom';
 import clsx from 'clsx';
 import {MainRouterParams} from 'types/router';

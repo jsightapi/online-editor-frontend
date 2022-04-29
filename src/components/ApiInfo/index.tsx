@@ -1,6 +1,6 @@
 import React, {FC, useEffect} from 'react';
 import './ApiInfo.styles.scss';
-import {ApiInfoType} from 'api/getResources.model';
+import {ApiInfoType} from 'types/exchange';
 import {Description} from '../Description';
 
 const DEFAULT_TITLE = 'JSight Online Editor';

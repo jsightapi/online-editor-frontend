@@ -1,7 +1,7 @@
 import React, {FC} from 'react';
 import clsx from 'clsx';
 import {Link} from 'react-router-dom';
-import {LinkType, SchemaJSightContentType, SchemaType} from 'api/getResources.model';
+import {LinkType, SchemaJSightContentType, SchemaType} from 'types/exchange';
 import {SchemaView} from '../SchemaView';
 import {EnumView} from '../CodeView/EnumView';
 import {CollapsibleContent} from '../CollapsibleContent';

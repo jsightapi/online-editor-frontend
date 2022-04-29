@@ -1,10 +1,9 @@
 import React, {useContext, FC, useRef, useEffect} from 'react';
-import {RulesType} from 'api/getResources.model';
+import {RulesType, SchemaJSightContentType} from 'types/exchange';
 import {reduce} from 'lodash';
 import {RuleItem} from './RuleItem';
 import {SchemaViewContext} from 'components/SchemaView';
 import {CodeContext} from 'components/CodeView/Code';
-import {SchemaJSightContentType} from 'api/getResources.model';
 import {RuleNote} from './RuleNote';
 import {useShowDetailInfo} from '../../hooks/useShowDetailInfo';
 

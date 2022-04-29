@@ -1,5 +1,5 @@
 import React, {FC, useContext, useMemo} from 'react';
-import {getTreeResources} from 'api/getResources';
+import {getTreeResources} from 'utils/getResources';
 import {SidebarGroupRoutes} from './SidebarGroupRoutes';
 import {SidebarReusables} from './SidebarReusables';
 import logo from '../../assets/images/icon-jsight.png';

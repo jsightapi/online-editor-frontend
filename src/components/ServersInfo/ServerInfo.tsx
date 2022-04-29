@@ -1,5 +1,5 @@
 import React, {FC} from 'react';
-import {ServerType} from 'api/getResources.model';
+import {ServerType} from 'types/exchange';
 import {SchemaView} from '../SchemaView';
 import './ServerInfo.styles.scss';
 

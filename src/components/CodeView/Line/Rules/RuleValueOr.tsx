@@ -1,4 +1,4 @@
-import {SchemaJSightContentType} from 'api/getResources.model';
+import {SchemaJSightContentType} from 'types/exchange';
 import React, {FC, useContext, useEffect, useMemo} from 'react';
 import {map} from 'lodash';
 import {createPortal} from 'react-dom';

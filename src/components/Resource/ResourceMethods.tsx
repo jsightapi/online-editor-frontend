@@ -1,5 +1,5 @@
 import React, {useContext, useMemo, FC, useEffect} from 'react';
-import {ResourceType} from 'api/getResources.model';
+import {ResourceType} from 'types/exchange';
 import clsx from 'clsx';
 import {ResourceBlock} from './ResourceBlock';
 import {ResponseCode} from './ResponseCode';

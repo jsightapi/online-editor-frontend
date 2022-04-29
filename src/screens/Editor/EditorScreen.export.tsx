@@ -1,7 +1,7 @@
 import React, {useState, FC, useEffect, useMemo, useCallback, startTransition} from 'react';
 import clsx from 'clsx';
 import {toast, ToastContainer} from 'react-toastify';
-import {JDocType} from 'api/getResources.model';
+import {JDocType} from 'types/exchange';
 import {MainContent} from 'components/MainContent';
 import {Layout} from 'components/Layout';
 import './Editor.styles.scss';

@@ -1,5 +1,5 @@
 import React, {FC, useContext, useEffect, useMemo} from 'react';
-import {SchemaJSightContentType} from 'api/getResources.model';
+import {SchemaJSightContentType} from 'types/exchange';
 import {DetailObject} from './DetailObject';
 import clsx from 'clsx';
 import {MainContext} from 'store';

@@ -1,10 +1,10 @@
 import React, {FC, useContext, useMemo} from 'react';
-import {SchemaJSightContentType, SchemaType, UserTypesType} from 'api/getResources.model';
+import {SchemaJSightContentType, SchemaType, UserTypesType} from 'types/exchange';
 import {map} from 'lodash';
 import {ControlElements} from '../ControlElements';
 import {PlainRow} from 'components/TableView/PlainRow';
 import './TableView.styles.scss';
-import {getUserType} from 'api/getResources';
+import {getUserType} from 'utils/getResources';
 import {JDocContext} from 'store';
 
 interface TableViewProps {

@@ -1,5 +1,5 @@
 import React, {FC, useContext, useRef} from 'react';
-import {RulesType, RuleType} from 'api/getResources.model';
+import {RulesType, RuleType} from 'types/exchange';
 import {map} from 'lodash';
 import {DetailEnum} from './DetailEnum';
 import {TextWithTooltip} from 'components/TextWithTooltip';

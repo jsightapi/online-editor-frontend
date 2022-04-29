@@ -5,7 +5,7 @@ import {Resizable} from 're-resizable';
 import {Editor} from 'components/Editor';
 import {useDebounce} from 'hooks/useDebounce';
 import {getJDocExchange} from 'api/getJDocExchange';
-import {JDocType} from 'api/getResources.model';
+import {JDocType} from 'types/exchange';
 import {MainContent} from 'components/MainContent';
 import {Layout} from 'components/Layout';
 import {showError} from 'utils/getError';
