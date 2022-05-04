@@ -1,9 +1,10 @@
-import React, {FC, useContext} from 'react';
+import React, {useContext} from 'react';
 import {Link, useParams} from 'react-router-dom';
 import {MainRouterParams} from 'types/router';
 import {CollapsibleContent} from '../CollapsibleContent/CollapsibleContentNew';
 import clsx from 'clsx';
 import {SidebarContext} from 'store';
+
 const {isExport} = window as any;
 
 interface SidebarReusablesProps {
@@ -11,7 +12,7 @@ interface SidebarReusablesProps {
   values: string[];
 }
 
-export const SidebarReusables: FC<SidebarReusablesProps> = ({title, values}) => {
+export const SidebarReusables = ({title, values}: SidebarReusablesProps) => {
   const {path} = useParams<MainRouterParams>();
   const {setCurrentUrl, currentUrl} = useContext(SidebarContext);
 

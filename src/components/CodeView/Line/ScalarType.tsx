@@ -1,4 +1,4 @@
-import React, {FC, useMemo, useRef, useState} from 'react';
+import React, {useMemo, useRef, useState} from 'react';
 import {SchemaJSightContentType} from 'api/getResources.model';
 import {PropName} from 'components/CodeView/Line/Element/PropName';
 import {getScalarClassName} from '../utils/getScalarClassName';
@@ -21,7 +21,7 @@ interface ScalarTypeProps {
   itemIndex?: number;
 }
 
-export const ScalarType: FC<ScalarTypeProps> = ({
+export const ScalarType = ({
   content,
   tab,
   propName,
@@ -33,7 +33,7 @@ export const ScalarType: FC<ScalarTypeProps> = ({
   parentInheritedNumber,
   level,
   itemIndex,
-}) => {
+}: ScalarTypeProps) => {
   const objectSpanRef = useRef<HTMLSpanElement | null>(null);
   const [expanded, setExpanded] = useState<boolean>(false);
   const {isSelected, isHovered, isHidden, handleLineClick} = useSelectionLine({

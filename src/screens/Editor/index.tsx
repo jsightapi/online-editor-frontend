@@ -1,4 +1,4 @@
-import React, {useState, FC, useEffect, useMemo, startTransition, useCallback} from 'react';
+import React, {useState, useEffect, useMemo, startTransition, useCallback} from 'react';
 import clsx from 'clsx';
 import {toast, ToastContainer} from 'react-toastify';
 import {Resizable} from 're-resizable';
@@ -27,7 +27,7 @@ const {isExport} = window as any;
 
 const SCROLLBAR_WIDTH = 20;
 
-export const EditorScreen: FC = () => {
+export const EditorScreen = () => {
   const [currentUrl, setCurrentUrl] = useState<string | null>(null);
   const [viewMode, setViewMode] = useState<editorModeType>(isExport ? 'doc' : 'editor');
   // left sidebar

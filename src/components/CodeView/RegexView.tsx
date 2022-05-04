@@ -1,11 +1,11 @@
-import React, {FC} from 'react';
+import React from 'react';
 
 interface RegexViewProps {
   content: string;
   tab: number;
 }
 
-export const RegexView: FC<RegexViewProps> = ({content, tab}) => {
+export const RegexView = ({content, tab}: RegexViewProps) => {
   return (
     <span className="code-line">
       <span className="number" />

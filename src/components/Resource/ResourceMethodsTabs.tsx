@@ -1,5 +1,5 @@
-import clsx from 'clsx';
 import React from 'react';
+import clsx from 'clsx';
 import {ResourceType} from 'api/getResources.model';
 
 interface ResourceMethodsTabsProps {
@@ -8,11 +8,11 @@ interface ResourceMethodsTabsProps {
   currentHttpMethod?: string;
 }
 
-export const ResourceMethodsTabs: React.FC<ResourceMethodsTabsProps> = ({
+export const ResourceMethodsTabs = ({
   methods,
   setHttpMethod,
   currentHttpMethod,
-}) => {
+}: ResourceMethodsTabsProps) => {
   return (
     <div className="methods-tab d-flex">
       {methods.map((item) => (

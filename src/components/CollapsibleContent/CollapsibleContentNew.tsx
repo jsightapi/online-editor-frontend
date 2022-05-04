@@ -1,4 +1,4 @@
-import React, {FC, useState} from 'react';
+import React, {useState} from 'react';
 import useCollapse from 'react-collapsed';
 import './CollapsibleConent.scss';
 
@@ -8,11 +8,7 @@ interface CollapsibleContentProps {
   children?: React.ReactNode;
 }
 
-export const CollapsibleContent: FC<CollapsibleContentProps> = ({
-  children,
-  title,
-  rightContent,
-}) => {
+export const CollapsibleContent = ({children, title, rightContent}: CollapsibleContentProps) => {
   const [isExpanded, setExpanded] = useState(false);
   const {getCollapseProps, getToggleProps} = useCollapse({isExpanded});
 

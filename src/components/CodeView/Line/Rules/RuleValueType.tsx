@@ -1,4 +1,4 @@
-import React, {useContext, FC, useEffect, SyntheticEvent} from 'react';
+import React, {useContext, useEffect, SyntheticEvent} from 'react';
 import {createPortal} from 'react-dom';
 import {RuleValueProps} from './RuleValue';
 import {SchemaViewContext} from 'components/SchemaView';
@@ -7,7 +7,7 @@ import {ObjectContext} from '../../store/ObjectContext';
 import {ShortcutLines} from '../ShortcutLines';
 import {useSchemaData} from 'components/CodeView/hooks/useSchemaData';
 
-export const RuleValueType: FC<RuleValueProps> = ({
+export const RuleValueType = ({
   schemaName,
   level,
   value,
@@ -15,7 +15,7 @@ export const RuleValueType: FC<RuleValueProps> = ({
   tab,
   type,
   parentNumber,
-}) => {
+}: RuleValueProps) => {
   const {expandedTypes} = useContext(SchemaViewContext);
   const {setExpanded, expanded, objectSpanRef} = useContext(ObjectContext);
   const {setCurrentSchema} = useSchemaData({

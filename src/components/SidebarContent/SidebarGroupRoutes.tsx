@@ -1,11 +1,12 @@
-import React, {FC, useContext} from 'react';
+import React, {useContext} from 'react';
 import {ResourcesType} from 'api/getResources.model';
 import {Link, useParams} from 'react-router-dom';
 import clsx from 'clsx';
 import {MainRouterParams} from 'types/router';
 import {CollapsibleContent} from '../CollapsibleContent/CollapsibleContentNew';
-import './SidebarGroupItems.styles.scss';
 import {SidebarContext} from 'store';
+import './SidebarGroupItems.styles.scss';
+
 const {isExport} = window as any;
 
 interface SidebarGroupRoutesProps {
@@ -13,7 +14,7 @@ interface SidebarGroupRoutesProps {
   index: number;
 }
 
-export const SidebarGroupRoutes: FC<SidebarGroupRoutesProps> = ({item, index}) => {
+export const SidebarGroupRoutes = ({item, index}: SidebarGroupRoutesProps) => {
   const {path} = useParams<MainRouterParams>();
   const {setCurrentUrl, currentUrl} = useContext(SidebarContext);
 

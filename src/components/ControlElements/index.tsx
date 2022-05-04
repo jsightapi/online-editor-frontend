@@ -1,4 +1,4 @@
-import React, {useContext, FC, useMemo, useState} from 'react';
+import React, {useContext, useMemo, useState} from 'react';
 import {Dropdown} from '../Dropdown';
 import {DropdownToggle} from '../Dropdown/DropdownToggle';
 import {DropdownMenu} from '../Dropdown/DropdownMenu';
@@ -16,13 +16,13 @@ interface ControlElementsProps {
   initType: string;
 }
 
-export const ControlElements: FC<ControlElementsProps> = ({
+export const ControlElements = ({
   ableChangeView,
   ableExpandTypes,
   ableExpandRules,
   keyBlock,
   initType,
-}) => {
+}: ControlElementsProps) => {
   const {schemasView, setCollapsedRules, setExpandedTypes, setViewType} = useContext(MainContext);
   const {typesExpand, rulesExpand} = useContext(GlobalSettingsContext);
   const [typesDdVisible, setTypesDdVisible] = useState(false);

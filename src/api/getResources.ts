@@ -1,11 +1,9 @@
 import {reduce, map} from 'lodash';
 import {
-  ApiInfoType,
   JDocType,
   ResourceMethodsType,
   ResourcesType,
   ResourceType,
-  ServersInfoType,
   TagsType,
   UserEnumsType,
   UserTypesType,

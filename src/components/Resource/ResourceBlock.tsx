@@ -1,4 +1,4 @@
-import React, {FC} from 'react';
+import React from 'react';
 import {SchemaType} from 'api/getResources.model';
 import {SchemaView} from '../SchemaView';
 
@@ -16,7 +16,7 @@ interface ResourceBlockProps {
   directiveType?: string;
 }
 
-export const ResourceBlock: FC<ResourceBlockProps> = ({
+export const ResourceBlock = ({
   title,
   type,
   data,
@@ -24,7 +24,7 @@ export const ResourceBlock: FC<ResourceBlockProps> = ({
   hideTitle,
   directiveType,
   typeBlock,
-}) => {
+}: ResourceBlockProps) => {
   const renderView = () => {
     const notation = data.schema?.notation;
     switch (notation) {

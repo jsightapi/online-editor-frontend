@@ -1,4 +1,4 @@
-import React, {useContext, FC} from 'react';
+import React, {useContext} from 'react';
 import {Popper} from 'react-popper';
 import clsx from 'clsx';
 import {DropdownContext} from '../index';
@@ -8,9 +8,10 @@ import './DropdownMenu.styles.scss';
 interface DropdownMenuProps {
   offsetY?: number;
   offsetX?: number;
+  children?: React.ReactNode;
 }
 
-export const DropdownMenu: FC<DropdownMenuProps> = ({children, offsetY, offsetX}) => {
+export const DropdownMenu = ({children, offsetY, offsetX}: DropdownMenuProps) => {
   const {isOpen} = useContext(DropdownContext);
 
   return (
