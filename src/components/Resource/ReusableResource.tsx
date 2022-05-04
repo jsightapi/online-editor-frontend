@@ -1,4 +1,4 @@
-import React, {FC} from 'react';
+import React from 'react';
 import clsx from 'clsx';
 import {Link} from 'react-router-dom';
 import {LinkType, SchemaJSightContentType, SchemaType} from 'api/getResources.model';
@@ -16,7 +16,7 @@ interface ReusableResourceProps {
   className?: string;
 }
 
-export const ReusableResource: FC<ReusableResourceProps> = ({
+export const ReusableResource = ({
   name,
   schema,
   links,
@@ -24,7 +24,7 @@ export const ReusableResource: FC<ReusableResourceProps> = ({
   annotation,
   keyBlock,
   className,
-}) => {
+}: ReusableResourceProps) => {
   return (
     <div className={clsx(['resource-content', className])}>
       <h4>{name}</h4>

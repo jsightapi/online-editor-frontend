@@ -1,7 +1,7 @@
-import React, {FC, useEffect} from 'react';
-import './ApiInfo.styles.scss';
+import React, {useEffect} from 'react';
 import {ApiInfoType} from 'api/getResources.model';
 import {Description} from '../Description';
+import './ApiInfo.styles.scss';
 
 const DEFAULT_TITLE = 'JSight Online Editor';
 
@@ -9,7 +9,7 @@ interface ApiInfoProps {
   apiInfo?: ApiInfoType;
 }
 
-export const ApiInfo: FC<ApiInfoProps> = ({apiInfo}) => {
+export const ApiInfo = ({apiInfo}: ApiInfoProps) => {
   useEffect(() => {
     document.title = apiInfo?.title || DEFAULT_TITLE;
     return () => {

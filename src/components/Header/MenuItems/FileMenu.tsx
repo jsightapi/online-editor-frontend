@@ -1,4 +1,4 @@
-import React, {FC} from 'react';
+import React from 'react';
 import {Dropdown} from 'components/Dropdown';
 import {DropdownToggle} from 'components/Dropdown/DropdownToggle';
 import {DropdownMenu} from 'components/Dropdown/DropdownMenu';
@@ -12,7 +12,7 @@ interface FileMenuProps extends FileMenuItemsProps {
   isMenuOpened: boolean;
 }
 
-const FileMenuItems: FC<FileMenuItemsProps> = ({setIsMenuOpened, setInitialContent}) => (
+const FileMenuItems = ({setIsMenuOpened, setInitialContent}: FileMenuItemsProps) => (
   <ul className="menu-items">
     <li
       onClick={() => {
@@ -41,7 +41,7 @@ const FileMenuItems: FC<FileMenuItemsProps> = ({setIsMenuOpened, setInitialConte
   </ul>
 );
 
-export const FileMenu: FC<FileMenuProps> = ({isMenuOpened, setIsMenuOpened, setInitialContent}) => (
+export const FileMenu = ({isMenuOpened, setIsMenuOpened, setInitialContent}: FileMenuProps) => (
   <Dropdown params={{isOpen: isMenuOpened, setIsOpen: setIsMenuOpened}}>
     <DropdownToggle>
       Examples <i className={isMenuOpened ? 'icon-arrow-up' : 'icon-arrow-down'} />

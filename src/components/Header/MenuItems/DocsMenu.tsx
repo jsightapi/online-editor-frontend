@@ -1,4 +1,4 @@
-import React, {FC} from 'react';
+import React from 'react';
 import {Link} from 'react-router-dom';
 import {Dropdown} from 'components/Dropdown';
 import {DropdownToggle} from 'components/Dropdown/DropdownToggle';
@@ -38,7 +38,7 @@ const menu: MenuType[] = [
   },
 ];
 
-const DocsMenuItems: FC<DocsMenuItemsProps> = ({setIsMenuOpened}) => (
+const DocsMenuItems = ({setIsMenuOpened}: DocsMenuItemsProps) => (
   <ul className="menu-items">
     {menu.map((v, key) => (
       <Link
@@ -56,7 +56,7 @@ const DocsMenuItems: FC<DocsMenuItemsProps> = ({setIsMenuOpened}) => (
   </ul>
 );
 
-export const DocsMenu: FC<DocsMenuProps> = ({isMenuOpened, setIsMenuOpened}) => (
+export const DocsMenu = ({isMenuOpened, setIsMenuOpened}: DocsMenuProps) => (
   <Dropdown params={{isOpen: isMenuOpened, setIsOpen: setIsMenuOpened}}>
     <DropdownToggle>
       Docs <i className={isMenuOpened ? 'icon-arrow-up' : 'icon-arrow-down'} />

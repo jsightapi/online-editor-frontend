@@ -1,6 +1,5 @@
 import React, {
   createContext,
-  FC,
   MutableRefObject,
   useContext,
   useEffect,
@@ -75,7 +74,7 @@ const emptySchemaData = {
   children: [],
 };
 
-export const Code: FC<CodeProps> = ({schema, tab, codeViewRef, keyBlock}) => {
+export const Code = ({schema, tab, codeViewRef, keyBlock}: CodeProps) => {
   const divRulesRef = useRef<HTMLDivElement | null>(null);
   const [topOffset, setTopOffset] = useState<number>(0);
   const [rightOffset, setRightOffset] = useState<number>(0);

@@ -9,7 +9,7 @@ interface HeaderDocProps {
   setViewMode: React.Dispatch<React.SetStateAction<editorModeType>>;
 }
 
-export const HeaderDoc: FC<HeaderDocProps> = ({setViewMode}) => {
+export const HeaderDoc = ({setViewMode}: HeaderDocProps) => {
   const jdocData = useContext(JDocContext);
   const [saveHtml] = useExport();
   const title = jdocData?.info?.title;

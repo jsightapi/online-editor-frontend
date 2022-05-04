@@ -1,4 +1,4 @@
-import React, {useState, FC} from 'react';
+import React, {useState} from 'react';
 import clsx from 'clsx';
 import {Button} from '../Button';
 import {HeaderLogo} from './HeaderLogo';
@@ -14,11 +14,7 @@ interface HeaderProps {
   setContactModalVisible: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
-export const Header: FC<HeaderProps> = ({
-  setInitialContent,
-  setViewMode,
-  setContactModalVisible,
-}) => {
+export const Header = ({setInitialContent, setViewMode, setContactModalVisible}: HeaderProps) => {
   const [docsMenuVisible, setDocsMenuVisible] = useState<boolean>(false);
   const [fileMenuVisible, setFileMenuVisible] = useState<boolean>(false);
   const switchDocsMenu = () => setDocsMenuVisible(!docsMenuVisible);

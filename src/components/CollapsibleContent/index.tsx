@@ -8,11 +8,7 @@ interface CollapsibleContentProps {
   children?: React.ReactNode;
 }
 
-export const CollapsibleContent: FC<CollapsibleContentProps> = ({
-  children,
-  title,
-  rightContent,
-}) => {
+export const CollapsibleContent = ({children, title, rightContent}: CollapsibleContentProps) => {
   const [isOpen, setIsOpen] = useState<boolean>(false);
 
   const toggle = () => {
