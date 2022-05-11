@@ -1,0 +1,82 @@
+@import 'src/styles/variables';
+
+.share-button {
+  border: 0;
+  background-color: $main-purple;
+  color: #fff;
+}
+
+.group-share-button {
+  .dropdown.show {
+    .icon-arrow-down:before {
+      transform: rotate(90deg);
+    }
+  }
+
+  .menu-item {
+    display: flex;
+    flex-direction: row;
+    cursor: pointer;
+
+    +hr {
+      height: 1px;
+      background-color: $secondary-stroke;
+    }
+
+    div:first-of-type {
+      margin-right: 1rem;
+    }
+
+    i {
+      color: $main-grey;
+    }
+
+    .icon-plus {
+      font-size: 1.8rem;
+      display: block;
+      margin-top: -0.3rem;
+    }
+
+    .title {
+      font-weight: bold;
+      color: $main-text;
+    }
+  }
+
+  button {
+    padding-left: 2rem;
+    padding-right: 1.6rem;
+    border-radius: 4px;
+    font-weight: 500;
+    font-size: 1.4rem;
+    line-height: 1.8rem;
+    color: #fff;
+    border: 1px #dbdbe1 solid;
+    display: flex;
+    flex-direction: row;
+    height: 3.2rem;
+    background-color: $main-purple;
+
+    >div {
+      display: flex;
+      align-items: center;
+      height: 100%;
+    }
+
+    div:first-of-type {
+      border-right: 1px solid rgba(255, 255, 255, 0.15);
+      padding-right: 2rem;
+
+      i {
+        margin-left: 0.7rem;
+      }
+    }
+
+    .icon-arrow-down {
+      padding-left: 1.6rem;
+      font-size: 1rem;
+    }
+  }
+}
+
+

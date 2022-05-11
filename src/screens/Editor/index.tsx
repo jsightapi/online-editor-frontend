@@ -1,4 +1,12 @@
-import React, {useState, FC, useEffect, useMemo, startTransition, useCallback} from 'react';
+import React, {
+  useState,
+  FC,
+  useEffect,
+  useMemo,
+  startTransition,
+  useCallback,
+  useLayoutEffect,
+} from 'react';
 import clsx from 'clsx';
 import {toast, ToastContainer} from 'react-toastify';
 import {Resizable} from 're-resizable';
@@ -8,7 +16,7 @@ import {getJDocExchange} from 'api/getJDocExchange';
 import {JDocType} from 'types/exchange';
 import {MainContent} from 'components/MainContent';
 import {Layout} from 'components/Layout';
-import {showError} from 'utils/getError';
+import {showError} from 'utils/showError';
 import {ErrorType} from 'types/error';
 import {Header} from 'components/Header';
 import {initCats} from 'screens/Editor/initCats';
@@ -19,15 +27,19 @@ import 'react-toastify/dist/ReactToastify.css';
 import {ContactForm} from 'components/Modals/ContactForm';
 import {HeaderDoc} from 'components/Header/HeaderDoc';
 import {screenWidthMultiplier} from 'utils/screenWidthMultiplier';
-import {editorModeType, SidebarDocType} from 'types';
+import {editorModeType, MainRouterParams, SidebarDocType} from 'types';
 import {JDocContext, SidebarContext} from 'store';
 import {onOrientationChange} from 'utils/onOrientationChange';
+import {Redirect, useHistory, useParams} from 'react-router-dom';
+import {getExistingState} from 'api/codeSharing';
+import {ErrorScreen} from 'screens/Error';
 
 const {isExport} = window as any;
 
 const SCROLLBAR_WIDTH = 20;
 
 export const EditorScreen: FC = () => {
+  const {key, version} = useParams<MainRouterParams>();
   const [currentUrl, setCurrentUrl] = useState<string | null>(null);
   const [viewMode, setViewMode] = useState<editorModeType>(isExport ? 'doc' : 'editor');
   // left sidebar
@@ -43,7 +55,9 @@ export const EditorScreen: FC = () => {
   const jsightCodeDebounced = useDebounce<string>(jsightCode, 600);
   const [reloadEditor, setReloadEditor] = useState<boolean>(false);
   const [contactModalVisible, setContactModalVisible] = useState<boolean>(false);
+  const [error, setError] = useState<{code: number; message: string} | null>(null);
   const isEditor = useMemo(() => viewMode === 'editor', [viewMode]);
+  const history = useHistory();
 
   const screenWidth = window.innerWidth;
   const getEditorWidth = (screenWidth: number) => {
@@ -73,6 +87,22 @@ export const EditorScreen: FC = () => {
   const setContent = (value: string) => {
     startTransition(() => setJsightCode(value));
   };
+
+  useLayoutEffect(() => {
+    if (key && version) {
+      (async () => {
+        try {
+          const result = await getExistingState(key, version);
+          setJsightCode(result.data.content.replace('\\n', '\n'));
+          setReloadEditor(true);
+        } catch (error) {
+          if (error.Code) {
+            setError({code: error.Code, message: error.Message});
+          }
+        }
+      })();
+    }
+  }, [key, version]);
 
   useEffect(() => {
     const changeWidth = () => {
@@ -151,6 +181,15 @@ export const EditorScreen: FC = () => {
   const setDocSidebar = useCallback((sidebar: SidebarDocType) => {
     setCurrentDocSidebar((prev) => (prev === sidebar ? null : sidebar));
   }, []);
+
+  const goToEditor = () => {
+    setError(null);
+    history.push('/');
+  };
+
+  if (error && error.code) {
+    return <ErrorScreen goToEditor={goToEditor} code={error.code} message={error.message} />;
+  }
 
   return (
     <JDocContext.Provider value={jdocExchange}>

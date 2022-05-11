@@ -1,19 +1,11 @@
-import {ErrorType} from 'types/error';
-import {toast} from 'react-toastify';
 import {ToastOptions} from 'react-toastify/dist/types';
+import {ErrorType} from 'types';
 import {CustomNotification} from 'components/CustomNotification';
+import {toast} from 'react-toastify';
+import {getError} from 'utils/getError';
 import clsx from 'clsx';
-import 'components/CustomNotification/style.scss';
 
 const ERROR_MESSAGE_ID = 1;
-
-export const getError = (error: ErrorType) => {
-  if (!error?.Line) {
-    return 'Server error, try again later';
-  }
-
-  return `Error on line ${error.Line}. ${error.Message}`;
-};
 
 const showErrorOptions: ToastOptions = {
   type: 'warning',

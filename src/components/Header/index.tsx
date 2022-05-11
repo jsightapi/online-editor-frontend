@@ -7,6 +7,7 @@ import {FileMenu} from './MenuItems/FileMenu';
 import './Header.styles.scss';
 import {useExport} from 'hooks/useExport';
 import {editorModeType} from 'types';
+import {ShareButton} from 'components/ShareButton';
 
 interface HeaderProps {
   setInitialContent(content: string): void;
@@ -55,6 +56,7 @@ export const Header: FC<HeaderProps> = ({
           <Button icon="preview" className="shadow" onClick={() => setViewMode('doc')}>
             Preview
           </Button>
+          <ShareButton />
         </div>
       </div>
     </div>

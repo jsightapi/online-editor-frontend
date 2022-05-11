@@ -1,3 +1,4 @@
+@use 'sass:math';
 @import 'src/styles/variables';
 
 #root {
@@ -6,11 +7,11 @@
 }
 
 @function calcSize($scale) {
-  @return 100% / $scale;
+  @return math.div(100%, $scale);
 }
 
 @function calcShift($scale) {
-  @return -((100% / $scale) / 2 - ((100% / $scale) * ($scale / 2)));
+  @return -(math.div(100%, $scale) / 2 - (math.div(100%, $scale) * math.div($scale, 2)));
 }
 
 @media screen and (max-width: 1040px) {

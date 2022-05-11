@@ -7,12 +7,11 @@ import {Layout} from 'components/Layout';
 import './Editor.styles.scss';
 import 'react-toastify/dist/ReactToastify.css';
 import {ContactForm} from 'components/Modals/ContactForm';
-import {HeaderDoc} from 'components/Header/HeaderDoc.export';
 import {screenWidthMultiplier} from 'utils/screenWidthMultiplier';
 import {editorModeType, ErrorType, SidebarDocType} from 'types';
 import {JDocContext, SidebarContext} from 'store';
 import {getJDocExchange} from 'api/getJDocExchange';
-import {showError} from 'utils/getError';
+import {showError} from 'utils/showError';
 import {useDebounce} from 'hooks/useDebounce';
 import {initCats} from 'screens/Editor/initCats';
 
@@ -93,7 +92,6 @@ export const EditorScreen: FC = () => {
 
   return (
     <JDocContext.Provider value={jdocExchange}>
-      {!isExport && <HeaderDoc setViewMode={setViewMode} />}
       <div
         className={clsx('d-flex editor-wrapper', {
           'only-doc': !isEditor,

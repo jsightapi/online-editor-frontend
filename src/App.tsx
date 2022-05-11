@@ -15,6 +15,8 @@ const App: FC = () => {
       <Suspense fallback={<div>Loading...</div>}>
         <Switch>
           <Route path="/" exact component={EditorScreen} />
+          <Route path="/r/:key/:version" exact component={EditorScreen} />
+          <Route path="/r/:key/:version/:path+" exact component={EditorScreen} />
           <Route path="/:path+" exact component={EditorScreen} />
         </Switch>
       </Suspense>
