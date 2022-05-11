@@ -1,4 +1,4 @@
-import React, {useMemo, FC, useState, useRef, useContext, useEffect} from 'react';
+import React, {useMemo, useState, useRef, useContext, useEffect} from 'react';
 import clsx from 'clsx';
 import {SchemaJSightContentType} from 'types/exchange';
 import {PropName} from './Element/PropName';
@@ -22,7 +22,7 @@ interface ShortcutTypeProps {
   itemIndex?: number;
 }
 
-export const ShortcutType: FC<ShortcutTypeProps> = ({
+export const ShortcutType = ({
   content,
   tab,
   propName,
@@ -33,7 +33,7 @@ export const ShortcutType: FC<ShortcutTypeProps> = ({
   level,
   isLastLine,
   itemIndex,
-}) => {
+}: ShortcutTypeProps) => {
   const objectSpanRef = useRef<HTMLSpanElement | null>(null);
   const [expanded, setExpanded] = useState<boolean>(false);
   const {currentSchema, setCurrentSchema} = useSchemaData({

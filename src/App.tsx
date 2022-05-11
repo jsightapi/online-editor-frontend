@@ -1,4 +1,4 @@
-import React, {Suspense, FC} from 'react';
+import React, {Suspense} from 'react';
 import {Switch, BrowserRouter as Router, Route} from 'react-router-dom';
 import Modal from 'react-modal';
 import EditorScreen from './screens/Editor';
@@ -9,7 +9,7 @@ if (isExport) {
   Modal.setAppElement('#root');
 }
 
-const App: FC = () => {
+const App = () => {
   return (
     <Router>
       <Suspense fallback={<div>Loading...</div>}>

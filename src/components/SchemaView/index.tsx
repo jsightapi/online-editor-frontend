@@ -1,4 +1,4 @@
-import React, {createContext, FC, useContext, useLayoutEffect, useMemo} from 'react';
+import React, {createContext, useContext, useLayoutEffect, useMemo} from 'react';
 import {TableView} from '../TableView';
 import {SchemaType} from 'types/exchange';
 import {CodeView} from '../CodeView';
@@ -27,7 +27,7 @@ interface SchemaViewProps {
   typeBlock?: string;
 }
 
-export const SchemaView: FC<SchemaViewProps> = ({
+export const SchemaView = ({
   type,
   schema,
   example,
@@ -38,7 +38,7 @@ export const SchemaView: FC<SchemaViewProps> = ({
   keyBlock,
   directiveType,
   typeBlock,
-}) => {
+}: SchemaViewProps) => {
   const {typesExpand, rulesExpand} = useContext(GlobalSettingsContext);
   const {schemasView, setCollapsedRules, setViewType, setExpandedTypes, setTypeBlock} = useContext(
     MainContext

@@ -1,13 +1,13 @@
-import React, {useState, FC} from 'react';
+import React, {useState} from 'react';
 import clsx from 'clsx';
 import {Button} from '../Button';
 import {HeaderLogo} from './HeaderLogo';
 import {DocsMenu} from './MenuItems/DocsMenu';
 import {FileMenu} from './MenuItems/FileMenu';
-import './Header.styles.scss';
 import {useExport} from 'hooks/useExport';
 import {editorModeType} from 'types';
 import {ShareButton} from 'components/ShareButton';
+import './Header.styles.scss';
 
 interface HeaderProps {
   setInitialContent(content: string): void;
@@ -16,12 +16,12 @@ interface HeaderProps {
   openSharingModal(): void;
 }
 
-export const Header: FC<HeaderProps> = ({
+export const Header = ({
   setInitialContent,
   setViewMode,
   setContactModalVisible,
   openSharingModal,
-}) => {
+}: HeaderProps) => {
   const [docsMenuVisible, setDocsMenuVisible] = useState<boolean>(false);
   const [fileMenuVisible, setFileMenuVisible] = useState<boolean>(false);
   const switchDocsMenu = () => setDocsMenuVisible(!docsMenuVisible);

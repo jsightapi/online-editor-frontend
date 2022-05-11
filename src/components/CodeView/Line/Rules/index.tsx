@@ -1,4 +1,4 @@
-import React, {useContext, FC, useRef, useEffect} from 'react';
+import React, {useContext, useRef, useEffect} from 'react';
 import {RulesType, SchemaJSightContentType} from 'types/exchange';
 import {reduce} from 'lodash';
 import {RuleItem} from './RuleItem';
@@ -26,7 +26,7 @@ interface RulesProps {
 const firstKeys = ['type', 'enum', 'allOf', 'or'];
 const expandKeys = ['type', 'allOf'];
 
-export const Rules: FC<RulesProps> = ({
+export const Rules = ({
   rules,
   schemaName,
   numberLine,
@@ -40,7 +40,7 @@ export const Rules: FC<RulesProps> = ({
   typeName,
   isLastLine,
   content,
-}) => {
+}: RulesProps) => {
   const {collapsedRules} = useContext(SchemaViewContext);
   const {updateAnnotations} = useContext(CodeContext);
   const rulesSpanRef = useRef<HTMLSpanElement | null>(null);

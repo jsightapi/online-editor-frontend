@@ -2,9 +2,7 @@
   "base": "vs-dark",
   "inherit": true,
 
-  "rules": [
-
-  ],
+  "rules": [],
   "colors": {
     "editor.foreground": "#E6E6E6",
     "editor.background": "#29292E",

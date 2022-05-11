@@ -1,4 +1,4 @@
-import React, {FC, useMemo} from 'react';
+import React, {useMemo} from 'react';
 import clsx from 'clsx';
 import './ResponseCode.styles.scss';
 
@@ -7,7 +7,7 @@ interface ResponseCodeProps {
   annotation?: string;
 }
 
-export const ResponseCode: FC<ResponseCodeProps> = ({code, annotation}) => {
+export const ResponseCode = ({code, annotation}: ResponseCodeProps) => {
   const className = useMemo(() => {
     const codeNumber = parseInt(code);
     if (codeNumber >= 100 && codeNumber < 200) {

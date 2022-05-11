@@ -1,4 +1,4 @@
-import React, {FC} from 'react';
+import React from 'react';
 import {ControlElements} from '../ControlElements';
 import {LinesCollection} from './LinesCollection';
 import {SchemaJSightContentType} from 'types/exchange';
@@ -9,7 +9,7 @@ interface EnumViewProps {
   keyBlock: string;
 }
 
-export const EnumView: FC<EnumViewProps> = ({content, name, keyBlock}) => {
+export const EnumView = ({content, name, keyBlock}: EnumViewProps) => {
   return (
     <div className="code-view flex-auto">
       <div className="header">

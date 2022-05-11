@@ -1,13 +1,14 @@
-import React, {FC, useContext, useMemo} from 'react';
+import React, {useContext, useMemo} from 'react';
 import {getTreeResources} from 'utils/getResources';
 import {SidebarGroupRoutes} from './SidebarGroupRoutes';
 import {SidebarReusables} from './SidebarReusables';
 import logo from '../../assets/images/icon-jsight.png';
 import logoWhite from '../../assets/images/icon_jsight_white.png';
 import clsx from 'clsx';
-import './SidebarContent.styles.scss';
 import {JDocContext, SidebarContext} from 'store';
 import {GlobalSettingsContext} from 'components/Layout';
+import './SidebarContent.styles.scss';
+
 const {isExport} = window as any;
 
 interface SidebarContentProps {
@@ -17,7 +18,7 @@ interface SidebarContentProps {
   isShow: boolean;
 }
 
-export const SidebarContent: FC<SidebarContentProps> = ({side, isShowSettings, isShow}) => {
+export const SidebarContent = ({side, isShowSettings, isShow}: SidebarContentProps) => {
   const {setIsOpen, isOpen} = useContext(GlobalSettingsContext);
   const jdocData = useContext(JDocContext);
   const {setCurrentDocSidebar} = useContext(SidebarContext);

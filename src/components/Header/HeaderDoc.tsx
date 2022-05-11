@@ -10,7 +10,7 @@ interface HeaderDocProps {
   openSharingModal(): void;
 }
 
-export const HeaderDoc: FC<HeaderDocProps> = ({setViewMode, openSharingModal}) => {
+export const HeaderDoc = ({setViewMode}: HeaderDocProps) => {
   const jdocData = useContext(JDocContext);
   const [saveHtml] = useExport();
   const title = jdocData?.info?.title;

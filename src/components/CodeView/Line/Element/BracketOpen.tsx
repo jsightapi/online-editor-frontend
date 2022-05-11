@@ -1,4 +1,4 @@
-import React, {FC, useMemo, useRef, useState} from 'react';
+import React, {useMemo, useRef, useState} from 'react';
 import {PropName} from './PropName';
 import clsx from 'clsx';
 import {get} from 'lodash';
@@ -41,7 +41,7 @@ interface BracketOpenLineComponentProps {
   isKeyShortcut?: boolean;
 }
 
-const BracketOpenLineComponent: FC<BracketOpenLineComponentProps> = ({
+const BracketOpenLineComponent = ({
   classes,
   tab,
   handleLineClick,
@@ -50,7 +50,7 @@ const BracketOpenLineComponent: FC<BracketOpenLineComponentProps> = ({
   rulesElement,
   requiredElement,
   isKeyShortcut,
-}) => (
+}: BracketOpenLineComponentProps) => (
   <span onClick={handleLineClick} className={classes}>
     <span className="number" />
     {requiredElement}
@@ -61,7 +61,7 @@ const BracketOpenLineComponent: FC<BracketOpenLineComponentProps> = ({
   </span>
 );
 
-export const BracketOpen: FC<BracketOpenProps> = ({
+export const BracketOpen = ({
   tab,
   propName,
   bracket,
@@ -73,7 +73,7 @@ export const BracketOpen: FC<BracketOpenProps> = ({
   isKeyShortcut,
   optional,
   notes,
-}) => {
+}: BracketOpenProps) => {
   const objectSpanRef = useRef<HTMLSpanElement | null>(null);
   const [expanded, setExpanded] = useState<boolean>(false);
   const {isSelected, handleLineClick} = useSelectionLine({numberLine, rules, notes});

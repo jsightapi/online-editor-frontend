@@ -1,4 +1,4 @@
-import {FC} from 'react';
+import React from 'react';
 import Modal from 'react-modal';
 import ContactFormFrame from 'assets/images/contact-form-frame.svg';
 import './ContactForm.styles.scss';
@@ -8,7 +8,7 @@ interface ContactFormProps {
   onClose: () => void;
 }
 
-export const ContactForm: FC<ContactFormProps> = ({modalIsOpen, onClose}) => (
+export const ContactForm = ({modalIsOpen, onClose}: ContactFormProps) => (
   <Modal
     isOpen={modalIsOpen}
     onRequestClose={onClose}

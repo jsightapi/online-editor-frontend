@@ -1,4 +1,4 @@
-import React, {FC, useContext, useMemo} from 'react';
+import React, {useContext, useMemo} from 'react';
 import {SchemaType} from 'types/exchange';
 import {getUserEnum, getUserType} from 'utils/getResources';
 import {CollapsibleContent} from '../CollapsibleContent';
@@ -13,7 +13,7 @@ interface UsedUserElementProps {
   keyBlock: string;
 }
 
-const UsedUserType: FC<UsedUserElementProps> = ({value, keyBlock}) => {
+const UsedUserType = ({value, keyBlock}: UsedUserElementProps) => {
   const jdocData = useContext(JDocContext);
 
   const userType = useMemo(
@@ -35,7 +35,7 @@ const UsedUserType: FC<UsedUserElementProps> = ({value, keyBlock}) => {
   );
 };
 
-const UsedUserEnum: FC<UsedUserElementProps> = ({value, keyBlock}) => {
+const UsedUserEnum = ({value, keyBlock}: UsedUserElementProps) => {
   const jdocData = useContext(JDocContext);
 
   const userEnum = useMemo(
@@ -64,7 +64,7 @@ export interface CodeViewProps {
  * @param props
  * @constructor
  */
-export const CodeView: FC<CodeViewProps> = (props) => (
+export const CodeView = (props: CodeViewProps) => (
   <div className="code-view-wrapper">
     <CodeViewBaseComponent {...props} />
     {!props.hideUsedElements && (

@@ -1,4 +1,4 @@
-import React, {FC} from 'react';
+import React from 'react';
 import {ControlElements} from 'components/ControlElements';
 import './ExampleView.styles.scss';
 
@@ -7,7 +7,7 @@ interface ExampleViewProps {
   keyBlock: string;
 }
 
-export const ExampleView: FC<ExampleViewProps> = ({value, keyBlock}) => {
+export const ExampleView = ({value, keyBlock}: ExampleViewProps) => {
   // TODO: this code will be useful for formatting
   // const query = useMemo(() => {
   //   const params = value.split('&');

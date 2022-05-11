@@ -1,5 +1,5 @@
-import React, {FC, useContext, useMemo} from 'react';
-import {getUserEnum, getUserType} from 'utils/getResources';
+import React, {useContext, useMemo} from 'react';
+import {getUserEnum, getUserType} from 'api/getResources';
 import {LinesCollection} from '../LinesCollection';
 import {UserEnumType, UserTypeType} from 'types/exchange';
 import {RegexView} from 'components/CodeView/RegexView';
@@ -14,13 +14,13 @@ interface ShortcutLinesProps {
 }
 
 // render code for shortcuts; passing type, parent line and indentation
-export const ShortcutLines: FC<ShortcutLinesProps> = ({
+export const ShortcutLines = ({
   schemasNames,
   numberLine,
   level,
   tab,
   disableOpenBracket,
-}) => {
+}: ShortcutLinesProps) => {
   const jdocData = useContext(JDocContext);
 
   const userType: UserTypeType | UserEnumType | null = useMemo(() => {
