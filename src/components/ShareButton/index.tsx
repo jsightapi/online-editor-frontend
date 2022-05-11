@@ -9,10 +9,19 @@ import {DropdownToggle} from 'components/Dropdown/DropdownToggle';
 import {DropdownMenu} from 'components/Dropdown/DropdownMenu';
 import './ShareButton.styles.scss';
 
-export const ShareButton: React.FC = () => {
+interface ShareButtonProps {
+  openSharingModal(): void;
+}
+
+export const ShareButton: React.FC<ShareButtonProps> = ({openSharingModal}) => {
   const [createState, updateExistState] = useSharing();
   const {key, version} = useParams<MainRouterParams>();
   const isAbleUpdate = useMemo(() => key && version, [key, version]);
+
+  const handleNewState = (updateOrCreateState: () => void) => {
+    updateOrCreateState();
+    openSharingModal();
+  };
 
   return isAbleUpdate ? (
     <div className="group-share-button">
@@ -27,7 +36,7 @@ export const ShareButton: React.FC = () => {
           </div>
         </DropdownToggle>
         <DropdownMenu offsetX={-160}>
-          <div className="menu-item" onClick={updateExistState}>
+          <div className="menu-item" onClick={() => handleNewState(updateExistState)}>
             <div>
               <i className="icon-upload" />
             </div>
@@ -37,7 +46,7 @@ export const ShareButton: React.FC = () => {
             </div>
           </div>
           <hr />
-          <div className="menu-item" onClick={createState}>
+          <div className="menu-item" onClick={() => handleNewState(createState)}>
             <div>
               <i className="icon-plus" />
             </div>
@@ -50,7 +59,11 @@ export const ShareButton: React.FC = () => {
       </Dropdown>
     </div>
   ) : (
-    <Button icon="link" className={clsx('share-button')} onClick={createState}>
+    <Button
+      icon="link"
+      className={clsx('share-button')}
+      onClick={() => handleNewState(createState)}
+    >
       Share
     </Button>
   );

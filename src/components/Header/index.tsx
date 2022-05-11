@@ -13,12 +13,14 @@ interface HeaderProps {
   setInitialContent(content: string): void;
   setViewMode: React.Dispatch<React.SetStateAction<editorModeType>>;
   setContactModalVisible: React.Dispatch<React.SetStateAction<boolean>>;
+  openSharingModal(): void;
 }
 
 export const Header: FC<HeaderProps> = ({
   setInitialContent,
   setViewMode,
   setContactModalVisible,
+  openSharingModal,
 }) => {
   const [docsMenuVisible, setDocsMenuVisible] = useState<boolean>(false);
   const [fileMenuVisible, setFileMenuVisible] = useState<boolean>(false);
@@ -56,7 +58,7 @@ export const Header: FC<HeaderProps> = ({
           <Button icon="preview" className="shadow" onClick={() => setViewMode('doc')}>
             Preview
           </Button>
-          <ShareButton />
+          <ShareButton openSharingModal={openSharingModal} />
         </div>
       </div>
     </div>

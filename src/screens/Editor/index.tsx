@@ -30,9 +30,10 @@ import {screenWidthMultiplier} from 'utils/screenWidthMultiplier';
 import {editorModeType, MainRouterParams, SidebarDocType} from 'types';
 import {JDocContext, SidebarContext} from 'store';
 import {onOrientationChange} from 'utils/onOrientationChange';
-import {Redirect, useHistory, useParams} from 'react-router-dom';
+import {useHistory, useParams} from 'react-router-dom';
 import {getExistingState} from 'api/codeSharing';
 import {ErrorScreen} from 'screens/Error';
+import {SharingForm} from 'components/Modals/SharingForm';
 
 const {isExport} = window as any;
 
@@ -55,6 +56,7 @@ export const EditorScreen: FC = () => {
   const jsightCodeDebounced = useDebounce<string>(jsightCode, 600);
   const [reloadEditor, setReloadEditor] = useState<boolean>(false);
   const [contactModalVisible, setContactModalVisible] = useState<boolean>(false);
+  const [sharingModalVisible, setSharingModalVisible] = useState<boolean>(false);
   const [error, setError] = useState<{code: number; message: string} | null>(null);
   const isEditor = useMemo(() => viewMode === 'editor', [viewMode]);
   const history = useHistory();
@@ -187,6 +189,10 @@ export const EditorScreen: FC = () => {
     history.push('/');
   };
 
+  const openSharingModal = () => {
+    setSharingModalVisible(true);
+  };
+
   if (error && error.code) {
     return <ErrorScreen goToEditor={goToEditor} code={error.code} message={error.message} />;
   }
@@ -199,9 +205,10 @@ export const EditorScreen: FC = () => {
             setInitialContent={setInitialContent}
             setViewMode={setViewMode}
             setContactModalVisible={setContactModalVisible}
+            openSharingModal={openSharingModal}
           />
         ) : (
-          <HeaderDoc setViewMode={setViewMode} />
+          <HeaderDoc openSharingModal={openSharingModal} setViewMode={setViewMode} />
         )
       ) : (
         <div />
@@ -279,6 +286,10 @@ export const EditorScreen: FC = () => {
           onClose={() => setContactModalVisible(false)}
         />
       )}
+      <SharingForm
+        modalIsOpen={sharingModalVisible}
+        onClose={() => setSharingModalVisible(false)}
+      />
     </JDocContext.Provider>
   );
 };
