@@ -1,5 +1,5 @@
 import {runRequest} from 'utils/runRequest';
-const cloudUrl = 'http://cloud.jsight.io/';
+export const cloudUrl = process.env.REACT_APP_CLOUD_URL;
 
 export type cloudItemType = 'online-editor-project';
 

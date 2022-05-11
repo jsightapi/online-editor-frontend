@@ -1,4 +1,11 @@
-import React, {useState, useEffect, useMemo, startTransition, useCallback} from 'react';
+import React, {
+  useState,
+  useLayoutEffect,
+  useEffect,
+  useMemo,
+  startTransition,
+  useCallback,
+} from 'react';
 import clsx from 'clsx';
 import {toast, ToastContainer} from 'react-toastify';
 import {Resizable} from 're-resizable';

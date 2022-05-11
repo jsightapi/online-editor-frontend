@@ -23,7 +23,7 @@ export const ShareButton: React.FC<ShareButtonProps> = ({openSharingModal}) => {
     openSharingModal();
   };
 
-  return isAbleUpdate ? (
+  return isAbleUpdate && process.env.REACT_APP_CLOUD_URL ? (
     <div className="group-share-button">
       <Dropdown>
         <DropdownToggle>
@@ -60,6 +60,7 @@ export const ShareButton: React.FC<ShareButtonProps> = ({openSharingModal}) => {
     </div>
   ) : (
     <Button
+      disabled={!process.env.REACT_APP_CLOUD_URL}
       icon="link"
       className={clsx('share-button')}
       onClick={() => handleNewState(createState)}

@@ -4,6 +4,11 @@
   border: 0;
   background-color: $main-purple;
   color: #fff;
+
+  &.disabled {
+    background-color: $background;
+    color: $main-grey;
+  }
 }
 
 .group-share-button {
