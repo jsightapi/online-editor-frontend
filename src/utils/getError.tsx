@@ -12,7 +12,13 @@ export const getError = (error: ErrorType) => {
     return 'Server error, try again later';
   }
 
-  return `Error on line ${error.Line}. ${error.Message}`;
+  const errorMessage = error.Message;
+  return errorMessage.charAt(0).toUpperCase() + errorMessage.slice(1);
+};
+
+const getTitle = (error: ErrorType | undefined) => {
+  const errorLine = error?.Line && error?.Line > 0 ? ` on line ${error.Line}` : '';
+  return `${error?.Status || 'Error'} ${errorLine}`;
 };
 
 const showErrorOptions: ToastOptions = {
@@ -27,9 +33,11 @@ const showErrorOptions: ToastOptions = {
 };
 
 export const showError = (error: ErrorType, setScrollToRow: () => void) => {
+  const title = getTitle(error);
   const message = getError(error);
+
   const render = (
-    <CustomNotification setScrollToRow={setScrollToRow} title={error.Status} message={message} />
+    <CustomNotification setScrollToRow={setScrollToRow} title={title} message={message} />
   );
 
   if (!toast.isActive(ERROR_MESSAGE_ID)) {
