@@ -1,5 +1,5 @@
 import React from 'react';
-import './CustomNotification.style.scss';
+import './CustomNotification.styles.scss';
 
 export interface CustomNotificationsProps {
   message: string | JSX.Element;
