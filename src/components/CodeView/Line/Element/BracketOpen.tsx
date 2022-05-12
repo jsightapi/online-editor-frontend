@@ -2,7 +2,7 @@ import React, {useMemo, useRef, useState} from 'react';
 import {PropName} from './PropName';
 import clsx from 'clsx';
 import {get} from 'lodash';
-import {RulesType} from 'api/getResources.model';
+import {RulesType} from 'types/exchange';
 import {bracePairs} from 'utils/bracePairs';
 import {useSelectionLine} from '../../hooks/useSelectionLine';
 import {ObjectContext} from '../../store/ObjectContext';

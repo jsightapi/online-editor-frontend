@@ -2,7 +2,7 @@ import React from 'react';
 import {map} from 'lodash';
 import {ServerInfo} from './ServerInfo';
 import {CollapsibleContent} from '../CollapsibleContent';
-import {ServersInfoType} from 'api/getResources.model';
+import {ServersInfoType} from 'types/exchange';
 import './ServersInfo.styles.scss';
 
 interface ServersInfoProps {

@@ -8,7 +8,7 @@ import React, {
   useRef,
   useState,
 } from 'react';
-import {RulesType, SchemaType} from 'api/getResources.model';
+import {RulesType, SchemaType} from 'types/exchange';
 import {LinesCollection} from './LinesCollection';
 import {createPortal} from 'react-dom';
 import {RightRules} from 'components/CodeView/RightRules';

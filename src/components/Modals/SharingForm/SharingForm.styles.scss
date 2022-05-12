@@ -1,0 +1,81 @@
+@import 'src/styles/variables';
+
+.sharing-modal {
+  .header {
+    justify-content: space-between;
+    margin-bottom: 1.2rem;
+
+    .title {
+      font-size: 2.1rem;
+      line-height: 2.7rem;
+      font-weight: 600;
+    }
+
+    .btn-close i {
+      color: $secondary-text;
+      font-size: 1.8rem;
+    }
+  }
+
+  .description {
+    color: $secondary-text;
+    margin-bottom: 2rem;
+  }
+
+  .link {
+    label {
+      font-size: 1.6rem;
+      font-weight: 500;
+    }
+  }
+
+  .input-group {
+    display: flex;
+    margin-top: 0.8rem;
+
+    input, button {
+      border: 1px solid $secondary-stroke;
+      border-radius: 4px;
+    }
+
+    >input:not(:last-child) {
+      border-top-right-radius: 0;
+      border-bottom-right-radius: 0;
+      flex: 1 1 auto;
+      padding: 1.2rem 2rem;
+    }
+
+    .input-group-append {
+      margin-left: -1px;
+    }
+
+    button {
+      padding: 1.2rem;
+      background-color: $background;
+      border-top-left-radius: 0;
+      border-bottom-left-radius: 0;
+    }
+  }
+
+  .footer {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 3.2rem;
+
+    button {
+      padding-top: 1.2rem;
+      padding-bottom: 1.2rem;
+      &:last-of-type {
+        width: 14.8rem;
+        border: 0;
+        background-color: $main-purple;
+        color: #fff;
+      }
+
+      &:first-of-type {
+        margin-right: 1.2rem;
+        width: 12rem;
+      }
+    }
+  }
+}

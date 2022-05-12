@@ -1,3 +1,4 @@
+import React from 'react';
 import clsx from 'clsx';
 import './Button.styles.scss';
 
@@ -16,12 +17,8 @@ export const Button = ({
   onClick,
   icon,
 }: ButtonProps) => (
-  <button
-    disabled={disabled}
-    className={clsx('btn', className, {_disabled: disabled})}
-    onClick={onClick}
-  >
-    <i className={`icon-${icon}`} />
+  <button disabled={disabled} className={clsx('btn', className, {disabled})} onClick={onClick}>
+    {icon && <i className={`icon-${icon}`} />}
     {children}
   </button>
 );

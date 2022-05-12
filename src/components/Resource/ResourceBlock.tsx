@@ -1,5 +1,5 @@
 import React from 'react';
-import {SchemaType} from 'api/getResources.model';
+import {SchemaType} from 'types/exchange';
 import {SchemaView} from '../SchemaView';
 
 interface ResourceBlockProps {

@@ -1,5 +1,5 @@
 import React, {useContext, useEffect, useMemo} from 'react';
-import {SchemaJSightContentType} from 'api/getResources.model';
+import {SchemaJSightContentType} from 'types/exchange';
 import {map} from 'lodash';
 import {createPortal} from 'react-dom';
 import clsx from 'clsx';

@@ -1,6 +1,6 @@
 import React, {useContext, useMemo} from 'react';
-import {SchemaType} from 'api/getResources.model';
-import {getUserEnum, getUserType} from 'api/getResources';
+import {SchemaType} from 'types/exchange';
+import {getUserEnum, getUserType} from 'utils/getResources';
 import {CollapsibleContent} from '../CollapsibleContent';
 import {CodeViewBaseComponent} from './CodeViewBaseComponent';
 import {EnumView} from './EnumView';

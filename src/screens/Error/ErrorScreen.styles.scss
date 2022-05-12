@@ -1,0 +1,38 @@
+@import 'src/styles/variables';
+
+.error-wrapper {
+  height: 100%;
+  justify-content: center;
+  align-items: center;
+
+  .error-inner {
+    flex-direction: row;
+  }
+
+  .content {
+    margin-left: 4rem;
+    justify-content: flex-end;
+    flex-direction: column;
+
+    .title {
+      font-size: 4.4rem;
+      line-height: 5.7rem;
+      font-weight: 700;
+    }
+
+    .description {
+      font-size: 1.8rem;
+      color: $secondary-text;
+      margin-top: 0.6rem;
+    }
+  }
+
+  button {
+    border: 0;
+    background: $main-purple;
+    color: #fff;
+    padding: 1.2rem 4.5rem;
+    margin-top: 2.7rem;
+    margin-bottom: 4.5rem;
+  }
+}

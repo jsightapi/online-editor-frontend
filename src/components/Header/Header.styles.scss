@@ -1,3 +1,4 @@
+@use 'sass:math';
 @import 'src/styles/variables';
 
 #root {
@@ -6,11 +7,11 @@
 }
 
 @function calcSize($scale) {
-  @return 100% / $scale;
+  @return math.div(100%, $scale);
 }
 
 @function calcShift($scale) {
-  @return -((100% / $scale) / 2 - ((100% / $scale) * ($scale / 2)));
+  @return -(math.div(100%, $scale) / 2 - (math.div(100%, $scale) * math.div($scale, 2)));
 }
 
 @media screen and (max-width: 1040px) {
@@ -72,6 +73,10 @@
     padding: 16px 32px;
     box-shadow: 0 6.0308px 22.3363px rgba(0, 0, 0, 0.0325822),
       0 1.79553px 6.6501px rgba(0, 0, 0, 0.0223074);
+  }
+
+  .btn-download {
+    margin-right: 1.2rem;
   }
 
   .doc-title {

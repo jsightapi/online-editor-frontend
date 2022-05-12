@@ -1,6 +1,6 @@
 import React from 'react';
 import clsx from 'clsx';
-import {ResourceType} from 'api/getResources.model';
+import {ResourceType} from 'types/exchange';
 
 interface ResourceMethodsTabsProps {
   setHttpMethod(method: string): void;

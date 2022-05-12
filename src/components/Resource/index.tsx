@@ -1,5 +1,5 @@
 import React from 'react';
-import {ResourcePathType} from 'api/getResources.model';
+import {ResourcePathType} from 'types/exchange';
 import {ResourceMethods} from './ResourceMethods';
 
 interface ResourceProps {

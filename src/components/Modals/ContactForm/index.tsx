@@ -1,7 +1,7 @@
 import React from 'react';
 import Modal from 'react-modal';
-import Frame from 'assets/images/contact-form-frame.svg';
-import './style.scss';
+import ContactFormFrame from 'assets/images/contact-form-frame.svg';
+import './ContactForm.styles.scss';
 
 interface ContactFormProps {
   modalIsOpen: boolean;
@@ -26,7 +26,7 @@ export const ContactForm = ({modalIsOpen, onClose}: ContactFormProps) => (
       </div>
       <div className="contact-modal__body">
         <p>
-          Do you expirience a bug or have a problem using JSight? Feel free to contact us, your
+          Do you experience a bug or have a problem using JSight? Feel free to contact us, your
           feedback is really significant!
         </p>
         <h4>Email:</h4>
@@ -40,7 +40,7 @@ export const ContactForm = ({modalIsOpen, onClose}: ContactFormProps) => (
             @jsight_support
           </a>
         </p>
-        <img src={Frame} className="contact-modal__frame" />
+        <img src={ContactFormFrame} className="contact-modal__frame" />
       </div>
     </div>
   </Modal>

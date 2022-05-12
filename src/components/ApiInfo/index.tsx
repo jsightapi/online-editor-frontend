@@ -1,5 +1,5 @@
 import React, {useEffect} from 'react';
-import {ApiInfoType} from 'api/getResources.model';
+import {ApiInfoType} from 'types/exchange';
 import {Description} from '../Description';
 import './ApiInfo.styles.scss';
 

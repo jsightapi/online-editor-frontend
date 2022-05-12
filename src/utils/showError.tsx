@@ -1,25 +1,11 @@
-import {ErrorType} from 'types/error';
-import {toast} from 'react-toastify';
 import {ToastOptions} from 'react-toastify/dist/types';
+import {ErrorType} from 'types';
 import {CustomNotification} from 'components/CustomNotification';
+import {toast} from 'react-toastify';
+import {getError, getErrorTitle} from 'utils/getError';
 import clsx from 'clsx';
-import 'components/CustomNotification/style.scss';
 
 const ERROR_MESSAGE_ID = 1;
-
-export const getError = (error: ErrorType) => {
-  if (!error?.Line) {
-    return 'Server error, try again later';
-  }
-
-  const errorMessage = error.Message;
-  return errorMessage.charAt(0).toUpperCase() + errorMessage.slice(1);
-};
-
-const getTitle = (error: ErrorType | undefined) => {
-  const errorLine = error?.Line && error?.Line > 0 ? ` on line ${error.Line}` : '';
-  return `${error?.Status || 'Error'} ${errorLine}`;
-};
 
 const showErrorOptions: ToastOptions = {
   type: 'warning',
@@ -33,7 +19,7 @@ const showErrorOptions: ToastOptions = {
 };
 
 export const showError = (error: ErrorType, setScrollToRow: () => void) => {
-  const title = getTitle(error);
+  const title = getErrorTitle(error);
   const message = getError(error);
 
   const render = (

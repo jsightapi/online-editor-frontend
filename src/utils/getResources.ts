@@ -1,13 +1,12 @@
 import {reduce, map} from 'lodash';
 import {
-  JDocType,
   ResourceMethodsType,
   ResourcesType,
   ResourceType,
   TagsType,
   UserEnumsType,
   UserTypesType,
-} from './getResources.model';
+} from 'types/exchange';
 
 // get resources with methods
 const getResources = (resources: {[key: string]: string[]}, resourceMethods: ResourceMethodsType) =>
@@ -52,42 +51,4 @@ export const getUserType = (typeName?: string, userTypes?: UserTypesType) => {
 
 export const getUserEnum = (typeName?: string, userEnums?: UserEnumsType) => {
   return typeName && userEnums && userEnums.hasOwnProperty(typeName) ? userEnums[typeName] : null;
-};
-
-export const createJdocList = (jdocExchange: JDocType): [any[], number[]] => {
-  const {tags, resourceMethods, userTypes, info, servers, userEnums} = jdocExchange;
-  const resources = getTreeResources(tags, resourceMethods);
-  const jdocList = [];
-  const jdocGroupCount = [];
-
-  if (info) {
-    jdocList.push(info);
-    jdocGroupCount.push(1);
-  }
-
-  if (servers) {
-    jdocList.push(servers);
-    // TODO: Put back when server list rendering is virtualized
-    // jdocGroupCount.push(Object.keys(servers).length);
-    jdocGroupCount.push(1);
-  }
-
-  if (!!resources.length) {
-    jdocList.push(resources);
-    // TODO: Put back when resource list rendering is virtualized
-    // jdocGroupCount.push(resources.length);
-    jdocGroupCount.push(1);
-  }
-
-  if (userTypes) {
-    jdocList.push(userTypes);
-    jdocGroupCount.push(Object.keys(userTypes).length);
-  }
-
-  if (userEnums) {
-    jdocList.push(userEnums);
-    jdocGroupCount.push(Object.keys(userEnums).length);
-  }
-
-  return [jdocList, jdocGroupCount];
 };

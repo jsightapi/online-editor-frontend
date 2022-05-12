@@ -1,6 +1,6 @@
 import React, {createContext, useContext, useLayoutEffect, useMemo} from 'react';
 import {TableView} from '../TableView';
-import {SchemaType} from 'api/getResources.model';
+import {SchemaType} from 'types/exchange';
 import {CodeView} from '../CodeView';
 import {GlobalSettingsContext} from '../Layout';
 import {ExampleView} from 'components/ExampleView';
@@ -62,18 +62,6 @@ export const SchemaView = ({
     const schemaView = schemasView.find((item) => item.key === keyBlock);
     return schemaView && schemaView.viewType ? schemaView.viewType : type;
   }, [schemasView, keyBlock, type]);
-
-  // useEffect(() => {
-  //   setViewType(keyBlock, type);
-  // }, [keyBlock, type]);
-  //
-  // useEffect(() => {
-  //   setExpandedTypes(keyBlock, typesExpand);
-  // }, [typesExpand, keyBlock]);
-  //
-  // useEffect(() => {
-  //   setCollapsedRules(keyBlock, !rulesExpand);
-  // }, [rulesExpand, keyBlock]);
 
   useLayoutEffect(() => {
     if (!schemasView.find((item) => item.key === keyBlock)) {

@@ -1,7 +1,7 @@
 import React from 'react';
 import {ControlElements} from '../ControlElements';
 import {LinesCollection} from './LinesCollection';
-import {SchemaJSightContentType} from 'api/getResources.model';
+import {SchemaJSightContentType} from 'types/exchange';
 
 interface EnumViewProps {
   content?: SchemaJSightContentType;

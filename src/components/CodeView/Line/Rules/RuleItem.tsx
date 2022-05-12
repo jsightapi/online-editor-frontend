@@ -1,5 +1,5 @@
 import React, {useContext} from 'react';
-import {RuleType, SchemaJSightContentType} from 'api/getResources.model';
+import {RuleType, SchemaJSightContentType} from 'types/exchange';
 import {PropName} from 'components/CodeView/Line/Element/PropName';
 import {map} from 'lodash';
 import {RuleValue} from './RuleValue';

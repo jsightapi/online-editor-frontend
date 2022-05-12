@@ -1,7 +1,7 @@
 import React, {useContext, useMemo} from 'react';
-import {getUserEnum, getUserType} from 'api/getResources';
+import {getUserEnum, getUserType} from 'utils/getResources';
 import {LinesCollection} from '../LinesCollection';
-import {UserEnumType, UserTypeType} from 'api/getResources.model';
+import {UserEnumType, UserTypeType} from 'types/exchange';
 import {RegexView} from 'components/CodeView/RegexView';
 import {JDocContext} from 'store';
 

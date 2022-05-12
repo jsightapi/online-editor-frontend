@@ -1,6 +1,6 @@
 import React, {useMemo, useState, useRef, useContext, useEffect} from 'react';
 import clsx from 'clsx';
-import {SchemaJSightContentType} from 'api/getResources.model';
+import {SchemaJSightContentType} from 'types/exchange';
 import {PropName} from './Element/PropName';
 import {Rules} from './Rules';
 import {ObjectContext} from '../store/ObjectContext';

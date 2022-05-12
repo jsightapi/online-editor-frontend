@@ -1,5 +1,5 @@
 import React from 'react';
-import {SchemaJSightContentType} from 'api/getResources.model';
+import {SchemaJSightContentType} from 'types/exchange';
 import {DetailCard} from 'components/CodeView/DetailCard';
 
 interface TablePlainRowProps {
