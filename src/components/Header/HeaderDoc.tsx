@@ -1,4 +1,4 @@
-import React, {FC, useContext} from 'react';
+import React, {useContext} from 'react';
 import clsx from 'clsx';
 import {Button} from 'components/Button';
 import {useExport} from 'hooks/useExport';
