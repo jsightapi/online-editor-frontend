@@ -2,7 +2,7 @@ import {ToastOptions} from 'react-toastify/dist/types';
 import {ErrorType} from 'types';
 import {CustomNotification} from 'components/CustomNotification';
 import {toast} from 'react-toastify';
-import {getError} from 'utils/getError';
+import {getError, getErrorTitle} from 'utils/getError';
 import clsx from 'clsx';
 
 const ERROR_MESSAGE_ID = 1;
@@ -19,7 +19,7 @@ const showErrorOptions: ToastOptions = {
 };
 
 export const showError = (error: ErrorType, setScrollToRow: () => void) => {
-  const title = getTitle(error);
+  const title = getErrorTitle(error);
   const message = getError(error);
 
   const render = (
