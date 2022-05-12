@@ -1,41 +1,61 @@
 @import 'src/styles/_variables.scss';
 
-.Toastify {
-  .error-notification {
-    background: $secondary-red;
+.notification-wrap {
+    padding: 2.4rem !important;
     z-index: 9999;
-    div > svg {
-      fill: $sidenav-background-color;
-    }
-  }
-
-  .notification {
-    text-align: left;
-    color: $sidenav-background-color;
-    direction: ltr;
-    cursor: text;
-  }
-
-  .notification-title {
-    font-size: 2rem;
-    line-height: 2.5rem;
-    font-weight: 700;
-    margin-bottom: 1.2rem;
-  }
-
-  .notification-message {
-    font-size: 1em;
-    line-height: 2rem;
-  }
-
-  .notification-wrap {
-    right: 31.5vw;
     width: 47vw;
-    padding: 11px 32px;
-    opacity: 0.95;
-    box-shadow: 0 24px 96px rgba(27, 17, 40, 0.05), 0 6px 18px rgba(27, 17, 40, 0.05),
-      0 2px 4px rgba(27, 17, 40, 0.05);
-  }
+    right: 27vw;
+
+    .Toastify {
+        &__toast-body {
+            align-items: flex-start;
+        }
+
+        &__close-button {
+            color: #fff;
+            opacity: 1;
+        }
+
+        &__toast-icon {
+            margin-inline-end: 0;
+            width: 1.6rem;
+
+            svg {
+                fill: #fff;
+                width: 1.6rem;
+                margin-top: 0.3rem;
+            }
+        }
+    }
+
+    &.error {
+        background: $secondary-red;
+    }
+}
+
+.notification-inner {
+    color: #fff;
+    margin-left: 1.8rem;
+
+    .title {
+        font-size: 1.6rem;
+        font-weight: 600;
+        margin-bottom: 0.6rem;
+    }
+
+    .btn-close {
+        padding: 0.75rem 1.6rem;
+        width: 6.4rem;
+        height: 3.2rem;
+        background: #fff;
+        border-radius: 4px;
+        display: flex;
+        flex-direction: row;
+        justify-content: center;
+        align-items: center;
+        color: $secondary-red;
+        margin-top: 1.6rem;
+    }
 }
 
 @media screen and (max-width: 1200px) {

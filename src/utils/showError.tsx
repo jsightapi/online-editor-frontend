@@ -8,10 +8,9 @@ import clsx from 'clsx';
 const ERROR_MESSAGE_ID = 1;
 
 const showErrorOptions: ToastOptions = {
-  type: 'warning',
   closeOnClick: false,
   autoClose: false,
-  className: clsx('notification-wrap', 'error-notification'),
+  className: clsx('notification-wrap', 'error'),
   toastId: ERROR_MESSAGE_ID,
   hideProgressBar: true,
   closeButton: false,
