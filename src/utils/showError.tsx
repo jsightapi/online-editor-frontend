@@ -19,9 +19,11 @@ const showErrorOptions: ToastOptions = {
 };
 
 export const showError = (error: ErrorType, setScrollToRow: () => void) => {
+  const title = getTitle(error);
   const message = getError(error);
+
   const render = (
-    <CustomNotification setScrollToRow={setScrollToRow} title={error.Status} message={message} />
+    <CustomNotification setScrollToRow={setScrollToRow} title={title} message={message} />
   );
 
   if (!toast.isActive(ERROR_MESSAGE_ID)) {
