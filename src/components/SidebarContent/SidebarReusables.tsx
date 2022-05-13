@@ -13,7 +13,7 @@ interface SidebarReusablesProps {
 }
 
 export const SidebarReusables = ({title, values}: SidebarReusablesProps) => {
-  const {path} = useParams<MainRouterParams>();
+  const {path, key, version} = useParams<MainRouterParams>();
   const {setCurrentUrl, currentUrl} = useContext(SidebarContext);
 
   return (
@@ -37,7 +37,9 @@ export const SidebarReusables = ({title, values}: SidebarReusablesProps) => {
                   {value}
                 </span>
               ) : (
-                <Link to={`/${value}`}>{value}</Link>
+                <Link to={key && version ? `/r/${key}/${version}/${value}` : `/${value}`}>
+                  {value}
+                </Link>
               )}
             </li>
           ))}
