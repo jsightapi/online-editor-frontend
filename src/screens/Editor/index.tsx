@@ -277,7 +277,7 @@ export const EditorScreen = () => {
             </div>
           </div>
         </SidebarContext.Provider>
-        <ToastContainer rtl={true} position="bottom-right" />
+        <ToastContainer rtl={false} position="bottom-right" />
       </div>
       {!isExport && (
         <ContactForm

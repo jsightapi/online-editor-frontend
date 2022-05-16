@@ -18,9 +18,11 @@ export const ShareButton: React.FC<ShareButtonProps> = ({openSharingModal}) => {
   const {key, version} = useParams<MainRouterParams>();
   const isAbleUpdate = useMemo(() => key && version, [key, version]);
 
-  const handleNewState = (updateOrCreateState: () => void) => {
-    updateOrCreateState();
-    openSharingModal();
+  const handleNewState = async (updateOrCreateState: () => void) => {
+    try {
+      await updateOrCreateState();
+      openSharingModal();
+    } catch (err) {}
   };
 
   return isAbleUpdate && process.env.REACT_APP_CLOUD_URL ? (
