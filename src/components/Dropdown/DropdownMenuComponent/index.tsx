@@ -1,4 +1,4 @@
-import React, {FC} from 'react';
+import React from 'react';
 import {CSSTransition} from 'react-transition-group';
 
 interface DropdownMenuComponentProps {
@@ -7,16 +7,17 @@ interface DropdownMenuComponentProps {
   role: string;
   aria: boolean;
   d_key: string;
+  children?: React.ReactNode;
 }
 
-export const DropdownMenuComponent: FC<DropdownMenuComponentProps> = ({
+export const DropdownMenuComponent = ({
   children,
   isOpen,
   tabIndex,
   role,
   aria,
   d_key,
-}) => (
+}: DropdownMenuComponentProps) => (
   <CSSTransition
     in={isOpen}
     appear={isOpen}

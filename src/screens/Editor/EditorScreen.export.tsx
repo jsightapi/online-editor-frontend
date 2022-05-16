@@ -1,18 +1,17 @@
-import React, {useState, FC, useEffect, useMemo, useCallback, startTransition} from 'react';
+import React, {useState, useEffect, useMemo, useCallback, startTransition} from 'react';
 import clsx from 'clsx';
 import {toast, ToastContainer} from 'react-toastify';
-import {JDocType} from 'api/getResources.model';
+import {JDocType} from 'types/exchange';
 import {MainContent} from 'components/MainContent';
 import {Layout} from 'components/Layout';
 import './Editor.styles.scss';
 import 'react-toastify/dist/ReactToastify.css';
 import {ContactForm} from 'components/Modals/ContactForm';
-import {HeaderDoc} from 'components/Header/HeaderDoc.export';
 import {screenWidthMultiplier} from 'utils/screenWidthMultiplier';
 import {editorModeType, ErrorType, SidebarDocType} from 'types';
 import {JDocContext, SidebarContext} from 'store';
 import {getJDocExchange} from 'api/getJDocExchange';
-import {showError} from 'utils/getError';
+import {showError} from 'utils/showError';
 import {useDebounce} from 'hooks/useDebounce';
 import {initCats} from 'screens/Editor/initCats';
 
@@ -20,7 +19,7 @@ const {isExport} = window as any;
 
 const SCROLLBAR_WIDTH = 20;
 
-export const EditorScreen: FC = () => {
+export const EditorScreen = () => {
   const [currentUrl, setCurrentUrl] = useState<string | null>(null);
   const [viewMode, setViewMode] = useState<editorModeType>(isExport ? 'doc' : 'editor');
   // left sidebar
@@ -93,7 +92,6 @@ export const EditorScreen: FC = () => {
 
   return (
     <JDocContext.Provider value={jdocExchange}>
-      <HeaderDoc setViewMode={setViewMode} />
       <div
         className={clsx('d-flex editor-wrapper', {
           'only-doc': !isEditor,
@@ -101,7 +99,13 @@ export const EditorScreen: FC = () => {
         })}
       >
         <SidebarContext.Provider
-          value={{currentDocSidebar, setCurrentDocSidebar, currentUrl, setCurrentUrl}}
+          value={{
+            editorWidth: 0,
+            currentDocSidebar,
+            setCurrentDocSidebar,
+            currentUrl,
+            setCurrentUrl,
+          }}
         >
           <div className={classes}>
             <div

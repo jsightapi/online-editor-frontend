@@ -32,19 +32,27 @@
     cursor: pointer;
   }
 
-  .sidebar-header {
-    i {
-      color: #6a7681;
-      line-height: 2.34rem;
-    }
-  }
-
   h2 {
     font-size: 1.8rem;
     line-height: 2.34rem;
     font-weight: 700;
     display: inline-block;
     margin-left: 1rem;
+  }
+}
+
+.sidebar-rules-close {
+  position: absolute;
+  top: 25px;
+  right: 40px;
+  z-index: 998;
+}
+
+.sidebar-rules-close,
+.sidebar-header {
+  i {
+    color: #6a7681;
+    line-height: 2.34rem;
   }
 }
 
@@ -56,6 +64,16 @@
   z-index: 3040;
   padding: 0.9rem 3rem 2.3rem;
   background-color: $sidenav-background-color;
+
+  &.is-open {
+    background-color: transparent;
+    .copyright {
+      color: #fff;
+      span {
+        color: #fff;
+      }
+    }
+  }
 
   .btn-settings {
     padding: 1.2rem 2.4rem;

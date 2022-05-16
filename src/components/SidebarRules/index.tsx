@@ -1,8 +1,8 @@
-import React, {FC, useContext, useEffect, useRef} from 'react';
+import React, {useContext, useEffect, useRef} from 'react';
 // import {AnnotationsContext} from 'screens/Main';
 import './SidebarRules.styles.scss';
 
-export const SidebarRules: FC = () => {
+export const SidebarRules = () => {
   // const {annotations, currentOffset} = useContext(AnnotationsContext);
   const divRef = useRef<HTMLDivElement | null>(null);
 

@@ -1,27 +1,24 @@
-import {FC} from 'react';
+import React from 'react';
 import clsx from 'clsx';
 import './Button.styles.scss';
 
-interface ButtonType {
+interface ButtonProps {
   icon?: string;
   disabled?: boolean;
   className?: string;
   onClick?: () => void;
+  children?: React.ReactNode;
 }
 
-export const Button: FC<ButtonType> = ({
+export const Button = ({
   children,
   disabled = false,
   className = '',
   onClick,
   icon,
-}) => (
-  <button
-    disabled={disabled}
-    className={clsx('btn', className, {_disabled: disabled})}
-    onClick={onClick}
-  >
-    <i className={`icon-${icon}`} />
+}: ButtonProps) => (
+  <button disabled={disabled} className={clsx('btn', className, {disabled})} onClick={onClick}>
+    {icon && <i className={`icon-${icon}`} />}
     {children}
   </button>
 );

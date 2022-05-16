@@ -1,5 +1,5 @@
-import {FC} from 'react';
-import './style.scss';
+import React from 'react';
+import './CustomNotification.style.scss';
 
 export interface CustomNotificationsProps {
   message: string | JSX.Element;
@@ -7,11 +7,7 @@ export interface CustomNotificationsProps {
   setScrollToRow: () => void;
 }
 
-export const CustomNotification: FC<CustomNotificationsProps> = ({
-  message,
-  title,
-  setScrollToRow,
-}) => {
+export const CustomNotification = ({message, title, setScrollToRow}: CustomNotificationsProps) => {
   return (
     <div className={'notification'} onClick={setScrollToRow}>
       {title && <div className="notification-title"> {title} </div>}

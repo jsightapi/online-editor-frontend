@@ -1,0 +1,61 @@
+JSIGHT 0.3
+
+GET /test-directive/parameters-escaping
+  Query "check quotation mark escaping \" and backslash escaping \\ "
+    null
+
+GET /test-directive/explicit-boundaries
+  Description
+  (
+    Start of description.
+
+    200 - directive name in the description.
+
+    And closing bracket in the description: )
+
+    End of description. 
+  )
+
+  200
+  (
+    Headers 
+      (
+        {
+          "x-header": "header" // Headers with explicit boundaries.
+        }
+      )
+    Body
+      (
+        { 
+          "id": 1 // Body with explicit boundaries.
+        }
+      )
+  )
+
+GET /test-comments # single-line comment
+# single-line comment
+  200 // Annotation # single-line comment
+    ###
+      multy-line comment
+    ###
+    Headers # single-line comment
+      {
+        "My-header": "header value" # single-line comment
+      }
+      ### 
+        multy-line comment 
+      ###
+    Body
+      {
+        "field1": 1, // {min: 1} # single-line comment
+        ###
+          multy-line comment
+        ###
+        "field2": 2,  // {min: 1} - Annotation # TODO: Must it be comment??
+        # TODO: can I insert comments inside the enum rule?
+        "field3": "1" /* {enum: [
+                        "1",
+                        "2",
+                        "3"
+                      ]} */
+      }

@@ -6,6 +6,8 @@
 html {
   height: 100%;
   font-size: 62.5%;
+  line-height: 1.5;
+  tab-size: 4;
 }
 
 body {
@@ -41,6 +43,44 @@ a {
   text-decoration: none;
 }
 
-* {
+*,
+:after,
+:before {
   box-sizing: border-box;
+  border: 0 solid;
+}
+
+button,
+[type='button'],
+[type='reset'],
+[type='submit'] {
+  -webkit-appearance: initial;
+  background-color: transparent;
+  background-image: none;
+}
+
+[role='button'],
+button {
+  cursor: pointer;
+}
+
+menu,
+ol,
+ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+button,
+input,
+optgroup,
+select,
+textarea {
+  color: inherit;
+  font-family: inherit;
+  font-size: 100%;
+  line-height: inherit;
+  margin: 0;
+  padding: 0;
 }

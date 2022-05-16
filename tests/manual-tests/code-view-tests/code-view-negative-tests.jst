@@ -1,0 +1,102 @@
+JSIGHT 0.3
+
+INFO
+  Description
+    Delete types one by one and check that every type raises an
+    error in a right line.
+
+  Version 1.0
+
+# Test rules place
+
+TYPE @testAmbiguousRulesForbidden1
+  [1,2,3] // {min: 1} # ERROR!
+
+TYPE @testAmbiguousRulesForbidden2
+  [1] // {minItems: 1, min: 1} # ERROR!
+
+TYPE @testAmbiguousRulesForbidden3
+{
+  "key": [123] // {optional: true, minItems: 1} # ERROR !!! There can be no RULES in this line.
+}
+
+TYPE @testRuleTypeUserTypeObjectForbidden
+{
+  "object": { // {type: "@cat"}  # --ERROR! It is wrong! 
+    "catId"  : 123,
+    "catName": "Tom"
+  }
+}
+
+TYPE @testRuleTypeUserTypeArrayForbidden
+{
+  "array": [ // {type: "@catList"}  # -- ERROR! It is wrong! 
+    @cat
+  ]
+}
+
+TYPE @testRuleTypeUserTypeReferenceForbidden
+{
+  "cat": @cat // {type: "@cat"}  # -- ERROR! It is wrong! 
+}
+
+# Rule `or`
+
+TYPE @testRuleOrWithObjectForbidden
+{
+  "myPet1" : { // {or: ["@cat", "@dog"]}            # --ERROR! It is wrong..
+    "id"   : 1,
+    "name" : "Tom"
+  }
+}
+
+TYPE @testRuleOrWithArrayForbidden
+{
+  "myPets": [ // {or: ["@catList", "@dogList"]}     # --ERROR! It is wrong.
+    @cat
+  ]
+}
+
+TYPE @testRuleOrWithTypeRefForbidden
+{
+  "myPet3" : @cat // {or: ["@cat", "@dog"]}  # --ERROR! It is wrong.
+}
+
+TYPE @testRuleOrWithTypeRefsForbidden
+{
+  "myPet4" : @cat | @dog // {or: ["@cat", "@dog"]}  # --ERROR! It is wrong.
+}
+
+# Thank you! Stop testing here. There are supporting types below.
+
+TYPE @cat
+{
+  "catId": @catId,
+  "catName": "Tom"
+}
+
+TYPE @dog
+{
+  "dogId": @dogId,
+  "dogField": 1
+}
+
+TYPE @pig
+{
+  "pigId": "12",
+  "pigField": "value"
+}
+
+TYPE @catId
+  12 // {min: 1}
+
+TYPE @dogId
+  "DOG-123"
+
+TYPE @pigId
+  "PIG-123"
+
+TYPE @catList
+[
+  @cat
+]  

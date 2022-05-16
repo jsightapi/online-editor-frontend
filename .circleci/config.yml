@@ -1,7 +1,8 @@
 version: 2.1
 orbs:
   docker: circleci/docker@2.0.3
-  common: jsight/common-ci@1.0.1
+  jira: circleci/jira@1.3.1
+  common: jsight/common-ci@1.3.0
 
 
 parameters:
@@ -17,27 +18,17 @@ workflows:
         pattern: "^release-.*"
         value: << pipeline.git.tag >>
     jobs:
-      - common/save-version-numbers:
+      - docker/publish:
           filters: &release-tag-filter
             tags:
               only: /^release-.*/
-      - docker/publish:
-          filters: *release-tag-filter
-          requires:
-            - get-version-numbers
           executor: common/vm-medium
-          context: online-editor-development
+          context: &common-context online-editor-development
           image: jsight/online-editor-frontend
-          tag: '${FULL_VERSION_TAG},${MAJOR_VERSION_TAG},latest'
+          tag: '${FULL_VERSION},${MAJOR_VERSION},latest' # values available thx to pre-steps
           extra_build_args: '--build-arg GTM_ID=${PROD_GTM_ID}'
-          attach-at: /tmp/workspace
-          before_build:
-            - run:
-                name: Read version number tags from workspace
-                command: |
-                  echo "Versions read: $(cat /tmp/workspace/full-version) , $(cat /tmp/workspace/major-version)"
-                  echo "export FULL_VERSION_TAG=$(cat /tmp/workspace/full-version)" >> $BASH_ENV
-                  echo "export MAJOR_VERSION_TAG=$(cat /tmp/workspace/major-version)" >> $BASH_ENV
+          pre-steps:
+            - common/parse-versions
       - approve-production-deploy:
           filters: *release-tag-filter
           type: approval
@@ -47,16 +38,23 @@ workflows:
           filters: *release-tag-filter
           requires:
             - approve-production-deploy
-          context: online-editor-development
+          context: *common-context
           host: ${HOST_PROD}
-          port: 8091
+          host-port: 8091
           container-name: online-editor-frontend
-          image: jsight/online-editor-frontend:latest
+          image: jsight/online-editor-frontend
+          tag: latest
+          post-steps:
+            - jira/notify:
+                job_type: deployment
+                environment_type: production
+                environment: Production
+
       - common/notify-telegram:
           filters: *release-tag-filter
           requires:
             - common/refresh-container
-          context: online-editor-development
+          context: *common-context
           message: Production editor frontend updated from tag << pipeline.git.tag >>
 
   rc-branch:
@@ -65,23 +63,31 @@ workflows:
         pattern: "^rc/.*"
         value: << pipeline.git.branch >>
     jobs:
-      - docker/publish:
-          context: online-editor-development
+      - docker/publish: &dev-publish
+          context: *common-context
           executor: common/vm-medium
-          image: jsight/dev-online-editor-frontend
+          image: &dev-image jsight/dev-online-editor-frontend
           tag: '<< pipeline.parameters.image-tag >>,stage_latest'
-      - common/refresh-container:
+
+      - common/refresh-container: &dev-refresh
           requires:
             - docker/publish
-          context: online-editor-development
-          host: ${HOST_STAGE}
-          port: 8091
+          context: *common-context
           container-name: online-editor-frontend
-          image: jsight/dev-online-editor-frontend:<< pipeline.parameters.image-tag >>
-      - common/notify-telegram:
+          host-port: 8091
+          host: ${HOST_STAGE}
+          image: *dev-image
+          tag: << pipeline.parameters.image-tag >>
+          post-steps:
+            - jira/notify:
+                job_type: deployment
+                environment_type: staging
+                environment: Staging
+
+      - common/notify-telegram: &dev-notify
           requires:
             - common/refresh-container
-          context: online-editor-development
+          context: *common-context
           message: Stage editor frontend updated from branch ${CIRCLE_BRANCH} (commit ${CIRCLE_SHA1})
 
   dev-branch:
@@ -89,22 +95,18 @@ workflows:
       equal: [ dev, << pipeline.git.branch >>]
     jobs:
       - docker/publish:
-          context: online-editor-development
-          executor: common/vm-medium
-          image: jsight/dev-online-editor-frontend
+          <<: *dev-publish
           tag: '<< pipeline.parameters.image-tag >>,dev_latest'
       - common/refresh-container:
-          requires:
-            - docker/publish
-          context: online-editor-development
+          <<: *dev-refresh
           host: ${HOST_DEV}
-          port: 8091
-          container-name: online-editor-frontend
-          image: jsight/dev-online-editor-frontend:<< pipeline.parameters.image-tag >>
+          post-steps:
+            - jira/notify:
+                job_type: deployment
+                environment_type: testing
+                environment: Test
       - common/notify-telegram:
-          requires:
-            - common/refresh-container
-          context: online-editor-development
+          <<: *dev-notify
           message: Dev editor frontend updated from branch ${CIRCLE_BRANCH} (commit ${CIRCLE_SHA1})
 
   experimental:
@@ -116,45 +118,32 @@ workflows:
       - approve-go-crazy:
           type: approval
       - docker/publish:
+          <<: *dev-publish
           requires:
             - approve-go-crazy
-          context: online-editor-development
-          executor: common/vm-medium
-          image: jsight/dev-online-editor-frontend
-          tag: '<< pipeline.parameters.image-tag >>,dev_latest'
+          tag: '<< pipeline.parameters.image-tag >>'
       - common/refresh-container:
-          requires:
-            - docker/publish
-          context: online-editor-development
+          <<: *dev-refresh
           host: ${HOST_CRAZY}
-          port: 8091
-          container-name: online-editor-frontend
-          image: jsight/dev-online-editor-frontend:<< pipeline.parameters.image-tag >>
+          post-steps:
+            - jira/notify:
+                job_type: deployment
+                environment_type: testing
+                environment: Experimental # Test, Production, Staging
       - common/notify-telegram:
-          requires:
-            - common/refresh-container
-          context: online-editor-development
+          <<: *dev-notify
           message: Experimental (crazy) editor frontend updated from branch ${CIRCLE_BRANCH} (commit ${CIRCLE_SHA1})
 
   ci-test:
     when:
-      equal: [ orb_ci, << pipeline.git.branch >> ]
+      equal: [ ci-test, << pipeline.git.branch >> ]
     jobs:
       - docker/publish:
-          context: online-editor-development
-          executor: common/vm-medium
-          image: jsight/dev-online-editor-frontend
+          <<: *dev-publish
           tag: '<< pipeline.parameters.image-tag >>,ci_latest'
       - common/refresh-container:
-          requires:
-            - docker/publish
-          context: online-editor-development
+          <<: *dev-refresh
           host: ${HOST_CRAZY}
-          port: 8091
-          container-name: online-editor-frontend
-          image: jsight/dev-online-editor-frontend:<< pipeline.parameters.image-tag >>
       - common/notify-telegram:
-          requires:
-            - common/refresh-container
-          context: online-editor-development
+          <<: *dev-notify
           message: Crazy editor frontend updated from branch ${CIRCLE_BRANCH} (commit ${CIRCLE_SHA1})

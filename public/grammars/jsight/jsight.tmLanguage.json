@@ -1,0 +1,781 @@
+{
+	"$schema": "https://raw.githubusercontent.com/martinring/tmlanguage/master/tmlanguage.json",
+	"name": "JSight",
+	"scopeName": "source.jsight",
+	"patterns": [
+
+
+		{
+			"include": "#jsightDir"
+		},
+		{
+			"include": "#macroPasteDirs"
+		},
+		{
+			"include": "#includeDir"
+		},
+		{
+			"include": "#infoDir"
+		},
+		{
+			"include": "#serverDir"
+		},
+		{
+			"include": "#urlDir"
+		},
+		{
+			"include": "#typeDir"
+		},
+		{
+			"include": "#methodsDirs"
+		},
+		{
+			"include": "#descriptionDir"
+		},
+		{
+			"include": "#baseUrlDir"
+		},
+		{
+			"include": "#headersAndPathDir"
+		},
+		{
+			"include": "#queryDir"
+		},
+		{
+			"include": "#responseDir"
+		},
+		{
+			"include": "#requestDir"
+		},
+		{
+			"include": "#bodyDir"
+		},
+		{
+			"include": "#simpleDirectives"
+		},
+		{
+			"include": "#strings"
+		},
+		{
+			"include": "#comments"
+		}
+	],
+	"repository": {
+		"annotationsAndComments": {
+			"comment": "INCLUDES annotation and both comments. Usually used together, so this is a shorthand",
+			"patterns": [
+				{
+					"include": "#annotations"
+				},
+				{
+					"include": "#comments"
+				}
+			]
+		},
+		"comments": {
+			"comment": "INCLUDES both comments. Usually used together, so this is a shorthand",
+			"patterns": [
+				{
+					"include": "#commentBlock"
+				},
+				{
+					"include": "#commentLine"
+				}
+			]
+		},
+		"commentBlock": {
+			"patterns": [
+				{
+					"comment": "BLOCK comments only allowed from new line",
+					"begin": "^\\s*###",
+					"end": "###",
+					"name": "comment.block.jsight",
+					"patterns": [{"include": "#todo"}]
+				}
+			]
+		},
+		"commentLine": {
+			"patterns": [
+				{
+					"begin": "#",
+					"end": "$",
+					"name": "comment.line.jsight",
+					"patterns": [{"include": "#todo"}]
+				}
+			]
+		},
+		"todo": {
+			"patterns": [
+				{
+					"match": "\\b(TODO|todo|Todo)\\b((:)? .*)?",
+					"name": "markup.italic jsight.comment.todo"
+				}
+			]
+		},
+		"annotations": {
+			"patterns": [
+				{
+					"comment": "MATCHING single-line annotation beginning but only on directives, which support annotations",
+					"begin": "(?<=(URL|TYPE|GET|POST|PUT|PATCH|\\d\\d\\d|SERVER).*)//",
+					"end": "$",
+					"name": "support.jsight.annotation.line",
+					"patterns": [
+						{
+							"comment": "FORMALLY only single-line comment can be used in single-line annotation",
+							"include": "#commentLine"
+						}
+					]
+				},
+				{
+					"comment": "MATCHING multi-line annotation beginning but only on directives, which support annotations",
+					"begin": "(?<=(URL|TYPE|GET|POST|PUT|PATCH|\\d\\d\\d).*)/\\*",
+					"end": "\\*/",
+					"name": "support.jsight.annotation.block",
+					"patterns": [
+						{
+							"include": "#comments"
+						}
+					]
+				}
+			]
+		},
+		"regex": {
+			"comment": "REGEX. Should be used only inside certain patterns where regex is expected",
+			"patterns": [
+				{
+					"match": "^\\s*\\/.*\\/",
+					"name": "string.regexp.jsight.regex"
+				}
+			]
+		},
+		"pathPatterns": {
+			"comment": "specific highlighting for path",
+			"patterns": [
+				{
+					"begin": "\\/",
+					"end": "\\s",
+					"name": "entity.other.attribute-name.jsight.parameter.path",
+					"patterns": [
+						{
+							"begin": "\\{",
+							"beginCaptures": {
+								"0": {
+									"name": "entity.other.attribute-name.jsight.parameter.path.param"
+								}
+							},
+							"end": "\\}",
+							"endCaptures": {
+								"0": {
+									"name": "entity.other.attribute-name.jsight.parameter.path.param"
+								}
+							},
+							"contentName": "entity.other.attribute-name.jsight.parameter.path.param"
+						}
+					]
+				}
+			]
+		},
+
+
+		"jsightDir": {
+			"comment": "«JSIGHT» directive",
+			"patterns": [{
+				"name": "keyword.other.jsight.directive.root.technical",
+				"match": "^\\s*(JSIGHT)\\b"
+			}]
+		},
+		"macroPasteDirs": {
+			"comment": "TODO !! «MACRO» and «PASTE» directives",
+			"begin": "^\\s*(MACRO|PASTE)\\b\\s*(@[a-zA-Z_][a-zA-Z_0-9]*)?",
+			"beginCaptures": {
+				"1": {"name": "keyword.other.jsight.directive.root.technical.macro"},
+				"2": {"name": "entity.other.attribute-name.jsight.parameter.name.macro"}
+			},
+			"end": "$",
+			"patterns": [
+				{
+					"include": "#comments"
+				}
+			]
+		},
+		"includeDir": {
+			"comment": "TODO !! «INCLUDE» directive",
+			"patterns": [{
+				"name": "keyword.other.jsight.directive.root.technical",
+				"match": "^\\s*(INCLUDE)\\b"
+			}]
+		},
+
+		"infoDir": {
+			"comment": "TODO !! «INFO» directive",
+			"name": "keyword.jsight.directive.root.api",
+			"match": "^\\s*(INFO)\\b"
+		},
+		"serverDir": {
+			"comment": "«SERVER» directive. Name param matched as optional so that keyword would highlight before param is provided",
+			"patterns": [
+				{
+					"begin": "^\\s*(SERVER)\\s*(@[a-zA-Z_][a-zA-Z_0-9]*)?",
+					"beginCaptures": {
+						"1": {
+							"name": "keyword.jsight.directive.root.api"
+						},
+						"2": {
+							"name": "entity.other.attribute-name.jsight.parameter.name.server"
+						}
+					},
+					"end": "(?=^\\s*(\\d\\d\\d|TESTDIR|JSIGHT|INFO|SERVER|MACRO|PASTE|INCLUDE|DIR|TAG|TYPE|ENUM|URL|GET|POST|PUT|PATCH|DELETE|Description|Request|Headers|Query|Path|Body|BaseUrl)\\b)",
+					"contentName": "debug.directive.Server.afterKeyAndParams",
+					"patterns": [
+						{
+							"include": "#annotationsAndComments"
+						}
+					]
+				}
+			]
+		},
+		"typeDir": {
+			"comment": "«TYPE» directive",
+			"patterns": [
+				{
+					"comment": "STARTING with «TYPE» keyword. Type name param matched as optional so that keyword would highlight before typing name",
+					"begin": "^\\s*(TYPE)\\s*(@[a-zA-Z_][a-zA-Z_0-9]*)?\\s*(jsight|regex)?",
+					"captures": {
+						"1": {
+							"name": "keyword.jsight.directive.root.api"
+						},
+						"2": {
+							"name": "entity.other.attribute-name.jsight.parameter.name.usertype.definition"
+						},
+						"3": {
+							"name": "constant.language.jsight.parameter.notation"
+						}
+					},
+					"while": "^(?!\\s*(TESTDIR|JSIGHT|INFO|SERVER|MACRO|PASTE|INCLUDE|DIR|TAG|TYPE|ENUM|URL|GET|POST|PUT|PATCH|DELETE|Description)\\b)",
+					"contentName": "debug.directive.Type.afterKeyAndParams",
+					"patterns": [
+						{
+							"include": "#annotationsAndComments"
+						},
+						{
+							"begin": "(?=^\\s*(@[a-zA-Z_][a-zA-Z_0-9]*|\\{|\\[|true|false|null|\".*\"|\\d+))",
+							"end": "(?=^\\s*(TESTDIR|JSIGHT|INFO|SERVER|MACRO|PASTE|INCLUDE|DIR|TAG|TYPE|ENUM|URL|GET|POST|PUT|PATCH|DELETE|Description)\\b)",
+							"patterns": [
+								{
+									"include": "source.jschema"
+								}
+							]
+						},
+						{
+							"include": "#regex"
+						}
+					]
+				}
+			]
+		},
+		"urlDir": {
+			"comment": "«URL» directive. Path parameter matches as optional, so that URL would highlight begore path is provided",
+			"begin": "^\\s*(URL)\\s*(\\/\\S*)?",
+			"beginCaptures": {
+				"1": {
+					"name": "keyword.jsight.directive.root.api"
+				},
+				"2": {
+					"name": "debug.directive.Url.parameter.path",
+					"patterns": [{
+						"include": "#pathPatterns"
+					}]
+				}
+			},
+			"end": "(?=^\\s*(\\d\\d\\d|TESTDIR|JSIGHT|INFO|SERVER|MACRO|PASTE|INCLUDE|DIR|TAG|TYPE|ENUM|URL|GET|POST|PUT|PATCH|DELETE|Description|Request|Headers|Query|Path|Body)\\b)",
+			"contentName": "debug.directive.Url.afterKeyAndParams",
+			"patterns": [
+				{
+					"include": "#comments"
+				}
+			]
+		},
+		"methodsDirs": {
+			"patterns": [
+				{
+					"comment": "«GET», «POST», ... as root directives. TODO: better distinct path from annotation",
+					"begin": "^\\s*(GET|POST|PUT|PATCH|DELETE)\\s*(\\/[^\\/\\*]\\S*)",
+					"beginCaptures": {
+						"1": {
+							"name": "keyword.jsight.directive.root.api"
+						},
+						"2": {
+							"name": "debug.directive.Method.parameter.path",
+							"patterns": [
+								{
+									"include": "#pathPatterns"
+								}
+							]
+						}
+					},
+					"end": "(?=^\\s*(\\d\\d\\d|TESTDIR|JSIGHT|INFO|SERVER|MACRO|PASTE|INCLUDE|DIR|TAG|TYPE|ENUM|URL|GET|POST|PUT|PATCH|DELETE|Description|Request|Headers|Query|Path|Body)\\b)",
+					"contentName": "debug.directive.Method.afterKeyAndParams",
+					"patterns": [
+						{
+							"include": "#annotationsAndComments"
+						}
+					]
+				},
+				{
+					"comment": "«GET», «POST», ... as inner directives",
+					"begin": "^\\s*(GET|POST|PUT|PATCH|DELETE)",
+					"beginCaptures": {
+						"1": {
+							"name": "keyword.jsight.directive.method"
+						},
+						"2": {
+							"name": "debug.directive.Method.parameter.path",
+							"patterns": [
+								{
+									"include": "#pathPatterns"
+								}
+							]
+						}
+					},
+					"end": "(?=^\\s*(\\d\\d\\d|TESTDIR|JSIGHT|INFO|SERVER|MACRO|PASTE|INCLUDE|DIR|TAG|TYPE|ENUM|URL|GET|POST|PUT|PATCH|DELETE|Description|Request|Headers|Query|Path|Body)\\b)",
+					"contentName": "debug.directive.Method.afterKeyAndParams",
+					"patterns": [
+						{
+							"include": "#annotationsAndComments"
+						}
+					]
+				}
+			]
+
+		},
+		"simpleDirectives": {
+			"comment": "TODO: leave only the ones not described explicitly in own pattern",
+			"patterns": [{
+				"name": "keyword.control.jsight.directive.inner",
+				"match": "^\\s*(Title|Version)\\b"
+			}]
+		},
+		"baseUrlDir": {
+			"comment": "«BaseUrl» directive. Name param matched as optional so that keyword would highlight before param is provided",
+			"patterns": [
+				{
+					"begin": "^\\s*(BaseUrl)\\s*(\\S*)?",
+					"beginCaptures": {
+						"1": {
+							"name": "keyword.control.jsight.directive.inner"
+						},
+						"2": {
+							"name": "string.quoted.double.jsight.parameter.baseurl"
+						}
+					},
+					"end": "(?=^\\s*(\\d\\d\\d|TESTDIR|JSIGHT|INFO|SERVER|MACRO|PASTE|INCLUDE|DIR|TAG|TYPE|ENUM|URL|GET|POST|PUT|PATCH|DELETE|Description|Request|Headers|Query|Path|Body|BaseUrl)\\b)",
+					"contentName": "debug.directive.BaseUrl.afterKeyAndParams",
+					"patterns": [
+						{
+							"include": "#comments"
+						}
+					]
+				}
+			]
+		},
+		"descriptionDir": {
+			"comment": "«Description» directive. TODO: describe full logic of Description",
+			"patterns": [
+				{
+					"begin": "^\\s*(Description)\\s*(#.*)?$",
+					"beginCaptures": {
+						"1": {
+							"name": "keyword.control.jsight.directive.inner"
+						},
+						"2": {
+							"name": "comment.line.jsight"
+						}
+					},
+					"end": "(?<=^\\s*\\))|((?=^\\s*(\\d\\d\\d|JSIGHT|INFO|SERVER|MACRO|PASTE|INCLUDE|DIR|TAG|TYPE|ENUM|URL|GET|POST|PUT|PATCH|DELETE|Title|Version|Description|Request|Headers|Query|Path|Body)))",
+					"contentName": "debug.directive.Description.body",
+					"patterns": [
+						{
+							"begin": "^\\s*\\(\\s*$",
+							"end": "^\\s*\\)",
+							"contentName": "debug.directive.Description.body.explicitBoundaries.markdown"
+						},
+						{
+							"begin": "^",
+							"end": "(?=^\\s*(\\d\\d\\d|JSIGHT|INFO|SERVER|MACRO|PASTE|INCLUDE|DIR|TAG|TYPE|ENUM|URL|GET|POST|PUT|PATCH|DELETE|Title|Version|Description|Request|Headers|Query|Path|Body))",
+							"contentName": "debug.directive.Description.body.markdown"
+						}
+					]
+				}
+			]
+		},
+		"headersAndPathDir": {
+			"comment": "TODO: Headers, Path — Directives that have no params, no annotations and only object or usertype in the body",
+			"patterns": [
+				{
+					"begin": "^\\s*(Headers|Path)",
+					"beginCaptures": {
+						"0": {
+							"name": "keyword.control.jsight.directive.inner"
+						}
+					},
+					"end": "(?=^\\s*(\\d\\d\\d|TESTDIR|JSIGHT|INFO|SERVER|MACRO|PASTE|INCLUDE|DIR|TAG|TYPE|ENUM|URL|GET|POST|PUT|PATCH|DELETE|Description|Request|Headers|Query|Path|Body)\\b)",
+					"patterns": [
+						{
+							"begin": "(?=^\\s*(@[a-zA-Z_][a-zA-Z_0-9]*|\\{))",
+							"end": "(?=^\\s*(\\d\\d\\d|TESTDIR|JSIGHT|INFO|SERVER|MACRO|PASTE|INCLUDE|DIR|TAG|TYPE|ENUM|URL|GET|POST|PUT|PATCH|DELETE|Description|Request|Headers|Query|Path|Body)\\b)",
+							"contentName": "debug.HeadersOrPath.body",
+							"patterns": [
+								{
+									"include": "source.jschema"
+								}
+							]
+						},
+						{
+							"include": "#comments"
+						}
+					]
+				}
+			]
+		},
+		"queryDir": {
+			"comment": "DIRECTIVE «Query»",
+			"patterns": [
+				{
+					"begin": "^\\s*(Query)\\s*(\".*\")?\\s*(htmlFormEncoded|noFormat)?",
+					"beginCaptures": {
+						"1": {
+							"name": "keyword.control.jsight.directive.inner"
+						},
+						"2": {
+							"name": "string.quoted.double.jsight.parameter.query.example"
+						},
+						"3": {
+							"name": "constant.language.jsight.parameter.query.format"
+						}
+					},
+					"end": "(?=^\\s*(\\d\\d\\d|TESTDIR|JSIGHT|INFO|SERVER|MACRO|PASTE|INCLUDE|DIR|TAG|TYPE|ENUM|URL|GET|POST|PUT|PATCH|DELETE|Description|Request|Headers|Query|Path|Body)\\b)",
+					"patterns": [
+						{
+							"begin": "(?=^\\s*(@[a-zA-Z_][a-zA-Z_0-9]*|\\{|\\[))",
+							"end": "(?=^\\s*(\\d\\d\\d|TESTDIR|JSIGHT|INFO|SERVER|MACRO|PASTE|INCLUDE|DIR|TAG|TYPE|ENUM|URL|GET|POST|PUT|PATCH|DELETE|Description|Request|Headers|Query|Path|Body)\\b)",
+							"contentName": "debug.Query.body",
+							"patterns": [
+								{
+									"include": "source.jschema"
+								}
+							]
+						},
+						{
+							"include": "#comments"
+						}
+					]
+				}
+			]
+		},
+		"responseDir": {
+			"patterns": [
+				{
+					"comment": "Responses-jsight. MATCHING before three-digit response code keyword (with jsight notation param or no params) to deal with everything inside patterns. Ending right before any directive except response.",
+					"begin": "(?=^\\s*(\\d\\d\\d)\\s*)",
+					"end": "(?=^\\s*(TESTDIR|JSIGHT|INFO|SERVER|MACRO|PASTE|INCLUDE|DIR|TAG|TYPE|ENUM|URL|GET|POST|PUT|PATCH|DELETE|Description|Request|Headers|Query|Path|Body)\\b)",
+					"patterns": [
+						{
+							"comment": "Responses-regex. MATCHING three-digit code keyword with regex notation. Ending with regex string. Allowing annotations and comments in between.",
+							"begin": "^\\s*(\\d\\d\\d)\\s*(regex)\\s*",
+							"beginCaptures": {
+								"1": {
+									"name": "keyword.control.jsight.directive.inner"
+								},
+								"2": {
+									"name": "constant.language.jsight.parameter.notation"
+								}
+							},
+							"end": "^\\s*\\/.*\\/",
+							"endCaptures": {
+								"0": {
+									"name": "string.regexp.jsight"
+								}
+							},
+							"patterns": [
+								{
+									"include": "#annotationsAndComments"
+								}
+							]
+						},
+						{
+							"comment": "Responses-usertype. MATCHING before three-digit response code keyword (with user type link) to deal with everything inside patterns. Ending right before any directive except response.",
+							"match": "^\\s*(\\d\\d\\d)\\s*(@[a-zA-Z_][a-zA-Z_0-9]*|\\[@[a-zA-Z_][a-zA-Z_0-9]*\\])\\s*",
+							"captures": {
+								"1": {
+									"name": "keyword.control.jsight.directive.inner"
+								},
+								"2": {
+									"name": "entity.other.attribute-name.jsight.parameter.name.usertype.link"
+								}
+							}
+						},
+						{
+							"comment": "Response with any|empty notation. Matching keyword and mandatory notation param",
+							"match": "^\\s*(\\d\\d\\d)\\s*(any|empty)\\s*",
+							"captures": {
+								"1": {
+									"name": "keyword.control.jsight.directive.inner"
+								},
+								"2": {
+									"name": "constant.language.jsight.parameter.notation"
+								}
+							}
+						},
+						{
+							"include": "#annotationsAndComments"
+						},
+						{
+							"comment": "MATCHING response code as keyword. Ending EITHER WITH number literal OR BEFORE any other schema: open bracket, open brace, boolean, null or string (to pass it to jschema highlighter for processing).",
+							"begin": "^\\s*(\\d\\d\\d)\\s*(jsight)?\\s*",
+							"beginCaptures": {
+								"1": {
+									"name": "keyword.control.jsight.directive.inner"
+								},
+								"2": {
+									"name": "constant.language.jsight.parameter.notation"
+								}
+							},
+							"end": "^(\\s*\\d+\\s*|(?=\\s*(@[a-zA-Z_][a-zA-Z_0-9]*|\\{|\\[|true|false|null|\".*\"|Headers|Body)))",
+							"endCaptures": {
+								"0": {
+									"name": "constant.numeric.json.jschema.value.number"
+								}
+							},
+							"patterns": [
+								{
+									"include": "#annotationsAndComments"
+								}
+							]
+						},
+						{
+							"comment": "PASSING jschema body to jschema highlighter",
+							"begin": "(?=\\s*(@[a-zA-Z_][a-zA-Z_0-9]*|\\{|\\[|true|false|null|\".*\"))",
+							"end": "(?=^\\s*(\\d\\d\\d|TESTDIR|JSIGHT|INFO|SERVER|MACRO|PASTE|INCLUDE|DIR|TAG|TYPE|ENUM|URL|GET|POST|PUT|PATCH|DELETE|Description|Request|Headers|Query|Path|Body)\\b)",
+							"patterns": [
+								{
+									"include": "source.jschema"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		"requestDir": {
+			"comment": "«Request» directive",
+			"patterns": [
+				{
+					"comment": "Request. MATCHING before «Request» keyword to deal with everything inside patterns. Ending right before any directive except «Request» (no problems since Requests cannot be chained)",
+					"begin": "(?=^\\s*(Request)\\s*)",
+					"end": "(?=^\\s*(TESTDIR|JSIGHT|INFO|SERVER|MACRO|PASTE|INCLUDE|DIR|TAG|TYPE|ENUM|URL|GET|POST|PUT|PATCH|DELETE|Description|Headers|Query|Path|Body)\\b)",
+					"contentName": "debug.directive.Request.whole",
+					"patterns": [
+						{
+							"comment": "Request-regex. MATCHING request keyword with regex notation. Ending with regex string. Allowing annotations and comments in between.",
+							"begin": "^\\s*(Request)\\s*(regex)\\s*",
+							"beginCaptures": {
+								"1": {
+									"name": "keyword.control.jsight.directive.inner"
+								},
+								"2": {
+									"name": "constant.language.jsight.parameter.notation"
+								}
+							},
+							"end": "^\\s*\\/.*\\/",
+							"endCaptures": {
+								"0": {
+									"name": "string.regexp.jsight"
+								}
+							},
+							"patterns": [
+								{
+									"include": "#annotationsAndComments"
+								}
+							]
+						},
+						{
+							"comment": "Request with any|empty notation. Matching keyword and mandatory notation param",
+							"match": "^\\s*(Request)\\s*(any|empty)\\s*",
+							"captures": {
+								"1": {
+									"name": "keyword.control.jsight.directive.inner"
+								},
+								"2": {
+									"name": "constant.language.jsight.parameter.notation"
+								}
+							}
+						},
+						{
+							"comment": "Request with usertype. MATCHING keyword and mandatory usertype param",
+							"match": "^\\s*(Request)\\s*(@[a-zA-Z_][a-zA-Z_0-9]*|\\[@[a-zA-Z_][a-zA-Z_0-9]*\\])\\s*",
+							"captures": {
+								"1": {
+									"name": "keyword.control.jsight.directive.inner"
+								},
+								"2": {
+									"name": "entity.other.attribute-name.jsight.parameter.name.usertype.link"
+								}
+							}
+						},
+						{
+							"comment": "END with in literal OR before jschema open OR before supported inner directive",
+							"begin": "(Request)\\s*(jsight)?\\s*",
+							"beginCaptures": {
+								"1": {
+									"name": "keyword.control.jsight.directive.inner"
+								},
+								"2": {
+									"name": "constant.language.jsight.parameter.notation"
+								}
+							},
+							"end": "(^\\s*\\d+|(?=^\\s*(@[a-zA-Z_][a-zA-Z_0-9]*|\\{|\\[|true|false|null|\".*\"|Headers|Body)))",
+							"endCaptures": {
+								"0": {
+									"name": "constant.numeric.json.jschema.value.number"
+								}
+							},
+							"contentName": "debug.directive.Request.blockForKeywordAndIntLiteral",
+							"patterns": [
+								{
+									"include": "#comments"
+								}
+							]
+						},
+						{
+							"include": "#jschemaBodyAndAfter"
+						},
+						{
+							"include": "#comments"
+						}
+					]
+				}
+			]
+		},
+		"bodyDir": {
+			"comment": "«Body» directive",
+			"patterns": [
+				{
+					"comment": "MATCHING before «Body» keyword to deal with everything inside patterns. Ending right before any directive except «Body» (no problems since Body cannot be chained)",
+					"begin": "(?=^\\s*(Body)\\s*)",
+					"end": "(?=^\\s*(TESTDIR|JSIGHT|INFO|SERVER|MACRO|PASTE|INCLUDE|DIR|TAG|TYPE|ENUM|URL|GET|POST|PUT|PATCH|DELETE|Description|Request|Headers|Query|Path)\\b)",
+					"contentName": "debug.directive.Body.whole",
+					"patterns": [
+						{
+							"comment": "Body-regex. MATCHING request keyword with regex notation. Ending with regex string. Allowing annotations and comments in between.",
+							"begin": "^\\s*(Body)\\s*(regex)\\s*",
+							"beginCaptures": {
+								"1": {
+									"name": "keyword.control.jsight.directive.inner"
+								},
+								"2": {
+									"name": "constant.language.jsight.parameter.notation"
+								}
+							},
+							"end": "^\\s*\\/.*\\/",
+							"endCaptures": {
+								"0": {
+									"name": "string.regexp.jsight"
+								}
+							},
+							"patterns": [
+								{
+									"include": "#annotationsAndComments"
+								}
+							]
+						},
+						{
+							"comment": "Body with any|empty notation. Matching keyword and mandatory notation param",
+							"match": "^\\s*(Body)\\s*(any|empty)\\s*",
+							"captures": {
+								"1": {
+									"name": "keyword.control.jsight.directive.inner"
+								},
+								"2": {
+									"name": "constant.language.jsight.parameter.notation"
+								}
+							}
+						},
+						{
+							"comment": "Body with usertype. MATCHING keyword and mandatory usertype param",
+							"match": "^\\s*(Body)\\s*(@[a-zA-Z_][a-zA-Z_0-9]*|\\[@[a-zA-Z_][a-zA-Z_0-9]*\\])\\s*",
+							"captures": {
+								"1": {
+									"name": "keyword.control.jsight.directive.inner"
+								},
+								"2": {
+									"name": "entity.other.attribute-name.jsight.parameter.name.usertype.link"
+								}
+							}
+						},
+						{
+							"comment": "END with in literal OR before jschema open OR before supported inner directive",
+							"begin": "(Body)\\s*(jsight)?\\s*",
+							"beginCaptures": {
+								"1": {
+									"name": "keyword.control.jsight.directive.inner"
+								},
+								"2": {
+									"name": "constant.language.jsight.parameter.notation"
+								}
+							},
+							"end": "(^\\s*\\d+|(?=^\\s*(@[a-zA-Z_][a-zA-Z_0-9]*|\\{|\\[|true|false|null|\".*\"|Headers|Request)))",
+							"endCaptures": {
+								"0": {
+									"name": "constant.numeric.json.jschema.value.number"
+								}
+							},
+							"contentName": "debug.directive.Body.blockForKeywordAndIntLiteral",
+							"patterns": [
+								{
+									"include": "#comments"
+								}
+							]
+						},
+						{
+							"include": "#jschemaBodyAndAfter"
+						},
+						{
+							"include": "#comments"
+						}
+					]
+				}
+			]
+		},
+
+		"strings": {
+			"comment": "TODO: do wee need it?",
+			"name": "string.quoted.double.jsight",
+			"begin": "\"",
+			"end": "\"",
+			"patterns": [
+				{
+					"name": "constant.character.escape.jsight",
+					"match": "\\\\."
+				}
+			]
+		},
+
+		"jschemaBodyAndAfter": {
+			"comment": "REUSABLE block for jschema body and response directives hack",
+			"patterns": [
+				{
+					"begin": "(?=^\\s*(@[a-zA-Z_][a-zA-Z_0-9]*|\\{|\\[|true|false|null|\".*\"))",
+					"end": "(?=^\\s*(\\d\\d\\d|Request|TESTDIR|JSIGHT|INFO|SERVER|MACRO|PASTE|INCLUDE|DIR|TAG|TYPE|ENUM|URL|GET|POST|PUT|PATCH|DELETE|Description|Headers|Query|Path)\\b)",
+					"patterns": [
+						{
+							"include": "source.jschema"
+						}
+					]
+				},
+				{
+					"include": "#responseDir"
+				}
+			]
+		}
+	}
+}
