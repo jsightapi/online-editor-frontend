@@ -1,5 +1,5 @@
 import {useMemo} from 'react';
-import {RulesType} from 'api/getResources.model';
+import {RulesType} from 'types/exchange';
 import {countWords} from '../utils/countWords';
 
 export function useShowDetailInfo(rules?: RulesType, notes?: string) {

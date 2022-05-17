@@ -1,6 +1,5 @@
 import React, {
   createContext,
-  FC,
   MutableRefObject,
   useContext,
   useEffect,
@@ -9,7 +8,7 @@ import React, {
   useRef,
   useState,
 } from 'react';
-import {RulesType, SchemaType} from 'api/getResources.model';
+import {RulesType, SchemaType} from 'types/exchange';
 import {LinesCollection} from './LinesCollection';
 import {createPortal} from 'react-dom';
 import {RightRules} from 'components/CodeView/RightRules';
@@ -75,7 +74,7 @@ const emptySchemaData = {
   children: [],
 };
 
-export const Code: FC<CodeProps> = ({schema, tab, codeViewRef, keyBlock}) => {
+export const Code = ({schema, tab, codeViewRef, keyBlock}: CodeProps) => {
   const divRulesRef = useRef<HTMLDivElement | null>(null);
   const [topOffset, setTopOffset] = useState<number>(0);
   const [rightOffset, setRightOffset] = useState<number>(0);
@@ -84,7 +83,7 @@ export const Code: FC<CodeProps> = ({schema, tab, codeViewRef, keyBlock}) => {
   const [height, setHeight] = useState<number>(0);
   const {selectedLine, setSchemasData, schemasData} = useContext(MainContext);
   const {expandedTypes} = useContext(SchemaViewContext);
-  const {currentDocSidebar, setCurrentDocSidebar} = useContext(SidebarContext);
+  const {currentDocSidebar, setCurrentDocSidebar, editorWidth} = useContext(SidebarContext);
   const [isFirst, setIsFirst] = useState<boolean>(true);
 
   const schemaData = useMemo(
@@ -221,6 +220,14 @@ export const Code: FC<CodeProps> = ({schema, tab, codeViewRef, keyBlock}) => {
     // eslint-disable-next-line
   }, [selectedLine]);
 
+  useEffect(() => {
+    if (!isFirst) {
+      const wrapper = divRulesRef.current?.closest<HTMLDivElement>('.resource-content');
+      const rightOffset = wrapper ? parseInt(getComputedStyle(wrapper).paddingRight) : 0;
+      setRightOffset(rightOffset);
+    }
+  }, [editorWidth]);
+
   useLayoutEffect(() => {
     const wrapper = divRulesRef.current?.closest<HTMLDivElement>('.resource-content');
     const rightOffset = wrapper ? parseInt(getComputedStyle(wrapper).paddingRight) : 0;
@@ -267,7 +274,7 @@ export const Code: FC<CodeProps> = ({schema, tab, codeViewRef, keyBlock}) => {
         updateHeight(detailActiveElement, codeLineDocumentOffset);
       }
     }
-  }, [selectedLine, currentDocSidebar, keyBlock, annotations, codeViewRef]);
+  }, [selectedLine, currentDocSidebar, keyBlock, codeViewRef]);
 
   const updateHeight = (detailActiveElement: HTMLSpanElement, codeLineDocumentOffset: number) => {
     const detailActiveElementHeight = detailActiveElement ? detailActiveElement.offsetHeight : 0;

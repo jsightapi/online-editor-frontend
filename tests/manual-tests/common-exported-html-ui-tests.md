@@ -28,4 +28,8 @@
 
 # Upload
 
+<<<<<<< HEAD
 1. Review all resources, which are uploaded during opening the HTML file.
+=======
+1. Review all resources, which are uploaded during opening the HTML file.
+>>>>>>> dev

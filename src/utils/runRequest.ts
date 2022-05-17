@@ -1,10 +1,4 @@
 import {ErrorType} from 'types/error';
-import {v4 as uuidv4} from 'uuid';
-
-type requestParamsType = {
-  body?: string;
-  method?: string;
-};
 
 const defaultError: ErrorType = {
   Column: 0,
@@ -16,20 +10,11 @@ const defaultError: ErrorType = {
 
 export const runRequest = async <T>(
   action: string,
-  {body, method}: requestParamsType = {}
+  {body, headers, method}: RequestInit = {}
 ): Promise<T> => {
-  const uuid = localStorage.getItem('uuid') || '';
+  const fetchParams = {headers, body, method: method || 'POST'};
 
-  if (!uuid) {
-    localStorage.setItem('uuid', uuidv4());
-  }
-
-  const headers = {
-    'X-Browser-UUID': uuid,
-    'Content-Type': 'text/plain',
-  };
-
-  return fetch(action, {headers, body, method: method || 'POST'}).then(async (response) => {
+  return fetch(action, fetchParams).then(async (response) => {
     if (response.ok) {
       const text = await response.text();
       try {
@@ -40,6 +25,7 @@ export const runRequest = async <T>(
       }
     } else {
       const errorResponse = await response.json();
+      errorResponse.Code = response.status;
       return Promise.reject(errorResponse || defaultError);
     }
   });

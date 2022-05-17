@@ -1,9 +1,9 @@
-import React, {useContext, FC, useMemo} from 'react';
+import React, {useContext, useMemo} from 'react';
 import {RuleValueProps} from 'components/CodeView/Line/Rules/RuleValue';
 import {CodeContext} from 'components/CodeView/Code';
 import clsx from 'clsx';
 
-export const RuleValueAllOf: FC<RuleValueProps> = ({value, numberLine, type}) => {
+export const RuleValueAllOf = ({value, numberLine, type}: RuleValueProps) => {
   const {
     hiddenInheritedSchemas,
     hideInheritedSchema,

@@ -13,4 +13,8 @@ Check that details card width is the same in different sections:
 
 1. Section `200`.
 2. Section `Type`.
+<<<<<<< HEAD
 3. Other sections.
+=======
+3. Other sections.
+>>>>>>> dev

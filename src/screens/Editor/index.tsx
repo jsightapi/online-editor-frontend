@@ -1,14 +1,21 @@
-import React, {useState, FC, useEffect, useMemo, startTransition, useCallback} from 'react';
+import React, {
+  useState,
+  useLayoutEffect,
+  useEffect,
+  useMemo,
+  startTransition,
+  useCallback,
+} from 'react';
 import clsx from 'clsx';
 import {toast, ToastContainer} from 'react-toastify';
 import {Resizable} from 're-resizable';
 import {Editor} from 'components/Editor';
 import {useDebounce} from 'hooks/useDebounce';
 import {getJDocExchange} from 'api/getJDocExchange';
-import {JDocType} from 'api/getResources.model';
+import {JDocType} from 'types/exchange';
 import {MainContent} from 'components/MainContent';
 import {Layout} from 'components/Layout';
-import {showError} from 'utils/getError';
+import {showError} from 'utils/showError';
 import {ErrorType} from 'types/error';
 import {Header} from 'components/Header';
 import {initCats} from 'screens/Editor/initCats';
@@ -19,15 +26,20 @@ import 'react-toastify/dist/ReactToastify.css';
 import {ContactForm} from 'components/Modals/ContactForm';
 import {HeaderDoc} from 'components/Header/HeaderDoc';
 import {screenWidthMultiplier} from 'utils/screenWidthMultiplier';
-import {editorModeType, SidebarDocType} from 'types';
+import {editorModeType, MainRouterParams, SidebarDocType} from 'types';
 import {JDocContext, SidebarContext} from 'store';
 import {onOrientationChange} from 'utils/onOrientationChange';
+import {useHistory, useParams} from 'react-router-dom';
+import {getExistingState} from 'api/codeSharing';
+import {ErrorScreen} from 'screens/Error';
+import {SharingForm} from 'components/Modals/SharingForm';
 
 const {isExport} = window as any;
 
 const SCROLLBAR_WIDTH = 20;
 
-export const EditorScreen: FC = () => {
+export const EditorScreen = () => {
+  const {key, version} = useParams<MainRouterParams>();
   const [currentUrl, setCurrentUrl] = useState<string | null>(null);
   const [viewMode, setViewMode] = useState<editorModeType>(isExport ? 'doc' : 'editor');
   // left sidebar
@@ -43,7 +55,10 @@ export const EditorScreen: FC = () => {
   const jsightCodeDebounced = useDebounce<string>(jsightCode, 600);
   const [reloadEditor, setReloadEditor] = useState<boolean>(false);
   const [contactModalVisible, setContactModalVisible] = useState<boolean>(false);
+  const [sharingModalVisible, setSharingModalVisible] = useState<boolean>(false);
+  const [error, setError] = useState<{code: number; message: string} | null>(null);
   const isEditor = useMemo(() => viewMode === 'editor', [viewMode]);
+  const history = useHistory();
 
   const screenWidth = window.innerWidth;
   const getEditorWidth = (screenWidth: number) => {
@@ -73,6 +88,22 @@ export const EditorScreen: FC = () => {
   const setContent = (value: string) => {
     startTransition(() => setJsightCode(value));
   };
+
+  useLayoutEffect(() => {
+    if (key && version) {
+      (async () => {
+        try {
+          const result = await getExistingState(key, version);
+          setJsightCode(result.data.content.replace('\\n', '\n'));
+          setReloadEditor(true);
+        } catch (error) {
+          if (error.Code) {
+            setError({code: error.Code, message: error.Message});
+          }
+        }
+      })();
+    }
+  }, [key, version]);
 
   useEffect(() => {
     const changeWidth = () => {
@@ -152,6 +183,19 @@ export const EditorScreen: FC = () => {
     setCurrentDocSidebar((prev) => (prev === sidebar ? null : sidebar));
   }, []);
 
+  const goToEditor = () => {
+    setError(null);
+    history.push('/');
+  };
+
+  const openSharingModal = () => {
+    setSharingModalVisible(true);
+  };
+
+  if (error && error.code) {
+    return <ErrorScreen goToEditor={goToEditor} code={error.code} message={error.message} />;
+  }
+
   return (
     <JDocContext.Provider value={jdocExchange}>
       {!isExport ? (
@@ -160,9 +204,10 @@ export const EditorScreen: FC = () => {
             setInitialContent={setInitialContent}
             setViewMode={setViewMode}
             setContactModalVisible={setContactModalVisible}
+            openSharingModal={openSharingModal}
           />
         ) : (
-          <HeaderDoc setViewMode={setViewMode} />
+          <HeaderDoc openSharingModal={openSharingModal} setViewMode={setViewMode} />
         )
       ) : (
         <div />
@@ -174,7 +219,7 @@ export const EditorScreen: FC = () => {
         })}
       >
         <SidebarContext.Provider
-          value={{currentDocSidebar, setCurrentDocSidebar, currentUrl, setCurrentUrl}}
+          value={{editorWidth, currentDocSidebar, setCurrentDocSidebar, currentUrl, setCurrentUrl}}
         >
           <div className={classes}>
             {isEditor && (
@@ -232,7 +277,7 @@ export const EditorScreen: FC = () => {
             </div>
           </div>
         </SidebarContext.Provider>
-        <ToastContainer rtl={true} position="bottom-right" />
+        <ToastContainer rtl={false} position="bottom-right" />
       </div>
       {!isExport && (
         <ContactForm
@@ -240,6 +285,10 @@ export const EditorScreen: FC = () => {
           onClose={() => setContactModalVisible(false)}
         />
       )}
+      <SharingForm
+        modalIsOpen={sharingModalVisible}
+        onClose={() => setSharingModalVisible(false)}
+      />
     </JDocContext.Provider>
   );
 };

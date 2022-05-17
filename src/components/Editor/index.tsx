@@ -63,14 +63,14 @@ export const Editor = ({content, setContent, errorRow, scrollToRow, reload}: any
   // TODO: "source.${language} is not correct for markdown. MD scope is "text.html.markdown".
   // TODO: temporarily fixed inside grammar files
   const grammars: {[scopeName: string]: ScopeNameInfo} = languagesList.reduce(
-      (grammars, language) => ({
-        ...grammars,
-        [`source.${language}`]: {
-          language,
-          path: `grammars/${language}/${language}.tmLanguage.json`,
-        },
-      }),
-      {}
+    (grammars, language) => ({
+      ...grammars,
+      [`source.${language}`]: {
+        language,
+        path: `grammars/${language}/${language}.tmLanguage.json`,
+      },
+    }),
+    {}
   );
   useEffect(() => {
     (async () => {

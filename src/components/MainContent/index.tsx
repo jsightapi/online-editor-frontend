@@ -1,17 +1,16 @@
-import React, {FC, useRef, useState, useEffect, useContext} from 'react';
+import React, {useRef, useState, useEffect, useContext} from 'react';
 import {useParams} from 'react-router-dom';
 import {MainRouterParams} from 'types/router';
 import {ApiInfo} from 'components/ApiInfo';
 import {ServersInfo} from 'components/ServersInfo';
-import {getTreeResources} from 'api/getResources';
+import {getTreeResources} from 'utils/getResources';
 import {Resource} from 'components/Resource';
-import {isEqual, map} from 'lodash';
+import {map} from 'lodash';
 import {ReusableResource} from 'components/Resource/ReusableResource';
-import {JDocType} from 'api/getResources.model';
+import {JDocType} from 'types/exchange';
 import {Virtuoso} from 'react-virtuoso';
 import {SidebarContext, MainContext} from 'store';
 import {ResourceState, SchemaViewType, SelectedLineType} from 'store/MainStore';
-import {usePrevious} from 'hooks/usePrevious';
 
 import './MainContent.styles.scss';
 import {GlobalSettingsContext} from 'components/Layout';
@@ -29,269 +28,261 @@ interface MainContentProps {
   showRightSidebar: boolean;
 }
 
-export const MainContent: FC<MainContentProps> = React.memo(
-  ({jdocExchange, showRightSidebar}) => {
-    const divRef = useRef<HTMLDivElement | null>(null);
-    const virtuosoRef = useRef<any>(null);
-    const [selectedLine, setSelectedLine] = useState<SelectedLineType | null>(null);
-    const [jdocList, setJdocList] = useState<JSX.Element[]>([]);
-    const [jdocPositions, setJdocPositions] = useState<any>([]);
-    const {path} = useParams<MainRouterParams>();
-    const {currentUrl, currentDocSidebar, setCurrentDocSidebar} = useContext(SidebarContext);
-    const {headersBodiesCode, pathQueriesCode, typesExpand, rulesExpand} = useContext(
-      GlobalSettingsContext
-    );
-    const [overscan, setOverscan] = useState(480);
-    const [schemasView, setSchemasView] = useState<SchemaViewType[]>([]);
-    const [schemasData, setSchemasData] = useState<{[key: string]: SchemaData[]}>({});
-    const [resourceState, setResourceState] = useState<ResourceState[]>([]);
+export const MainContent = React.memo(({jdocExchange, showRightSidebar}: MainContentProps) => {
+  const divRef = useRef<HTMLDivElement | null>(null);
+  const virtuosoRef = useRef<any>(null);
+  const [selectedLine, setSelectedLine] = useState<SelectedLineType | null>(null);
+  const [jdocList, setJdocList] = useState<JSX.Element[]>([]);
+  const [jdocPositions, setJdocPositions] = useState<any>([]);
+  const {path} = useParams<MainRouterParams>();
+  const {currentUrl, currentDocSidebar, setCurrentDocSidebar} = useContext(SidebarContext);
+  const {headersBodiesCode, pathQueriesCode, typesExpand, rulesExpand} = useContext(
+    GlobalSettingsContext
+  );
+  const [overscan, setOverscan] = useState(480);
+  const [schemasView, setSchemasView] = useState<SchemaViewType[]>([]);
+  const [schemasData, setSchemasData] = useState<{[key: string]: SchemaData[]}>({});
+  const [resourceState, setResourceState] = useState<ResourceState[]>([]);
 
-    const prevPath = usePrevious(path);
-    const prevCurrentUrl = usePrevious(currentUrl);
+  const {isExport} = window as any;
 
-    const {isExport} = window as any;
-
-    useEffect(() => {
-      setSchemasView((prev) => {
-        return prev.map((item) => {
-          if (item.typeBlock === 'header-body') {
-            item['viewType'] = headersBodiesCode ? 'code' : 'table';
-          }
-          return item;
-        });
-      });
-    }, [headersBodiesCode]);
-
-    useEffect(() => {
-      setSchemasView((prev) => {
-        return prev.map((item) => {
-          if (item.typeBlock === 'path-query') {
-            item['viewType'] = pathQueriesCode ? 'code' : 'table';
-          }
-          return item;
-        });
-      });
-    }, [pathQueriesCode]);
-
-    useEffect(() => {
-      setSchemasView((prev) => {
-        return prev.map((item) => {
-          return {
-            ...item,
-            expandedTypes: typesExpand,
-          };
-        });
-      });
-    }, [typesExpand]);
-
-    useEffect(() => {
-      setSchemasView((prev) => {
-        return prev.map((item) => {
-          return {
-            ...item,
-            collapsedRules: !rulesExpand,
-          };
-        });
-      });
-    }, [rulesExpand]);
-
-    useEffect(() => {
-      setOverscan(window.innerHeight / 2);
-    }, []);
-
-    useEffect(() => {
-      if (currentDocSidebar === 'content') {
-        setSelectedLine(null);
-      }
-    }, [currentDocSidebar]);
-
-    const updateSchemaView = (keyBlock: string, value: any, property: SchemaPropertyType) => {
-      setSchemasView((prev) => {
-        if (prev.find((item) => item.key === keyBlock)) {
-          return prev.map((item) => {
-            if (item.key === keyBlock) {
-              item[property] = value;
-              return item;
-            }
-            return item;
-          });
-        } else {
-          const schemaView: SchemaViewType = {key: keyBlock};
-          schemaView[property] = value;
-          return [...prev, schemaView];
+  useEffect(() => {
+    setSchemasView((prev) => {
+      return prev.map((item) => {
+        if (item.typeBlock === 'header-body') {
+          item['viewType'] = headersBodiesCode ? 'code' : 'table';
         }
+        return item;
       });
-    };
+    });
+  }, [headersBodiesCode]);
 
-    const setCollapsedRules = (keyBlock: string, value: boolean) => {
-      updateSchemaView(keyBlock, value, 'collapsedRules');
-    };
+  useEffect(() => {
+    setSchemasView((prev) => {
+      return prev.map((item) => {
+        if (item.typeBlock === 'path-query') {
+          item['viewType'] = pathQueriesCode ? 'code' : 'table';
+        }
+        return item;
+      });
+    });
+  }, [pathQueriesCode]);
 
-    const setExpandedTypes = (keyBlock: string, value: boolean) => {
-      updateSchemaView(keyBlock, value, 'expandedTypes');
-    };
+  useEffect(() => {
+    setSchemasView((prev) => {
+      return prev.map((item) => {
+        return {
+          ...item,
+          expandedTypes: typesExpand,
+        };
+      });
+    });
+  }, [typesExpand]);
 
-    const setViewType = (keyBlock: string, value: string) => {
-      updateSchemaView(keyBlock, value, 'viewType');
-    };
+  useEffect(() => {
+    setSchemasView((prev) => {
+      return prev.map((item) => {
+        return {
+          ...item,
+          collapsedRules: !rulesExpand,
+        };
+      });
+    });
+  }, [rulesExpand]);
 
-    const setExpandDetailCard = (keyBlock: string, value: boolean) => {
-      updateSchemaView(keyBlock, value, 'expandDetailCard');
-    };
+  useEffect(() => {
+    setOverscan(window.innerHeight / 2);
+  }, []);
 
-    const setTypeBlock = (keyBlock: string, value: string | undefined) => {
-      updateSchemaView(keyBlock, value, 'typeBlock');
-    };
+  useEffect(() => {
+    if (currentDocSidebar === 'content') {
+      setSelectedLine(null);
+    }
+  }, [currentDocSidebar]);
 
-    useEffect(() => {
-      const {info, servers, tags, resourceMethods, userTypes, userEnums} = jdocExchange;
-      const resources = getTreeResources(tags, resourceMethods);
-
-      const jdocList: JSX.Element[] = [];
-      const jdocPositions: string[] = [];
-
-      jdocList.push(<div className="space-header" />);
-
-      if (info) {
-        jdocList.push(<ApiInfo apiInfo={info} key="apiInfo" />);
-        jdocPositions.push('info');
-      }
-
-      if (servers) {
-        jdocList.push(<ServersInfo serversInfo={servers} key="servers" />);
-        jdocPositions.push('servers');
-      }
-
-      if (resources.length) {
-        let index = 0;
-        resources.map((item, resourceIndex) => {
-          jdocList.push(
-            <div className="group-header">
-              <h2>{item.title}</h2>
-              <hr />
-            </div>
-          );
-          jdocPositions.push('resources');
-
-          item.resources.map((resource: any, itemIndex: number) => {
-            jdocList.push(
-              <Resource
-                resourceKey={`${resourceIndex}-${itemIndex}`}
-                key={`${resourceIndex}-${itemIndex}-${resource.path}`}
-                resource={resource}
-                index={index + itemIndex}
-              />
-            );
-            jdocPositions.push(`${resource.path.slice(1).replace(/({|})/gi, '-')}`);
-            setResourceState((prev) => [...prev, {method: ''}]);
-          });
-          index += item.resources.length;
+  const updateSchemaView = (keyBlock: string, value: any, property: SchemaPropertyType) => {
+    setSchemasView((prev) => {
+      if (prev.find((item) => item.key === keyBlock)) {
+        return prev.map((item) => {
+          if (item.key === keyBlock) {
+            item[property] = value;
+            return item;
+          }
+          return item;
         });
+      } else {
+        const schemaView: SchemaViewType = {key: keyBlock};
+        schemaView[property] = value;
+        return [...prev, schemaView];
       }
+    });
+  };
 
-      if (userTypes) {
+  const setCollapsedRules = (keyBlock: string, value: boolean) => {
+    updateSchemaView(keyBlock, value, 'collapsedRules');
+  };
+
+  const setExpandedTypes = (keyBlock: string, value: boolean) => {
+    updateSchemaView(keyBlock, value, 'expandedTypes');
+  };
+
+  const setViewType = (keyBlock: string, value: string) => {
+    updateSchemaView(keyBlock, value, 'viewType');
+  };
+
+  const setExpandDetailCard = (keyBlock: string, value: boolean) => {
+    updateSchemaView(keyBlock, value, 'expandDetailCard');
+  };
+
+  const setTypeBlock = (keyBlock: string, value: string | undefined) => {
+    updateSchemaView(keyBlock, value, 'typeBlock');
+  };
+
+  useEffect(() => {
+    const {info, servers, tags, resourceMethods, userTypes, userEnums} = jdocExchange;
+    const resources = getTreeResources(tags, resourceMethods);
+
+    const jdocList: JSX.Element[] = [];
+    const jdocPositions: string[] = [];
+
+    jdocList.push(<div className="space-header" />);
+
+    if (info) {
+      jdocList.push(<ApiInfo apiInfo={info} key="apiInfo" />);
+      jdocPositions.push('info');
+    }
+
+    if (servers) {
+      jdocList.push(<ServersInfo serversInfo={servers} key="servers" />);
+      jdocPositions.push('servers');
+    }
+
+    if (resources.length) {
+      let index = 0;
+      resources.map((item, resourceIndex) => {
         jdocList.push(
           <div className="group-header">
-            <h2>Types</h2>
+            <h2>{item.title}</h2>
+            <hr />
           </div>
         );
-        jdocPositions.push('types');
+        jdocPositions.push('resources');
 
-        map(jdocExchange.userTypes, (userType, key) => {
+        item.resources.map((resource: any, itemIndex: number) => {
           jdocList.push(
-            <ReusableResource
-              name={key}
-              key={`reusable-type-${key}`}
-              keyBlock={`rut-${key}`}
-              className="type-resource"
-              {...userType}
+            <Resource
+              resourceKey={`${resourceIndex}-${itemIndex}`}
+              key={`${resourceIndex}-${itemIndex}-${resource.path}`}
+              resource={resource}
+              index={index + itemIndex}
             />
           );
-          jdocPositions.push(key);
+          jdocPositions.push(`${resource.path.slice(1).replace(/({|})/gi, '-')}`);
+          setResourceState((prev) => [...prev, {method: ''}]);
         });
-      }
+        index += item.resources.length;
+      });
+    }
 
-      if (userEnums) {
-        jdocList.push(
-          <div className="group-header">
-            <h2>Enums</h2>
-          </div>
-        );
-
-        map(jdocExchange.userEnums, (userEnum, key) =>
-          jdocList.push(
-            <ReusableResource
-              keyBlock={`rue-${key}`}
-              content={userEnum.value}
-              name={key}
-              key={`reusable-enum-${key}`}
-            />
-          )
-        );
-      }
-
-      setJdocList(jdocList);
-      setJdocPositions(jdocPositions);
-    }, [jdocExchange]);
-
-    useEffect(() => {
-      const currentPath = isExport ? currentUrl : path;
-      if (!currentPath) return;
-
-      const index = jdocPositions.indexOf(`${currentPath?.replace(/({|})/gi, '-')}`);
-
-      if (~index && virtuosoRef?.current && (prevCurrentUrl !== currentUrl || prevPath !== path)) {
-        virtuosoRef.current.scrollToIndex({
-          index: index + 1,
-          align: 'start',
-          behavior: 'auto',
-        });
-      }
-    }, [path, currentUrl, virtuosoRef, jdocPositions]);
-
-    return (
-      <div className="main-content-wrapper">
-        <div ref={divRef} className="main-content">
-          <MainContext.Provider
-            value={{
-              showRightSidebar,
-              selectedLine,
-              setSelectedLine,
-              schemasView,
-              setExpandDetailCard,
-              setCollapsedRules,
-              setExpandedTypes,
-              setViewType,
-              resourceState,
-              setResourceState,
-              setTypeBlock,
-              setSchemasData,
-              schemasData,
-            }}
-          >
-            {currentDocSidebar === 'rules' && (
-              <button
-                className="sidebar-rules-close"
-                onClick={() => {
-                  setCurrentDocSidebar(null);
-                  setSelectedLine(null);
-                }}
-              >
-                <i className="icon-close" />
-              </button>
-            )}
-            <Virtuoso
-              data={jdocList}
-              itemContent={(_, item) => item}
-              ref={virtuosoRef}
-              increaseViewportBy={overscan}
-            />
-          </MainContext.Provider>
+    if (userTypes) {
+      jdocList.push(
+        <div className="group-header">
+          <h2>Types</h2>
         </div>
+      );
+      jdocPositions.push('types');
+
+      map(jdocExchange.userTypes, (userType, key) => {
+        jdocList.push(
+          <ReusableResource
+            name={key}
+            key={`reusable-type-${key}`}
+            keyBlock={`rut-${key}`}
+            className="type-resource"
+            {...userType}
+          />
+        );
+        jdocPositions.push(key);
+      });
+    }
+
+    if (userEnums) {
+      jdocList.push(
+        <div className="group-header">
+          <h2>Enums</h2>
+        </div>
+      );
+
+      map(jdocExchange.userEnums, (userEnum, key) =>
+        jdocList.push(
+          <ReusableResource
+            keyBlock={`rue-${key}`}
+            content={userEnum.value}
+            name={key}
+            key={`reusable-enum-${key}`}
+          />
+        )
+      );
+    }
+
+    setJdocList(jdocList);
+    setJdocPositions(jdocPositions);
+  }, [jdocExchange]);
+
+  useEffect(() => {
+    const currentPath = isExport ? currentUrl : path;
+    if (!currentPath) return;
+
+    const index = jdocPositions.indexOf(`${currentPath?.replace(/({|})/gi, '-')}`);
+
+    if (~index && virtuosoRef?.current) {
+      virtuosoRef.current.scrollToIndex({
+        index: index + 1,
+        align: 'start',
+        behavior: 'auto',
+      });
+    }
+  }, [path, currentUrl, virtuosoRef, jdocPositions]);
+
+  return (
+    <div className="main-content-wrapper">
+      <div ref={divRef} className="main-content">
+        <MainContext.Provider
+          value={{
+            showRightSidebar,
+            selectedLine,
+            setSelectedLine,
+            schemasView,
+            setExpandDetailCard,
+            setCollapsedRules,
+            setExpandedTypes,
+            setViewType,
+            resourceState,
+            setResourceState,
+            setTypeBlock,
+            setSchemasData,
+            schemasData,
+          }}
+        >
+          {currentDocSidebar === 'rules' && (
+            <button
+              className="sidebar-rules-close"
+              onClick={() => {
+                setCurrentDocSidebar(null);
+                setSelectedLine(null);
+              }}
+            >
+              <i className="icon-close" />
+            </button>
+          )}
+          <Virtuoso
+            data={jdocList}
+            itemContent={(_, item) => item}
+            ref={virtuosoRef}
+            increaseViewportBy={overscan}
+          />
+        </MainContext.Provider>
       </div>
-    );
-  },
-  (prevProps, nextProps) =>
-    prevProps.showRightSidebar === nextProps.showRightSidebar &&
-    isEqual(prevProps.jdocExchange, nextProps.jdocExchange)
-);
+    </div>
+  );
+});

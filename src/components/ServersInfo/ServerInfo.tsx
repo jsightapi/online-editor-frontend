@@ -1,5 +1,5 @@
-import React, {FC} from 'react';
-import {ServerType} from 'api/getResources.model';
+import React from 'react';
+import {ServerType} from 'types/exchange';
 import {SchemaView} from '../SchemaView';
 import './ServerInfo.styles.scss';
 
@@ -8,7 +8,7 @@ interface SeverInfoProps {
   serverInfo: ServerType;
 }
 
-export const ServerInfo: FC<SeverInfoProps> = ({name, serverInfo}) => (
+export const ServerInfo = ({name, serverInfo}: SeverInfoProps) => (
   <div className="server-info d-flex">
     <div className="before">
       <i className="icon-server" />

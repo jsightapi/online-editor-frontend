@@ -38,4 +38,8 @@
 2. Scroll down the editor panel.
 3. Switch to the preview mode.
 4. Come back to the editor mode.
+<<<<<<< HEAD
 5. Check, that the vertical scroll position of the code editor stayed the same.
+=======
+5. Check, that the vertical scroll position of the code editor stayed the same.
+>>>>>>> dev

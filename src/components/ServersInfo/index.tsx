@@ -1,15 +1,15 @@
-import React, {FC} from 'react';
+import React from 'react';
 import {map} from 'lodash';
 import {ServerInfo} from './ServerInfo';
 import {CollapsibleContent} from '../CollapsibleContent';
-import {ServersInfoType} from 'api/getResources.model';
+import {ServersInfoType} from 'types/exchange';
 import './ServersInfo.styles.scss';
 
 interface ServersInfoProps {
   serversInfo?: ServersInfoType;
 }
 
-export const ServersInfo: FC<ServersInfoProps> = ({serversInfo}) => {
+export const ServersInfo = ({serversInfo}: ServersInfoProps) => {
   return serversInfo ? (
     <div className="servers-wrapper">
       <CollapsibleContent title="Servers">
