@@ -15,7 +15,7 @@ interface SidebarGroupRoutesProps {
 }
 
 export const SidebarGroupRoutes = ({item, index}: SidebarGroupRoutesProps) => {
-  const {path, key, version} = useParams<MainRouterParams>();
+  const {path} = useParams<MainRouterParams>();
   const {setCurrentUrl, currentUrl} = useContext(SidebarContext);
 
   return (
@@ -41,9 +41,7 @@ export const SidebarGroupRoutes = ({item, index}: SidebarGroupRoutesProps) => {
                     {route.path}
                   </span>
                 ) : (
-                  <Link to={key && version ? `/r/${key}/${version}/${linkTo.slice(1)}` : linkTo}>
-                    {route.path}
-                  </Link>
+                  <Link to={linkTo}>{route.path}</Link>
                 )}
               </li>
             ) : (
