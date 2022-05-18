@@ -1,13 +1,12 @@
-import React, {useMemo} from 'react';
+import React, {useContext, useMemo} from 'react';
 import {Button} from 'components/Button';
 import {useSharing} from 'hooks/useSharing';
-import {useParams} from 'react-router-dom';
-import {MainRouterParams} from 'types';
 import clsx from 'clsx';
 import {Dropdown} from 'components/Dropdown';
 import {DropdownToggle} from 'components/Dropdown/DropdownToggle';
 import {DropdownMenu} from 'components/Dropdown/DropdownMenu';
 import './ShareButton.styles.scss';
+import {SharingContext} from 'store/SharingStore';
 
 interface ShareButtonProps {
   openSharingModal(): void;
@@ -15,7 +14,7 @@ interface ShareButtonProps {
 
 export const ShareButton: React.FC<ShareButtonProps> = ({openSharingModal}) => {
   const [createState, updateExistState] = useSharing();
-  const {key, version} = useParams<MainRouterParams>();
+  const {key, version} = useContext(SharingContext);
   const isAbleUpdate = useMemo(() => key && version, [key, version]);
 
   const handleNewState = async (updateOrCreateState: () => void) => {
