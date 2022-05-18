@@ -41,7 +41,13 @@
 
 # Sharing together with Contents tab
 
-TODO:
+1. Repeat all the basic share test cases, but before pressing the Share button, click on some item
+   in Contents tab.
+2. Open some shared link. Click on some item in the Contents tab. Copy the link in the browser
+   address line (with the item path after the `#` symbol). Try to open this big link in another
+   browser.
+3. Make the previous test, but corrupt item path after the `#` symbol. Browser should open this link
+   without errors.
 
 # Extended share test cases
 

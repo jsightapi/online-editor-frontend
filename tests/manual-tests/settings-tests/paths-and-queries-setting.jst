@@ -1,0 +1,35 @@
+JSIGHT 0.3
+
+INFO
+  Description
+  (
+    Change the "Path & Queries" setting and check, that only 
+    Path and Query sections change its view.
+  )
+
+URL /headers-and-bodies/{stub}
+  Path
+  {
+    "stub": 1 // MUST change.
+  }
+
+  GET
+    Query
+      "MUST change" // MUST change.
+    Request
+      Headers
+      {
+        "MUST NOT change": "1" // MUST NOT change.
+      }
+      Body
+        "MUST NOT change" // MUST NOT change.
+    200
+      Headers
+      {
+        "MUST NOT change": "1" // MUST NOT change.
+      }
+      Body
+        "MUST NOT change" // MUST NOT change.
+
+TYPE @type // MUST NOT change.
+  "type"
