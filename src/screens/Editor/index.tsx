@@ -73,6 +73,10 @@ export const EditorScreen = () => {
     return screenWidth - editorWidthNumber;
   };
 
+  const reloadedEditor = () => {
+    setReloadEditor(false);
+  };
+
   const editorWidthFinal = () => localStorage.getItem('editorWidth') || getEditorWidth(screenWidth);
 
   const [editorWidth, setEditorWidth] = useState<number | string>(editorWidthFinal());
@@ -245,6 +249,7 @@ export const EditorScreen = () => {
                   errorRow={errorRow}
                   scrollToRow={scrollToRow}
                   reload={reloadEditor}
+                  reloadedEditor={reloadedEditor}
                 />
               </Resizable>
             )}
