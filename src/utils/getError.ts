@@ -12,3 +12,13 @@ export const getError = (error: ErrorType) => {
 
   return `Error on line ${error.Line}. ${error.Message}`;
 };
+
+export const getDefaultErrorMessages = (status: number) => {
+  if (status >= 400 && status < 500) {
+    return "Sorry, we couldn't find the page or API you’re looking for ";
+  } else if (status >= 500 && status < 600) {
+    return 'Something went wrong, please try again later';
+  } else {
+    return 'Some default error';
+  }
+};

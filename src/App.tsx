@@ -10,9 +10,10 @@ import {
 import Modal from 'react-modal';
 import EditorScreen from './screens/Editor';
 import './styles/globals.scss';
-import './components/Modals/style.scss';
 import {HashRouterParams} from 'types';
 import {SharingContext} from 'store/SharingStore';
+import './components/Modals/style.scss';
+
 const {isExport} = window as any;
 if (isExport) {
   Modal.setAppElement('#root');
@@ -40,7 +41,7 @@ const App = () => {
       <Suspense fallback={<div>Loading...</div>}>
         <Switch>
           <Route path="/" exact component={EditorWithPathScreen} />
-          <Route path="/r/:key/:version" exact component={EditorWithPathScreen} />
+          <Route path="/r/:key/:version?" exact component={EditorWithPathScreen} />
         </Switch>
       </Suspense>
     </Router>

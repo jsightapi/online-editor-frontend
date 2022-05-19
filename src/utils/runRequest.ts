@@ -3,7 +3,7 @@ import {ErrorType} from 'types/error';
 const defaultError: ErrorType = {
   Column: 0,
   Index: 0,
-  Message: 'Some default error',
+  Message: '',
   Line: 0,
   Status: 'Error',
 };
@@ -24,9 +24,16 @@ export const runRequest = async <T>(
         return text;
       }
     } else {
-      const errorResponse = await response.json();
-      errorResponse.Code = response.status;
-      return Promise.reject(errorResponse || defaultError);
+      try {
+        const errorResponse = await response.json();
+        errorResponse.Code = response.status;
+        return Promise.reject(errorResponse || defaultError);
+      } catch {
+        return Promise.reject({
+          Code: response.status,
+          ...defaultError,
+        });
+      }
     }
   });
 };

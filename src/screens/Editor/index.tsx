@@ -35,6 +35,7 @@ import {getExistingState} from 'api/codeSharing';
 import {ErrorScreen} from 'screens/Error';
 import {SharingForm} from 'components/Modals/SharingForm';
 import {SharingContext} from 'store/SharingStore';
+import {getDefaultErrorMessages} from 'utils/getError';
 
 const {isExport} = window as any;
 
@@ -93,7 +94,7 @@ export const EditorScreen = () => {
   };
 
   useLayoutEffect(() => {
-    if (key && version) {
+    if (key) {
       (async () => {
         try {
           const result = await getExistingState(key, version);
@@ -101,7 +102,10 @@ export const EditorScreen = () => {
           setReloadEditor(true);
         } catch (error) {
           if (error.Code) {
-            setError({code: error.Code, message: error.Message});
+            setError({
+              code: error.Code,
+              message: error.Message || getDefaultErrorMessages(error.Code),
+            });
           }
         }
       })();
