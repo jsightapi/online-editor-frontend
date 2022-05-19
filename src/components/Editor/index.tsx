@@ -47,7 +47,14 @@ async function loadVSCodeOnigurumWASM(): Promise<Response | ArrayBuffer> {
   return await response.arrayBuffer();
 }
 
-export const Editor = ({content, setContent, errorRow, scrollToRow, reload}: any) => {
+export const Editor = ({
+  content,
+  setContent,
+  errorRow,
+  scrollToRow,
+  reload,
+  reloadedEditor,
+}: any) => {
   const ref = useRef<HTMLDivElement | null>(null);
   const jsightEditor = useRef<monaco.editor.IStandaloneCodeEditor | null>(null);
   const [oldRow, setOldRow] = useState<number | undefined>();
@@ -169,6 +176,7 @@ export const Editor = ({content, setContent, errorRow, scrollToRow, reload}: any
   useEffect(() => {
     if (reload && jsightEditor.current) {
       jsightEditor.current.getModel()?.setValue(content);
+      reloadedEditor();
     }
     // eslint-disable-next-line
   }, [reload]);
