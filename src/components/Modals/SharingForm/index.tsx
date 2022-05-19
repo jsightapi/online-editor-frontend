@@ -41,7 +41,7 @@ export const SharingForm: FC<SharingFormProps> = ({modalIsOpen, onClose}) => {
         <div className="link">
           <label>Link</label>
           <div className="input-group">
-            <input value={window.location.href} disabled />
+            <input value={window.location.href.split('#')[0]} disabled />
             <div className="input-group-append">
               <button onClick={copyToClipboard}>
                 <i className="icon-copy" />
