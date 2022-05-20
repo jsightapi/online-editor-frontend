@@ -48,16 +48,11 @@ export const Header = ({
           </li>
         </ul>
         <div className="control-buttons">
-          <Button icon="bug" className="shadow" onClick={() => setContactModalVisible(true)}>
-            Report a bug
-          </Button>
-          <div className="delimiter" />
-          <Button icon="download" className="shadow" onClick={saveHtml}>
-            Export
-          </Button>
-          <Button icon="preview" className="shadow" onClick={() => setViewMode('doc')}>
-            Preview
-          </Button>
+          <Button icon="bug" onClick={() => setContactModalVisible(true)} />
+          <div className="group-btn">
+            <Button icon="download" onClick={saveHtml} />
+            <Button icon="preview" onClick={() => setViewMode('doc')} />
+          </div>
           <ShareButton openSharingModal={openSharingModal} />
         </div>
       </div>
