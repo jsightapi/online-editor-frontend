@@ -1,0 +1,36 @@
+@import 'src/styles/variables';
+.cookie-except-modal {
+  padding: 28px 32px;
+  width: 680px;
+
+  .cookie-except {
+    .header {
+      justify-content: space-between;
+      margin-bottom: 1.2rem;
+
+      .title {
+        font-size: 2.1rem;
+        line-height: 2.7rem;
+        font-weight: 700;
+      }
+
+      .btn-close i {
+        font-size: 2rem;
+        color: #323232;
+        opacity: 0.35;
+      }
+    }
+
+    .description {
+      font-weight: 400;
+      padding-right: 24px;
+    }
+
+    .footer {
+      button {
+
+      }
+    }
+  }
+}
+
