@@ -54,12 +54,21 @@
 1. Repeat all the basic share test cases, but use a bad JSight code, with an error inside. Share
    functionality must work and show a code error any time.
 2. Repeat 2nd and 3rd basic test cases, but use a share link without version number.
-3. Repeat all the basic share test cases, but check if you can reset an example immediately after
-   sharing a link and immediately after opening a link in a new browser.
+3. Repeat all the basic share test cases, but check if you can reset an example just before sharing
+   a link, and immediately after sharing a link, and immediately after opening a link in a new
+   browser.
 4. Repeat all the basic share test cases, but try to close the browser window every time after
    changing a saved JSight code. Browser must show a warning, that the code was not saved.
 5. Repeat all the basic share test cases, but try to press the "Previous" browser button every time
    after changing a saved JSight code. Browser must show a warning, that the code was not saved.
+6. Repeat all the basic share test cases, but set in the local storage another code any time before
+   opening a new shared link. For example, use this code:
+
+   ```
+   JSIGHT 0.3
+
+   GET /
+   ```
 
 # Error cases
 
