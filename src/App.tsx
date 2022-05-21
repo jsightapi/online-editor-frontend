@@ -13,11 +13,19 @@ import './styles/globals.scss';
 import {HashRouterParams} from 'types';
 import {SharingContext} from 'store/SharingStore';
 import './components/Modals/style.scss';
+import {CookieExceptShown} from './components/Modals/CookieExceptShown';
 
 const {isExport} = window as any;
-if (isExport) {
+
+const isCookieExceptModalOpen = !Boolean(localStorage.getItem('isCookieExceptShown'));
+
+const onCookieExceptClose = () => localStorage.setItem('isCookieExceptShown', 'true');
+
+if (isExport || isCookieExceptModalOpen) {
   Modal.setAppElement('#root');
 }
+
+console.log({isCookieExceptModalOpen});
 
 const EditorWithPathScreen = () => {
   const history = useHistory();
@@ -39,6 +47,9 @@ const App = () => {
   return (
     <Router>
       <Suspense fallback={<div>Loading...</div>}>
+        {isCookieExceptModalOpen && (
+          <CookieExceptShown isOpen={isCookieExceptModalOpen} onAccept={onCookieExceptClose} />
+        )}
         <Switch>
           <Route path="/" exact component={EditorWithPathScreen} />
           <Route path="/r/:key/:version?" exact component={EditorWithPathScreen} />

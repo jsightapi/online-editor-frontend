@@ -3,15 +3,22 @@ import Modal from 'react-modal';
 import './CookieExceptShown.styles.scss';
 
 interface CookieExceptShownProps {
-  onClose: () => void;
+  onAccept: () => void;
   isOpen: boolean;
 }
 
-export const CookieExceptShown: FC<CookieExceptShownProps> = ({isOpen, onClose}) => {
+export const CookieExceptShown: FC<CookieExceptShownProps> = ({isOpen, onAccept}) => {
   const [isModalOpen, setIsModalOpen] = useState<boolean>(isOpen);
 
-  const closeCookieExceptModal = () => {
-    onClose();
+  const onCookieReject = () => setIsModalOpen(false);
+
+  const goToCookiesPolicy = (e: React.MouseEvent<HTMLElement>) => {
+    e.preventDefault();
+    console.log('goToCookiesPolicy');
+  };
+
+  const onCookiePolicyAccept = () => {
+    onAccept();
     setIsModalOpen(false);
   };
 
@@ -26,7 +33,7 @@ export const CookieExceptShown: FC<CookieExceptShownProps> = ({isOpen, onClose})
       <div className="cookie-except">
         <div className="d-flex header">
           <div className="title">🍪 Cookie Consent</div>
-          <button onClick={closeCookieExceptModal} className="btn-close">
+          <button onClick={onCookieReject} className="btn-close">
             <i className="icon-close" />
           </button>
         </div>
@@ -34,7 +41,16 @@ export const CookieExceptShown: FC<CookieExceptShownProps> = ({isOpen, onClose})
           By continuing to browse or by clicking ‘Accept’, you agree to the storing of cookies on
           your
           <br /> device to enhance your site experience and for analytical purposes. To learn more
-          about how we use the cookies, please see our cookies policy.
+          about how we use the cookies, please see our{' '}
+          <a onClick={goToCookiesPolicy} href="/#">
+            cookies policy
+          </a>
+          .
+        </div>
+        <div className="footer">
+          <button className="accept-button" onClick={onCookiePolicyAccept}>
+            Accept
+          </button>
         </div>
       </div>
     </Modal>
