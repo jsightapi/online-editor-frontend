@@ -11,7 +11,6 @@ import {JDocType} from 'types/exchange';
 import {Virtuoso} from 'react-virtuoso';
 import {SidebarContext, MainContext} from 'store';
 import {ResourceState, SchemaViewType, SelectedLineType} from 'store/MainStore';
-import {usePrevious} from 'hooks/usePrevious';
 
 import './MainContent.styles.scss';
 import {GlobalSettingsContext} from 'components/Layout';
@@ -44,9 +43,6 @@ export const MainContent = React.memo(({jdocExchange, showRightSidebar}: MainCon
   const [schemasView, setSchemasView] = useState<SchemaViewType[]>([]);
   const [schemasData, setSchemasData] = useState<{[key: string]: SchemaData[]}>({});
   const [resourceState, setResourceState] = useState<ResourceState[]>([]);
-
-  const prevPath = usePrevious(path);
-  const prevCurrentUrl = usePrevious(currentUrl);
 
   const {isExport} = window as any;
 
@@ -239,7 +235,7 @@ export const MainContent = React.memo(({jdocExchange, showRightSidebar}: MainCon
 
     const index = jdocPositions.indexOf(`${currentPath?.replace(/({|})/gi, '-')}`);
 
-    if (~index && virtuosoRef?.current && (prevCurrentUrl !== currentUrl || prevPath !== path)) {
+    if (~index && virtuosoRef?.current) {
       virtuosoRef.current.scrollToIndex({
         index: index + 1,
         align: 'start',

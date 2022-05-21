@@ -5,6 +5,7 @@ import React, {
   useMemo,
   startTransition,
   useCallback,
+  useContext,
 } from 'react';
 import clsx from 'clsx';
 import {toast, ToastContainer} from 'react-toastify';
@@ -26,20 +27,23 @@ import 'react-toastify/dist/ReactToastify.css';
 import {ContactForm} from 'components/Modals/ContactForm';
 import {HeaderDoc} from 'components/Header/HeaderDoc';
 import {screenWidthMultiplier} from 'utils/screenWidthMultiplier';
-import {editorModeType, MainRouterParams, SidebarDocType} from 'types';
+import {editorModeType, SidebarDocType} from 'types';
 import {JDocContext, SidebarContext} from 'store';
 import {onOrientationChange} from 'utils/onOrientationChange';
-import {useHistory, useParams} from 'react-router-dom';
+import {useHistory} from 'react-router-dom';
 import {getExistingState} from 'api/codeSharing';
 import {ErrorScreen} from 'screens/Error';
 import {SharingForm} from 'components/Modals/SharingForm';
+import {SharingContext} from 'store/SharingStore';
+import {getDefaultErrorMessages} from 'utils/getError';
 
 const {isExport} = window as any;
 
 const SCROLLBAR_WIDTH = 20;
 
 export const EditorScreen = () => {
-  const {key, version} = useParams<MainRouterParams>();
+  const {key, version} = useContext(SharingContext);
+
   const [currentUrl, setCurrentUrl] = useState<string | null>(null);
   const [viewMode, setViewMode] = useState<editorModeType>(isExport ? 'doc' : 'editor');
   // left sidebar
@@ -70,6 +74,10 @@ export const EditorScreen = () => {
     return screenWidth - editorWidthNumber;
   };
 
+  const reloadedEditor = () => {
+    setReloadEditor(false);
+  };
+
   const editorWidthFinal = () => localStorage.getItem('editorWidth') || getEditorWidth(screenWidth);
 
   const [editorWidth, setEditorWidth] = useState<number | string>(editorWidthFinal());
@@ -90,7 +98,7 @@ export const EditorScreen = () => {
   };
 
   useLayoutEffect(() => {
-    if (key && version) {
+    if (key) {
       (async () => {
         try {
           const result = await getExistingState(key, version);
@@ -98,7 +106,10 @@ export const EditorScreen = () => {
           setReloadEditor(true);
         } catch (error) {
           if (error.Code) {
-            setError({code: error.Code, message: error.Message});
+            setError({
+              code: error.Code,
+              message: error.Message || getDefaultErrorMessages(error.Code),
+            });
           }
         }
       })();
@@ -242,6 +253,7 @@ export const EditorScreen = () => {
                   errorRow={errorRow}
                   scrollToRow={scrollToRow}
                   reload={reloadEditor}
+                  reloadedEditor={reloadedEditor}
                 />
               </Resizable>
             )}
@@ -277,7 +289,7 @@ export const EditorScreen = () => {
             </div>
           </div>
         </SidebarContext.Provider>
-        <ToastContainer rtl={true} position="bottom-right" />
+        <ToastContainer rtl={false} position="bottom-right" />
       </div>
       {!isExport && (
         <ContactForm

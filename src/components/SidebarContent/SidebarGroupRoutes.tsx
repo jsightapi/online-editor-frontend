@@ -25,12 +25,12 @@ export const SidebarGroupRoutes = ({item, index}: SidebarGroupRoutesProps) => {
         rightContent={<div className="number">{item.count}</div>}
       >
         <ul className="collapse">
-          {item.resources.map((route, key) => {
+          {item.resources.map((route, resourceKey) => {
             const linkTo = route.path.replace(/({|})/gi, '-');
             return typeof route.path === 'string' ? (
               <li
                 className={clsx([{active: linkTo.substring(1) === (isExport ? currentUrl : path)}])}
-                key={`${index}${key}${route}`}
+                key={`${index}${resourceKey}${route}`}
               >
                 {isExport ? (
                   <span
@@ -41,16 +41,7 @@ export const SidebarGroupRoutes = ({item, index}: SidebarGroupRoutesProps) => {
                     {route.path}
                   </span>
                 ) : (
-                  <Link
-                    to={() => {
-                      if (isExport) {
-                        setCurrentUrl(linkTo.slice(1));
-                      }
-                      return linkTo;
-                    }}
-                  >
-                    {route.path}
-                  </Link>
+                  <Link to={linkTo}>{route.path}</Link>
                 )}
               </li>
             ) : (

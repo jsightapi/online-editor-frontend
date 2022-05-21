@@ -37,7 +37,7 @@ export const SidebarReusables = ({title, values}: SidebarReusablesProps) => {
                   {value}
                 </span>
               ) : (
-                <Link to={`/${value}`}>{value}</Link>
+                <Link to={value}>{value}</Link>
               )}
             </li>
           ))}
