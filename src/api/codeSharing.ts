@@ -47,10 +47,9 @@ export const updateState = (code: string, content: string) => {
 };
 
 export const getExistingState = (code: string, version?: string) => {
-  return runRequest<CodeSharingResponseItemType>(
-    `${cloudUrl}item/${code}${version ? `/${version}` : ''}`,
-    {
-      method: 'GET',
-    }
-  );
+  return version
+    ? runRequest<CodeSharingResponseItemType>(`${cloudUrl}item/${code}/${version}`, {
+        method: 'GET',
+      })
+    : runRequest<CodeSharingResponseItemType>(`${cloudUrl}item/${code}/latest`, {method: 'GET'});
 };

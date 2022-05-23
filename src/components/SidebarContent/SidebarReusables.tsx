@@ -37,7 +37,14 @@ export const SidebarReusables = ({title, values}: SidebarReusablesProps) => {
                   {value}
                 </span>
               ) : (
-                <Link to={value}>{value}</Link>
+                <Link
+                  to={{
+                    pathname: '/',
+                    hash: `#${value}`,
+                  }}
+                >
+                  {value}
+                </Link>
               )}
             </li>
           ))}

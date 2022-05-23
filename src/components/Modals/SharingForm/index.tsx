@@ -1,4 +1,4 @@
-import {FC} from 'react';
+import {FC, useRef} from 'react';
 import Modal from 'react-modal';
 import {Button} from 'components/Button';
 import './SharingForm.styles.scss';
@@ -9,8 +9,10 @@ interface SharingFormProps {
 }
 
 export const SharingForm: FC<SharingFormProps> = ({modalIsOpen, onClose}) => {
+  const inputRef = useRef<HTMLInputElement | null>(null);
+
   const copyToClipboard = () => {
-    navigator.clipboard.writeText(window.location.href);
+    navigator.clipboard.writeText(inputRef.current?.value || '');
   };
 
   const copyToClipboardAndClose = () => {
@@ -41,7 +43,7 @@ export const SharingForm: FC<SharingFormProps> = ({modalIsOpen, onClose}) => {
         <div className="link">
           <label>Link</label>
           <div className="input-group">
-            <input value={window.location.href.split('#')[0]} disabled />
+            <input ref={inputRef} value={window.location.href.split('#')[0]} disabled />
             <div className="input-group-append">
               <button onClick={copyToClipboard}>
                 <i className="icon-copy" />
