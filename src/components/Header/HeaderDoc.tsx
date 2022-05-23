@@ -25,10 +25,9 @@ export const HeaderDoc = ({setViewMode, openSharingModal}: HeaderDocProps) => {
           <i className="icon-preview" />
           Previewing{title ? ` — ${title}` : ''}
         </div>
-        <Button icon="download" className="btn-download shadow" onClick={saveHtml}>
+        <Button icon="download" className="btn-download" onClick={saveHtml}>
           Download
         </Button>
-        <ShareButton openSharingModal={openSharingModal} />
       </div>
     </div>
   );
