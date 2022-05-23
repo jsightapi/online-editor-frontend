@@ -4,17 +4,16 @@ import './CookieExceptShown.styles.scss';
 
 interface CookieExceptShownProps {
   onAccept: () => void;
-  isOpen: boolean;
 }
 
-export const CookieExceptShown: FC<CookieExceptShownProps> = ({isOpen, onAccept}) => {
-  const [isModalOpen, setIsModalOpen] = useState<boolean>(isOpen);
+export const CookieExceptShown: FC<CookieExceptShownProps> = ({onAccept}) => {
+  const [isModalOpen, setIsModalOpen] = useState<boolean>(true);
 
   const onCookieReject = () => setIsModalOpen(false);
 
   const goToCookiesPolicy = (e: React.MouseEvent<HTMLElement>) => {
     e.preventDefault();
-    console.log('goToCookiesPolicy');
+    /** TODO implement this method later (when the cookie policy window will be ready)*/
   };
 
   const onCookiePolicyAccept = () => {
