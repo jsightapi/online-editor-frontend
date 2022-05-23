@@ -61,6 +61,7 @@ export const EditorScreen = () => {
   const [contactModalVisible, setContactModalVisible] = useState<boolean>(false);
   const [sharingModalVisible, setSharingModalVisible] = useState<boolean>(false);
   const [error, setError] = useState<{code: number; message: string} | null>(null);
+  const [disableSharing, setDisableSharing] = useState<boolean>(false);
   const isEditor = useMemo(() => viewMode === 'editor', [viewMode]);
   const history = useHistory();
 
@@ -94,7 +95,10 @@ export const EditorScreen = () => {
   };
 
   const setContent = (value: string) => {
-    startTransition(() => setJsightCode(value));
+    startTransition(() => {
+      setJsightCode(value);
+    });
+    setDisableSharing(false);
   };
 
   useLayoutEffect(() => {
@@ -104,6 +108,7 @@ export const EditorScreen = () => {
           const result = await getExistingState(key, version);
           setJsightCode(result.data.content.replace('\\n', '\n'));
           setReloadEditor(true);
+          setDisableSharing(true);
         } catch (error) {
           if (error.Code) {
             setError({
@@ -212,6 +217,7 @@ export const EditorScreen = () => {
       {!isExport ? (
         isEditor ? (
           <Header
+            disableSharing={disableSharing}
             setInitialContent={setInitialContent}
             setViewMode={setViewMode}
             setContactModalVisible={setContactModalVisible}
@@ -299,7 +305,10 @@ export const EditorScreen = () => {
       )}
       <SharingForm
         modalIsOpen={sharingModalVisible}
-        onClose={() => setSharingModalVisible(false)}
+        onClose={() => {
+          setSharingModalVisible(false);
+          setDisableSharing(true);
+        }}
       />
     </JDocContext.Provider>
   );
