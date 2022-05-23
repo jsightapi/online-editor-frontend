@@ -27,7 +27,7 @@ import 'react-toastify/dist/ReactToastify.css';
 import {ContactForm} from 'components/Modals/ContactForm';
 import {HeaderDoc} from 'components/Header/HeaderDoc';
 import {screenWidthMultiplier} from 'utils/screenWidthMultiplier';
-import {editorModeType, SidebarDocType} from 'types';
+import {editorModeType, ExamplesType, SidebarDocType} from 'types';
 import {JDocContext, SidebarContext} from 'store';
 import {onOrientationChange} from 'utils/onOrientationChange';
 import {useHistory} from 'react-router-dom';
@@ -172,7 +172,7 @@ export const EditorScreen = () => {
     setReloadEditor(true);
   };
 
-  const setInitialContent = (content: string) => {
+  const setInitialContent = (content: ExamplesType) => {
     localStorage.removeItem('jsightCode');
     switch (content) {
       case 'cats':

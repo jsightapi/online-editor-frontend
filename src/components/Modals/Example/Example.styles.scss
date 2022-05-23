@@ -1,0 +1,53 @@
+@import 'src/styles/variables';
+
+/** TODO move common popup styles at higher level (Modals/style.scss) */
+.example-modal {
+  .header {
+    justify-content: space-between;
+    margin-bottom: 1.6rem;
+
+    .title {
+      font-size: 2.1rem;
+      line-height: 2.7rem;
+      font-weight: 600;
+    }
+
+    .btn-close i {
+      color: $secondary-text;
+      font-size: 1.8rem;
+    }
+  }
+
+  .description {
+    color: $secondary-text;
+    margin-bottom: 2.4rem;
+  }
+
+  .footer {
+    justify-content: flex-end;
+    .button {
+      font-size: 1.4rem;
+      line-height: 1.8rem;
+      font-weight: 600;
+      border-radius: 4px;
+      width: 12rem;
+      padding-top: 1.2rem;
+      padding-bottom: 1.2rem;
+      margin-left: 1.2rem;
+    }
+
+    .cancel {
+      color: $sidenav-background-color;
+      background: $main-purple;
+      box-shadow: 0 4px 16px rgba(131, 56, 255, 0.25), 0 0 12px rgba(131, 56, 255, 0.04),
+        0 2px 2px rgba(131, 56, 255, 0.05);
+    }
+
+    .reset {
+      color: $secondary-text;
+      border: 1px solid $secondary-text;
+      box-shadow: 0 4px 16px rgba(213, 213, 213, 0.25), 0 0 12px rgba(213, 213, 213, 0.04),
+        0 2px 2px rgba(213, 213, 213, 0.05);
+    }
+  }
+}
