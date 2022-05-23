@@ -10,7 +10,8 @@ export const getError = (error: ErrorType) => {
     return 'Server error, try again later';
   }
 
-  return `Error on line ${error.Line}. ${error.Message}`;
+  const errorMessage = error.Message;
+  return errorMessage.charAt(0).toUpperCase() + errorMessage.slice(1);
 };
 
 export const getDefaultErrorMessages = (status: number) => {
