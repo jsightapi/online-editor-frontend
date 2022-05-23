@@ -8,6 +8,7 @@ interface ButtonProps {
   className?: string;
   onClick?: () => void;
   children?: React.ReactNode;
+  title?: string;
 }
 
 export const Button = ({
@@ -16,9 +17,11 @@ export const Button = ({
   className = '',
   onClick,
   icon,
+  title,
 }: ButtonProps) => (
   <button
     disabled={disabled}
+    title={title}
     className={clsx('btn', className, {disabled, 'only-icon': !children})}
     onClick={onClick}
   >
