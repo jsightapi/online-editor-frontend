@@ -1,10 +1,37 @@
 @import 'src/styles/_variables.scss';
 
-.notification-wrap {
+:root {
+  --toastify-z-index: 300000 !important;
+}
+
+.notification-success {
+  &.success {
+    background: rgba(255, 255, 255, 0.95);
+    box-shadow: 0 0 36px rgba(27, 17, 40, 0.08), 0 0 12px rgba(27, 17, 40, 0.04), 0 0 4px rgba(27, 17, 40, 0.02);
+    border-radius: 21px;
+    min-height: 0;
+    color: $main-text;
+    font-weight: 500;
+    font-family: inherit;
+  }
+
+  .Toastify {
+    &__toast-icon {
+      margin-inline-end: 0.5rem;
+      font-size: 1.6rem;
+    }
+  }
+}
+
+.notification-error {
   padding: 2.4rem !important;
   z-index: 9999;
   width: 47vw;
   right: 27vw;
+
+  .error {
+    background: $secondary-red;
+  }
 
   .Toastify {
     &__toast-body {
@@ -19,21 +46,11 @@
     &__toast-icon {
       margin-inline-end: 0;
       width: 1.6rem;
-
-      svg {
-        fill: #fff;
-        width: 1.6rem;
-        margin-top: 0.3rem;
-      }
     }
-  }
-
-  &.error {
-    background: $secondary-red;
   }
 }
 
-.notification-inner {
+.notification-error-inner {
   color: #fff;
   margin-left: 1.8rem;
 
@@ -56,6 +73,10 @@
     color: $secondary-red;
     margin-top: 1.6rem;
   }
+}
+
+.Toastify__toast-container--bottom-center {
+  width: auto !important;
 }
 
 @media screen and (max-width: 1200px) {
