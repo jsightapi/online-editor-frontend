@@ -16,14 +16,12 @@ import {getJDocExchange} from 'api/getJDocExchange';
 import {JDocType} from 'types/exchange';
 import {MainContent} from 'components/MainContent';
 import {Layout} from 'components/Layout';
-import {showError} from 'utils/showError';
+import {showEditorError} from 'utils/showEditorError';
 import {ErrorType} from 'types/error';
 import {Header} from 'components/Header';
 import {initCats} from 'screens/Editor/initCats';
 import {initDogs} from 'screens/Editor/initDogs';
 import {initPigs} from 'screens/Editor/initPigs';
-import './Editor.styles.scss';
-import 'react-toastify/dist/ReactToastify.css';
 import {ContactForm} from 'components/Modals/ContactForm';
 import {HeaderDoc} from 'components/Header/HeaderDoc';
 import {screenWidthMultiplier} from 'utils/screenWidthMultiplier';
@@ -36,6 +34,8 @@ import {ErrorScreen} from 'screens/Error';
 import {SharingForm} from 'components/Modals/SharingForm';
 import {SharingContext} from 'store/SharingStore';
 import {getDefaultErrorMessages} from 'utils/getError';
+import './Editor.styles.scss';
+import 'react-toastify/dist/ReactToastify.css';
 
 const {isExport} = window as any;
 
@@ -140,7 +140,7 @@ export const EditorScreen = () => {
           toast.dismiss();
           setErrorRow(undefined);
         } catch (error) {
-          showError(error as ErrorType, () => {
+          showEditorError(error as ErrorType, () => {
             if (!(error as ErrorType).Line) {
               return;
             }

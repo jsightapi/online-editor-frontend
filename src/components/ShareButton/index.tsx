@@ -1,7 +1,6 @@
 import React, {useContext, useMemo} from 'react';
 import {Button} from 'components/Button';
 import {useSharing} from 'hooks/useSharing';
-import clsx from 'clsx';
 import {Dropdown} from 'components/Dropdown';
 import {DropdownToggle} from 'components/Dropdown/DropdownToggle';
 import {DropdownMenu} from 'components/Dropdown/DropdownMenu';
@@ -64,7 +63,7 @@ export const ShareButton: React.FC<ShareButtonProps> = ({openSharingModal, disab
     <Button
       disabled={disableSharing || !process.env.REACT_APP_CLOUD_URL}
       icon="link"
-      className={clsx('share-button')}
+      className="share-button"
       onClick={() => handleNewState(createState)}
     >
       Share
