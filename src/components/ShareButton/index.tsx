@@ -9,9 +9,10 @@ import {SharingContext} from 'store/SharingStore';
 
 interface ShareButtonProps {
   openSharingModal(): void;
+  disableSharing: boolean;
 }
 
-export const ShareButton: React.FC<ShareButtonProps> = ({openSharingModal}) => {
+export const ShareButton: React.FC<ShareButtonProps> = ({openSharingModal, disableSharing}) => {
   const [createState, updateExistState] = useSharing();
   const {key, version} = useContext(SharingContext);
   const isAbleUpdate = useMemo(() => key && version, [key, version]);
@@ -23,7 +24,7 @@ export const ShareButton: React.FC<ShareButtonProps> = ({openSharingModal}) => {
     } catch (err) {}
   };
 
-  return isAbleUpdate && process.env.REACT_APP_CLOUD_URL ? (
+  return isAbleUpdate && process.env.REACT_APP_CLOUD_URL && !disableSharing ? (
     <div className="group-share-button">
       <Dropdown>
         <DropdownToggle>
@@ -60,7 +61,7 @@ export const ShareButton: React.FC<ShareButtonProps> = ({openSharingModal}) => {
     </div>
   ) : (
     <Button
-      disabled={!process.env.REACT_APP_CLOUD_URL}
+      disabled={disableSharing || !process.env.REACT_APP_CLOUD_URL}
       icon="link"
       className="share-button"
       onClick={() => handleNewState(createState)}

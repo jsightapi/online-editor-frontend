@@ -16,6 +16,7 @@ interface HeaderProps {
   setViewMode: React.Dispatch<React.SetStateAction<editorModeType>>;
   setContactModalVisible: React.Dispatch<React.SetStateAction<boolean>>;
   openSharingModal(): void;
+  disableSharing: boolean;
 }
 
 export const Header = ({
@@ -23,6 +24,7 @@ export const Header = ({
   setViewMode,
   setContactModalVisible,
   openSharingModal,
+  disableSharing,
 }: HeaderProps) => {
   const [docsMenuVisible, setDocsMenuVisible] = useState<boolean>(false);
   const [fileMenuVisible, setFileMenuVisible] = useState<boolean>(false);
@@ -67,7 +69,7 @@ export const Header = ({
             <Button title="Export" icon="download" onClick={saveHtml} />
             <Button title="Preview" icon="preview" onClick={() => setViewMode('doc')} />
           </div>
-          <ShareButton openSharingModal={openSharingModal} />
+          <ShareButton disableSharing={disableSharing} openSharingModal={openSharingModal} />
         </div>
       </div>
     </div>
