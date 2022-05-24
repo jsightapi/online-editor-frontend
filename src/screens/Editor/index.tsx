@@ -43,16 +43,15 @@ const SCROLLBAR_WIDTH = 20;
 
 export const EditorScreen = () => {
   const {key, version} = useContext(SharingContext);
-
   const [currentUrl, setCurrentUrl] = useState<string | null>(null);
   const [viewMode, setViewMode] = useState<editorModeType>(isExport ? 'doc' : 'editor');
+  const [jsightCode, setJsightCode] = useState<string>(
+    key && version ? '' : localStorage.getItem('jsightCode') || initCats
+  );
   // left sidebar
   const [codeContentsSidebar] = useState<boolean>(false);
   //documentation sidebar on the right
   const [currentDocSidebar, setCurrentDocSidebar] = useState<SidebarDocType>(null);
-  const [jsightCode, setJsightCode] = useState<string>(
-    localStorage.getItem('jsightCode') || initCats
-  );
   const [jdocExchange, setJdocExchange] = useState<JDocType>();
   const [errorRow, setErrorRow] = useState<number | undefined>();
   const [scrollToRow, setScrollToRow] = useState<boolean>(false);
@@ -132,32 +131,34 @@ export const EditorScreen = () => {
   });
 
   useEffect(() => {
-    (async () => {
-      if (!isExport) {
-        try {
-          const jdocExchange = await getJDocExchange(jsightCodeDebounced);
-          startTransition(() => setJdocExchange(jdocExchange));
-          toast.dismiss();
-          setErrorRow(undefined);
-        } catch (error) {
-          showEditorError(error as ErrorType, () => {
-            if (!(error as ErrorType).Line) {
-              return;
-            }
+    if (jsightCodeDebounced) {
+      (async () => {
+        if (!isExport) {
+          try {
+            const jdocExchange = await getJDocExchange(jsightCodeDebounced);
+            startTransition(() => setJdocExchange(jdocExchange));
+            toast.dismiss();
+            setErrorRow(undefined);
+          } catch (error) {
+            showEditorError(error as ErrorType, () => {
+              if (!(error as ErrorType).Line) {
+                return;
+              }
 
-            setScrollToRow(true);
-            setTimeout(() => setScrollToRow(false), 500);
-          });
-          (error as ErrorType).Line && setErrorRow((error as ErrorType).Line);
-        } finally {
-          localStorage.setItem('jsightCode', jsightCodeDebounced);
-          setReloadEditor(false);
+              setScrollToRow(true);
+              setTimeout(() => setScrollToRow(false), 500);
+            });
+            (error as ErrorType).Line && setErrorRow((error as ErrorType).Line);
+          } finally {
+            localStorage.setItem('jsightCode', jsightCodeDebounced);
+            setReloadEditor(false);
+          }
+        } else {
+          // @ts-ignore
+          setJdocExchange(window?.jdoc);
         }
-      } else {
-        // @ts-ignore
-        setJdocExchange(window?.jdoc);
-      }
-    })();
+      })();
+    }
     // eslint-disable-next-line
   }, [jsightCodeDebounced]);
 
