@@ -4,13 +4,12 @@ import {Button} from 'components/Button';
 import {useExport} from 'hooks/useExport';
 import {JDocContext} from 'store';
 import {editorModeType} from 'types';
-import {ShareButton} from 'components/ShareButton';
 interface HeaderDocProps {
   setViewMode: React.Dispatch<React.SetStateAction<editorModeType>>;
   openSharingModal(): void;
 }
 
-export const HeaderDoc = ({setViewMode, openSharingModal}: HeaderDocProps) => {
+export const HeaderDoc = ({setViewMode}: HeaderDocProps) => {
   const jdocData = useContext(JDocContext);
   const [saveHtml] = useExport();
   const title = jdocData?.info?.title;
@@ -25,10 +24,9 @@ export const HeaderDoc = ({setViewMode, openSharingModal}: HeaderDocProps) => {
           <i className="icon-preview" />
           Previewing{title ? ` — ${title}` : ''}
         </div>
-        <Button icon="download" className="btn-download shadow" onClick={saveHtml}>
+        <Button icon="download" className="btn-download" onClick={saveHtml}>
           Download
         </Button>
-        <ShareButton openSharingModal={openSharingModal} />
       </div>
     </div>
   );

@@ -1,7 +1,9 @@
-import {FC} from 'react';
+import {FC, useRef} from 'react';
 import Modal from 'react-modal';
 import {Button} from 'components/Button';
+import {toast} from 'react-toastify';
 import './SharingForm.styles.scss';
+import {notificationIds} from 'utils/notificationIds';
 
 interface SharingFormProps {
   modalIsOpen: boolean;
@@ -9,8 +11,23 @@ interface SharingFormProps {
 }
 
 export const SharingForm: FC<SharingFormProps> = ({modalIsOpen, onClose}) => {
+  const inputRef = useRef<HTMLInputElement | null>(null);
+
   const copyToClipboard = () => {
-    navigator.clipboard.writeText(window.location.href);
+    navigator.clipboard.writeText(inputRef.current?.value || '');
+    toast.success('Link copied', {
+      toastId: notificationIds.SUCCESS_MESSAGE_DEFAULT_ID,
+      position: 'bottom-center',
+      className: 'notification-success success',
+      autoClose: 3000,
+      hideProgressBar: true,
+      closeButton: false,
+      closeOnClick: false,
+      pauseOnHover: false,
+      draggable: false,
+      progress: undefined,
+      icon: <i className="icon-check" />,
+    });
   };
 
   const copyToClipboardAndClose = () => {
@@ -41,7 +58,7 @@ export const SharingForm: FC<SharingFormProps> = ({modalIsOpen, onClose}) => {
         <div className="link">
           <label>Link</label>
           <div className="input-group">
-            <input value={window.location.href} disabled />
+            <input ref={inputRef} value={window.location.href.split('#')[0]} disabled />
             <div className="input-group-append">
               <button onClick={copyToClipboard}>
                 <i className="icon-copy" />

@@ -1,5 +1,5 @@
 import React from 'react';
-import './CustomNotification.styles.scss';
+import './Notifications.styles.scss';
 
 export interface CustomNotificationsProps {
   message: string | JSX.Element;
@@ -7,8 +7,12 @@ export interface CustomNotificationsProps {
   setScrollToRow?: () => void;
 }
 
-export const CustomNotification = ({message, title, setScrollToRow}: CustomNotificationsProps) => (
-  <div className="notification-inner" onClick={() => setScrollToRow && setScrollToRow()}>
+export const EditorErrorNotification = ({
+  message,
+  title,
+  setScrollToRow,
+}: CustomNotificationsProps) => (
+  <div className="notification-error-inner" onClick={() => setScrollToRow && setScrollToRow()}>
     {title && <div className="title">{title}</div>}
     <div className="message">{message}</div>
   </div>

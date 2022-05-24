@@ -16,18 +16,16 @@ import {getJDocExchange} from 'api/getJDocExchange';
 import {JDocType} from 'types/exchange';
 import {MainContent} from 'components/MainContent';
 import {Layout} from 'components/Layout';
-import {showError} from 'utils/showError';
+import {showEditorError} from 'utils/showEditorError';
 import {ErrorType} from 'types/error';
 import {Header} from 'components/Header';
 import {initCats} from 'screens/Editor/initCats';
 import {initDogs} from 'screens/Editor/initDogs';
 import {initPigs} from 'screens/Editor/initPigs';
-import './Editor.styles.scss';
-import 'react-toastify/dist/ReactToastify.css';
 import {ContactForm} from 'components/Modals/ContactForm';
 import {HeaderDoc} from 'components/Header/HeaderDoc';
 import {screenWidthMultiplier} from 'utils/screenWidthMultiplier';
-import {editorModeType, SidebarDocType} from 'types';
+import {editorModeType, ExamplesType, SidebarDocType} from 'types';
 import {JDocContext, SidebarContext} from 'store';
 import {onOrientationChange} from 'utils/onOrientationChange';
 import {useHistory} from 'react-router-dom';
@@ -36,6 +34,8 @@ import {ErrorScreen} from 'screens/Error';
 import {SharingForm} from 'components/Modals/SharingForm';
 import {SharingContext} from 'store/SharingStore';
 import {getDefaultErrorMessages} from 'utils/getError';
+import './Editor.styles.scss';
+import 'react-toastify/dist/ReactToastify.css';
 
 const {isExport} = window as any;
 
@@ -61,6 +61,7 @@ export const EditorScreen = () => {
   const [contactModalVisible, setContactModalVisible] = useState<boolean>(false);
   const [sharingModalVisible, setSharingModalVisible] = useState<boolean>(false);
   const [error, setError] = useState<{code: number; message: string} | null>(null);
+  const [disableSharing, setDisableSharing] = useState<boolean>(false);
   const isEditor = useMemo(() => viewMode === 'editor', [viewMode]);
   const history = useHistory();
 
@@ -72,6 +73,10 @@ export const EditorScreen = () => {
   const getDocWidth = (screenWidth: number) => {
     const editorWidthNumber = typeof editorWidth === 'string' ? parseInt(editorWidth) : editorWidth;
     return screenWidth - editorWidthNumber;
+  };
+
+  const reloadedEditor = () => {
+    setReloadEditor(false);
   };
 
   const editorWidthFinal = () => localStorage.getItem('editorWidth') || getEditorWidth(screenWidth);
@@ -90,7 +95,10 @@ export const EditorScreen = () => {
   };
 
   const setContent = (value: string) => {
-    startTransition(() => setJsightCode(value));
+    startTransition(() => {
+      setJsightCode(value);
+    });
+    setDisableSharing(false);
   };
 
   useLayoutEffect(() => {
@@ -100,6 +108,7 @@ export const EditorScreen = () => {
           const result = await getExistingState(key, version);
           setJsightCode(result.data.content.replace('\\n', '\n'));
           setReloadEditor(true);
+          setDisableSharing(true);
         } catch (error) {
           if (error.Code) {
             setError({
@@ -131,7 +140,7 @@ export const EditorScreen = () => {
           toast.dismiss();
           setErrorRow(undefined);
         } catch (error) {
-          showError(error as ErrorType, () => {
+          showEditorError(error as ErrorType, () => {
             if (!(error as ErrorType).Line) {
               return;
             }
@@ -168,7 +177,7 @@ export const EditorScreen = () => {
     setReloadEditor(true);
   };
 
-  const setInitialContent = (content: string) => {
+  const setInitialContent = (content: ExamplesType) => {
     localStorage.removeItem('jsightCode');
     switch (content) {
       case 'cats':
@@ -208,6 +217,7 @@ export const EditorScreen = () => {
       {!isExport ? (
         isEditor ? (
           <Header
+            disableSharing={disableSharing}
             setInitialContent={setInitialContent}
             setViewMode={setViewMode}
             setContactModalVisible={setContactModalVisible}
@@ -249,6 +259,7 @@ export const EditorScreen = () => {
                   errorRow={errorRow}
                   scrollToRow={scrollToRow}
                   reload={reloadEditor}
+                  reloadedEditor={reloadedEditor}
                 />
               </Resizable>
             )}
@@ -294,7 +305,10 @@ export const EditorScreen = () => {
       )}
       <SharingForm
         modalIsOpen={sharingModalVisible}
-        onClose={() => setSharingModalVisible(false)}
+        onClose={() => {
+          setSharingModalVisible(false);
+          setDisableSharing(true);
+        }}
       />
     </JDocContext.Provider>
   );
