@@ -106,6 +106,9 @@ export const EditorScreen = () => {
           setJsightCode(result.data.content.replace('\\n', '\n'));
           setReloadEditor(true);
           setDisableSharing(true);
+          if (!version) {
+            history.push(`/r/${result.code}/${result.version}`);
+          }
         } catch (error) {
           if (error.Code) {
             setError({
