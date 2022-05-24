@@ -1,7 +1,9 @@
 import {FC, useRef} from 'react';
 import Modal from 'react-modal';
 import {Button} from 'components/Button';
+import {toast} from 'react-toastify';
 import './SharingForm.styles.scss';
+import {notificationIds} from 'utils/notificationIds';
 
 interface SharingFormProps {
   modalIsOpen: boolean;
@@ -13,6 +15,19 @@ export const SharingForm: FC<SharingFormProps> = ({modalIsOpen, onClose}) => {
 
   const copyToClipboard = () => {
     navigator.clipboard.writeText(inputRef.current?.value || '');
+    toast.success('Link copied', {
+      toastId: notificationIds.SUCCESS_MESSAGE_DEFAULT_ID,
+      position: 'bottom-center',
+      className: 'notification-success success',
+      autoClose: 3000,
+      hideProgressBar: true,
+      closeButton: false,
+      closeOnClick: false,
+      pauseOnHover: false,
+      draggable: false,
+      progress: undefined,
+      icon: <i className="icon-check" />,
+    });
   };
 
   const copyToClipboardAndClose = () => {
