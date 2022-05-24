@@ -28,7 +28,6 @@ import {screenWidthMultiplier} from 'utils/screenWidthMultiplier';
 import {editorModeType, ExamplesType, SidebarDocType} from 'types';
 import {JDocContext, SidebarContext} from 'store';
 import {onOrientationChange} from 'utils/onOrientationChange';
-import {useHistory} from 'react-router-dom';
 import {getExistingState} from 'api/codeSharing';
 import {ErrorScreen} from 'screens/Error';
 import {SharingForm} from 'components/Modals/SharingForm';
@@ -42,7 +41,7 @@ const {isExport} = window as any;
 const SCROLLBAR_WIDTH = 20;
 
 export const EditorScreen = () => {
-  const {key, version} = useContext(SharingContext);
+  const {key, version, history} = useContext(SharingContext);
 
   const [currentUrl, setCurrentUrl] = useState<string | null>(null);
   const [viewMode, setViewMode] = useState<editorModeType>(isExport ? 'doc' : 'editor');
@@ -63,7 +62,6 @@ export const EditorScreen = () => {
   const [error, setError] = useState<{code: number; message: string} | null>(null);
   const [disableSharing, setDisableSharing] = useState<boolean>(false);
   const isEditor = useMemo(() => viewMode === 'editor', [viewMode]);
-  const history = useHistory();
 
   const screenWidth = window.innerWidth;
   const getEditorWidth = (screenWidth: number) => {
