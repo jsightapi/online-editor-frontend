@@ -12,8 +12,8 @@ import EditorScreen from './screens/Editor';
 import './styles/globals.scss';
 import {HashRouterParams} from 'types';
 import {SharingContext} from 'store/SharingStore';
-import './components/Modals/style.scss';
 import {CookieExceptShown} from './components/Modals/CookieExceptShown';
+import './components/Modals/style.scss';
 
 const {isExport} = window as any;
 
