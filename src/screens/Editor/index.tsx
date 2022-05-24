@@ -59,7 +59,7 @@ export const EditorScreen = () => {
   const [contactModalVisible, setContactModalVisible] = useState<boolean>(false);
   const [sharingModalVisible, setSharingModalVisible] = useState<boolean>(false);
   const [error, setError] = useState<{code: number; message: string} | null>(null);
-  const [disableSharing, setDisableSharing] = useState<boolean>(false);
+  const [disableSharing, setDisableSharing] = useState<boolean>(true);
   const isEditor = useMemo(() => viewMode === 'editor', [viewMode]);
 
   const screenWidth = window.innerWidth;
@@ -115,6 +115,8 @@ export const EditorScreen = () => {
           }
         }
       })();
+    } else {
+      setDisableSharing(false);
     }
   }, [key, version]);
 
