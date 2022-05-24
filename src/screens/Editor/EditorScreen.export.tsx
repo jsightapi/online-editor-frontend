@@ -11,7 +11,7 @@ import {screenWidthMultiplier} from 'utils/screenWidthMultiplier';
 import {editorModeType, ErrorType, SidebarDocType} from 'types';
 import {JDocContext, SidebarContext} from 'store';
 import {getJDocExchange} from 'api/getJDocExchange';
-import {showError} from 'utils/showError';
+import {showEditorError} from 'utils/showEditorError';
 import {useDebounce} from 'hooks/useDebounce';
 import {initCats} from 'screens/Editor/initCats';
 
@@ -59,7 +59,7 @@ export const EditorScreen = () => {
           startTransition(() => setJdocExchange(jdocExchange));
           toast.dismiss();
         } catch (error) {
-          showError(error as ErrorType, () => {
+          showEditorError(error as ErrorType, () => {
             if (!(error as ErrorType).Line) {
               return;
             }

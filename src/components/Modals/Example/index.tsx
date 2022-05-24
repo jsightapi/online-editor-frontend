@@ -10,11 +10,6 @@ interface ExampleProps {
 }
 
 export const Example: FC<ExampleProps> = ({setInitialContent, initialContent, closePopup}) => {
-  const onCancel = () => {
-    setInitialContent(null);
-    closePopup();
-  };
-
   const onReset = () => {
     setInitialContent(initialContent);
     closePopup();
@@ -23,7 +18,7 @@ export const Example: FC<ExampleProps> = ({setInitialContent, initialContent, cl
   return (
     <Modal
       isOpen={!!initialContent}
-      onRequestClose={onCancel}
+      onRequestClose={closePopup}
       shouldCloseOnOverlayClick={true}
       shouldCloseOnEsc={true}
       className="r-modal"
@@ -32,7 +27,7 @@ export const Example: FC<ExampleProps> = ({setInitialContent, initialContent, cl
       <div className="example-modal">
         <div className="d-flex header">
           <div className="title">Example reset</div>
-          <button onClick={onCancel} className="btn-close">
+          <button onClick={closePopup} className="btn-close">
             <i className="icon-close" />
           </button>
         </div>
@@ -40,7 +35,7 @@ export const Example: FC<ExampleProps> = ({setInitialContent, initialContent, cl
           Do you want to reset the example? Any changes or edits will be lost.
         </div>
         <div className="footer d-flex">
-          <button onClick={onCancel} className="button cancel">
+          <button onClick={closePopup} className="button cancel">
             Cancel
           </button>
           <button onClick={onReset} className="button reset">

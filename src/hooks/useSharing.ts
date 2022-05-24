@@ -1,18 +1,18 @@
 import {createNewState, updateState} from 'api/codeSharing';
 import {useParams} from 'react-router-dom';
 import {toast} from 'react-toastify';
-import clsx from 'clsx';
-import {ERROR_SHARING_ID, getSharingError} from 'utils/getSharingError';
 import {ToastOptions} from 'react-toastify/dist/types';
 import {useContext} from 'react';
 import {SharingContext} from 'store/SharingStore';
 import {MainRouterParams} from 'types';
+import {notificationIds} from 'utils/notificationIds';
+import {SharingErrorNotification} from 'components/Notifications/SharingErrorNotification';
 
 const errorOptions: ToastOptions = {
   closeOnClick: false,
   autoClose: false,
-  className: clsx('notification-wrap', 'error'),
-  toastId: ERROR_SHARING_ID,
+  className: 'notification-error error',
+  toastId: notificationIds.ERROR_MESSAGE_SHARING_ID,
   hideProgressBar: true,
   closeButton: true,
   draggable: false,
@@ -31,7 +31,7 @@ export function useSharing() {
           history.push(`/r/${response.code}/${response.version}${path ? `#${path}` : ''}`);
         })
         .catch(() => {
-          toast.warning(getSharingError, errorOptions);
+          toast.warning(SharingErrorNotification, errorOptions);
           return Promise.reject('error');
         });
     }
@@ -46,7 +46,7 @@ export function useSharing() {
           history.push(`/r/${response.code}/${response.version}${path ? `#${path}` : ''}`);
         })
         .catch(() => {
-          toast.warning(getSharingError, errorOptions);
+          toast.warning(SharingErrorNotification, errorOptions);
           return Promise.reject('error');
         });
     }

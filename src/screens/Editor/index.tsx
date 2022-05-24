@@ -16,43 +16,41 @@ import {getJDocExchange} from 'api/getJDocExchange';
 import {JDocType} from 'types/exchange';
 import {MainContent} from 'components/MainContent';
 import {Layout} from 'components/Layout';
-import {showError} from 'utils/showError';
+import {showEditorError} from 'utils/showEditorError';
 import {ErrorType} from 'types/error';
 import {Header} from 'components/Header';
 import {initCats} from 'screens/Editor/initCats';
 import {initDogs} from 'screens/Editor/initDogs';
 import {initPigs} from 'screens/Editor/initPigs';
-import './Editor.styles.scss';
-import 'react-toastify/dist/ReactToastify.css';
 import {ContactForm} from 'components/Modals/ContactForm';
 import {HeaderDoc} from 'components/Header/HeaderDoc';
 import {screenWidthMultiplier} from 'utils/screenWidthMultiplier';
 import {editorModeType, ExamplesType, SidebarDocType} from 'types';
 import {JDocContext, SidebarContext} from 'store';
 import {onOrientationChange} from 'utils/onOrientationChange';
-import {useHistory} from 'react-router-dom';
 import {getExistingState} from 'api/codeSharing';
 import {ErrorScreen} from 'screens/Error';
 import {SharingForm} from 'components/Modals/SharingForm';
 import {SharingContext} from 'store/SharingStore';
 import {getDefaultErrorMessages} from 'utils/getError';
+import './Editor.styles.scss';
+import 'react-toastify/dist/ReactToastify.css';
 
 const {isExport} = window as any;
 
 const SCROLLBAR_WIDTH = 20;
 
 export const EditorScreen = () => {
-  const {key, version} = useContext(SharingContext);
-
+  const {key, version, history} = useContext(SharingContext);
   const [currentUrl, setCurrentUrl] = useState<string | null>(null);
   const [viewMode, setViewMode] = useState<editorModeType>(isExport ? 'doc' : 'editor');
+  const [jsightCode, setJsightCode] = useState<string>(
+    key && version ? '' : localStorage.getItem('jsightCode') || initCats
+  );
   // left sidebar
   const [codeContentsSidebar] = useState<boolean>(false);
   //documentation sidebar on the right
   const [currentDocSidebar, setCurrentDocSidebar] = useState<SidebarDocType>(null);
-  const [jsightCode, setJsightCode] = useState<string>(
-    localStorage.getItem('jsightCode') || initCats
-  );
   const [jdocExchange, setJdocExchange] = useState<JDocType>();
   const [errorRow, setErrorRow] = useState<number | undefined>();
   const [scrollToRow, setScrollToRow] = useState<boolean>(false);
@@ -61,8 +59,8 @@ export const EditorScreen = () => {
   const [contactModalVisible, setContactModalVisible] = useState<boolean>(false);
   const [sharingModalVisible, setSharingModalVisible] = useState<boolean>(false);
   const [error, setError] = useState<{code: number; message: string} | null>(null);
+  const [disableSharing, setDisableSharing] = useState<boolean>(true);
   const isEditor = useMemo(() => viewMode === 'editor', [viewMode]);
-  const history = useHistory();
 
   const screenWidth = window.innerWidth;
   const getEditorWidth = (screenWidth: number) => {
@@ -94,7 +92,10 @@ export const EditorScreen = () => {
   };
 
   const setContent = (value: string) => {
-    startTransition(() => setJsightCode(value));
+    startTransition(() => {
+      setJsightCode(value);
+    });
+    setDisableSharing(false);
   };
 
   useLayoutEffect(() => {
@@ -104,6 +105,7 @@ export const EditorScreen = () => {
           const result = await getExistingState(key, version);
           setJsightCode(result.data.content.replace('\\n', '\n'));
           setReloadEditor(true);
+          setDisableSharing(true);
         } catch (error) {
           if (error.Code) {
             setError({
@@ -113,6 +115,8 @@ export const EditorScreen = () => {
           }
         }
       })();
+    } else {
+      setDisableSharing(false);
     }
   }, [key, version]);
 
@@ -127,32 +131,34 @@ export const EditorScreen = () => {
   });
 
   useEffect(() => {
-    (async () => {
-      if (!isExport) {
-        try {
-          const jdocExchange = await getJDocExchange(jsightCodeDebounced);
-          startTransition(() => setJdocExchange(jdocExchange));
-          toast.dismiss();
-          setErrorRow(undefined);
-        } catch (error) {
-          showError(error as ErrorType, () => {
-            if (!(error as ErrorType).Line) {
-              return;
-            }
+    if (jsightCodeDebounced) {
+      (async () => {
+        if (!isExport) {
+          try {
+            const jdocExchange = await getJDocExchange(jsightCodeDebounced);
+            startTransition(() => setJdocExchange(jdocExchange));
+            toast.dismiss();
+            setErrorRow(undefined);
+          } catch (error) {
+            showEditorError(error as ErrorType, () => {
+              if (!(error as ErrorType).Line) {
+                return;
+              }
 
-            setScrollToRow(true);
-            setTimeout(() => setScrollToRow(false), 500);
-          });
-          (error as ErrorType).Line && setErrorRow((error as ErrorType).Line);
-        } finally {
-          localStorage.setItem('jsightCode', jsightCodeDebounced);
-          setReloadEditor(false);
+              setScrollToRow(true);
+              setTimeout(() => setScrollToRow(false), 500);
+            });
+            (error as ErrorType).Line && setErrorRow((error as ErrorType).Line);
+          } finally {
+            localStorage.setItem('jsightCode', jsightCodeDebounced);
+            setReloadEditor(false);
+          }
+        } else {
+          // @ts-ignore
+          setJdocExchange(window?.jdoc);
         }
-      } else {
-        // @ts-ignore
-        setJdocExchange(window?.jdoc);
-      }
-    })();
+      })();
+    }
     // eslint-disable-next-line
   }, [jsightCodeDebounced]);
 
@@ -212,6 +218,7 @@ export const EditorScreen = () => {
       {!isExport ? (
         isEditor ? (
           <Header
+            disableSharing={disableSharing}
             setInitialContent={setInitialContent}
             setViewMode={setViewMode}
             setContactModalVisible={setContactModalVisible}
@@ -299,7 +306,10 @@ export const EditorScreen = () => {
       )}
       <SharingForm
         modalIsOpen={sharingModalVisible}
-        onClose={() => setSharingModalVisible(false)}
+        onClose={() => {
+          setSharingModalVisible(false);
+          setDisableSharing(true);
+        }}
       />
     </JDocContext.Provider>
   );

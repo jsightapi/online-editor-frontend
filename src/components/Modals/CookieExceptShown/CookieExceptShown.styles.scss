@@ -1,0 +1,49 @@
+@import 'src/styles/variables';
+.cookie-except-modal {
+  padding: 28px 32px;
+  width: 680px;
+
+  .cookie-except {
+    .header {
+      justify-content: space-between;
+      margin-bottom: 1.2rem;
+
+      .title {
+        font-size: 2.1rem;
+        line-height: 2.7rem;
+        font-weight: 700;
+      }
+
+      .btn-close i {
+        font-size: 2rem;
+        color: $main-purple;
+        opacity: 0.35;
+      }
+    }
+
+    .description {
+      font-weight: 400;
+      padding-right: 24px;
+
+      a {
+        text-decoration: underline;
+        cursor: pointer;
+      }
+    }
+
+    .footer {
+      padding-top: 1.7rem;
+      .accept-button {
+        background: #8338ff;
+        padding: 1rem 4.6rem;
+        color: #ffffff;
+        box-shadow: 0 4px 16px rgba(131, 56, 255, 0.25), 0 0 12px rgba(131, 56, 255, 0.04),
+          0 2px 2px rgba(131, 56, 255, 0.05);
+        border-radius: 4px;
+        font-size: 1.6rem;
+        line-height: 2.4rem;
+        font-weight: 600;
+      }
+    }
+  }
+}
