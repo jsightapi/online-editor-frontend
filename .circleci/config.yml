@@ -19,7 +19,7 @@ workflows:
       - docker/publish: &base-publish
           executor: common/vm-medium
           context: &common-context online-editor-development
-          image: jsight/online-editor-frontend
+          image: jsight/dev-online-editor-frontend
           tag: '<< pipeline.parameters.image-tag >>,dev_latest'
       - common/trigger-deployment: &base-trigger
           requires:
