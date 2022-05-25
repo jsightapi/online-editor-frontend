@@ -75,8 +75,9 @@
 1. Open a link with a good key, but a corrupted version number. The 404 page must be opened.
 2. Open a link with a good version number, but a corrupted key. The 404 page must be opened.
 3. Open a link with a bad key, and without a version number. The 404 page must be opened.
-4. Turn off the connection. Click on the Share button. In several seconds an error message must
-   emerge.
+4. Turn off the connection. Click on the Share button.
+   - The popup window with the link must not be shown.
+   - In several seconds an error message must emerge.
 
 # Copy link window
 
