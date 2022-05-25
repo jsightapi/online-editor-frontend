@@ -34,6 +34,8 @@ export function useSharing() {
           toast.warning(SharingErrorNotification, errorOptions);
           return Promise.reject('error');
         });
+    } else {
+      return Promise.reject('error');
     }
   };
 
@@ -41,7 +43,7 @@ export function useSharing() {
     const content = localStorage.getItem('jsightCode');
 
     if (content) {
-      updateState(key, content)
+      return updateState(key, content)
         .then((response) => {
           history.push(`/r/${response.code}/${response.version}${path ? `#${path}` : ''}`);
         })
@@ -49,6 +51,8 @@ export function useSharing() {
           toast.warning(SharingErrorNotification, errorOptions);
           return Promise.reject('error');
         });
+    } else {
+      return Promise.reject('error');
     }
   };
 
