@@ -105,6 +105,7 @@ export const EditorScreen = () => {
             setCurrentDocSidebar,
             currentUrl,
             setCurrentUrl,
+            isEditor,
           }}
         >
           <div className={classes}>

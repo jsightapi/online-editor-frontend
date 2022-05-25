@@ -83,7 +83,9 @@ export const Code = ({schema, tab, codeViewRef, keyBlock}: CodeProps) => {
   const [height, setHeight] = useState<number>(0);
   const {selectedLine, setSchemasData, schemasData} = useContext(MainContext);
   const {expandedTypes} = useContext(SchemaViewContext);
-  const {currentDocSidebar, setCurrentDocSidebar, editorWidth} = useContext(SidebarContext);
+  const {currentDocSidebar, setCurrentDocSidebar, editorWidth, isEditor} = useContext(
+    SidebarContext
+  );
   const [isFirst, setIsFirst] = useState<boolean>(true);
 
   const schemaData = useMemo(
@@ -226,7 +228,7 @@ export const Code = ({schema, tab, codeViewRef, keyBlock}: CodeProps) => {
       const rightOffset = wrapper ? parseInt(getComputedStyle(wrapper).paddingRight) : 0;
       setRightOffset(rightOffset);
     }
-  }, [editorWidth]);
+  }, [editorWidth, isEditor]);
 
   useLayoutEffect(() => {
     const wrapper = divRulesRef.current?.closest<HTMLDivElement>('.resource-content');

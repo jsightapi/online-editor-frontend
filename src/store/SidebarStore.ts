@@ -7,6 +7,7 @@ interface SidebarContextInterface {
   currentUrl: string | null;
   setCurrentUrl: React.Dispatch<React.SetStateAction<string | null>>;
   editorWidth: string | number;
+  isEditor: boolean;
 }
 
 export const SidebarContext = createContext({} as SidebarContextInterface);
