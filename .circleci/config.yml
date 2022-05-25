@@ -21,6 +21,7 @@ workflows:
           context: &common-context online-editor-development
           image: jsight/dev-online-editor-frontend
           tag: '<< pipeline.parameters.image-tag >>,dev_latest'
+          extra_build_args: '--build-arg CLOUD_URL=https://dev.cloud.jsight.io'
       - common/trigger-deployment: &base-trigger
           requires:
             - docker/publish
