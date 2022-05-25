@@ -52,8 +52,8 @@ export const SharingForm: FC<SharingFormProps> = ({modalIsOpen, onClose}) => {
           </button>
         </div>
         <div className="description">
-          Your code has been permanently saved and may be accessed with this link by anybody you
-          give it to.
+          Your code has been permanently saved and anyone you give this link to will be able to
+          access it.
         </div>
         <div className="link">
           <label>Link</label>

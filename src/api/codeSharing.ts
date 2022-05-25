@@ -43,7 +43,9 @@ export const updateState = (code: string, content: string) => {
     },
   };
 
-  return runRequest<CodeSharingParamsType>(`${cloudUrl}/item/${code}`, {body: JSON.stringify(item)});
+  return runRequest<CodeSharingParamsType>(`${cloudUrl}/item/${code}`, {
+    body: JSON.stringify(item),
+  });
 };
 
 export const getExistingState = (code: string, version?: string) => {
