@@ -66,7 +66,7 @@ export const Editor = ({
   reload,
   reloadedEditor,
 }: EditorProps) => {
-  const {key, version} = useContext(SharingContext);
+  const {key, version, history} = useContext(SharingContext);
   const ref = useRef<HTMLDivElement | null>(null);
   const jsightEditor = useRef<monaco.editor.IStandaloneCodeEditor | null>(null);
   const [oldRow, setOldRow] = useState<number | undefined>();
@@ -247,6 +247,9 @@ export const Editor = ({
           setContent(resultContent);
           jsightEditor.current?.getModel()?.setValue(resultContent);
           setDisableSharing(true);
+          if (!version) {
+            history.push(`/r/${result.code}/${result.version}`);
+          }
         } catch (error) {
           if (error.Code) {
             setError({
