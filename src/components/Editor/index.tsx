@@ -238,7 +238,7 @@ export const Editor = ({
     // eslint-disable-next-line
   }, [reload])
 
-  useLayoutEffect(() => {
+  useEffect(() => {
     if (key) {
       (async () => {
         try {
