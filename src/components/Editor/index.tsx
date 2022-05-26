@@ -254,7 +254,7 @@ export const Editor = ({
           if (error.Code) {
             setError({
               code: error.Code,
-              message: error.Message || getDefaultErrorMessages(error.Code),
+              message: getDefaultErrorMessages(error.Code),
             });
           }
         }
