@@ -31,11 +31,11 @@ const {isExport} = window as any;
 const SCROLLBAR_WIDTH = 20;
 
 export const EditorScreen = () => {
-  const {key, version, history} = useContext(SharingContext);
+  const {key, history} = useContext(SharingContext);
   const [currentUrl, setCurrentUrl] = useState<string | null>(null);
   const [viewMode, setViewMode] = useState<editorModeType>(isExport ? 'doc' : 'editor');
   const [jsightCode, setJsightCode] = useState<string>(
-    key && version ? '' : localStorage.getItem('jsightCode') || initCats
+    key ? '' : localStorage.getItem('jsightCode') || initCats
   );
   // left sidebar
   const [codeContentsSidebar] = useState<boolean>(false);
