@@ -26,7 +26,7 @@ export const Example: FC<ExampleProps> = ({setInitialContent, initialContent, cl
     >
       <div className="example-modal">
         <div className="d-flex header">
-          <div className="title">Example reset</div>
+          <div className="title">Reset example</div>
           <button onClick={closePopup} className="btn-close">
             <i className="icon-close" />
           </button>

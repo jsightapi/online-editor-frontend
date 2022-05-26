@@ -29,7 +29,7 @@
   width: 47vw;
   right: 27vw;
 
-  .error {
+  &.error {
     background: $secondary-red;
   }
 
@@ -46,6 +46,12 @@
     &__toast-icon {
       margin-inline-end: 0;
       width: 1.6rem;
+
+      svg {
+        fill: #fff;
+        width: 1.6rem;
+        margin-top: 0.3rem;
+      }
     }
   }
 }

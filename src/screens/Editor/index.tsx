@@ -1,12 +1,4 @@
-import React, {
-  useState,
-  useLayoutEffect,
-  useEffect,
-  useMemo,
-  startTransition,
-  useCallback,
-  useContext,
-} from 'react';
+import React, {useState, useEffect, useMemo, startTransition, useCallback, useContext} from 'react';
 import clsx from 'clsx';
 import {toast, ToastContainer} from 'react-toastify';
 import {Resizable} from 're-resizable';
@@ -17,7 +9,7 @@ import {JDocType} from 'types/exchange';
 import {MainContent} from 'components/MainContent';
 import {Layout} from 'components/Layout';
 import {showEditorError} from 'utils/showEditorError';
-import {ErrorType} from 'types/error';
+import {ErrorSimpleType, ErrorType} from 'types/error';
 import {Header} from 'components/Header';
 import {initCats} from 'screens/Editor/initCats';
 import {initDogs} from 'screens/Editor/initDogs';
@@ -28,12 +20,9 @@ import {screenWidthMultiplier} from 'utils/screenWidthMultiplier';
 import {editorModeType, ExamplesType, SidebarDocType} from 'types';
 import {JDocContext, SidebarContext} from 'store';
 import {onOrientationChange} from 'utils/onOrientationChange';
-import {useHistory} from 'react-router-dom';
-import {getExistingState} from 'api/codeSharing';
 import {ErrorScreen} from 'screens/Error';
 import {SharingForm} from 'components/Modals/SharingForm';
 import {SharingContext} from 'store/SharingStore';
-import {getDefaultErrorMessages} from 'utils/getError';
 import './Editor.styles.scss';
 import 'react-toastify/dist/ReactToastify.css';
 
@@ -42,7 +31,7 @@ const {isExport} = window as any;
 const SCROLLBAR_WIDTH = 20;
 
 export const EditorScreen = () => {
-  const {key, version} = useContext(SharingContext);
+  const {key, version, history} = useContext(SharingContext);
   const [currentUrl, setCurrentUrl] = useState<string | null>(null);
   const [viewMode, setViewMode] = useState<editorModeType>(isExport ? 'doc' : 'editor');
   const [jsightCode, setJsightCode] = useState<string>(
@@ -59,10 +48,9 @@ export const EditorScreen = () => {
   const [reloadEditor, setReloadEditor] = useState<boolean>(false);
   const [contactModalVisible, setContactModalVisible] = useState<boolean>(false);
   const [sharingModalVisible, setSharingModalVisible] = useState<boolean>(false);
-  const [error, setError] = useState<{code: number; message: string} | null>(null);
-  const [disableSharing, setDisableSharing] = useState<boolean>(false);
+  const [error, setError] = useState<ErrorSimpleType | null>(null);
+  const [disableSharing, setDisableSharing] = useState<boolean>(true);
   const isEditor = useMemo(() => viewMode === 'editor', [viewMode]);
-  const history = useHistory();
 
   const screenWidth = window.innerWidth;
   const getEditorWidth = (screenWidth: number) => {
@@ -97,28 +85,7 @@ export const EditorScreen = () => {
     startTransition(() => {
       setJsightCode(value);
     });
-    setDisableSharing(false);
   };
-
-  useLayoutEffect(() => {
-    if (key) {
-      (async () => {
-        try {
-          const result = await getExistingState(key, version);
-          setJsightCode(result.data.content.replace('\\n', '\n'));
-          setReloadEditor(true);
-          setDisableSharing(true);
-        } catch (error) {
-          if (error.Code) {
-            setError({
-              code: error.Code,
-              message: error.Message || getDefaultErrorMessages(error.Code),
-            });
-          }
-        }
-      })();
-    }
-  }, [key, version]);
 
   useEffect(() => {
     const changeWidth = () => {
@@ -151,7 +118,6 @@ export const EditorScreen = () => {
             (error as ErrorType).Line && setErrorRow((error as ErrorType).Line);
           } finally {
             localStorage.setItem('jsightCode', jsightCodeDebounced);
-            setReloadEditor(false);
           }
         } else {
           // @ts-ignore
@@ -237,7 +203,14 @@ export const EditorScreen = () => {
         })}
       >
         <SidebarContext.Provider
-          value={{editorWidth, currentDocSidebar, setCurrentDocSidebar, currentUrl, setCurrentUrl}}
+          value={{
+            editorWidth,
+            currentDocSidebar,
+            setCurrentDocSidebar,
+            currentUrl,
+            setCurrentUrl,
+            isEditor,
+          }}
         >
           <div className={classes}>
             {isEditor && (
@@ -259,6 +232,8 @@ export const EditorScreen = () => {
                   setContent={setContent}
                   errorRow={errorRow}
                   scrollToRow={scrollToRow}
+                  setDisableSharing={setDisableSharing}
+                  setError={setError}
                   reload={reloadEditor}
                   reloadedEditor={reloadedEditor}
                 />

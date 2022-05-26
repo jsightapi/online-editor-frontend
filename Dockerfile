@@ -2,7 +2,7 @@
 FROM node:14-alpine as builder
 ARG API_URL="/api"
 ARG GTM_ID=""
-ARG CLOUD_URL="https://cloud.jsight.io/"
+ARG CLOUD_URL="https://cloud.jsight.io"
 ENV REACT_APP_API_URL=$API_URL
 ENV REACT_APP_GTM_ID=$GTM_ID
 ENV REACT_APP_CLOUD_URL=$CLOUD_URL

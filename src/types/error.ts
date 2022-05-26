@@ -6,3 +6,8 @@ export interface ErrorType {
   Status: string;
   Code?: number;
 }
+
+export interface ErrorSimpleType {
+  code: number;
+  message: string;
+}
