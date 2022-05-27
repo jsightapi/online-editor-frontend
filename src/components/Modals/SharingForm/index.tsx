@@ -46,7 +46,7 @@ export const SharingForm: FC<SharingFormProps> = ({modalIsOpen, onClose}) => {
     >
       <div className="sharing-modal">
         <div className="d-flex header">
-          <div className="title">The API was successfully saved</div>
+          <div className="title">The API was saved successfully</div>
           <button onClick={onClose} className="btn-close">
             <i className="icon-close" />
           </button>
@@ -71,7 +71,7 @@ export const SharingForm: FC<SharingFormProps> = ({modalIsOpen, onClose}) => {
             Close
           </Button>
           <Button onClick={copyToClipboardAndClose} className="shadow copy">
-            Copy & Close
+            Copy & close
           </Button>
         </div>
       </div>
