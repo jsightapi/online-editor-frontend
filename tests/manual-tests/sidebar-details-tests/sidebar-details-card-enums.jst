@@ -1,0 +1,13 @@
+JSIGHT 0.3
+
+TYPE @checkSidebarEnums
+{
+  "mixedEnum": 1, // {enum: [1, -1, 1.1, -1.1, "3", "string", "some \"escaped\" string", true, false, null]}
+  "stringEnum": "S" // {enum: ["S","M","L"]}
+}
+
+TYPE @longEnum
+  "1" // {enum: ["1", "very_very_very_very_very_very_very_very_very_very_long_string"]}
+
+TYPE @enumCollision
+  "1" // {enum: [1, "1"]} - This must work.

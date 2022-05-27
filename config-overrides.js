@@ -1,6 +1,7 @@
 /* config-overrides.js */
 /* eslint-disable */
 const MonacoWebpackPlugin = require('monaco-editor-webpack-plugin');
+const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 
 module.exports = function override(config, env) {
   if (process.env.REACT_VIEW_TYPE === 'doc') {
@@ -11,7 +12,12 @@ module.exports = function override(config, env) {
       chunkFilename: "static/js/[name].chunk.js",
     };
 
-    config.plugins = [...config.plugins, new MonacoWebpackPlugin({})];
+    config.plugins = [...config.plugins, new MonacoWebpackPlugin({}), new  MiniCssExtractPlugin({
+      filename: "static/css/export-[name].css",
+      chunkFilename: "static/js/export-[name].css",
+      ignoreOrder: false,
+      runtime: true,
+    })];
   } else {
     config.plugins = [...config.plugins, new MonacoWebpackPlugin({})];
   }

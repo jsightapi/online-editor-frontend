@@ -1,0 +1,472 @@
+JSIGHT 0.3
+
+# URL tests
+URL /test-URL-independency
+  GET  /* Check, that when you switch methods, 
+          it is not switched in other endpoints. */
+  POST
+  PUT
+  PATCH
+  DELETE
+
+URL /test-URL
+  GET
+  POST
+  PUT
+  PATCH
+  DELETE
+
+URL /test-URL/extremely-long-endpoint-which-is-so-long-sooo-long-that-it-is-almost-impossible-to-imagine-such-a-long-thing
+  GET
+
+URL /test-URL/test-method-tabs-independency
+  GET  /* Check, that when you switch methods, 
+          it is not switched in other endpoints. */
+  POST
+  PUT
+  PATCH
+  DELETE
+
+URL /test-URL/test-path-parameters/{par1}
+  Path
+    {
+      "par1": 1 // {min: 1}
+    }
+  GET  // Must be par1 only in "Path parameters".
+  POST // Must be par1 only in "Path parameters".
+  PUT  // Must be par1 only in "Path parameters".
+
+# Test keywords and path parameters
+
+GET    /test-keywords
+PUT    /test-keywords
+POST   /test-keywords
+PATCH  /test-keywords
+DELETE /test-keywords
+
+URL /test-keywords/under-URL
+  GET
+  PUT
+  POST
+  PATCH
+  DELETE
+
+URL /test-keywords/path-parameters/{par1}
+  Path
+  {
+    "par1": "string value"
+  }
+
+GET    /test-keywords/path-parameters/{par1} // Must be par1 only in "Path parameters".
+PUT    /test-keywords/path-parameters/{par1} // Must be par1 only in "Path parameters".
+POST   /test-keywords/path-parameters/{par1} // Must be par1 only in "Path parameters".
+PATCH  /test-keywords/path-parameters/{par1} // Must be par1 only in "Path parameters".
+DELETE /test-keywords/path-parameters/{par1} // Must be par1 only in "Path parameters".
+
+# Test annotation
+
+GET /test-annotation // Method's annotation.
+  200 any
+
+# Test Description
+GET /test-description/no-parenthesis // Check description below.
+  Description
+    There is a description which is to be tested.
+
+GET /test-description/in-parenthesis // Check description below.
+  Description
+  (
+    There is a description which is to be tested.
+
+    Markdown and escaping features are tested in another test.
+  )
+  200 any
+
+# Test Path
+
+GET /test-path/common-one-parameter/{par1} // Check `par1` in "Path parameters" below.
+  Path
+  {
+    "par1": 1
+  }
+
+GET /test-path/allOf/{par1} // Check `par1` in "Path parameters" below.
+  Path
+    {} // {allOf: "@commonPath"}
+
+GET /test-path/allOf-with-additional-parameters/{par1}/{par2} // Check `par1` and `par2` in "Path parameters" below.
+  Path
+    { // {allOf: "@commonPath"}
+      "par2": 2
+    }
+
+GET /test-path/reference/{par1}  // Check `par1` in "Path parameters" below.
+  Path
+    @commonPath
+
+GET /test-path/common-two-parameters/{par1}/{par2}  // Check `par1` and `par2` in "Path parameters" below.
+  Path
+    {
+      "par1": 1, // Parameter 1.
+      "par2": 2  // Parameter 2.
+    }
+
+GET /test-path/test-path-parameters-gathered/{par1}/{par2} // Check in GET and POST `par1` and `par2` in "Path parameters" below.
+  Description
+    Check, that in document both
+    `par1` and `par2` definitionis are gathered
+    under Path parameters section.
+  Path
+  {
+    "par1": 1 // Must be `par1` and `par2` here.
+  }
+
+POST /test-path/test-path-parameters-gathered/{par1}/{par2} // Check in GET and POST `par1` and `par2` in "Path parameters" below.
+  Path
+  {
+    "par2": "string" // Must be `par1` and `par2` here.
+  }
+
+URL /test-path/url/{par1}
+  Path 
+  {
+    "par1": 1
+  }
+
+  GET // Check `par1` in Path parameters below.
+
+URL /test-path/url2/{par1}
+  Path 
+  {
+    "par1": 1
+  }
+
+POST /test-path/url2/{par1} // Check `par1` in Path parameters below.
+
+TYPE @commonPath // Thank you! No need to check this type and types below.
+{
+  "par1": 1 // {min: 1} - Common path parameter.
+}
+
+# Test Query
+
+GET /test-query/common // Test Query
+  Query "fields[field1]=S"
+    {
+      "fields": {      // {optional: true}
+        "field1": "S", // {optional: true, enum: ["S", "L", "M"]}
+        "field2": 12   // {optional: true, min: 0               }
+      }
+    }
+
+PUT /test-query/format-htmlFormEncoded
+  Query "page=1" htmlFormEncoded
+    {
+      "page": 1
+    }
+
+POST /test-query/format-noFormat
+  Query "foo" noFormat
+    "" // {type: "any"}
+
+PATCH /test-query/no-example
+  Query
+    {
+      "page": 1
+    }
+
+PATCH /test-query/no-example-format-htmlFormEncoded
+  Query htmlFormEncoded
+    {
+      "page": 1
+    }
+
+POST /test-query/no-example-format-noFormat
+  Query noFormat
+    "any" // You can put any string in query.
+
+GET /test-query/allOf // Test Query
+  Query "commonQueryField1=1&commonQueryField2=30"
+    {} // {allOf: "@commonQuery"}
+
+GET /test-query/allOf_and_additionalFields
+  Query "commonQueryField1=1&commonQueryField2=30&additionalFields[additionalField1]=12"
+    {                // {allOf: "@commonQuery"}
+      "additionalFields": {      // {optional: true}
+        "additionalField1": "S", // {optional: true, enum: ["S", "L", "M"]}
+        "additionalField2": 12   // {optional: true, min: 0               }
+      }
+    }
+
+GET /test-query/very-long-query-string
+  Query "verylongquery_verylongquery_verylongquery_verylongquery_verylongquery_verylongquery_verylongquery_verylongquery_verylongquery_verylongquery_"
+    "string"
+
+GET /test-query/url-encoded-quirks // TODO: we need create tests of url-encoded problems.    
+  Query "TODO: we need create tests of url-encoded problems."
+    null
+
+TYPE @commonQuery
+{
+  "commonQueryField1": 1, // {optional: true}
+  "commonQueryField2": 30 // {optional: true}
+}
+
+# Test Request
+
+POST /test-request/common
+  Request
+    "Request data"
+
+PUT /test-request/type-jsight
+  Request @cat
+
+PUT /test-request/type-array-of-regex-type
+  Request [@regexType]
+
+PUT /test-request/type-array-of-jsight-type
+  Request [@cat]
+
+PUT /test-request/type-regex
+  Request @regexType
+
+PATCH /test-request/notation-jsight
+  Request jsight
+    {
+      "requestField": "request value"
+    }
+
+DELETE /test-request/notation-regex
+  Request regex
+    /Request-.*/
+
+DELETE /test-request/notation-any
+  Request any
+
+GET /test-request/notation-empty
+  Request empty
+
+POST /test-request/headers-and-body
+  Request
+    Headers
+      {
+        "X-header": "Value"
+      }
+    Body
+      ["Some body"]
+
+PUT /test-request/body
+  Request      
+    Body
+      {
+        "Some": "body"
+      }
+
+# Test Responses
+GET /test-response/many
+  100 any // Any content.
+  101 any // Any content.
+  200 any // Any content.
+  201 any // Any content.
+  300 any // Any content.
+  301 any // Any content.
+  400 any // Any content.
+  401 any // Any content.
+  500 any // Any content.
+  501 any // Any content.
+
+GET /test-response/duplicates
+  100 any // any
+  100 empty // empty
+  100 @cat // cat
+  200 any // any
+  200 empty // empty
+  200 @cat // cat
+
+GET /test-response/annotation // Check annotation near `200` response.
+  200 any // Check this annotation.
+
+POST /test-response/common
+  200
+    "Response data"
+
+PUT /test-response/type-jsight
+  201 @cat
+
+PUT /test-response/type-regex
+  202 @regexType
+
+PUT /test-response/type-array-jsight-type
+  201 [@cat]
+
+PUT /test-response/type-array-regex-type
+  202 [@regexType]
+
+PATCH /test-response/notation-jsight
+  203 jsight
+    {
+      "requestField": "request value"
+    }
+
+DELETE /test-response/notation-regex
+  204 regex
+    /Request-.*/
+
+DELETE /test-response/notation-any
+  205 any
+
+GET /test-response/notation-empty
+  302 empty
+
+POST /test-response/headers-and-body
+  303
+    Headers
+      {
+        "X-header": "Value"
+      }
+    Body
+      ["Some body"]
+
+PUT /test-response/body
+  304      
+    Body
+      {
+        "Some": "body"
+      }
+
+# Test Headers
+
+GET /test-headers/common
+  Request
+    Headers
+      {
+        "My-header-1": "header-1-value"
+      }
+    Body any
+
+GET /test-headers/allOf
+  200 // Check allOf without additional headers.
+    Headers
+      {} // {allOf: "@commonHeaders"}
+    Body any
+GET  /test-headers/allOf-with-additional-headers   
+  201 // Check allOf with additional headers.
+    Headers
+      {  // {allOf: "@commonHeaders"}
+        "Additional-header-1": "additional header 1 value"
+      }
+    Body any
+
+GET /test-headers/reference
+  Request
+    Headers
+      @commonHeaders
+    Body empty 
+
+GET /test-headers/additionalProperties /* Check that this information 
+                                          about additional headers is shown somewhere. */
+  Request
+    Headers
+      { // {additionalProperties: false}
+        "My-header": "Header value"
+      }
+    Body empty
+
+TYPE @commonHeaders
+{
+  "Common-header-1": "common header 1 value",
+  "Common-header-2": "common header 2 value"
+}
+
+# Test Body
+
+POST /test-body/common
+  200
+    Body
+      "Body"
+
+PUT /test-body/type-jsight
+  201 
+    Body @cat
+
+PUT /test-body/type-regex
+  Request
+    Body @regexType
+
+PUT /test-body/type-array-jsight
+  201 
+    Body [@cat]
+
+PUT /test-body/type-array-regex
+  Request
+    Body [@regexType]
+
+PATCH /test-body/notation-jsight
+  Request 
+    Body jsight
+      {
+        "requestField": "request value"
+      }
+
+DELETE /test-body/notation-regex
+  204 
+    Body regex
+      /Request-.*/
+
+DELETE /test-body/notation-any
+  Request
+    Body any
+
+GET /test-body/notation-empty
+  302 
+    Body empty
+
+# EMPTY and ANY schemas test
+
+GET /test-schema/empty-bodies
+  Request empty
+  200 empty
+  404 empty
+  301
+    Body empty
+
+GET /test-schema/any-bodies
+  Request any
+  200 any
+  404 any
+  301
+    Body any
+
+# Test schema view section
+
+GET /test-schema/view-footer-1 // Test notation and format in schema view for each code section.
+  Query "Must be \"jsight • htmlFormEncoded\" or \"htmlFormEncoded\"" 
+    { 
+      "parameter1": "value1" /* Must be "jsight • htmlFormEncoded" in the "Code View" mode 
+                                and "htmlFormEncoded" in the "Table View" mode. */
+    }
+  200 // Must be "jsight • json".
+    {}
+
+GET /test-schema/view-footer-2 // Test notation and format in schema view for each code section.
+  Query "must be \"jsight • noFormat\" or \"noFormat\"" noFormat
+    { 
+      "parameter1": "value1" /* Must be "jsight • noFormat" in the "Code View" mode
+                                and "noFormat" in the "Table View" mode. */
+    }
+  200 regex // Must be "regex • plainString".
+    /Must be `regex • plainString`./
+
+# Helpfull types
+
+TYPE @THANKS_NO_NEED_TO_CHECK_TYPES_BELOW
+  "Thank you for walking through this test."
+
+TYPE @cat
+{
+  "id"  : 1, // {min: 1}
+  "name": "Tom" // {optional: true}
+}
+
+TYPE @regexType regex
+  /.*/

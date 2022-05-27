@@ -1,5 +1,5 @@
-import React, {FC} from 'react';
-import {SchemaJSightContentType} from 'api/getResources.model';
+import React from 'react';
+import {SchemaJSightContentType} from 'types/exchange';
 import {DetailCard} from 'components/CodeView/DetailCard';
 
 interface TablePlainRowProps {
@@ -12,7 +12,7 @@ interface TablePlainRowProps {
   rootIsEmptyArray: boolean;
 }
 
-export const PlainRow: FC<TablePlainRowProps> = ({
+export const PlainRow = ({
   keyValue,
   property,
   level,
@@ -20,7 +20,7 @@ export const PlainRow: FC<TablePlainRowProps> = ({
   parentJsonType,
   isLastItem,
   rootIsEmptyArray,
-}) => {
+}: TablePlainRowProps) => {
   const leftOffset = level > 1 ? `${level * 20}px` : '0px';
   const isParentArray = parentJsonType === 'array';
   const isPropertyShortcut = property?.jsonType === 'shortcut';

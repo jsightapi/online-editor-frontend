@@ -1,0 +1,53 @@
+JSIGHT 0.3
+
+TYPE @testCommonType
+{
+  "field1": 1,
+  "field2": "some string"
+}
+
+TYPE @testAnnotation1 // Check type's annotation.
+{}
+
+TYPE @testAnnotation2 jsight // Check another type annotation.
+{}
+
+TYPE @testAnnotation3 regex // Check one more type annotation.
+  /^OK$/
+
+TYPE @testNotationJSight jsight
+{
+  "field": 1
+}
+
+TYPE @testNotationRegex regex
+  /^OK$/
+
+TYPE @testTypeRefInRoot
+  @cat
+
+TYPE @testMultipleTypeRefInRoot
+  @cat | @dog
+
+TYPE @testTypeRefToMultipleTypeRefInRoot
+  @testMultipleTypeRefInRoot
+
+TYPE @testExplicitBoundaries
+(
+  ["some string"]
+)
+
+#USEFUL TYPES
+TYPE @USEFUL_TYPES_BELOW_NO_NEED_TO_CHECK
+  "There are useful types below. No need to check them."
+
+TYPE @cat
+{
+  "id": 1,
+  "name": "Tom"
+}
+
+TYPE @dog
+{
+  "dogId": "stringId"
+}

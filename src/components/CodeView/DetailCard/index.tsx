@@ -1,5 +1,5 @@
-import React, {FC, useContext, useRef} from 'react';
-import {RulesType, RuleType} from 'api/getResources.model';
+import React, {useContext, useRef} from 'react';
+import {RulesType, RuleType} from 'types/exchange';
 import {map} from 'lodash';
 import {DetailEnum} from './DetailEnum';
 import {TextWithTooltip} from 'components/TextWithTooltip';
@@ -21,7 +21,7 @@ interface DetailCardProps {
   keyBlock: string;
 }
 
-export const DetailCard: FC<DetailCardProps> = ({
+export const DetailCard = ({
   name,
   rules,
   schemaName,
@@ -31,7 +31,7 @@ export const DetailCard: FC<DetailCardProps> = ({
   updateDetailWrapperHeight,
   isTableView,
   keyBlock,
-}) => {
+}: DetailCardProps) => {
   const divRef = useRef<HTMLDivElement | null>(null);
   const {setCurrentDocSidebar} = useContext(SidebarContext);
   const {setSelectedLine} = useContext(MainContext);

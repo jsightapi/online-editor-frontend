@@ -1,5 +1,5 @@
-import React, {FC} from 'react';
-import {ResourcePathType} from 'api/getResources.model';
+import React from 'react';
+import {ResourcePathType} from 'types/exchange';
 import {ResourceMethods} from './ResourceMethods';
 
 interface ResourceProps {
@@ -9,7 +9,7 @@ interface ResourceProps {
   index: number;
 }
 
-export const Resource: FC<ResourceProps> = ({resource, resourceKey, style, index}) => (
+export const Resource = ({resource, resourceKey, style, index}: ResourceProps) => (
   <div className="resource-wrapper" style={style}>
     <h3>{resource.path}</h3>
     {resource.methods && (

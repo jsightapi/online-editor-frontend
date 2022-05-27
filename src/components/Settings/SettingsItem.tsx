@@ -1,4 +1,4 @@
-import React, {FC} from 'react';
+import React from 'react';
 import clsx from 'clsx';
 
 interface SettingsItemProps {
@@ -10,14 +10,14 @@ interface SettingsItemProps {
   value: boolean;
 }
 
-export const SettingsItem: FC<SettingsItemProps> = ({
+export const SettingsItem = ({
   title,
   value,
   firstTab,
   secondTab,
   onClickFirst,
   onClickSecond,
-}) => (
+}: SettingsItemProps) => (
   <div className="item">
     <div className="settings-group-title">{title}</div>
     <div className="settings-group d-flex">

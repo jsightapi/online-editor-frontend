@@ -1,5 +1,5 @@
-import React, {FC, useContext, useEffect, useMemo} from 'react';
-import {SchemaJSightContentType} from 'api/getResources.model';
+import React, {useContext, useEffect, useMemo} from 'react';
+import {SchemaJSightContentType} from 'types/exchange';
 import {DetailObject} from './DetailObject';
 import clsx from 'clsx';
 import {MainContext} from 'store';
@@ -10,7 +10,7 @@ interface DetailEnumProps {
   updateDetailWrapperHeight(): void;
 }
 
-export const DetailEnum: FC<DetailEnumProps> = ({keyBlock, items, updateDetailWrapperHeight}) => {
+export const DetailEnum = ({keyBlock, items, updateDetailWrapperHeight}: DetailEnumProps) => {
   const {schemasView, setExpandDetailCard} = useContext(MainContext);
 
   const isOpen = useMemo(

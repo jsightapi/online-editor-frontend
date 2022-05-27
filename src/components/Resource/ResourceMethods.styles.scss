@@ -22,37 +22,34 @@
   border-radius: 4px;
 }
 
-.methods-tab button.active, .method-label {
-    color: #fff;
-    &.get {
-      background-color: $secondary-blue;
-    }
-    &.post {
-      background-color: $secondary-green;
-    }
-    &.put {
-      background-color: $secondary-yellow;
-    }
-    &.patch {
-      background-color: $secondary-azure;
-    }
-    &.delete {
-      background-color: $secondary-red;
-    }
-    &.head {
-      background-color: $main-purple;
-    }
-    &.options {
-      background-color: $secondary-oxley;
-    }
+.methods-tab button.active,
+.method-label {
+  color: #fff;
+  &.get {
+    background-color: $secondary-blue;
+  }
+  &.post {
+    background-color: $secondary-green;
+  }
+  &.put {
+    background-color: $secondary-yellow;
+  }
+  &.patch {
+    background-color: $secondary-azure;
+  }
+  &.delete {
+    background-color: $secondary-red;
+  }
+  &.head {
+    background-color: $main-purple;
+  }
+  &.options {
+    background-color: $secondary-oxley;
+  }
 }
 
 .resource-wrapper {
   padding: 0 3rem 3rem;
-}
-
-.type-resource {
-  padding: 0 3rem 2.4rem;
 }
 
 .resource-content {

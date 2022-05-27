@@ -1,8 +1,8 @@
-import React, {useContext, FC} from 'react';
+import React, {useContext} from 'react';
 import {DropdownContext} from '../index';
 import {Reference} from 'react-popper';
 
-export const DropdownToggle: FC = ({children}) => {
+export const DropdownToggle = ({children}: {children?: React.ReactNode}) => {
   const {toggle, isOpen} = useContext(DropdownContext);
 
   const handleClick = () => {

@@ -1,35 +1,42 @@
 import {ErrorType} from 'types/error';
-import {v4 as uuidv4} from 'uuid';
-
-type requestParamsType = {
-  body?: string;
-  method?: string;
-};
 
 const defaultError: ErrorType = {
   Column: 0,
   Index: 0,
-  Message: 'Some default error',
+  Message: '',
   Line: 0,
   Status: 'Error',
 };
 
 export const runRequest = async <T>(
   action: string,
-  {body, method}: requestParamsType = {}
+  {body, headers, method}: RequestInit = {},
+  timeout = 0,
+  times = 0
 ): Promise<T> => {
-  const uuid = localStorage.getItem('uuid') || '';
+  const fetchParams: RequestInit = {headers, body, method: method || 'POST'};
 
-  if (!uuid) {
-    localStorage.setItem('uuid', uuidv4());
+  let id: any;
+  if (timeout > 0) {
+    const controller = new AbortController();
+    id = setTimeout(() => controller.abort(), timeout);
+
+    fetchParams.signal = controller.signal;
   }
 
-  const headers = {
-    'X-Browser-UUID': uuid,
-    'Content-Type': 'text/plain',
-  };
+  if (times > timeout / 1000) {
+    return Promise.reject(defaultError);
+  }
 
-  return fetch(action, {headers, body, method: method || 'POST'}).then(async (response) => {
+  if (!window.navigator.onLine && timeout > 0) {
+    return new Promise<any>((resolve) => {
+      setTimeout(() => {
+        resolve(runRequest(action, fetchParams, timeout, times + 1));
+      }, 1000);
+    });
+  }
+
+  const response = fetch(action, fetchParams).then(async (response) => {
     if (response.ok) {
       const text = await response.text();
       try {
@@ -39,8 +46,22 @@ export const runRequest = async <T>(
         return text;
       }
     } else {
-      const errorResponse = await response.json();
-      return Promise.reject(errorResponse || defaultError);
+      try {
+        const errorResponse = await response.json();
+        errorResponse.Code = response.status;
+        return Promise.reject(errorResponse || defaultError);
+      } catch {
+        return Promise.reject({
+          Code: response.status,
+          ...defaultError,
+        });
+      }
     }
   });
+
+  if (id) {
+    clearTimeout(id);
+  }
+
+  return response;
 };

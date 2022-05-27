@@ -1,13 +1,13 @@
-import React, {useContext, useMemo, FC, useEffect} from 'react';
-import {ResourceType} from 'api/getResources.model';
+import React, {useContext, useMemo, useEffect} from 'react';
+import {ResourceType} from 'types/exchange';
 import clsx from 'clsx';
 import {ResourceBlock} from './ResourceBlock';
 import {ResponseCode} from './ResponseCode';
 import {GlobalSettingsContext} from '../Layout';
-import './ResourceMethods.styles.scss';
 import {Description} from '../Description';
 import {MainContext} from 'store';
 import {ResourceMethodsTabs} from 'components/Resource/ResourceMethodsTabs';
+import './ResourceMethods.styles.scss';
 
 interface ResourceMethodsProps {
   methods: ResourceType[];
@@ -15,7 +15,7 @@ interface ResourceMethodsProps {
   index: number;
 }
 
-export const ResourceMethods: FC<ResourceMethodsProps> = ({methods, resourceKey, index}) => {
+export const ResourceMethods = ({methods, resourceKey, index}: ResourceMethodsProps) => {
   const {headersBodiesCode, pathQueriesCode, tabs} = useContext(GlobalSettingsContext);
   const {resourceState, setResourceState} = useContext(MainContext);
 
@@ -112,8 +112,7 @@ export const ResourceMethods: FC<ResourceMethodsProps> = ({methods, resourceKey,
                 <ResourceBlock
                   keyBlock={`${resourceKey}-${indexMethod}-4`}
                   title="Request headers"
-                  typeBlock={'header-body'}
-                  type={headersBodiesViewMode}
+                  type={pathQueriesViewMode}
                   data={item.request.headers}
                   directiveType="header"
                 />

@@ -1,11 +1,10 @@
-import React, {createContext, FC, useContext, useEffect, useLayoutEffect, useMemo} from 'react';
+import React, {createContext, useContext, useLayoutEffect, useMemo} from 'react';
 import {TableView} from '../TableView';
-import {SchemaType} from 'api/getResources.model';
+import {SchemaType} from 'types/exchange';
 import {CodeView} from '../CodeView';
 import {GlobalSettingsContext} from '../Layout';
 import {ExampleView} from 'components/ExampleView';
 import {MainContext} from 'store';
-import {usePrevious} from 'hooks/usePrevious';
 
 interface SchemaViewContextInterface {
   collapsedRules: boolean;
@@ -28,7 +27,7 @@ interface SchemaViewProps {
   typeBlock?: string;
 }
 
-export const SchemaView: FC<SchemaViewProps> = ({
+export const SchemaView = ({
   type,
   schema,
   example,
@@ -39,7 +38,7 @@ export const SchemaView: FC<SchemaViewProps> = ({
   keyBlock,
   directiveType,
   typeBlock,
-}) => {
+}: SchemaViewProps) => {
   const {typesExpand, rulesExpand} = useContext(GlobalSettingsContext);
   const {schemasView, setCollapsedRules, setViewType, setExpandedTypes, setTypeBlock} = useContext(
     MainContext
@@ -63,18 +62,6 @@ export const SchemaView: FC<SchemaViewProps> = ({
     const schemaView = schemasView.find((item) => item.key === keyBlock);
     return schemaView && schemaView.viewType ? schemaView.viewType : type;
   }, [schemasView, keyBlock, type]);
-
-  // useEffect(() => {
-  //   setViewType(keyBlock, type);
-  // }, [keyBlock, type]);
-  //
-  // useEffect(() => {
-  //   setExpandedTypes(keyBlock, typesExpand);
-  // }, [typesExpand, keyBlock]);
-  //
-  // useEffect(() => {
-  //   setCollapsedRules(keyBlock, !rulesExpand);
-  // }, [rulesExpand, keyBlock]);
 
   useLayoutEffect(() => {
     if (!schemasView.find((item) => item.key === keyBlock)) {

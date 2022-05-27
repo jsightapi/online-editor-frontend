@@ -1,0 +1,10 @@
+JSIGHT 0.3
+
+TYPE @checkLongPropertyName /* Check that property name wraps correctly,
+                              property type is visible and fully readable
+                            */
+{
+  "superLongPropertyName": "someValue", // {minLength: 1, maxLength: 10}
+  "superDuperLongPropertyName": "someValue", // {minLength: 1, maxLength: 10}
+  "superDuperLongExtendedOverwhelmingPropertyName": "someValue" // {minLength: 1, maxLength: 10}
+}

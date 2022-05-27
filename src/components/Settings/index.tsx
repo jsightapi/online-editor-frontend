@@ -1,9 +1,9 @@
-import React, {FC, useContext} from 'react';
+import React, {useContext} from 'react';
 import {GlobalSettingsContext} from '../Layout';
 import {SettingsItem} from './SettingsItem';
 import './Settings.styles.scss';
 
-export const Settings: FC = () => {
+export const Settings = () => {
   const {
     isOpen,
     setIsOpen,
