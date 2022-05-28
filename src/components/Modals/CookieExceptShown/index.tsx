@@ -38,9 +38,7 @@ export const CookieExceptShown: FC<CookieExceptShownProps> = ({onAccept}) => {
         </div>
         <div className="description">
           By continuing to browse or by clicking ‘Accept’, you agree to the storing of cookies on
-          your
-          <br /> device to enhance your site experience and for analytical purposes. To learn more
-          about how we use the cookies, please see our{' '}
+          your device to enhance your site experience and for analytical purposes.{' '}
           <a onClick={goToCookiesPolicy} href="/#">
             cookies policy
           </a>
