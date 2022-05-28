@@ -6,7 +6,6 @@ export const HeaderLogo = () => (
   <div className="logo">
     <Link to="/">
       <img src={logo} alt="JSight" />
-      <span>BETA</span>
     </Link>
   </div>
 );
