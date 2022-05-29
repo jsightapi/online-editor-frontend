@@ -8,7 +8,7 @@ import {Resource} from 'components/Resource';
 import {map} from 'lodash';
 import {ReusableResource} from 'components/Resource/ReusableResource';
 import {JDocType} from 'types/exchange';
-import {Virtuoso} from 'react-virtuoso';
+import {Virtuoso, VirtuosoHandle} from 'react-virtuoso';
 import {SidebarContext, MainContext} from 'store';
 import {ResourceState, SchemaViewType, SelectedLineType} from 'store/MainStore';
 
@@ -30,7 +30,8 @@ interface MainContentProps {
 
 export const MainContent = React.memo(({jdocExchange, showRightSidebar}: MainContentProps) => {
   const divRef = useRef<HTMLDivElement | null>(null);
-  const virtuosoRef = useRef<any>(null);
+  const virtuosoRef = useRef<VirtuosoHandle>(null);
+  const virtuosoScrollerRef = useRef<any>(null);
   const [selectedLine, setSelectedLine] = useState<SelectedLineType | null>(null);
   const [jdocList, setJdocList] = useState<JSX.Element[]>([]);
   const [jdocPositions, setJdocPositions] = useState<any>([]);
@@ -266,6 +267,13 @@ export const MainContent = React.memo(({jdocExchange, showRightSidebar}: MainCon
         >
           {currentDocSidebar === 'rules' && (
             <button
+              style={{
+                right: `${
+                  virtuosoScrollerRef.current?.offsetWidth -
+                  virtuosoScrollerRef.current?.clientWidth +
+                  45
+                }px`,
+              }}
               className="sidebar-rules-close"
               onClick={() => {
                 setCurrentDocSidebar(null);
@@ -279,6 +287,7 @@ export const MainContent = React.memo(({jdocExchange, showRightSidebar}: MainCon
             data={jdocList}
             itemContent={(_, item) => item}
             ref={virtuosoRef}
+            scrollerRef={(ref) => (virtuosoScrollerRef.current = ref)}
             increaseViewportBy={overscan}
           />
         </MainContext.Provider>
