@@ -10,5 +10,16 @@ export const getError = (error: ErrorType) => {
     return 'Server error, try again later';
   }
 
-  return `Error on line ${error.Line}. ${error.Message}`;
+  const errorMessage = error.Message;
+  return errorMessage.charAt(0).toUpperCase() + errorMessage.slice(1);
+};
+
+export const getDefaultErrorMessages = (status: number) => {
+  if (status >= 400 && status < 500) {
+    return 'Sorry, we could not find the page or API you’re looking for.';
+  } else if (status >= 500 && status < 600) {
+    return 'Something went wrong, please try again later.';
+  } else {
+    return 'Some default error.';
+  }
 };

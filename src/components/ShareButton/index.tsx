@@ -1,29 +1,30 @@
-import React, {useMemo} from 'react';
+import React, {useContext, useMemo} from 'react';
 import {Button} from 'components/Button';
 import {useSharing} from 'hooks/useSharing';
-import {useParams} from 'react-router-dom';
-import {MainRouterParams} from 'types';
-import clsx from 'clsx';
 import {Dropdown} from 'components/Dropdown';
 import {DropdownToggle} from 'components/Dropdown/DropdownToggle';
 import {DropdownMenu} from 'components/Dropdown/DropdownMenu';
 import './ShareButton.styles.scss';
+import {SharingContext} from 'store/SharingStore';
 
 interface ShareButtonProps {
   openSharingModal(): void;
+  disableSharing: boolean;
 }
 
-export const ShareButton: React.FC<ShareButtonProps> = ({openSharingModal}) => {
+export const ShareButton: React.FC<ShareButtonProps> = ({openSharingModal, disableSharing}) => {
   const [createState, updateExistState] = useSharing();
-  const {key, version} = useParams<MainRouterParams>();
+  const {key, version} = useContext(SharingContext);
   const isAbleUpdate = useMemo(() => key && version, [key, version]);
 
-  const handleNewState = (updateOrCreateState: () => void) => {
-    updateOrCreateState();
-    openSharingModal();
+  const handleNewState = async (updateOrCreateState: () => void) => {
+    try {
+      await updateOrCreateState();
+      openSharingModal();
+    } catch (err) {}
   };
 
-  return isAbleUpdate && process.env.REACT_APP_CLOUD_URL ? (
+  return isAbleUpdate && process.env.REACT_APP_CLOUD_URL && !disableSharing ? (
     <div className="group-share-button">
       <Dropdown>
         <DropdownToggle>
@@ -60,9 +61,9 @@ export const ShareButton: React.FC<ShareButtonProps> = ({openSharingModal}) => {
     </div>
   ) : (
     <Button
-      disabled={!process.env.REACT_APP_CLOUD_URL}
+      disabled={disableSharing || !process.env.REACT_APP_CLOUD_URL}
       icon="link"
-      className={clsx('share-button')}
+      className="share-button"
       onClick={() => handleNewState(createState)}
     >
       Share

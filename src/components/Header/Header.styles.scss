@@ -76,7 +76,9 @@
   }
 
   .btn-download {
-    margin-right: 1.2rem;
+    background-color: $background;
+    padding-left: 2rem;
+    padding-right: 2rem;
   }
 
   .doc-title {
@@ -170,7 +172,7 @@
 
   .control-buttons {
     display: flex;
-    gap: 1.2rem;
+    gap: 3.2rem;
 
     .delimiter {
       background-color: $secondary-stroke;
