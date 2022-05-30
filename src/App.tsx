@@ -14,7 +14,6 @@ import {HashRouterParams} from 'types';
 import {SharingContext} from 'store/SharingStore';
 import {CookieExceptShown} from 'components/Modals/CookieExceptShown';
 import './components/Modals/style.scss';
-import {CookieExceptShown} from './components/Modals/CookieExceptShown';
 
 const {isExport} = window as any;
 
