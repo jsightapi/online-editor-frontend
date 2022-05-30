@@ -1,4 +1,4 @@
-import React, {FC, useMemo, useRef, useState} from 'react';
+import React, {useMemo, useRef, useState} from 'react';
 import {ControlElements} from '../ControlElements';
 import {Code} from './Code';
 import {CodeViewProps} from './index';
@@ -8,9 +8,10 @@ import clsx from 'clsx';
 interface WrapperProps {
   isOpen: boolean;
   isCollapsible: boolean;
+  children?: React.ReactNode;
 }
 
-const Wrapper: FC<WrapperProps> = ({children, isCollapsible, isOpen}) => {
+const Wrapper = ({children, isCollapsible, isOpen}: WrapperProps) => {
   if (isCollapsible) {
     return <UnmountClosed isOpened={isOpen}>{children}</UnmountClosed>;
   }
@@ -18,13 +19,13 @@ const Wrapper: FC<WrapperProps> = ({children, isCollapsible, isOpen}) => {
   return <>{children}</>;
 };
 
-export const CodeViewBaseComponent: FC<CodeViewProps> = ({
+export const CodeViewBaseComponent = ({
   schema,
   format,
   name,
   isCollapsible,
   keyBlock,
-}) => {
+}: CodeViewProps) => {
   const codeViewRef = useRef<HTMLDivElement | null>(null);
   const [isOpen, setIsOpen] = useState<boolean>(false);
 

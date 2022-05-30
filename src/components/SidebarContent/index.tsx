@@ -1,12 +1,15 @@
-import React, {FC, useContext, useMemo} from 'react';
-import {getTreeResources} from 'api/getResources';
+import React, {useContext, useMemo} from 'react';
+import {getTreeResources} from 'utils/getResources';
 import {SidebarGroupRoutes} from './SidebarGroupRoutes';
 import {SidebarReusables} from './SidebarReusables';
-import {GlobalSettingsContext} from '../Layout';
-import {JDocContext, SidebarContext} from 'screens/Editor';
 import logo from '../../assets/images/icon-jsight.png';
+import logoWhite from '../../assets/images/icon_jsight_white.png';
 import clsx from 'clsx';
+import {JDocContext, SidebarContext} from 'store';
+import {GlobalSettingsContext} from 'components/Layout';
 import './SidebarContent.styles.scss';
+
+const {isExport} = window as any;
 
 interface SidebarContentProps {
   theme?: 'light' | 'dark';
@@ -15,7 +18,7 @@ interface SidebarContentProps {
   isShow: boolean;
 }
 
-export const SidebarContent: FC<SidebarContentProps> = ({theme, side, isShowSettings, isShow}) => {
+export const SidebarContent = ({side, isShowSettings, isShow}: SidebarContentProps) => {
   const {setIsOpen, isOpen} = useContext(GlobalSettingsContext);
   const jdocData = useContext(JDocContext);
   const {setCurrentDocSidebar} = useContext(SidebarContext);
@@ -39,6 +42,8 @@ export const SidebarContent: FC<SidebarContentProps> = ({theme, side, isShowSett
     [side]
   );
 
+  const footerClasses = useMemo(() => clsx(['sidebar-footer', {'is-open': isOpen}]), [isOpen]);
+
   return (
     <div className={clsx('sidebar-wrapper', {'is-show': isShow})}>
       <div className={sidebarClasses}>
@@ -49,9 +54,11 @@ export const SidebarContent: FC<SidebarContentProps> = ({theme, side, isShowSett
           {/*<a href="#">*/}
           {/*  <i className="icon-arrow-left" />*/}
           {/*</a>*/}
-          <button onClick={() => setCurrentDocSidebar(null)}>
-            <i className="icon-close" />
-          </button>
+          {!(side === 'left' || isExport) && (
+            <button onClick={() => setCurrentDocSidebar(null)}>
+              <i className="icon-close" />
+            </button>
+          )}
         </div>
         <div className="sidebar-items">
           <h3>Resources</h3>
@@ -76,15 +83,15 @@ export const SidebarContent: FC<SidebarContentProps> = ({theme, side, isShowSett
         )}
       </div>
       {isShowSettings && (
-        <div className="sidebar-footer">
-          {/*<button onClick={toggleShowSettings} className="btn-settings d-flex">*/}
-          {/*  <i className="icon-settings" />*/}
-          {/*  Settings*/}
-          {/*</button>*/}
-          <div className="copyright d-flex">
-            <img src={logo} alt="JSight logo" />
-            Powered by <span> JSight.io</span>
-          </div>
+        <div className={footerClasses}>
+          <button onClick={toggleShowSettings} className="btn-settings d-flex">
+            <i className="icon-settings" />
+            Settings
+          </button>
+          <a href="https://jsight.io" className="copyright d-flex">
+            <img src={isOpen ? logoWhite : logo} alt="JSight logo" />
+            Powered by <span>JSight.io</span>
+          </a>
         </div>
       )}
     </div>

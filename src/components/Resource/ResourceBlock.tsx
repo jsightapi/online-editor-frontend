@@ -1,11 +1,12 @@
-import React, {FC} from 'react';
-import {SchemaType} from 'api/getResources.model';
+import React from 'react';
+import {SchemaType} from 'types/exchange';
 import {SchemaView} from '../SchemaView';
 
 interface ResourceBlockProps {
   title: string;
   hideTitle?: boolean;
   type: string;
+  typeBlock?: string;
   keyBlock: string;
   data: {
     format?: string;
@@ -15,14 +16,15 @@ interface ResourceBlockProps {
   directiveType?: string;
 }
 
-export const ResourceBlock: FC<ResourceBlockProps> = ({
+export const ResourceBlock = ({
   title,
   type,
   data,
   keyBlock,
   hideTitle,
   directiveType,
-}) => {
+  typeBlock,
+}: ResourceBlockProps) => {
   const renderView = () => {
     const notation = data.schema?.notation;
     switch (notation) {
@@ -32,7 +34,13 @@ export const ResourceBlock: FC<ResourceBlockProps> = ({
         return <div className="content-state">No content allowed</div>;
       default:
         return (
-          <SchemaView {...data} keyBlock={keyBlock} type={type} directiveType={directiveType} />
+          <SchemaView
+            {...data}
+            keyBlock={keyBlock}
+            typeBlock={typeBlock}
+            type={type}
+            directiveType={directiveType}
+          />
         );
     }
   };

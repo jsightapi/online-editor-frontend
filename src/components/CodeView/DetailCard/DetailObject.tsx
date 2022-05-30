@@ -1,5 +1,5 @@
-import React, {FC} from 'react';
-import {SchemaJSightContentType} from 'api/getResources.model';
+import React from 'react';
+import {SchemaJSightContentType} from 'types/exchange';
 import {map} from 'lodash';
 
 interface DetailObjectProps {
@@ -10,7 +10,7 @@ interface DetailObjectProps {
   isLast: boolean;
 }
 
-export const DetailObject: FC<DetailObjectProps> = ({properties, tab, isLast}) => {
+export const DetailObject = ({properties, tab, isLast}: DetailObjectProps) => {
   let index = 0;
   const length = Object.keys(properties).length;
 

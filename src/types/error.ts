@@ -4,4 +4,10 @@ export interface ErrorType {
   Line: number;
   Message: string;
   Status: string;
+  Code?: number;
+}
+
+export interface ErrorSimpleType {
+  code: number;
+  message: string;
 }

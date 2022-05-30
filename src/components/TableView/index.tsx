@@ -1,11 +1,11 @@
-import React, {FC, useContext, useMemo} from 'react';
-import {SchemaJSightContentType, SchemaType, UserTypesType} from 'api/getResources.model';
+import React, {useContext, useMemo} from 'react';
+import {SchemaJSightContentType, SchemaType, UserTypesType} from 'types/exchange';
 import {map} from 'lodash';
 import {ControlElements} from '../ControlElements';
 import {PlainRow} from 'components/TableView/PlainRow';
+import {getUserType} from 'utils/getResources';
+import {JDocContext} from 'store';
 import './TableView.styles.scss';
-import {getUserType} from 'api/getResources';
-import {JDocContext} from 'screens/Editor';
 
 interface TableViewProps {
   keyBlock: string;
@@ -35,7 +35,7 @@ interface TableNestedRowProps {
   isNestedChild: boolean;
 }
 
-const renderNestedRow: FC<TableNestedRowProps> = ({
+const renderNestedRow = ({
   parentKey,
   parentProperty,
   props,
@@ -43,7 +43,7 @@ const renderNestedRow: FC<TableNestedRowProps> = ({
   jsonType,
   isLastItem,
   isNestedChild,
-}): any => {
+}: TableNestedRowProps): any => {
   const parentProps = {...parentProperty};
   let parentJsonType = '';
   //  remove items/properties to prevent recursion
@@ -87,7 +87,7 @@ const renderNestedRow: FC<TableNestedRowProps> = ({
   return [parentRow, ...childRows];
 };
 
-const renderRow: FC<TableRowProps> = ({
+const renderRow = ({
   key,
   property,
   jsonType,
@@ -96,7 +96,7 @@ const renderRow: FC<TableRowProps> = ({
   isNestedChild,
   isLastItem,
   itemsLength,
-}): any => {
+}: TableRowProps): any => {
   const rootIsArray = jsonType === 'array' && level === 1;
   const rootIsEmptyArray = rootIsArray && itemsLength === 0;
   const hasNestedProperties = !!(property?.properties || property?.items);
@@ -139,7 +139,7 @@ const getSchemaProperties = (
 
   switch (jsonType) {
     case 'object':
-      const objectProperties = schema?.content.properties;
+      const objectProperties = schema.content.properties;
       const objectPropertiesLength = objectProperties ? Object.keys(objectProperties).length : null;
       return {properties: objectProperties, jsonType, itemsLength: objectPropertiesLength};
 
@@ -181,7 +181,7 @@ const getSchemaProperties = (
   }
 };
 
-export const TableView: React.FC<TableViewProps> = ({keyBlock, schema, format, directiveType}) => {
+export const TableView = ({keyBlock, schema, format, directiveType}: TableViewProps) => {
   const jdocData = useContext(JDocContext);
   const userTypes = jdocData?.userTypes;
   const {properties, jsonType, itemsLength} = getSchemaProperties(schema, userTypes, directiveType);
@@ -192,17 +192,17 @@ export const TableView: React.FC<TableViewProps> = ({keyBlock, schema, format, d
 
   const renderRegexNotation = isRegexNotation
     ? renderRow({
-        property: {
+        property: ({
           type: 'string',
           rules: {regex: {scalarValue: schema?.content}},
           note: (
             <span className="detail-code-line code-font">
-              <span className="name">{schema.notation}</span>
+              <span className="name">{schema?.notation}</span>
               <span className="punctuation-char">{`:\u00A0`}</span>
-              <span className="value">{schema.content}</span>
+              <span className="value">{schema?.content}</span>
             </span>
           ),
-        } as unknown as SchemaJSightContentType,
+        } as unknown) as SchemaJSightContentType,
         key: '<root>',
         isNestedChild: false,
         level: 1,

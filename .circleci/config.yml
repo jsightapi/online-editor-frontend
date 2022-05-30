@@ -1,7 +1,8 @@
 version: 2.1
 orbs:
   docker: circleci/docker@2.0.3
-  shellcheck: circleci/shellcheck@2.0.0
+  jira: circleci/jira@1.3.1
+  common: jsight/common-ci@1.3.5
 
 
 parameters:
@@ -10,206 +11,30 @@ parameters:
     default: ${CIRCLE_BRANCH/\//_}_${CIRCLE_SHA1}
 
 
-executors:
-  vm-medium:
-    machine:
-      image: ubuntu-2004:current
-      docker_layer_caching: true
-    resource_class: medium
-
-  docker-small:
-    docker:
-      - image: cimg/base:2022.03
-    resource_class: small
-
-
-jobs:
-  refresh-container:
-    executor: docker-small
-    parameters:
-      host:
-        type: string
-      port:
-        type: integer
-      container-name:
-        type: string
-      image:
-        type: string
-    steps:
-      - checkout
-      - add_ssh_keys:
-          fingerprints:
-            - 2d:42:e7:f4:a5:9c:5a:70:10:bc:83:54:a9:93:2d:b2
-      - run:
-          name: Docker login and refresh container
-          no_output_timeout: 5m
-          command: |
-            ssh -o StrictHostKeyChecking=no -T root@<< parameters.host >> \<< EOF
-              set -e
-              echo "Host name on next line.."
-              hostname
-              echo $DOCKER_PASSWORD | docker login --username $DOCKER_LOGIN --password-stdin
-              echo "Removing current container"
-              docker rm -f << parameters.container-name >>
-              echo "Building from image << parameters.image >>"
-              docker run --name << parameters.container-name >> --pull always -d --restart unless-stopped -p << parameters.port >>:80 << parameters.image >>
-              echo "Cleaning out old images"
-              docker image prune -f
-            EOF
-
-  ssh-script: # for moving to orb
-    executor: docker-small
-    parameters:
-      host:
-        type: string
-      source-dir:
-        type: string
-        default: 'scripts'
-      script-file:
-        type: string
-        default: 'deploy.sh'
-      target-dir:
-        type: string
-        default: '/deployment-scripts/${CIRCLE_PROJECT_REPONAME}'
-      args:
-        type: string
-        default: ''
-    steps:
-      - checkout
-      - add_ssh_keys:
-          fingerprints:
-            - 2d:42:e7:f4:a5:9c:5a:70:10:bc:83:54:a9:93:2d:b2
-      - run:
-          name: Mkdir for deployment script file
-          no_output_timeout: 1m
-          command: ssh -o StrictHostKeyChecking=no -T root@<< parameters.host >> "mkdir -p << parameters.target-dir >>"
-      - run:
-          name: Scp deployment script file
-          no_output_timeout: 1m
-          command: |
-            scp << parameters.source-dir >>/<< parameters.script-file >> root@<< parameters.host >>:<< parameters.target-dir >>/
-      - run:
-          name: Docker login and run container refresh script
-          no_output_timeout: 5m
-          command: |
-            ssh -o StrictHostKeyChecking=no -T root@<< parameters.host >> \<< EOF
-              echo $DOCKER_PASSWORD | docker login --username $DOCKER_LOGIN --password-stdin
-              /bin/bash << parameters.target-dir >>/<< parameters.script-file>> << parameters.args >>
-            EOF
-
-  notify-telegram:
-    docker:
-      - image: khaliq/pingme:latest
-    resource_class: small
-    parameters:
-      message:
-        type: string
-      title:
-        type: string
-        default: ''
-      token:
-        type: string
-        default: ${TELEGRAM_TOKEN}
-      chat-id:
-        type: string
-        default: '${TELEGRAM_CHAT_ID}'
-    steps:
-      - run:
-          name: Notify
-          command: |
-            pingme telegram \
-            --msg "<< parameters.message >>" \
-            --title "<< parameters.title >>" \
-            --token "<< parameters.token >>" \
-            --channel "<< parameters.chat-id >>"
-
-  get-version-numbers:
-    executor: docker-small
-    parameters:
-      git-tag:
-        type: string
-        default: $CIRCLE_TAG
-    steps:
-      - get-ver-num:
-          git-tag: << parameters.git-tag >>
-      - persist_to_workspace:
-          root: workspace
-          paths:
-            - full-version
-            - major-version
-
-
-commands:
-  get-ver-num:
-    parameters:
-      git-tag:
-        type: string
-        default: $CIRCLE_TAG
-    steps:
-      - run:
-          name: Parse versions from tag
-          command: |
-              if ! [[ "<< parameters.git-tag >>" =~ ^[A-Za-z]+-[0-9]+\.[0-9]+$ ]]
-              then
-                echo "unsupported tag: << parameters.git-tag >>"
-                exit 1
-              fi
-              full_version=$(echo "<< parameters.git-tag >>" | cut -d "-" -f2)
-              major_version=$(echo $full_version | cut -d "." -f1)
-              echo "Parsed versions: $full_version , $major_version"
-              mkdir -p workspace
-              echo $full_version > workspace/full-version
-              echo $major_version > workspace/major-version
-
-
 workflows:
-  release-tag:
+  dev-branch:
     when:
-      matches:
-        pattern: "^release-.*"
-        value: << pipeline.git.tag >>
+      equal: [ dev, << pipeline.git.branch >> ]
     jobs:
-      - get-version-numbers:
-          filters: &release-tag-filter
-            tags:
-              only: /^release-.*/
-      - docker/publish:
-          filters: *release-tag-filter
-          requires:
-            - get-version-numbers
-          executor: vm-medium
-          context: online-editor-development
-          image: jsight/online-editor-frontend
-          tag: '${FULL_VERSION_TAG},${MAJOR_VERSION_TAG},latest'
-          extra_build_args: '--build-arg GTM_ID=${PROD_GTM_ID}'
-          attach-at: /tmp/workspace
-          before_build:
-            - run:
-                name: Read version number tags from workspace
-                command: |
-                  echo "Versions read: $(cat /tmp/workspace/full-version) , $(cat /tmp/workspace/major-version)"
-                  echo "export FULL_VERSION_TAG=$(cat /tmp/workspace/full-version)" >> $BASH_ENV
-                  echo "export MAJOR_VERSION_TAG=$(cat /tmp/workspace/major-version)" >> $BASH_ENV
-      - approve-production-deploy:
-          filters: *release-tag-filter
-          type: approval
+      - docker/publish: &base-publish
+          executor: common/vm-medium
+          context: &common-context online-editor-development
+          image: jsight/dev-online-editor-frontend
+          tag: '<< pipeline.parameters.image-tag >>,dev_latest'
+          extra_build_args: '--build-arg CLOUD_URL=https://dev.cloud.jsight.io'
+      - common/trigger-deployment: &base-trigger
           requires:
             - docker/publish
-      - refresh-container:
-          filters: *release-tag-filter
-          requires:
-            - approve-production-deploy
-          context: online-editor-development
-          host: ${HOST_PROD}
-          port: 8091
-          container-name: online-editor-frontend
-          image: jsight/online-editor-frontend:latest
-      - notify-telegram:
-          filters: *release-tag-filter
-          requires:
-            - refresh-container
-          context: online-editor-development
-          message: Production editor frontend updated from tag << pipeline.git.tag >>
+          context: *common-context
+          project: &project-name online-editor-frontend
+          env: dev
+          image: jsight/dev-online-editor-frontend:<< pipeline.parameters.image-tag >>
+          notification-message: Dev Online-editor-frontend updated from branch ${CIRCLE_BRANCH} (commit ${CIRCLE_SHA1})
+          post-steps:
+            - jira/notify:
+                job_type: deployment
+                environment_type: testing
+                environment: Test
 
   rc-branch:
     when:
@@ -218,46 +43,17 @@ workflows:
         value: << pipeline.git.branch >>
     jobs:
       - docker/publish:
-          context: online-editor-development
-          executor: vm-medium
-          image: jsight/dev-online-editor-frontend
+          <<: *base-publish
           tag: '<< pipeline.parameters.image-tag >>,stage_latest'
-      - refresh-container:
-          requires:
-            - docker/publish
-          context: online-editor-development
-          host: ${HOST_STAGE}
-          port: 8091
-          container-name: online-editor-frontend
-          image: jsight/dev-online-editor-frontend:<< pipeline.parameters.image-tag >>
-      - notify-telegram:
-          requires:
-            - refresh-container
-          context: online-editor-development
-          message: Stage editor frontend updated from branch ${CIRCLE_BRANCH} (commit ${CIRCLE_SHA1})
-
-  dev-branch:
-    when:
-      equal: [ dev, << pipeline.git.branch >>]
-    jobs:
-      - docker/publish:
-          context: online-editor-development
-          executor: vm-medium
-          image: jsight/dev-online-editor-frontend
-          tag: '<< pipeline.parameters.image-tag >>,dev_latest'
-      - refresh-container:
-          requires:
-            - docker/publish
-          context: online-editor-development
-          host: ${HOST_DEV}
-          port: 8091
-          container-name: online-editor-frontend
-          image: jsight/dev-online-editor-frontend:<< pipeline.parameters.image-tag >>
-      - notify-telegram:
-          requires:
-            - refresh-container
-          context: online-editor-development
-          message: Dev editor frontend updated from branch ${CIRCLE_BRANCH} (commit ${CIRCLE_SHA1})
+      - common/trigger-deployment:
+          <<: *base-trigger
+          env: stage
+          notification-message: Stage Online-editor-frontend updated from branch ${CIRCLE_BRANCH} (commit ${CIRCLE_SHA1})
+          post-steps:
+            - jira/notify:
+                job_type: deployment
+                environment_type: staging
+                environment: Staging
 
   experimental:
     when:
@@ -265,25 +61,62 @@ workflows:
         pattern: "^try/.*"
         value: << pipeline.git.branch >>
     jobs:
-      - approve-go-crazy:
-          type: approval
       - docker/publish:
-          requires:
-            - approve-go-crazy
-          context: online-editor-development
-          executor: vm-medium
-          image: jsight/dev-online-editor-frontend
-          tag: '<< pipeline.parameters.image-tag >>,dev_latest'
-      - refresh-container:
+          <<: *base-publish
+          tag: '<< pipeline.parameters.image-tag >>'
+      - common/trigger-deployment:
+          <<: *base-trigger
+          env: crazy
+          notification-message: Crazy Online-editor-frontend frontend updated from branch ${CIRCLE_BRANCH} (commit ${CIRCLE_SHA1})
+          post-steps:
+            - jira/notify:
+                job_type: deployment
+                environment_type: testing
+                environment: Experimental # Test, Production, Staging
+
+  release-tag:
+    when:
+      matches:
+        pattern: "^release-.*"
+        value: << pipeline.git.tag >>
+    jobs:
+      - docker/publish:
+          <<: *base-publish
+          filters: &release-tag-filter
+            tags:
+              only: /^release-.*/
+          image: jsight/online-editor-frontend
+          tag: '${FULL_VERSION},${MAJOR_VERSION},latest' # values available thx to pre-steps
+          extra_build_args: '--build-arg GTM_ID=${PROD_GTM_ID}'
+          pre-steps:
+            - common/parse-versions
+      - approve-production-deploy:
+          filters: *release-tag-filter
+          type: approval
           requires:
             - docker/publish
-          context: online-editor-development
-          host: ${HOST_CRAZY}
-          port: 8091
-          container-name: online-editor-frontend
-          image: jsight/dev-online-editor-frontend:<< pipeline.parameters.image-tag >>
-      - notify-telegram:
+      - common/trigger-deployment:
+          <<: *base-trigger
+          filters: *release-tag-filter
           requires:
-            - refresh-container
-          context: online-editor-development
-          message: Experimental (crazy) editor frontend updated from branch ${CIRCLE_BRANCH} (commit ${CIRCLE_SHA1})
+            - approve-production-deploy
+          env: prod
+          image: jsight/online-editor-frontend:latest
+          notification-message: Production Online-editor-frontend updated from tag << pipeline.git.tag >>
+          post-steps:
+            - jira/notify:
+                job_type: deployment
+                environment_type: production
+                environment: Production
+
+  separate_cd:
+    when:
+      equal: [ separate_cd, << pipeline.git.branch >> ]
+    jobs:
+      - docker/publish:
+          <<: *base-publish
+          tag: '<< pipeline.parameters.image-tag >>'
+      - common/trigger-deployment:
+          <<: *base-trigger
+          env: crazy
+          notification-message: testing Online-editor-frontend updated from branch ${CIRCLE_BRANCH} (commit ${CIRCLE_SHA1})

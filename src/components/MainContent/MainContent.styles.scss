@@ -5,6 +5,10 @@
   margin-right: 20%;
   height: 100%;
 
+  .space-header {
+    height: 3rem;
+  }
+
   &.scrolling {
     pre {
       overflow-x: hidden;

@@ -1,5 +1,5 @@
-import React, {useContext, FC} from 'react';
-import {RuleType, SchemaJSightContentType} from 'api/getResources.model';
+import React, {useContext} from 'react';
+import {RuleType, SchemaJSightContentType} from 'types/exchange';
 import {PropName} from 'components/CodeView/Line/Element/PropName';
 import {map} from 'lodash';
 import {RuleValue} from './RuleValue';
@@ -18,7 +18,7 @@ interface RuleItemProp {
   alwaysInline?: boolean;
 }
 
-export const RuleItem: FC<RuleItemProp> = ({
+export const RuleItem = ({
   rule,
   propName,
   isLastRule,
@@ -28,7 +28,7 @@ export const RuleItem: FC<RuleItemProp> = ({
   parentNumber,
   level,
   alwaysInline,
-}) => {
+}: RuleItemProp) => {
   const {collapsedRules} = useContext(SchemaViewContext);
 
   const renderArrayItem = (item: SchemaJSightContentType): JSX.Element => {

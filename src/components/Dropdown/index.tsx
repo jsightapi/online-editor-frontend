@@ -1,4 +1,4 @@
-import React, {useState, useEffect, createContext, useRef, FC} from 'react';
+import React, {useState, useEffect, createContext, useRef} from 'react';
 import {Manager} from 'react-popper';
 import clsx from 'clsx';
 
@@ -9,6 +9,7 @@ interface DropDownParamsProps {
 
 interface DropDownProps {
   params?: DropDownParamsProps | undefined;
+  children?: React.ReactNode;
 }
 
 export const DropdownContext = createContext({
@@ -16,9 +17,10 @@ export const DropdownContext = createContext({
   isOpen: false,
 });
 
-export const Dropdown: FC<DropDownProps> = ({children, params}) => {
+export const Dropdown = ({children, params}: DropDownProps) => {
   const [isOpen, setIsOpen] = useState<boolean>(params?.isOpen || false);
   const containerRef = useRef<HTMLDivElement>(null);
+
   useEffect(() => {
     isOpen ? addEvents() : removeEvents();
     return () => removeEvents();

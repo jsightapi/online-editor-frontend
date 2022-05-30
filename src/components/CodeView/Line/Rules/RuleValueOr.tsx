@@ -1,5 +1,5 @@
-import {SchemaJSightContentType} from 'api/getResources.model';
-import React, {FC, useContext, useEffect, useMemo} from 'react';
+import React, {useContext, useEffect, useMemo} from 'react';
+import {SchemaJSightContentType} from 'types/exchange';
 import {map} from 'lodash';
 import {createPortal} from 'react-dom';
 import clsx from 'clsx';
@@ -16,13 +16,7 @@ interface RuleValueOrProps {
   tab: number;
 }
 
-export const RuleValueOr: FC<RuleValueOrProps> = ({
-  items,
-  level,
-  tab,
-  numberLine,
-  parentNumber,
-}) => {
+export const RuleValueOr = ({items, level, tab, numberLine, parentNumber}: RuleValueOrProps) => {
   const {setExpanded, objectSpanRef} = useContext(ObjectContext);
   const {currentSchema, setCurrentSchema} = useSchemaData({numberLine, parentNumber});
 

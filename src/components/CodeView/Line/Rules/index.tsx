@@ -1,10 +1,9 @@
-import React, {useContext, FC, useMemo, useRef, useEffect} from 'react';
-import {RulesType} from 'api/getResources.model';
+import React, {useContext, useRef, useEffect} from 'react';
+import {RulesType, SchemaJSightContentType} from 'types/exchange';
 import {reduce} from 'lodash';
 import {RuleItem} from './RuleItem';
 import {SchemaViewContext} from 'components/SchemaView';
 import {CodeContext} from 'components/CodeView/Code';
-import {SchemaJSightContentType} from 'api/getResources.model';
 import {RuleNote} from './RuleNote';
 import {useShowDetailInfo} from '../../hooks/useShowDetailInfo';
 
@@ -27,7 +26,7 @@ interface RulesProps {
 const firstKeys = ['type', 'enum', 'allOf', 'or'];
 const expandKeys = ['type', 'allOf'];
 
-export const Rules: FC<RulesProps> = ({
+export const Rules = ({
   rules,
   schemaName,
   numberLine,
@@ -41,7 +40,7 @@ export const Rules: FC<RulesProps> = ({
   typeName,
   isLastLine,
   content,
-}) => {
+}: RulesProps) => {
   const {collapsedRules} = useContext(SchemaViewContext);
   const {updateAnnotations} = useContext(CodeContext);
   const rulesSpanRef = useRef<HTMLSpanElement | null>(null);
@@ -67,7 +66,7 @@ export const Rules: FC<RulesProps> = ({
         spanRef: rulesSpanRef,
         note,
       },
-      isShowDetailInfo,
+      isShowDetailInfo, // if true - add, otherwise - delete
       parentNumber
     );
   }, [
@@ -79,7 +78,6 @@ export const Rules: FC<RulesProps> = ({
     propType,
     note,
     typeName,
-    updateAnnotations,
     isShowDetailInfo,
     itemIndex,
   ]);

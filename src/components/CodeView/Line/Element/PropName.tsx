@@ -1,4 +1,4 @@
-import React, {FC} from 'react';
+import React from 'react';
 import clsx from 'clsx';
 
 interface PropNameProps {
@@ -6,7 +6,7 @@ interface PropNameProps {
   isKeyShortcut?: boolean;
 }
 
-export const PropName: FC<PropNameProps> = React.memo(({name, isKeyShortcut}) => (
+export const PropName = React.memo(({name, isKeyShortcut}: PropNameProps) => (
   <span>
     <span className={clsx(['name', {'shortcut-key': isKeyShortcut}])}>{name}</span>
     <span className="punctuation-char">: </span>

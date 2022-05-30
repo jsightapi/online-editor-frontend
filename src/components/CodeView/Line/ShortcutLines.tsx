@@ -1,9 +1,9 @@
-import React, {FC, useContext, useMemo} from 'react';
-import {JDocContext} from 'screens/Editor';
-import {getUserEnum, getUserType} from 'api/getResources';
+import React, {useContext, useMemo} from 'react';
+import {getUserEnum, getUserType} from 'utils/getResources';
 import {LinesCollection} from '../LinesCollection';
-import {UserEnumType, UserTypeType} from 'api/getResources.model';
+import {UserEnumType, UserTypeType} from 'types/exchange';
 import {RegexView} from 'components/CodeView/RegexView';
+import {JDocContext} from 'store';
 
 interface ShortcutLinesProps {
   schemasNames: string[];
@@ -14,13 +14,13 @@ interface ShortcutLinesProps {
 }
 
 // render code for shortcuts; passing type, parent line and indentation
-export const ShortcutLines: FC<ShortcutLinesProps> = ({
+export const ShortcutLines = ({
   schemasNames,
   numberLine,
   level,
   tab,
   disableOpenBracket,
-}) => {
+}: ShortcutLinesProps) => {
   const jdocData = useContext(JDocContext);
 
   const userType: UserTypeType | UserEnumType | null = useMemo(() => {
@@ -39,7 +39,7 @@ export const ShortcutLines: FC<ShortcutLinesProps> = ({
       <span className="shortcut-lines">
         <RegexView
           tab={tab}
-          content={(userType as UserTypeType).schema.content as unknown as string}
+          content={((userType as UserTypeType).schema.content as unknown) as string}
         />
       </span>
     );

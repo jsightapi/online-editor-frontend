@@ -1,12 +1,11 @@
-import React, {FC, useContext, useRef} from 'react';
-import {RulesType, RuleType} from 'api/getResources.model';
+import React, {useContext, useRef} from 'react';
+import {RulesType, RuleType} from 'types/exchange';
 import {map} from 'lodash';
 import {DetailEnum} from './DetailEnum';
 import {TextWithTooltip} from 'components/TextWithTooltip';
-import {SidebarContext} from 'screens/Editor';
-import {MainContext} from 'components/MainContent';
 import {formatNotes} from '../utils/formatNotes';
 import './DetailCard.scss';
+import {MainContext, SidebarContext} from 'store';
 
 interface DetailCardProps {
   name: string;
@@ -22,7 +21,7 @@ interface DetailCardProps {
   keyBlock: string;
 }
 
-export const DetailCard: FC<DetailCardProps> = ({
+export const DetailCard = ({
   name,
   rules,
   schemaName,
@@ -32,7 +31,7 @@ export const DetailCard: FC<DetailCardProps> = ({
   updateDetailWrapperHeight,
   isTableView,
   keyBlock,
-}) => {
+}: DetailCardProps) => {
   const divRef = useRef<HTMLDivElement | null>(null);
   const {setCurrentDocSidebar} = useContext(SidebarContext);
   const {setSelectedLine} = useContext(MainContext);

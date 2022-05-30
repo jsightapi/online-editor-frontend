@@ -2,14 +2,18 @@
 FROM node:14-alpine as builder
 ARG API_URL="/api"
 ARG GTM_ID=""
+ARG CLOUD_URL="https://cloud.jsight.io"
 ENV REACT_APP_API_URL=$API_URL
 ENV REACT_APP_GTM_ID=$GTM_ID
+ENV REACT_APP_CLOUD_URL=$CLOUD_URL
 RUN npm i -g npm@8
 # Set working directory
 WORKDIR /app
 # Copy all files from current directory to working dir in image
+COPY package.json .
+RUN npm i --legacy-peer-deps
 COPY . .
-RUN npm i --legacy-peer-deps && npm run build
+RUN npm run build-export && npm run build
 
 # nginx state for serving content
 FROM nginx:alpine

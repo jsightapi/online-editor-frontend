@@ -1,4 +1,4 @@
-import React, {FC} from 'react';
+import React from 'react';
 import {RuleValueType} from './RuleValueType';
 import {RuleValueAllOf} from './RuleValueAllOf';
 import clsx from 'clsx';
@@ -15,7 +15,7 @@ export interface RuleValueProps {
   type?: string;
 }
 
-export const RuleValue: FC<RuleValueProps> = (props) => {
+export const RuleValue = (props: RuleValueProps) => {
   if (props.ruleProp === 'type') {
     return <RuleValueType {...props} />;
   } else if (props.ruleProp === 'allOf') {

@@ -1,6 +1,5 @@
-import React, {useState} from 'react';
+import React, {useLayoutEffect, useState, useEffect, useRef, useContext} from 'react';
 import * as monaco from 'monaco-editor';
-import {useEffect, useRef} from 'react';
 import './Editor.styles.scss';
 
 import {createOnigScanner, createOnigString, loadWASM} from 'vscode-oniguruma';
@@ -11,11 +10,26 @@ import VsCodeDarkTheme from 'textmate/themes/vs-dark-plus-theme';
 
 import type {LanguageId} from 'textmate/register';
 import type {ScopeName, TextMateGrammar, ScopeNameInfo} from 'textmate/providers';
+import {getExistingState} from 'api/codeSharing';
+import {getDefaultErrorMessages} from 'utils/getError';
+import {SharingContext} from 'store/SharingStore';
+import {ErrorSimpleType} from 'types';
 
 import('textmate/themes/jsight-dark.json').then((data: any) => {
   monaco.editor.defineTheme('jsight-dark', data);
   monaco.editor.setTheme('jsight-dark');
 });
+
+interface EditorProps {
+  content: string;
+  setContent(value: string): void;
+  errorRow?: number;
+  scrollToRow: boolean;
+  reload: boolean;
+  reloadedEditor(): void;
+  setDisableSharing: React.Dispatch<React.SetStateAction<boolean>>;
+  setError: React.Dispatch<React.SetStateAction<ErrorSimpleType | null>>;
+}
 
 function initializeEditor(
   element: HTMLDivElement,
@@ -26,11 +40,6 @@ function initializeEditor(
 
 function getEditorValue(editor: any) {
   return editor.getValue();
-}
-
-function onContentChange({editor, setContent}: any) {
-  const content = getEditorValue(editor);
-  setContent(content);
 }
 
 // Taken from https://github.com/microsoft/vscode/blob/829230a5a83768a3494ebbc61144e7cde9105c73/src/vs/workbench/services/textMate/browser/textMateService.ts#L33-L40
@@ -47,21 +56,47 @@ async function loadVSCodeOnigurumWASM(): Promise<Response | ArrayBuffer> {
   return await response.arrayBuffer();
 }
 
-export const Editor = ({content, setContent, errorRow, scrollToRow, reload}: any) => {
+export const Editor = ({
+  content,
+  setContent,
+  errorRow,
+  scrollToRow,
+  setDisableSharing,
+  setError,
+  reload,
+  reloadedEditor,
+}: EditorProps) => {
+  const {key, version, history} = useContext(SharingContext);
   const ref = useRef<HTMLDivElement | null>(null);
   const jsightEditor = useRef<monaco.editor.IStandaloneCodeEditor | null>(null);
   const [oldRow, setOldRow] = useState<number | undefined>();
   const [decorations, setDecorations] = useState<any>();
 
-  const language = 'jsight';
-  const languages: monaco.languages.ILanguageExtensionPoint[] = [{id: language}];
+  const languagesList = ['jsight', 'jschema', 'markdown'];
+  const currentLanguage = 'jsight';
 
-  const grammars: {[scopeName: string]: ScopeNameInfo} = {
-    [`source.${language}`]: {
-      language,
-      path: `${language}.tmLanguage.json`,
-    },
+  const languages: monaco.languages.ILanguageExtensionPoint[] = languagesList.map((id) => ({
+    id,
+  }));
+
+  const onContentChange = (editor: monaco.editor.IStandaloneCodeEditor) => {
+    const content = getEditorValue(editor);
+    setContent(content);
+    setDisableSharing(false);
   };
+
+  // TODO: "source.${language} is not correct for markdown. MD scope is "text.html.markdown".
+  // TODO: temporarily fixed inside grammar files
+  const grammars: {[scopeName: string]: ScopeNameInfo} = languagesList.reduce(
+    (grammars, language) => ({
+      ...grammars,
+      [`source.${language}`]: {
+        language,
+        path: `grammars/${language}/${language}.tmLanguage.json`,
+      },
+    }),
+    {}
+  );
 
   useEffect(() => {
     (async () => {
@@ -77,7 +112,7 @@ export const Editor = ({content, setContent, errorRow, scrollToRow, reload}: any
       const fetchConfiguration = async (
         language: LanguageId
       ): Promise<monaco.languages.LanguageConfiguration> => {
-        const uri = `/${language}.json`;
+        const uri = `/grammars/${language}/language-configuration.json`;
         const response = await fetch(uri);
         const rawConfiguration = await response.text();
         return rehydrateRegexps(rawConfiguration);
@@ -111,7 +146,7 @@ export const Editor = ({content, setContent, errorRow, scrollToRow, reload}: any
       if (ref.current) {
         const editor = initializeEditor(ref.current, {
           value: content,
-          language,
+          language: currentLanguage,
           theme: 'jsight-dark',
           fontSize: 14,
           lineHeight: 21,
@@ -142,7 +177,7 @@ export const Editor = ({content, setContent, errorRow, scrollToRow, reload}: any
 
         const model = editor?.getModel();
 
-        model?.onDidChangeContent(() => onContentChange({editor, setContent}));
+        model?.onDidChangeContent(() => onContentChange(editor));
         model?.updateOptions({tabSize: 2});
 
         if (jsightEditor) {
@@ -152,17 +187,10 @@ export const Editor = ({content, setContent, errorRow, scrollToRow, reload}: any
         provider.injectCSS();
       }
 
-      document.fonts.onloadingdone = () => monaco.editor.remeasureFonts();
+      (document as any).fonts.onloadingdone = () => monaco.editor.remeasureFonts();
     })();
     // eslint-disable-next-line
   }, []);
-
-  useEffect(() => {
-    if (reload && jsightEditor.current) {
-      jsightEditor.current.getModel()?.setValue(content);
-    }
-    // eslint-disable-next-line
-  }, [reload]);
 
   useEffect(() => {
     errorRow && jsightEditor.current?.revealLine(errorRow, 0);
@@ -201,6 +229,40 @@ export const Editor = ({content, setContent, errorRow, scrollToRow, reload}: any
     }
     // eslint-disable-next-line
   }, [errorRow, content]);
+
+  useEffect(() => {
+    if (reload && jsightEditor.current) {
+      jsightEditor.current.getModel()?.setValue(content);
+      reloadedEditor();
+    }
+    // eslint-disable-next-line
+  }, [reload])
+
+  useEffect(() => {
+    if (key) {
+      (async () => {
+        try {
+          const result = await getExistingState(key, version);
+          const resultContent = result.data.content.replace('\\n', '\n');
+          setContent(resultContent);
+          jsightEditor.current?.getModel()?.setValue(resultContent);
+          setDisableSharing(true);
+          if (!version) {
+            history.push(`/r/${result.code}/${result.version}`);
+          }
+        } catch (error) {
+          if (error.Code) {
+            setError({
+              code: error.Code,
+              message: getDefaultErrorMessages(error.Code),
+            });
+          }
+        }
+      })();
+    } else {
+      setDisableSharing(false);
+    }
+  }, [key, version]);
 
   return (
     <div className="editor-parent">

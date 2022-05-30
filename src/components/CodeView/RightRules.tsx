@@ -1,8 +1,7 @@
 import React, {forwardRef, useContext, useMemo, useEffect, useState} from 'react';
 import {DetailCard} from '../CodeView/DetailCard';
 import {AnnotationType} from './Code';
-import {SidebarContext} from 'screens/Editor';
-import {MainContext} from '../MainContent';
+import {MainContext, SidebarContext} from 'store';
 
 interface RightRulesProps {
   annotations: AnnotationType[];
@@ -32,7 +31,7 @@ export const RightRules = forwardRef<HTMLDivElement, RightRulesProps>(
     const {currentDocSidebar} = useContext(SidebarContext);
     const {selectedLine} = useContext(MainContext);
 
-    const rightWidth = useMemo(() => rightOffset - 30, [rightOffset]);
+    const rightWidth = useMemo(() => rightOffset - 6, [rightOffset]);
     const offsetLeft = useMemo(() => -rightWidth - 18, [rightWidth]);
 
     const [rulesDataWithoutAnnotations, setRulesDataWithoutAnnotations] = useState({
