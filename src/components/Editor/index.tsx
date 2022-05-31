@@ -156,8 +156,10 @@ export const Editor = ({
           scrollbar: {
             useShadows: false,
             vertical: 'visible',
-            verticalHasArrows: true,
-            arrowSize: 15,
+            verticalHasArrows: false,
+            horizontalHasArrows: false,
+            verticalScrollbarSize: 8,
+            horizontalScrollbarSize: 8,
           },
           contextmenu: false,
           renderLineHighlight: 'none',
