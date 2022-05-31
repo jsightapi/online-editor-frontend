@@ -12,7 +12,7 @@
     "monaco-editor": "0.31.1",
     "re-resizable": "6.9.1",
     "react": "^18.1.0",
-    "react-animate-height": "^2.1.2",
+    "react-animate-height": "2.1.2",
     "react-dom": "^18.1.0",
     "react-gtm-module": "2.0.11",
     "react-intersection-observer": "8.32.5",
