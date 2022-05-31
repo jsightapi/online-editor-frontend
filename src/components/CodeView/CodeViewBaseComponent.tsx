@@ -1,8 +1,8 @@
-import React, {useMemo, useRef, useState} from 'react';
+import React, {useEffect, useMemo, useRef, useState} from 'react';
 import {ControlElements} from '../ControlElements';
 import {Code} from './Code';
 import {CodeViewProps} from './index';
-import {UnmountClosed} from 'react-collapse';
+import AnimateHeight from 'react-animate-height';
 import clsx from 'clsx';
 
 interface WrapperProps {
@@ -12,8 +12,18 @@ interface WrapperProps {
 }
 
 const Wrapper = ({children, isCollapsible, isOpen}: WrapperProps) => {
+  const [height, setHeight] = useState<string | number>(0);
+
+  useEffect(() => {
+    setHeight(isOpen ? 'auto' : 0);
+  }, [isOpen]);
+
   if (isCollapsible) {
-    return <UnmountClosed isOpened={isOpen}>{children}</UnmountClosed>;
+    return (
+      <AnimateHeight duration={500} height={height}>
+        {children}
+      </AnimateHeight>
+    );
   }
 
   return <>{children}</>;
