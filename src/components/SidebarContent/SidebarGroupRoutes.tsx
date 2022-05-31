@@ -1,10 +1,10 @@
 import React, {useContext} from 'react';
+import {SidebarContext} from 'store';
 import {ResourcesType} from 'types/exchange';
 import {Link, useParams} from 'react-router-dom';
 import clsx from 'clsx';
 import {MainRouterParams} from 'types/router';
-import {CollapsibleContent} from '../CollapsibleContent/CollapsibleContentNew';
-import {SidebarContext} from 'store';
+import {CollapsibleContent} from '../CollapsibleContent';
 import './SidebarGroupItems.styles.scss';
 
 const {isExport} = window as any;
