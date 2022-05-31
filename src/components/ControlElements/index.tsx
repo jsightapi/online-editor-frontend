@@ -5,8 +5,8 @@ import {DropdownMenu} from '../Dropdown/DropdownMenu';
 import clsx from 'clsx';
 import {ButtonDisabled} from 'components/ControlElements/ButtonDisabled';
 import {GlobalSettingsContext} from 'components/Layout';
-import './ControlElements.styles.scss';
 import {MainContext} from 'store';
+import './ControlElements.styles.scss';
 
 interface ControlElementsProps {
   ableChangeView?: boolean;
