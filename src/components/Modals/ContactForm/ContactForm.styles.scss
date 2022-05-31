@@ -5,13 +5,15 @@
   }
 
   &__title {
-    font-size: 21px;
+    font-size: 2.1rem;
     font-style: normal;
     font-weight: 600;
-    line-height: 27px;
+    line-height: 2.7rem;
   }
 
   &__closeIcon {
+    z-index: 500000;
+
     i {
       font-size: 2rem;
       color: #323232;
@@ -20,31 +22,36 @@
   }
 
   &__body {
-    padding-top: 16px;
-    padding-bottom: 32px;
+    padding-top: 1.6rem;
+    padding-bottom: 3.2rem;
+
     h4 {
-      font-size: 16px;
+      font-size: 1.6rem;
       font-weight: 500;
+
       &:first-of-type {
-        margin-top: 40px;
+        margin-top: 4rem;
       }
+
       &:not(&:first-of-type) {
-        margin-top: 24px;
+        margin-top: 2.4rem;
       }
     }
+
     p {
-      font-size: 14px;
-      line-height: 21px;
+      font-size: 1.4rem;
+      line-height: 2.1rem;
       color: #6a7681;
     }
+
     a:hover {
       text-decoration: underline;
     }
   }
 
   &__frame {
-    right: 32px;
-    bottom: 0px;
+    right: 3.2rem;
+    bottom: 0;
     position: absolute;
   }
 }

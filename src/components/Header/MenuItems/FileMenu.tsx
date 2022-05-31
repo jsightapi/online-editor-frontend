@@ -14,7 +14,7 @@ interface FileMenuProps extends FileMenuItemsProps {
 }
 
 const FileMenuItems = ({setIsMenuOpened, setExampleMenuPopup}: FileMenuItemsProps) => (
-  <ul className="menu-items">
+  <ul className="dropdown-items">
     <li
       onClick={() => {
         setIsMenuOpened(false);
