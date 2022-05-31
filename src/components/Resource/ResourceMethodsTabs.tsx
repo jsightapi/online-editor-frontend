@@ -30,6 +30,7 @@ export const ResourceMethodsTabs = ({
           {item.httpMethod}
         </button>
       ))}
+      <div className="methods-space" />
     </div>
   );
 };
