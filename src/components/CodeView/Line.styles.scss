@@ -71,6 +71,18 @@
 
   &.selected {
     background-color: $main-stroke;
+
+    .rules-collapsed {
+      &.base {
+        background: #44a4dc !important;
+        box-shadow: 0 4px 8px rgba(68, 164, 220, 0.5);
+      }
+
+      &.enum {
+        background: #ddb585 !important;
+        box-shadow: 0 4px 8px rgba(221, 181, 133, 0.5);
+      }
+    }
   }
 
   .required {
@@ -244,14 +256,12 @@
       height: 1.7rem;
 
       &.base {
-        background: #44a4dc;
-        box-shadow: 0 4px 8px rgba(68, 164, 220, 0.5);
+        background-color: #71bae5;
         cursor: pointer;
       }
 
       &.enum {
-        background: #ddb585;
-        box-shadow: 0 4px 8px rgba(221, 181, 133, 0.5);
+        background-color: #e0c4a3;
         cursor: pointer;
       }
     }
