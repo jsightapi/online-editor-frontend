@@ -16,7 +16,7 @@ const showErrorOptions: ToastOptions = {
   hideProgressBar: true,
   closeButton: false,
   draggable: false,
-  icon: IconError(),
+  icon: IconError,
 };
 
 export const showEditorError = (error: ErrorType, setScrollToRow: () => void) => {

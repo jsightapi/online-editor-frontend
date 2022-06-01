@@ -17,7 +17,7 @@ const errorOptions: ToastOptions = {
   hideProgressBar: true,
   closeButton: true,
   draggable: false,
-  icon: IconError(),
+  icon: IconError,
 };
 
 export function useSharing() {
