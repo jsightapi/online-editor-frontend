@@ -1,4 +1,4 @@
-import React, {useLayoutEffect, useState, useEffect, useRef, useContext} from 'react';
+import React, {useState, useEffect, useRef, useContext} from 'react';
 import * as monaco from 'monaco-editor';
 import './Editor.styles.scss';
 
@@ -246,6 +246,7 @@ export const Editor = ({
           const resultContent = result.data.content.replace('\\n', '\n');
           setContent(resultContent);
           jsightEditor.current?.getModel()?.setValue(resultContent);
+          localStorage.setItem('jsightCode', resultContent);
           setDisableSharing(true);
           if (!version) {
             history.push(`/r/${result.code}/${result.version}`);
