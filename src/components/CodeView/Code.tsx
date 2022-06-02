@@ -104,7 +104,7 @@ export const Code = ({schema, tab, codeViewRef, keyBlock}: CodeProps) => {
     }
   }, [keyBlock, schema.content]);
 
-  useLayoutEffect(() => {
+  useEffect(() => {
     if (!expandedTypes) {
       setSchemasData((prev) => {
         return {
@@ -119,9 +119,10 @@ export const Code = ({schema, tab, codeViewRef, keyBlock}: CodeProps) => {
               ],
         };
       });
+
       setIsFirst(false);
     }
-  }, [expandedTypes]);
+  }, [expandedTypes, keyBlock]);
 
   const annotations = useMemo(() => {
     const getAnnotations = (schemaData: SchemaData[]) => {
