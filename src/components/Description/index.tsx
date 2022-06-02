@@ -1,7 +1,7 @@
 import {marked} from 'marked';
 import sanitizeHtml from 'sanitize-html';
 import clsx from 'clsx';
-import './style.scss';
+import './Description.styles.scss';
 
 interface DescriptionType {
   markdown?: string;

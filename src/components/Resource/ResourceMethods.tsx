@@ -70,11 +70,11 @@ export const ResourceMethods = ({methods, resourceKey, index}: ResourceMethodsPr
               <div className={clsx(['method-label', item.httpMethod.toLowerCase()])}>
                 {item.httpMethod}
               </div>
-              {item.annotation && <h4 className="annotation">{item.annotation}</h4>}
+              {item.annotation && <h4 className="method-annotation">{item.annotation}</h4>}
             </div>
           )}
-          {item.annotation && tabs && <h4 className="annotation">{item.annotation}</h4>}
-          <Description markdown={'Бугага шечека'} />
+          {item.annotation && tabs && <h4 className="method-annotation">{item.annotation}</h4>}
+          {item.description && <Description markdown={item.description} />}
           {item.pathVariables && (
             <ResourceBlock
               title="Path parameters"

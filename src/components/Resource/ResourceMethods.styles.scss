@@ -105,19 +105,17 @@
     margin-bottom: 2.4rem;
   }
 
-  h4 {
+  h4.method-annotation {
+    font-weight: 600;
+    font-size: 1.8rem;
+    line-height: 2.3rem;
+
+  }
+
+  h4.type {
     font-size: 1.6rem;
     font-weight: 500;
-    margin-bottom: 1.2rem;
-  }
-
-  .annotation {
-    margin-bottom: 0.8rem;
-  }
-
-  .item-annotation {
-    font-size: 1.8rem;
-    font-weight: 600;
+    line-height: 2.1rem;
   }
 
   .description {
