@@ -1,0 +1,10 @@
+version: '3.8'
+services:
+  jsight-server:
+    image: jsight/jsight-server:latest
+    environment:
+      - JSIGHT_SERVER_CORS
+      - JSIGHT_SERVER_STATISTICS
+    ports:
+      - '${HOST_PORT}:8080'
+

@@ -1,10 +1,10 @@
+# compose file to test building project with docker
+# usage: HOST_PORT=8081 docker-compose -f docker-compose.dev.yml up -d --build
 version: '3.8'
 services:
   frontend:
-    image: tektosoft/jsight_frontend:mr_local
     build:
       context: .
-      dockerfile: Dockerfile
     ports:
-      - '8091:80'
+      - '${HOST_PORT}:80'
 
