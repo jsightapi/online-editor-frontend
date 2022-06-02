@@ -540,7 +540,7 @@
 									"name": "constant.language.jsight.parameter.notation"
 								}
 							},
-							"end": "^(\\s*\\d+\\s*|(?=\\s*(@[a-zA-Z_][a-zA-Z_0-9]*|\\{|\\[|true|false|null|\".*\"|Headers|Body)))",
+							"end": "^(\\s*\\d+\\s*|(?=\\s*(@[a-zA-Z_][a-zA-Z_0-9]*|\\{|\\[|true|false|null|\".*\"|Headers|Body|PASTE)))",
 							"endCaptures": {
 								"0": {
 									"name": "constant.numeric.json.jschema.value.number"
@@ -633,7 +633,7 @@
 									"name": "constant.language.jsight.parameter.notation"
 								}
 							},
-							"end": "(^\\s*\\d+|(?=^\\s*(@[a-zA-Z_][a-zA-Z_0-9]*|\\{|\\[|true|false|null|\".*\"|Headers|Body)))",
+							"end": "(^\\s*\\d+|(?=^\\s*(@[a-zA-Z_][a-zA-Z_0-9]*|\\{|\\[|true|false|null|\".*\"|Headers|Body|PASTE)))",
 							"endCaptures": {
 								"0": {
 									"name": "constant.numeric.json.jschema.value.number"
