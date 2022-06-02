@@ -2,8 +2,8 @@
 
 .methods-tab {
   overflow: hidden;
-  margin: 2rem 0 2.4rem;
   background: $background;
+  margin-bottom: 3.2rem;
 
   button {
     margin: 0;
@@ -85,6 +85,13 @@
 
 .resource-wrapper {
   padding: 0 3rem 3rem;
+
+  h3 {
+    font-weight: 500;
+    font-size: 2.4rem;
+    line-height: 3.12rem;
+    margin-bottom: 3.2rem;
+  }
 }
 
 .resource-content {
@@ -102,6 +109,10 @@
     font-size: 1.6rem;
     font-weight: 500;
     margin-bottom: 1.2rem;
+  }
+
+  .annotation {
+    margin-bottom: 0.8rem;
   }
 
   .item-annotation {
