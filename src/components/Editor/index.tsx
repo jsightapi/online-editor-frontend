@@ -22,7 +22,7 @@ import('textmate/themes/jsight-dark.json').then((data: any) => {
 
 interface EditorProps {
   content: string;
-  setContent(value: string): void;
+  setContent: React.Dispatch<React.SetStateAction<string>>;
   errorRow?: number;
   scrollToRow: boolean;
   reload: boolean;
@@ -193,9 +193,30 @@ export const Editor = ({
   }, []);
 
   useEffect(() => {
-    errorRow && jsightEditor.current?.revealLine(errorRow, 0);
-    // eslint-disable-next-line
-  }, [scrollToRow]);
+    if (key) {
+      (async () => {
+        try {
+          const result = await getExistingState(key, version);
+          const resultContent = result.data.content.replace('\\n', '\n');
+          if (jsightEditor.current) {
+            jsightEditor.current?.setValue(resultContent);
+          }
+          if (!version) {
+            history.push(`/r/${result.code}/${result.version}`);
+          }
+        } catch (error) {
+          if (error.Code) {
+            setError({
+              code: error.Code,
+              message: getDefaultErrorMessages(error.Code),
+            });
+          }
+        }
+      })();
+    } else {
+      setDisableSharing(false);
+    }
+  }, [key, version]);
 
   // process errors
   useEffect(() => {
@@ -236,34 +257,12 @@ export const Editor = ({
       reloadedEditor();
     }
     // eslint-disable-next-line
-  }, [reload])
+  }, [reload]);
 
   useEffect(() => {
-    if (key) {
-      (async () => {
-        try {
-          const result = await getExistingState(key, version);
-          const resultContent = result.data.content.replace('\\n', '\n');
-          setContent(resultContent);
-          jsightEditor.current?.getModel()?.setValue(resultContent);
-          localStorage.setItem('jsightCode', resultContent);
-          setDisableSharing(true);
-          if (!version) {
-            history.push(`/r/${result.code}/${result.version}`);
-          }
-        } catch (error) {
-          if (error.Code) {
-            setError({
-              code: error.Code,
-              message: getDefaultErrorMessages(error.Code),
-            });
-          }
-        }
-      })();
-    } else {
-      setDisableSharing(false);
-    }
-  }, [key, version]);
+    errorRow && jsightEditor.current?.revealLine(errorRow, 0);
+    // eslint-disable-next-line
+  }, [scrollToRow]);
 
   return (
     <div className="editor-parent">

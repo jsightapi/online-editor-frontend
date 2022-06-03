@@ -81,12 +81,6 @@ export const EditorScreen = () => {
     setEditorWidth(finalNewWidth);
   };
 
-  const setContent = (value: string) => {
-    startTransition(() => {
-      setJsightCode(value);
-    });
-  };
-
   useEffect(() => {
     const changeWidth = () => {
       const width = getEditorWidth(screenWidth);
@@ -229,7 +223,7 @@ export const EditorScreen = () => {
               >
                 <Editor
                   content={jsightCode}
-                  setContent={setContent}
+                  setContent={setJsightCode}
                   errorRow={errorRow}
                   scrollToRow={scrollToRow}
                   setDisableSharing={setDisableSharing}
