@@ -112,7 +112,8 @@ export const ResourceMethods = ({methods, resourceKey, index}: ResourceMethodsPr
                 <ResourceBlock
                   keyBlock={`${resourceKey}-${indexMethod}-4`}
                   title="Request headers"
-                  type={pathQueriesViewMode}
+                  type={headersBodiesViewMode}
+                  typeBlock={'header-body'}
                   data={item.request.headers}
                   directiveType="header"
                 />
