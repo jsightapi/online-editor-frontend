@@ -1,19 +1,17 @@
 import React, {useState, useEffect, useRef, useContext} from 'react';
 import * as monaco from 'monaco-editor';
-import './Editor.styles.scss';
-
 import {createOnigScanner, createOnigString, loadWASM} from 'vscode-oniguruma';
 import {SimpleLanguageInfoProvider} from 'textmate/providers';
 import {registerLanguages} from 'textmate/register';
 import {rehydrateRegexps} from 'textmate/configuration';
 import VsCodeDarkTheme from 'textmate/themes/vs-dark-plus-theme';
-
 import type {LanguageId} from 'textmate/register';
 import type {ScopeName, TextMateGrammar, ScopeNameInfo} from 'textmate/providers';
 import {getExistingState} from 'api/codeSharing';
 import {getDefaultErrorMessages} from 'utils/getError';
 import {SharingContext} from 'store/SharingStore';
 import {ErrorSimpleType} from 'types';
+import './Editor.styles.scss';
 
 import('textmate/themes/jsight-dark.json').then((data: any) => {
   monaco.editor.defineTheme('jsight-dark', data);
@@ -196,6 +194,7 @@ export const Editor = ({
     if (key) {
       (async () => {
         try {
+          console.log('getExistingState');
           const result = await getExistingState(key, version);
           const resultContent = result.data.content.replace('\\n', '\n');
           if (jsightEditor.current) {
