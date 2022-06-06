@@ -71,6 +71,7 @@ export const Editor = ({
   const jsightEditor = useRef<monaco.editor.IStandaloneCodeEditor | null>(null);
   const [oldRow, setOldRow] = useState<number | undefined>();
   const [decorations, setDecorations] = useState<any>();
+  const [isEditorLoaded, setIsEditorLoaded] = useState<boolean>(false);
 
   const languagesList = ['jsight', 'jschema', 'markdown'];
   const currentLanguage = 'jsight';
@@ -185,15 +186,19 @@ export const Editor = ({
         }
 
         provider.injectCSS();
+
+        setIsEditorLoaded(true);
       }
 
-      (document as any).fonts.onloadingdone = () => monaco.editor.remeasureFonts();
+      (document as any).fonts.onloadingdone = () => {
+        monaco.editor.remeasureFonts();
+      };
     })();
     // eslint-disable-next-line
   }, []);
 
   useEffect(() => {
-    if (key) {
+    if (key && isEditorLoaded) {
       (async () => {
         try {
           const result = await getExistingState(key, version);
@@ -216,7 +221,7 @@ export const Editor = ({
     } else {
       setDisableSharing(false);
     }
-  }, [key, version]);
+  }, [isEditorLoaded, key, version]);
 
   // process errors
   useEffect(() => {
