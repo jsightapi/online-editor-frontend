@@ -223,36 +223,38 @@ export const Editor = ({
 
   // process errors
   useEffect(() => {
-    // Remove highlight error if there is no error
-    if (oldRow && decorations) {
-      const oldDecorations = jsightEditor?.current?.deltaDecorations(decorations, [
-        {
-          range: new monaco.Range(oldRow, 0, oldRow, 0),
-          options: {},
-        },
-      ]);
-      oldDecorations && setDecorations(oldDecorations);
-    }
-    // Highlight row if error exists
-    if (errorRow) {
-      const oldDecorations = jsightEditor?.current?.deltaDecorations(
-        [],
-        [
+    if (isEditorLoaded) {
+      // Remove highlight error if there is no error
+      if (oldRow && decorations) {
+        const oldDecorations = jsightEditor?.current?.deltaDecorations(decorations, [
           {
-            range: new monaco.Range(errorRow, 0, errorRow, 0),
-            options: {
-              isWholeLine: true,
-              linesDecorationsClassName: 'errorLine',
-              className: 'errorHoleLine',
-            },
+            range: new monaco.Range(oldRow, 0, oldRow, 0),
+            options: {},
           },
-        ]
-      );
-      oldDecorations && setDecorations(oldDecorations);
-      setOldRow(errorRow);
+        ]);
+        oldDecorations && setDecorations(oldDecorations);
+      }
+      // Highlight row if error exists
+      if (errorRow) {
+        const oldDecorations = jsightEditor?.current?.deltaDecorations(
+          [],
+          [
+            {
+              range: new monaco.Range(errorRow, 0, errorRow, 0),
+              options: {
+                isWholeLine: true,
+                linesDecorationsClassName: 'errorLine',
+                className: 'errorHoleLine',
+              },
+            },
+          ]
+        );
+        oldDecorations && setDecorations(oldDecorations);
+        setOldRow(errorRow);
+      }
     }
     // eslint-disable-next-line
-  }, [errorRow, content]);
+  }, [isEditorLoaded, errorRow, content]);
 
   useEffect(() => {
     if (reload && jsightEditor.current) {
