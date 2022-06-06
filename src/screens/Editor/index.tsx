@@ -207,32 +207,31 @@ export const EditorScreen = () => {
           }}
         >
           <div className={classes}>
-            {isEditor && (
-              <Resizable
-                bounds="parent"
-                boundsByDirection={false}
-                minWidth="0.5vw"
-                minHeight="100%"
-                handleStyles={{
-                  left: {cursor: 'default'},
-                  top: {cursor: 'default'},
-                  bottom: {cursor: 'default'},
-                }}
-                size={{width: editorWidth, height: 'auto'}}
-                onResizeStop={(e, dir, ref) => onEditorResize(ref)}
-              >
-                <Editor
-                  content={jsightCode}
-                  setContent={setJsightCode}
-                  errorRow={errorRow}
-                  scrollToRow={scrollToRow}
-                  setDisableSharing={setDisableSharing}
-                  setError={setError}
-                  reload={reloadEditor}
-                  reloadedEditor={reloadedEditor}
-                />
-              </Resizable>
-            )}
+            <Resizable
+              bounds="parent"
+              style={{display: isEditor ? 'block' : 'none'}}
+              boundsByDirection={false}
+              minWidth="0.5vw"
+              minHeight="100%"
+              handleStyles={{
+                left: {cursor: 'default'},
+                top: {cursor: 'default'},
+                bottom: {cursor: 'default'},
+              }}
+              size={{width: editorWidth, height: 'auto'}}
+              onResizeStop={(e, dir, ref) => onEditorResize(ref)}
+            >
+              <Editor
+                content={jsightCode}
+                setContent={setJsightCode}
+                errorRow={errorRow}
+                scrollToRow={scrollToRow}
+                setDisableSharing={setDisableSharing}
+                setError={setError}
+                reload={reloadEditor}
+                reloadedEditor={reloadedEditor}
+              />
+            </Resizable>
             <div
               className="doc"
               style={{
