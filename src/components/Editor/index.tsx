@@ -199,7 +199,6 @@ export const Editor = ({
     if (key && isEditorLoaded) {
       (async () => {
         try {
-          console.log('getExistingState');
           const result = await getExistingState(key, version);
           const resultContent = result.data.content.replace('\\n', '\n');
           if (jsightEditor.current) {
