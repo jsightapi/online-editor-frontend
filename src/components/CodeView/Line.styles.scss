@@ -13,6 +13,11 @@
   .code-line {
     background-color: $main-stroke;
   }
+
+  .number:before {
+    counter-increment: none !important;
+    content: ' ' !important;
+  }
 }
 
 .code-line {

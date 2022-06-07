@@ -42,7 +42,7 @@ export const EditorScreen = () => {
   //documentation sidebar on the right
   const [currentDocSidebar, setCurrentDocSidebar] = useState<SidebarDocType>(null);
   const [jdocExchange, setJdocExchange] = useState<JDocType>();
-  const [errorRow, setErrorRow] = useState<number | undefined>();
+  const [errorRow, setErrorRow] = useState<number | null>(null);
   const [scrollToRow, setScrollToRow] = useState<boolean>(false);
   const jsightCodeDebounced = useDebounce<string>(jsightCode, 600);
   const [reloadEditor, setReloadEditor] = useState<boolean>(false);
@@ -81,12 +81,6 @@ export const EditorScreen = () => {
     setEditorWidth(finalNewWidth);
   };
 
-  const setContent = (value: string) => {
-    startTransition(() => {
-      setJsightCode(value);
-    });
-  };
-
   useEffect(() => {
     const changeWidth = () => {
       const width = getEditorWidth(screenWidth);
@@ -105,7 +99,7 @@ export const EditorScreen = () => {
             const jdocExchange = await getJDocExchange(jsightCodeDebounced);
             startTransition(() => setJdocExchange(jdocExchange));
             toast.dismiss();
-            setErrorRow(undefined);
+            setErrorRow(null);
           } catch (error) {
             showEditorError(error as ErrorType, () => {
               if (!(error as ErrorType).Line) {
@@ -213,32 +207,31 @@ export const EditorScreen = () => {
           }}
         >
           <div className={classes}>
-            {isEditor && (
-              <Resizable
-                bounds="parent"
-                boundsByDirection={false}
-                minWidth="0.5vw"
-                minHeight="100%"
-                handleStyles={{
-                  left: {cursor: 'default'},
-                  top: {cursor: 'default'},
-                  bottom: {cursor: 'default'},
-                }}
-                size={{width: editorWidth, height: 'auto'}}
-                onResizeStop={(e, dir, ref) => onEditorResize(ref)}
-              >
-                <Editor
-                  content={jsightCode}
-                  setContent={setContent}
-                  errorRow={errorRow}
-                  scrollToRow={scrollToRow}
-                  setDisableSharing={setDisableSharing}
-                  setError={setError}
-                  reload={reloadEditor}
-                  reloadedEditor={reloadedEditor}
-                />
-              </Resizable>
-            )}
+            <Resizable
+              bounds="parent"
+              style={{display: isEditor ? 'block' : 'none'}}
+              boundsByDirection={false}
+              minWidth="0.5vw"
+              minHeight="100%"
+              handleStyles={{
+                left: {cursor: 'default'},
+                top: {cursor: 'default'},
+                bottom: {cursor: 'default'},
+              }}
+              size={{width: editorWidth, height: 'auto'}}
+              onResizeStop={(e, dir, ref) => onEditorResize(ref)}
+            >
+              <Editor
+                content={jsightCode}
+                setContent={setJsightCode}
+                errorRow={errorRow}
+                scrollToRow={scrollToRow}
+                setDisableSharing={setDisableSharing}
+                setError={setError}
+                reload={reloadEditor}
+                reloadedEditor={reloadedEditor}
+              />
+            </Resizable>
             <div
               className="doc"
               style={{

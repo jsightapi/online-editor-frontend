@@ -94,3 +94,8 @@ Code content should not be changed.
 ## Examples
 
 1. Check links in each example.
+2. Check Ok and Cancel buttons in the "Example reset" popup window.
+
+## Header buttons
+
+1. Check hints, which must appear over buttons without captions (Bug, Export, Preview buttons).

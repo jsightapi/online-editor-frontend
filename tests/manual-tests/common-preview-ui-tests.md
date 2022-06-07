@@ -10,6 +10,7 @@
 8. Markdown tests.
 9. Details card tests.
 10. Table View tests.
+11. Settings tests.
 
 # Heading tests
 
