@@ -1,0 +1,52 @@
+JSIGHT 0.3
+
+INFO
+  Description
+  (
+    Before testing:
+
+    1. Switch all the sections to the Code view.
+    2. Expand all the types in all the sections.
+
+    Change the "Rules" setting and check, that all the rules are expanded / collapsed.
+  )
+
+URL /rules/{stub}
+  Path
+  {
+    "stub": "foo" // {optional: true, maxLength: 100}
+  }
+  
+  GET
+    Query
+      "foo" // {maxLength: 100, minLength: 1}
+    Request
+      Headers
+      {
+        "foo": "bar" // {optional: true, maxLength: 100}
+      }
+      Body
+      [
+        "foo", // Very long comment here.
+        "foo"  // {maxLength: 100} - Very long comment here.
+      ]
+    200
+      Headers
+      {
+        "foo": "bar" // Very long comment here.
+      }
+      Body
+      {
+        "1": "bar", // Very long comment here.
+        "2": "bar", // {optional: true, maxLength: 100}
+        "3": [
+          @type,
+          @type
+        ],
+        "4": @type
+      }
+
+TYPE @type
+{
+  "foo": "bar" // {optional: true, maxLength: 100} - Very long comment here.
+}
