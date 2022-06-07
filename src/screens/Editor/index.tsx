@@ -42,7 +42,7 @@ export const EditorScreen = () => {
   //documentation sidebar on the right
   const [currentDocSidebar, setCurrentDocSidebar] = useState<SidebarDocType>(null);
   const [jdocExchange, setJdocExchange] = useState<JDocType>();
-  const [errorRow, setErrorRow] = useState<number | undefined>();
+  const [errorRow, setErrorRow] = useState<number | null>(null);
   const [scrollToRow, setScrollToRow] = useState<boolean>(false);
   const jsightCodeDebounced = useDebounce<string>(jsightCode, 600);
   const [reloadEditor, setReloadEditor] = useState<boolean>(false);
@@ -99,7 +99,7 @@ export const EditorScreen = () => {
             const jdocExchange = await getJDocExchange(jsightCodeDebounced);
             startTransition(() => setJdocExchange(jdocExchange));
             toast.dismiss();
-            setErrorRow(undefined);
+            setErrorRow(null);
           } catch (error) {
             showEditorError(error as ErrorType, () => {
               if (!(error as ErrorType).Line) {

@@ -21,7 +21,7 @@ import('textmate/themes/jsight-dark.json').then((data: any) => {
 interface EditorProps {
   content: string;
   setContent: React.Dispatch<React.SetStateAction<string>>;
-  errorRow?: number;
+  errorRow: number | null;
   scrollToRow: boolean;
   reload: boolean;
   reloadedEditor(): void;
@@ -67,8 +67,7 @@ export const Editor = ({
   const {key, version, history} = useContext(SharingContext);
   const ref = useRef<HTMLDivElement | null>(null);
   const jsightEditor = useRef<monaco.editor.IStandaloneCodeEditor | null>(null);
-  const [oldRow, setOldRow] = useState<number | undefined>();
-  const [decorations, setDecorations] = useState<any>();
+  const decorationsRef = useRef<string[]>([]);
   const [isEditorLoaded, setIsEditorLoaded] = useState<boolean>(false);
 
   const languagesList = ['jsight', 'jschema', 'markdown'];
@@ -223,46 +222,33 @@ export const Editor = ({
 
   // process errors
   useEffect(() => {
-    if (isEditorLoaded) {
-      // Remove highlight error if there is no error
-      if (oldRow && decorations) {
-        const oldDecorations = jsightEditor?.current?.deltaDecorations(decorations, [
-          {
-            range: new monaco.Range(oldRow, 0, oldRow, 0),
-            options: {},
-          },
-        ]);
-        oldDecorations && setDecorations(oldDecorations);
-      }
+    if (isEditorLoaded && jsightEditor.current) {
       // Highlight row if error exists
       if (errorRow) {
-        const oldDecorations = jsightEditor?.current?.deltaDecorations(
-          [],
-          [
-            {
-              range: new monaco.Range(errorRow, 0, errorRow, 0),
-              options: {
-                isWholeLine: true,
-                linesDecorationsClassName: 'errorLine',
-                className: 'errorHoleLine',
-              },
+        decorationsRef.current = jsightEditor.current.deltaDecorations(decorationsRef.current, [
+          {
+            range: new monaco.Range(errorRow, 0, errorRow, 0),
+            options: {
+              isWholeLine: true,
+              linesDecorationsClassName: 'errorLine',
+              className: 'errorHoleLine',
             },
-          ]
-        );
-        oldDecorations && setDecorations(oldDecorations);
-        setOldRow(errorRow);
+          },
+        ]);
+      } else {
+        decorationsRef.current = jsightEditor.current.deltaDecorations(decorationsRef.current, []);
       }
     }
     // eslint-disable-next-line
   }, [isEditorLoaded, errorRow, content]);
 
   useEffect(() => {
-    if (reload && jsightEditor.current) {
-      jsightEditor.current.getModel()?.setValue(content);
+    if (reload && isEditorLoaded) {
+      jsightEditor.current?.setValue(content);
       reloadedEditor();
     }
     // eslint-disable-next-line
-  }, [reload]);
+  }, [isEditorLoaded, reload]);
 
   useEffect(() => {
     errorRow && jsightEditor.current?.revealLine(errorRow, 0);
