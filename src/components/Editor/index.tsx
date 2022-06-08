@@ -1,19 +1,17 @@
-import React, {useLayoutEffect, useState, useEffect, useRef, useContext} from 'react';
+import React, {useState, useEffect, useRef, useContext} from 'react';
 import * as monaco from 'monaco-editor';
-import './Editor.styles.scss';
-
 import {createOnigScanner, createOnigString, loadWASM} from 'vscode-oniguruma';
 import {SimpleLanguageInfoProvider} from 'textmate/providers';
 import {registerLanguages} from 'textmate/register';
 import {rehydrateRegexps} from 'textmate/configuration';
 import VsCodeDarkTheme from 'textmate/themes/vs-dark-plus-theme';
-
 import type {LanguageId} from 'textmate/register';
 import type {ScopeName, TextMateGrammar, ScopeNameInfo} from 'textmate/providers';
 import {getExistingState} from 'api/codeSharing';
 import {getDefaultErrorMessages} from 'utils/getError';
 import {SharingContext} from 'store/SharingStore';
 import {ErrorSimpleType} from 'types';
+import './Editor.styles.scss';
 
 import('textmate/themes/jsight-dark.json').then((data: any) => {
   monaco.editor.defineTheme('jsight-dark', data);
@@ -22,8 +20,8 @@ import('textmate/themes/jsight-dark.json').then((data: any) => {
 
 interface EditorProps {
   content: string;
-  setContent(value: string): void;
-  errorRow?: number;
+  setContent: React.Dispatch<React.SetStateAction<string>>;
+  errorRow: number | null;
   scrollToRow: boolean;
   reload: boolean;
   reloadedEditor(): void;
@@ -69,8 +67,9 @@ export const Editor = ({
   const {key, version, history} = useContext(SharingContext);
   const ref = useRef<HTMLDivElement | null>(null);
   const jsightEditor = useRef<monaco.editor.IStandaloneCodeEditor | null>(null);
-  const [oldRow, setOldRow] = useState<number | undefined>();
-  const [decorations, setDecorations] = useState<any>();
+  const decorationsRef = useRef<string[]>([]);
+  const [isEditorLoaded, setIsEditorLoaded] = useState<boolean>(false);
+  const dontUpdateSharingBtn = useRef<boolean>(false);
 
   const languagesList = ['jsight', 'jschema', 'markdown'];
   const currentLanguage = 'jsight';
@@ -82,7 +81,9 @@ export const Editor = ({
   const onContentChange = (editor: monaco.editor.IStandaloneCodeEditor) => {
     const content = getEditorValue(editor);
     setContent(content);
-    setDisableSharing(false);
+    if (!dontUpdateSharingBtn.current) {
+      setDisableSharing(false);
+    }
   };
 
   // TODO: "source.${language} is not correct for markdown. MD scope is "text.html.markdown".
@@ -185,35 +186,53 @@ export const Editor = ({
         }
 
         provider.injectCSS();
+
+        setIsEditorLoaded(true);
       }
 
-      (document as any).fonts.onloadingdone = () => monaco.editor.remeasureFonts();
+      (document as any).fonts.onloadingdone = () => {
+        monaco.editor.remeasureFonts();
+      };
     })();
     // eslint-disable-next-line
   }, []);
 
   useEffect(() => {
-    errorRow && jsightEditor.current?.revealLine(errorRow, 0);
-    // eslint-disable-next-line
-  }, [scrollToRow]);
+    if (isEditorLoaded) {
+      if (key) {
+        dontUpdateSharingBtn.current = true;
+        (async () => {
+          try {
+            const result = await getExistingState(key, version);
+            const resultContent = result.data.content.replace('\\n', '\n');
+            if (jsightEditor.current) {
+              jsightEditor.current?.setValue(resultContent);
+            }
+            dontUpdateSharingBtn.current = false;
+            if (!version) {
+              history.push(`/r/${result.code}/${result.version}`);
+            }
+          } catch (error) {
+            if (error.Code) {
+              setError({
+                code: error.Code,
+                message: getDefaultErrorMessages(error.Code),
+              });
+            }
+          }
+        })();
+      } else {
+        setDisableSharing(false);
+      }
+    }
+  }, [isEditorLoaded, key, version]);
 
   // process errors
   useEffect(() => {
-    // Remove highlight error if there is no error
-    if (oldRow && decorations) {
-      const oldDecorations = jsightEditor?.current?.deltaDecorations(decorations, [
-        {
-          range: new monaco.Range(oldRow, 0, oldRow, 0),
-          options: {},
-        },
-      ]);
-      oldDecorations && setDecorations(oldDecorations);
-    }
-    // Highlight row if error exists
-    if (errorRow) {
-      const oldDecorations = jsightEditor?.current?.deltaDecorations(
-        [],
-        [
+    if (isEditorLoaded && jsightEditor.current) {
+      // Highlight row if error exists
+      if (errorRow) {
+        decorationsRef.current = jsightEditor.current.deltaDecorations(decorationsRef.current, [
           {
             range: new monaco.Range(errorRow, 0, errorRow, 0),
             options: {
@@ -222,47 +241,26 @@ export const Editor = ({
               className: 'errorHoleLine',
             },
           },
-        ]
-      );
-      oldDecorations && setDecorations(oldDecorations);
-      setOldRow(errorRow);
+        ]);
+      } else {
+        decorationsRef.current = jsightEditor.current.deltaDecorations(decorationsRef.current, []);
+      }
     }
     // eslint-disable-next-line
-  }, [errorRow, content]);
+  }, [isEditorLoaded, errorRow, content]);
 
   useEffect(() => {
-    if (reload && jsightEditor.current) {
-      jsightEditor.current.getModel()?.setValue(content);
+    if (reload && isEditorLoaded) {
+      jsightEditor.current?.setValue(content);
       reloadedEditor();
     }
     // eslint-disable-next-line
-  }, [reload])
+  }, [isEditorLoaded, reload]);
 
   useEffect(() => {
-    if (key) {
-      (async () => {
-        try {
-          const result = await getExistingState(key, version);
-          const resultContent = result.data.content.replace('\\n', '\n');
-          setContent(resultContent);
-          jsightEditor.current?.getModel()?.setValue(resultContent);
-          setDisableSharing(true);
-          if (!version) {
-            history.push(`/r/${result.code}/${result.version}`);
-          }
-        } catch (error) {
-          if (error.Code) {
-            setError({
-              code: error.Code,
-              message: getDefaultErrorMessages(error.Code),
-            });
-          }
-        }
-      })();
-    } else {
-      setDisableSharing(false);
-    }
-  }, [key, version]);
+    errorRow && jsightEditor.current?.revealLine(errorRow, 0);
+    // eslint-disable-next-line
+  }, [scrollToRow]);
 
   return (
     <div className="editor-parent">

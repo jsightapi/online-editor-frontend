@@ -46,6 +46,7 @@ export const SchemaView = ({
 
   const collapsedRules = useMemo(() => {
     const schemaView = schemasView.find((item) => item.key === keyBlock);
+
     return schemaView && schemaView.collapsedRules !== undefined
       ? schemaView.collapsedRules
       : !rulesExpand;
@@ -53,6 +54,7 @@ export const SchemaView = ({
 
   const expandedTypes = useMemo(() => {
     const schemaView = schemasView.find((item) => item.key === keyBlock);
+
     return schemaView && schemaView.expandedTypes !== undefined
       ? schemaView.expandedTypes
       : typesExpand;

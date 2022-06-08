@@ -1,0 +1,20 @@
+version: '3.8'
+
+services:
+  frontend:
+    build:
+      context: .
+      args:
+        API_URL: 'http://localhost:${SERVER_HOST_PORT}'
+        CLOUD_URL: 'https://cloud.jsight.io'
+    ports:
+      - '${FE_HOST_PORT}:80'
+
+  jsight-server:
+    image: jsight/jsight-server:3
+    environment:
+      - JSIGHT_SERVER_CORS
+      - JSIGHT_SERVER_STATISTICS
+    ports:
+      - '${SERVER_HOST_PORT}:8080'
+
