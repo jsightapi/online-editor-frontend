@@ -25,7 +25,7 @@ export const ShareButton: React.FC<ShareButtonProps> = ({openSharingModal, disab
   };
 
   return isAbleUpdate && process.env.REACT_APP_CLOUD_URL && !disableSharing ? (
-    <div className="group-share-button">
+    <div className="group-save-by-link-btn">
       <Dropdown>
         <DropdownToggle>
           <div>
@@ -63,7 +63,7 @@ export const ShareButton: React.FC<ShareButtonProps> = ({openSharingModal, disab
     <Button
       disabled={disableSharing || !process.env.REACT_APP_CLOUD_URL}
       icon="link"
-      className="share-button"
+      className="save-by-link-btn"
       onClick={() => handleNewState(createState)}
     >
       Share

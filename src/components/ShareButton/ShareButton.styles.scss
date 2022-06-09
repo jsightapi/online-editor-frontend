@@ -1,6 +1,6 @@
 @import 'src/styles/variables';
 
-.share-button {
+.save-by-link-btn {
   border: 0;
   background-color: $main-purple;
   color: #fff;
@@ -11,7 +11,7 @@
   }
 }
 
-.group-share-button {
+.group-save-by-link-btn {
   .dropdown.show {
     .icon-arrow-down:before {
       transform: rotate(90deg);
