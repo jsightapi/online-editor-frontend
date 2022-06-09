@@ -3,7 +3,7 @@ services:
   jsight-server:
     image: jsight/jsight-server:4
     environment:
-      - JSIGHT_SERVER_CORS
+      - JSIGHT_SERVER_CORS=true
       - JSIGHT_SERVER_STATISTICS
     ports:
       - '${SERVER_HOST_PORT}:8080'
