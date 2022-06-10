@@ -84,13 +84,23 @@
 }
 
 .resource-wrapper {
-  padding: 0 3rem 3rem;
+  padding: 0 3rem 2.4rem;
 
   h3 {
     font-weight: 500;
     font-size: 2.4rem;
     line-height: 3.12rem;
     margin-bottom: 3.2rem;
+  }
+}
+
+.reusable-resource {
+  .params-table, .code-view-wrapper {
+    margin-top: .8rem;
+  }
+
+  .annotation {
+    margin-top: 1.2rem;
   }
 }
 
