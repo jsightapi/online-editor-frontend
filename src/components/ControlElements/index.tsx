@@ -74,7 +74,7 @@ export const ControlElements = ({
             <i className="icon-notebook" />
             <i className="icon-arrow-down" />
           </DropdownToggle>
-          <DropdownMenu>
+          <DropdownMenu offsetY={6}>
             <div className="item">
               <i className="icon-notebook" />
               <span>Copy example</span>
@@ -96,7 +96,7 @@ export const ControlElements = ({
             <i className={iconViewMode} />
             <i className="icon-arrow-down" />
           </DropdownToggle>
-          <DropdownMenu>
+          <DropdownMenu offsetY={6}>
             <div
               onClick={() => setViewType(keyBlock, 'code')}
               className={clsx(['item', {active: viewType === 'code'}])}
@@ -128,7 +128,7 @@ export const ControlElements = ({
             <i className={iconTypes} />
             <i className="icon-arrow-down" />
           </DropdownToggle>
-          <DropdownMenu>
+          <DropdownMenu offsetY={6}>
             <div
               onClick={() => {
                 setExpandedTypes(keyBlock, true);
@@ -160,7 +160,7 @@ export const ControlElements = ({
             <i className={iconRules} />
             <i className="icon-arrow-down" />
           </DropdownToggle>
-          <DropdownMenu>
+          <DropdownMenu offsetY={6}>
             <div
               onClick={() => {
                 setCollapsedRules(keyBlock, true);
