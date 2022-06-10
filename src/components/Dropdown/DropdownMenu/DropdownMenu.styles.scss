@@ -37,6 +37,10 @@
       position: relative;
     }
 
+    [class^='icon-']+span {
+      margin-left: 1.2rem;
+    }
+
     &.active {
       opacity: 1;
       background: $main-stroke;
