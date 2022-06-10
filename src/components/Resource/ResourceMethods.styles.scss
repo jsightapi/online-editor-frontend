@@ -2,8 +2,8 @@
 
 .methods-tab {
   overflow: hidden;
-  margin: 2rem 0 2.4rem;
   background: $background;
+  margin-bottom: 3.2rem;
 
   button {
     margin: 0;
@@ -84,29 +84,52 @@
 }
 
 .resource-wrapper {
-  padding: 0 3rem 3rem;
+  padding: 0 3rem 2.4rem;
+
+  h3 {
+    font-weight: 500;
+    font-size: 2.4rem;
+    line-height: 3.12rem;
+    margin-bottom: 3.2rem;
+  }
+}
+
+.reusable-resource {
+  .params-table, .code-view-wrapper {
+    margin-top: .8rem;
+  }
+
+  .annotation {
+    margin-top: 1.2rem;
+  }
 }
 
 .resource-content {
   margin-bottom: 2.4rem;
+  gap: 3.2rem;
+  flex-direction: column;
 
   &:last-of-type {
     margin-bottom: 0;
   }
 
-  .code-view-wrapper {
-    margin-bottom: 2.4rem;
+  .method-annotation {
+    font-weight: 600;
+    font-size: 1.8rem;
+    line-height: 2.3rem;
   }
 
-  h4 {
+  .resource-title {
+    margin-bottom: 1.2rem;
+    font-weight: 500;
+    font-size: 1.6rem;
+    line-height: 2.1rem;
+  }
+
+  .type {
     font-size: 1.6rem;
     font-weight: 500;
-    margin-bottom: 1.2rem;
-  }
-
-  .item-annotation {
-    font-size: 1.8rem;
-    font-weight: 600;
+    line-height: 2.1rem;
   }
 
   .description {
@@ -114,12 +137,11 @@
     margin-bottom: 2.4rem;
   }
 
-  .title {
+  .responses {
     font-size: 2.1rem;
-    line-height: 2.73rem;
+    line-height: 2.7rem;
     font-weight: 600;
-    margin-bottom: 1.6rem;
-    margin-top: 2.8rem;
+    margin-top: 1.6rem;
   }
 
   .content-state {

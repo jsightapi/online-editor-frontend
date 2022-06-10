@@ -1,20 +1,19 @@
 import React, {useRef, useState, useEffect, useContext} from 'react';
+import {Virtuoso, VirtuosoHandle} from 'react-virtuoso';
+import {map} from 'lodash';
 import {useParams} from 'react-router-dom';
 import {MainRouterParams} from 'types/router';
 import {ApiInfo} from 'components/ApiInfo';
 import {ServersInfo} from 'components/ServersInfo';
 import {getTreeResources} from 'utils/getResources';
 import {Resource} from 'components/Resource';
-import {map} from 'lodash';
-import {ReusableResource} from 'components/Resource/ReusableResource';
-import {JDocType} from 'types/exchange';
-import {Virtuoso, VirtuosoHandle} from 'react-virtuoso';
-import {SidebarContext, MainContext} from 'store';
-import {ResourceState, SchemaViewType, SelectedLineType} from 'store/MainStore';
-
-import './MainContent.styles.scss';
 import {GlobalSettingsContext} from 'components/Layout';
 import {SchemaData} from 'components/CodeView/Code';
+import {ReusableResource} from 'components/Resource/ReusableResource';
+import {JDocType} from 'types/exchange';
+import {SidebarContext, MainContext} from 'store';
+import {ResourceState, SchemaViewType, SelectedLineType} from 'store/MainStore';
+import './MainContent.styles.scss';
 
 type SchemaPropertyType =
   | 'collapsedRules'
@@ -161,12 +160,7 @@ export const MainContent = React.memo(({jdocExchange, showRightSidebar}: MainCon
     if (resources.length) {
       let index = 0;
       resources.map((item, resourceIndex) => {
-        jdocList.push(
-          <div className="group-header">
-            <h2>{item.title}</h2>
-            <hr />
-          </div>
-        );
+        jdocList.push(<h2 className="resource-header">{item.title}</h2>);
         jdocPositions.push('resources');
 
         item.resources.map((resource: any, itemIndex: number) => {
@@ -186,11 +180,7 @@ export const MainContent = React.memo(({jdocExchange, showRightSidebar}: MainCon
     }
 
     if (userTypes) {
-      jdocList.push(
-        <div className="group-header">
-          <h2>Types</h2>
-        </div>
-      );
+      jdocList.push(<h2 className="reusable-header">Types</h2>);
       jdocPositions.push('types');
 
       map(jdocExchange.userTypes, (userType, key) => {
@@ -199,7 +189,7 @@ export const MainContent = React.memo(({jdocExchange, showRightSidebar}: MainCon
             name={key}
             key={`reusable-type-${key}`}
             keyBlock={`rut-${key}`}
-            className="type-resource"
+            className="reusable-resource"
             {...userType}
           />
         );
@@ -208,11 +198,7 @@ export const MainContent = React.memo(({jdocExchange, showRightSidebar}: MainCon
     }
 
     if (userEnums) {
-      jdocList.push(
-        <div className="group-header">
-          <h2>Enums</h2>
-        </div>
-      );
+      jdocList.push(<h2 className="reusable-header">Enums</h2>);
 
       map(jdocExchange.userEnums, (userEnum, key) =>
         jdocList.push(
@@ -220,6 +206,7 @@ export const MainContent = React.memo(({jdocExchange, showRightSidebar}: MainCon
             keyBlock={`rue-${key}`}
             content={userEnum.value}
             name={key}
+            className="reusable-resource"
             key={`reusable-enum-${key}`}
           />
         )
