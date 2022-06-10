@@ -76,13 +76,16 @@ export const ControlElements = ({
           </DropdownToggle>
           <DropdownMenu>
             <div className="item">
-              <i className="icon-notebook" /> Copy example
+              <i className="icon-notebook" />
+              <span>Copy example</span>
             </div>
             <div className="item">
-              <i className="icon-notebook-braces" /> Copy schema
+              <i className="icon-notebook-braces" />
+              <span>Copy schema</span>
             </div>
             <div className="item">
-              <i className="icon-notebook-email" /> Copy expanded schema
+              <i className="icon-notebook-email" />
+              <span>Copy expanded schema</span>
             </div>
           </DropdownMenu>
         </Dropdown>
@@ -98,17 +101,20 @@ export const ControlElements = ({
               onClick={() => setViewType(keyBlock, 'code')}
               className={clsx(['item', {active: viewType === 'code'}])}
             >
-              <i className="icon-code-comment" /> Code view
+              <i className="icon-code-comment" />
+              <span>Code view</span>
             </div>
             <div
               onClick={() => setViewType(keyBlock, 'table')}
               className={clsx(['item', {active: viewType === 'table'}])}
             >
-              <i className="icon-table" /> Table view
+              <i className="icon-table" />
+              <span>Table view</span>
             </div>
             {isExampleView && (
               <div className={clsx(['item', {active: viewType === 'example'}])}>
-                <i className="icon-list" /> Example view
+                <i className="icon-list" />
+                <span>Example view</span>
               </div>
             )}
           </DropdownMenu>
@@ -130,7 +136,8 @@ export const ControlElements = ({
               }}
               className={clsx(['item', {active: expandedTypes}])}
             >
-              <i className="icon-email" /> Expand types
+              <i className="icon-email" />
+              <span>Expand types</span>
             </div>
             <div
               onClick={() => {
@@ -139,7 +146,8 @@ export const ControlElements = ({
               }}
               className={clsx(['item', {active: !expandedTypes}])}
             >
-              <i className="icon-strikethrough-email" /> Collapse types
+              <i className="icon-strikethrough-email" />
+              <span>Collapse types</span>
             </div>
           </DropdownMenu>
         </Dropdown>
@@ -160,7 +168,8 @@ export const ControlElements = ({
               }}
               className={clsx(['item', {active: collapsedRules}])}
             >
-              <i className="icon-braces-number" /> Collapse rules
+              <i className="icon-braces-number" />
+              <span>Collapse rules</span>
             </div>
             <div
               onClick={() => {
@@ -169,7 +178,8 @@ export const ControlElements = ({
               }}
               className={clsx(['item', {active: !collapsedRules}])}
             >
-              <i className="icon-braces-dots" /> Inline rules
+              <i className="icon-braces-dots" />
+              <span>Inline rules</span>
             </div>
           </DropdownMenu>
         </Dropdown>
