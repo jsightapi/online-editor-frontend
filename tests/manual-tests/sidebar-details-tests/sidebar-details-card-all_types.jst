@@ -22,7 +22,6 @@ TYPE @implicitTypes
   "floatZero"   : 0.1 // {optional: true, nullable: true}
 }
 
-
 TYPE @rootObject
 { // {additionalProperties: true, nullable: false} - should have type object
 }
@@ -33,7 +32,7 @@ TYPE @rootArray
 ]
 
 TYPE @rootScalar
-  "OK" // {regex: "^OK$", nullable: true, minLength: 2}
+  "string" // {regex: "^string$", nullable: true, minLength: 2} - should be string
 
 TYPE @explicitInnerTypes
 {
@@ -50,17 +49,21 @@ TYPE @explicitInnerTypes
 
 TYPE @userTypes
 {
-  "cat": @cat, // {optional: true, nullable: true}
-  "dog": @dog, // {optional: true, nullable: true}
-  "catOrDog": @cat | @dog // {optional: true, nullable: true} - Should be type mixed
+  "@cat": @cat, // {optional: true, nullable: true}
+  "@dog": @dog, // {optional: true, nullable: true}
+  "mixed": @cat | @dog // {optional: true, nullable: true} - Should be type mixed
 }
 
 TYPE @checkLongTypeName
 {
-  "shortKey": @superDuperLongTypeName, // some long annotation to call details card
+  "shortKey": @superDuperLongTypeName // some long annotation to call details card
 }
 
 # HELPING TYPES
+
+TYPE @_________________________THANKS_FOR_TESTING________________________
+  "NO NEED TO TEST FURTHER. Thank you!"
+
 TYPE @cat
 {}
 
