@@ -1,6 +1,6 @@
 JSIGHT 0.3
 
-# Test 
+# Test
 TYPE @testSectionButtonsZIndex /* 1) Open a details card.
                                   2) Press menu button.
                                   3) Check that menu panel 
@@ -197,6 +197,17 @@ TYPE @testMultilineRules
   }
 ]
 
+TYPE @testRulesOrder // Switch to the "Inline rules" mode. Rules must have 1 → 2 → 3 order.
+  "2" // {minLength: 1, regex: "2", maxLength: 3}
+
+TYPE @testMovingSomeRulesToFirstPlace
+{
+  "checkTypeMoves" : 1,  // {nullable: true , type: "integer"}
+  "checkEnumMoves" : 2,  // {nullable: false, optional: true, enum: [1, 2]}
+  "checkOrMoves"   : 12, // {nullable: false, or: ["@catId", "@dogId"]}
+  "checkAllOfMoves": {}  // {nullable: true, allOf: "@cat"}
+}
+
 # Rule `type`
 
 TYPE @testRuleTypeStandardTypes
@@ -205,10 +216,10 @@ TYPE @testRuleTypeStandardTypes
   "floatPositive1"  : 1.2,  // {type: "float"}
   "boolean1"        : true, // {type: "boolean"}
   "array": [ // {type: "array"}
-    "array item" // {type: "string"}
+    "string" // {type: "string"}
   ],
   "object": { // {type: "object"}
-    "objectField": null // {type: null}
+    "null": null // {type: null}
   },
   "decimal" : 43.21, // {type: "decimal", precision: 2}
   "email": "name@domain.com", // {type: "email"}
@@ -512,7 +523,7 @@ TYPE @testUserTypeReferenceInKeyWithRules
   @catId: @cat // {optional: true}
 }
 
-TYPE @testPseudoDuplicates
+TYPE @testPseudoDuplicates // TODO: wait for fix.
 {
   @catId  : 1
   # "@catId": 1  TODO: uncomment when fixed.
@@ -529,16 +540,6 @@ TYPE @testInlineRulesCollapseRules // Switch mode to "Inline Rules" and see how 
   "checkArray"   : [   // {minItems: 0, maxItems: 10, optional: true}
     "some string" // {minLength: 1, maxLength: 100, regex: ".*", nullable: true}
   ]
-}
-
-# Test moving some rules to beginning
-
-TYPE @testMovingSomeRulesToFirstPlace
-{
-  "checkTypeMoves" : 1,  // {nullable: true , type: "integer"}
-  "checkEnumMoves" : 2,  // {nullable: false, optional: true, enum: [1, 2]}
-  "checkOrMoves"   : 12, // {nullable: false, or: ["@catId", "@dogId"]}
-  "checkAllOfMoves": {}  // {nullable: true, allOf: "@cat"}
 }
 
 # Test required fields marks on the left

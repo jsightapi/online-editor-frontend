@@ -161,7 +161,7 @@ export const ControlElements = ({
             <i className={iconRules} />
             <i className="icon-arrow-down" />
           </DropdownToggle>
-          <DropdownMenu offsetY={6}>
+          <DropdownMenu offsetY={offsetY}>
             <div
               onClick={() => {
                 setCollapsedRules(keyBlock, true);

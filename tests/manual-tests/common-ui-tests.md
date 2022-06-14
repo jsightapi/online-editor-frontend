@@ -1,5 +1,19 @@
 # UI tests
 
+## Local storage
+
+1. Before you start all other tests — clean your browser's storages: local storage, session storage,
+   cookies storage, etc.
+
+## Cookies window test
+
+1. Open editor after cleaning the local storage. Check the Cookies window emerges.
+2. Close current browser tab. Open editor again. Check that Cookies window emerges again.
+3. Close the Cookies window by the top-right cross. Refresh the page. Check that the Cookies window
+   emerges again.
+4. Close the Cookies window by the “Accept” button. Refresh the page. Check that the Cookies window
+   does not appear again.
+
 ## Console errors
 
 1. Open developer console, check that there are no errors in different modes.
@@ -12,9 +26,15 @@
 
 ### "Examples"
 
+1. Check links to documents in each example.
+
 #### "Reset example XXX"
 
-When click to this item, the code editor content should be reset to the corresponding example.
+When click to this item, the warning window must appear. Check:
+
+- Cancel button, 
+- Reset button, 
+- closing cross button.
 
 ## Code editor
 
@@ -23,7 +43,7 @@ When click to this item, the code editor content should be reset to the correspo
 When you move vertical separator:
 
 1. Tab buttons on the right should never be pulled out of the screen.
-2. You can move separator to the very left end of the screen.
+2. You can move separator almost to the very left side.
 
 ## Refresh page
 
@@ -35,11 +55,6 @@ Code content should not be changed.
 ## Error window
 
 1. Assure that you can copy text of the error message.
-
-## Title
-
-1. HTML title should be changed as soon as you change INFO Title value.
-2. If you delete Title directive, the browser HTML title must be reset to "JSight Online Editor".
 
 ## Contents Sidebar
 
@@ -90,11 +105,6 @@ Code content should not be changed.
    or with the cross-mark at the top right corner of rendered document panel.
 2. Check that these two cross-marks (see above) do not interfere each other when scrolling document
    up and down.
-
-## Examples
-
-1. Check links in each example.
-2. Check Ok and Cancel buttons in the "Example reset" popup window.
 
 ## Header buttons
 

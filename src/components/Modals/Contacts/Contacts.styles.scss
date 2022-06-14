@@ -1,0 +1,52 @@
+@import 'src/styles/variables';
+
+.contact-modal {
+  .header {
+    justify-content: space-between;
+    margin-bottom: 1.6rem;
+  }
+
+  .title {
+    font-size: 2.1rem;
+    line-height: 2.7rem;
+    font-style: normal;
+    font-weight: 600;
+  }
+
+  .close-btn {
+    z-index: 500000;
+
+    i {
+      font-size: 2rem;
+      color: #323232;
+      opacity: 0.35;
+    }
+  }
+
+  .description {
+    color: $secondary-text;
+    margin-bottom: 4rem;
+  }
+
+  .contacts {
+    margin-bottom: 3.2rem;
+    flex-direction: column;
+    gap: 2.4rem;
+
+    .label {
+      font-weight: 500;
+      font-size: 1.6rem;
+      margin-bottom: .8rem;
+    }
+
+    .value {
+      color: $secondary-text;
+    }
+  }
+
+  .image {
+    right: 3.2rem;
+    bottom: 0;
+    position: absolute;
+  }
+}
