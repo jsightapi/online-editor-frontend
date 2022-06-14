@@ -23,7 +23,7 @@
     flex-direction: row;
     cursor: pointer;
 
-    +hr {
+    + hr {
       height: 1px;
       background-color: $secondary-stroke;
     }
@@ -62,7 +62,7 @@
     height: 3.2rem;
     background-color: $main-purple;
 
-    >div {
+    > div {
       display: flex;
       align-items: center;
       height: 100%;
@@ -83,5 +83,3 @@
     }
   }
 }
-
-
