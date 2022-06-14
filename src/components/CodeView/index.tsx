@@ -1,19 +1,19 @@
-import React, {FC, useContext, useMemo} from 'react';
-import {SchemaType} from 'api/getResources.model';
-import {getUserEnum, getUserType} from 'api/getResources';
+import React, {useContext, useMemo} from 'react';
+import {SchemaType} from 'types/exchange';
+import {getUserEnum, getUserType} from 'utils/getResources';
 import {CollapsibleContent} from '../CollapsibleContent';
 import {CodeViewBaseComponent} from './CodeViewBaseComponent';
 import {EnumView} from './EnumView';
 import {SchemaView} from 'components/SchemaView';
-import './CodeView.styles.scss';
 import {JDocContext} from 'store';
+import './CodeView.styles.scss';
 
 interface UsedUserElementProps {
   value: string;
   keyBlock: string;
 }
 
-const UsedUserType: FC<UsedUserElementProps> = ({value, keyBlock}) => {
+const UsedUserType = ({value, keyBlock}: UsedUserElementProps) => {
   const jdocData = useContext(JDocContext);
 
   const userType = useMemo(
@@ -35,7 +35,7 @@ const UsedUserType: FC<UsedUserElementProps> = ({value, keyBlock}) => {
   );
 };
 
-const UsedUserEnum: FC<UsedUserElementProps> = ({value, keyBlock}) => {
+const UsedUserEnum = ({value, keyBlock}: UsedUserElementProps) => {
   const jdocData = useContext(JDocContext);
 
   const userEnum = useMemo(
@@ -64,7 +64,7 @@ export interface CodeViewProps {
  * @param props
  * @constructor
  */
-export const CodeView: FC<CodeViewProps> = (props) => (
+export const CodeView = (props: CodeViewProps) => (
   <div className="code-view-wrapper">
     <CodeViewBaseComponent {...props} />
     {!props.hideUsedElements && (

@@ -1,4 +1,5 @@
 import React, {createContext} from 'react';
+import {SchemaData} from 'components/CodeView/Code';
 
 export interface SelectedLineType {
   keyBlock: string;
@@ -7,6 +8,7 @@ export interface SelectedLineType {
 
 export interface SchemaViewType {
   key: string;
+  typeBlock?: string;
   collapsedRules?: boolean;
   expandedTypes?: boolean;
   viewType?: string;
@@ -25,6 +27,9 @@ export interface MainContextInterface {
   setExpandedTypes: (key: string, value: boolean) => void;
   setViewType: (key: string, value: string) => void;
   setExpandDetailCard: (key: string, value: boolean) => void;
+  setTypeBlock: (key: string, value: string | undefined) => void;
+  setSchemasData: React.Dispatch<React.SetStateAction<{[key: string]: SchemaData[]}>>;
+  schemasData: {[key: string]: SchemaData[]};
   showRightSidebar: boolean;
   resourceState: ResourceState[];
   setResourceState: React.Dispatch<React.SetStateAction<ResourceState[]>>;

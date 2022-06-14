@@ -1,11 +1,12 @@
-import React, {FC, useContext} from 'react';
-import {ResourcesType} from 'api/getResources.model';
+import React, {useContext} from 'react';
+import {ResourcesType} from 'types/exchange';
 import {Link, useParams} from 'react-router-dom';
 import clsx from 'clsx';
 import {MainRouterParams} from 'types/router';
 import {CollapsibleContent} from '../CollapsibleContent/CollapsibleContentNew';
-import './SidebarGroupItems.styles.scss';
 import {SidebarContext} from 'store';
+import './SidebarGroupItems.styles.scss';
+
 const {isExport} = window as any;
 
 interface SidebarGroupRoutesProps {
@@ -13,7 +14,7 @@ interface SidebarGroupRoutesProps {
   index: number;
 }
 
-export const SidebarGroupRoutes: FC<SidebarGroupRoutesProps> = ({item, index}) => {
+export const SidebarGroupRoutes = ({item, index}: SidebarGroupRoutesProps) => {
   const {path} = useParams<MainRouterParams>();
   const {setCurrentUrl, currentUrl} = useContext(SidebarContext);
 
@@ -24,12 +25,12 @@ export const SidebarGroupRoutes: FC<SidebarGroupRoutesProps> = ({item, index}) =
         rightContent={<div className="number">{item.count}</div>}
       >
         <ul className="collapse">
-          {item.resources.map((route, key) => {
+          {item.resources.map((route, resourceKey) => {
             const linkTo = route.path.replace(/({|})/gi, '-');
             return typeof route.path === 'string' ? (
               <li
                 className={clsx([{active: linkTo.substring(1) === (isExport ? currentUrl : path)}])}
-                key={`${index}${key}${route}`}
+                key={`${index}${resourceKey}${route}`}
               >
                 {isExport ? (
                   <span
@@ -40,16 +41,7 @@ export const SidebarGroupRoutes: FC<SidebarGroupRoutesProps> = ({item, index}) =
                     {route.path}
                   </span>
                 ) : (
-                  <Link
-                    to={() => {
-                      if (isExport) {
-                        setCurrentUrl(linkTo.slice(1));
-                      }
-                      return linkTo;
-                    }}
-                  >
-                    {route.path}
-                  </Link>
+                  <Link to={linkTo}>{route.path}</Link>
                 )}
               </li>
             ) : (

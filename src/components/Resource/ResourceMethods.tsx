@@ -1,12 +1,13 @@
-import React, {useContext, useMemo, FC, useEffect} from 'react';
-import {ResourceType} from 'api/getResources.model';
+import React, {useContext, useMemo, useEffect} from 'react';
+import {ResourceType} from 'types/exchange';
 import clsx from 'clsx';
 import {ResourceBlock} from './ResourceBlock';
 import {ResponseCode} from './ResponseCode';
 import {GlobalSettingsContext} from '../Layout';
-import './ResourceMethods.styles.scss';
 import {Description} from '../Description';
 import {MainContext} from 'store';
+import {ResourceMethodsTabs} from 'components/Resource/ResourceMethodsTabs';
+import './ResourceMethods.styles.scss';
 
 interface ResourceMethodsProps {
   methods: ResourceType[];
@@ -14,8 +15,8 @@ interface ResourceMethodsProps {
   index: number;
 }
 
-export const ResourceMethods: FC<ResourceMethodsProps> = ({methods, resourceKey, index}) => {
-  const {headersBodiesCode, pathQueriesCode} = useContext(GlobalSettingsContext);
+export const ResourceMethods = ({methods, resourceKey, index}: ResourceMethodsProps) => {
+  const {headersBodiesCode, pathQueriesCode, tabs} = useContext(GlobalSettingsContext);
   const {resourceState, setResourceState} = useContext(MainContext);
 
   const currentMethod = useMemo(() => {
@@ -40,39 +41,45 @@ export const ResourceMethods: FC<ResourceMethodsProps> = ({methods, resourceKey,
     headersBodiesCode,
   ]);
 
+  const setHttpMethod = (method: string) => {
+    setResourceState((prev) => prev.map((prevItem, i) => (i === index ? {method} : prevItem)));
+  };
+
+  const getDisplayValue = (httpMethod: string) =>
+    tabs ? (httpMethod === currentMethod?.httpMethod ? 'block' : 'none') : 'block';
+
   return (
     <>
-      <div className="methods-tab d-flex">
-        {methods.map((item) => (
-          <button
-            onClick={(e) => {
-              e.preventDefault();
-              setResourceState((prev) =>
-                prev.map((prevItem, i) => (i === index ? {method: item.httpMethod} : prevItem))
-              );
-            }}
-            key={`tab-${item.httpMethod}-${item.path}`}
-            className={clsx([
-              {active: currentMethod?.httpMethod === item.httpMethod},
-              item.httpMethod.toLowerCase(),
-            ])}
-          >
-            {item.httpMethod}
-          </button>
-        ))}
-      </div>
+      {tabs && (
+        <ResourceMethodsTabs
+          methods={methods}
+          setHttpMethod={setHttpMethod}
+          currentHttpMethod={currentMethod?.httpMethod}
+        />
+      )}
       {methods.map((item, indexMethod) => (
         <div
           key={`resource-${item.httpMethod}-${item.path}`}
           className="resource-content"
-          style={{display: item.httpMethod === currentMethod?.httpMethod ? 'block' : 'none'}}
+          style={{
+            display: getDisplayValue(item.httpMethod),
+          }}
         >
-          {item.annotation && <h4 className="item-annotation">{item.annotation}</h4>}
-          <Description markdown={item.description} />
+          {!tabs && (
+            <div className="d-flex method-label-wrapper">
+              <div className={clsx(['method-label', item.httpMethod.toLowerCase()])}>
+                {item.httpMethod}
+              </div>
+              {item.annotation && <h4 className="item-annotation">{item.annotation}</h4>}
+            </div>
+          )}
+          {item.annotation && tabs && <h4 className="item-annotation">{item.annotation}</h4>}
+          {item.description && <Description markdown={item.description} />}
           {item.pathVariables && (
             <ResourceBlock
               title="Path parameters"
               keyBlock={`${resourceKey}-${indexMethod}-1`}
+              typeBlock={'path-query'}
               type={pathQueriesViewMode}
               data={{
                 format: 'json',
@@ -93,6 +100,7 @@ export const ResourceMethods: FC<ResourceMethodsProps> = ({methods, resourceKey,
             <ResourceBlock
               keyBlock={`${resourceKey}-${indexMethod}-3`}
               title="Query"
+              typeBlock={'path-query'}
               hideTitle={!!item.query?.example}
               type={pathQueriesViewMode}
               data={item.query}
@@ -104,7 +112,8 @@ export const ResourceMethods: FC<ResourceMethodsProps> = ({methods, resourceKey,
                 <ResourceBlock
                   keyBlock={`${resourceKey}-${indexMethod}-4`}
                   title="Request headers"
-                  type={pathQueriesViewMode}
+                  type={headersBodiesViewMode}
+                  typeBlock={'header-body'}
                   data={item.request.headers}
                   directiveType="header"
                 />
@@ -112,6 +121,7 @@ export const ResourceMethods: FC<ResourceMethodsProps> = ({methods, resourceKey,
               <ResourceBlock
                 keyBlock={`${resourceKey}-${indexMethod}-5`}
                 title="Request body"
+                typeBlock={'header-body'}
                 type={headersBodiesViewMode}
                 data={item.request.body}
               />
@@ -126,14 +136,16 @@ export const ResourceMethods: FC<ResourceMethodsProps> = ({methods, resourceKey,
                   {response.headers && (
                     <ResourceBlock
                       keyBlock={`${resourceKey}-${indexMethod}-6-rh-${index}`}
+                      typeBlock={'header-body'}
                       title="Response headers"
-                      type={pathQueriesViewMode}
+                      type={headersBodiesViewMode}
                       data={response.headers}
                       directiveType="header"
                     />
                   )}
                   <ResourceBlock
                     keyBlock={`${resourceKey}-${indexMethod}-6-rb-${index}`}
+                    typeBlock={'header-body'}
                     title="Response body"
                     type={headersBodiesViewMode}
                     data={response.body}

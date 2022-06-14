@@ -1,4 +1,16 @@
 @font-face {
+  font-family: 'fontello';
+  src: url('../assets/fonts/fontello/fontello.eot');
+  src: url('../assets/fonts/fontello/fontello.eot?#iefix') format('embedded-opentype'),
+  url('../assets/fonts/fontello/fontello.woff2') format('woff2'),
+  url('../assets/fonts/fontello/fontello.woff') format('woff'),
+  url('../assets/fonts/fontello/fontello.ttf') format('truetype'),
+  url('../assets/fonts/fontello/fontello.svg#fontello') format('svg');
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
   font-family: 'IBMPlexSans';
   src: url('../assets/fonts/IBMPlexSans-Bold/IBMPlexSans-Bold.eot');
   src: url('../assets/fonts/IBMPlexSans-Bold/IBMPlexSans-Bold.eot?#iefix')

@@ -10,6 +10,7 @@
 8. Markdown tests.
 9. Details card tests.
 10. Table View tests.
+11. Settings tests.
 
 # Contents Sidebar tests
 
@@ -25,3 +26,7 @@
 # Logo
 
 1. Check that "Powered by JSight" panel click directs to editor page.
+
+# Upload
+
+1. Review all resources, which are uploaded during opening the HTML file.

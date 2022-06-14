@@ -1,7 +1,6 @@
-import React, {createContext, useState, FC} from 'react';
+import React, {createContext, useState} from 'react';
 import {SidebarContent} from '../SidebarContent';
 import {Settings} from '../Settings';
-import {MainContext} from 'store/MainStore';
 
 interface GlobalSettingsContextInterface {
   isOpen: boolean;
@@ -24,9 +23,10 @@ interface LayoutProps {
   isShowSidebar: boolean;
   isShowSettings: boolean;
   side: 'left' | 'right';
+  children?: React.ReactNode;
 }
 
-export const Layout: FC<LayoutProps> = ({children, isShowSidebar, isShowSettings, side}) => {
+export const Layout = ({children, isShowSidebar, isShowSettings, side}: LayoutProps) => {
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const [tabs, setTabs] = useState<boolean>(true);
   const [headersBodiesCode, setHeadersBodiesCode] = useState<boolean>(true);
@@ -52,7 +52,7 @@ export const Layout: FC<LayoutProps> = ({children, isShowSidebar, isShowSettings
       }}
     >
       <>
-        {/*{isShowSettings && <Settings />}*/}
+        {isShowSettings && <Settings />}
         <SidebarContent side={side} isShowSettings={isShowSettings} isShow={isShowSidebar} />
       </>
       {children}

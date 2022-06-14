@@ -1,0 +1,68 @@
+JSIGHT 0.3
+
+INFO
+  Description
+  (
+    Change the "Types" setting and check, that only 
+    the first level types are expanded.
+  )
+
+URL /types/{stub}
+  Path
+  {
+    "stub": @mustExpandScalar
+  }
+  
+  GET
+    Query
+      @mustExpand
+    Request
+      Headers
+      {
+        "mustExpand": @mustExpand
+      }
+      Body
+      [
+        @mustExpand,
+        @mustExpand
+      ]
+    200
+      Headers
+        @mustExpand
+      Body
+      {
+        "1": @mustExpand,
+        "2": @mustExpand,
+        "3": [
+          @mustExpand,
+          @mustExpand
+        ],
+        "4": @mustExpandList
+      }
+
+TYPE @type
+  @mustExpand
+
+TYPE @____________________________STOP____________________________ /*
+   Thank you! No need to check types below. */
+  "Thank you! No need to check types below."
+
+TYPE @mustExpand
+{
+  "state": "EXPANDED!",
+  "friend": @mustNot
+}
+
+TYPE @mustExpandScalar
+  "EXPANDED!"
+
+TYPE @mustExpandList
+[
+  @mustNot,
+  @mustNot
+]
+
+TYPE @mustNot
+{
+  "MUST NOT EXPAND!": "MUST NOT EXPAND!"
+}

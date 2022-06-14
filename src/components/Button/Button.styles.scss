@@ -1,5 +1,23 @@
 @import 'src/styles/variables';
 
+.group-btn {
+  display: flex;
+
+  .btn:not(:first-child) {
+    border-top-left-radius: 0;
+    border-bottom-left-radius: 0;
+  }
+
+  .btn:not(:last-child) {
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0;
+  }
+
+  .btn+.btn {
+    margin-left: -1px;
+  }
+}
+
 .btn {
   padding-left: 2.4rem;
   padding-right: 2.4rem;
@@ -7,10 +25,20 @@
   font-weight: 500;
   font-size: 1.4rem;
   line-height: 1.8rem;
+  color: $secondary-text;
+  border: 1px $secondary-stroke solid;
+
+  &.only-icon {
+    width: 4.8rem;
+    padding: 0;
+    background-color: $background;
+
+    i {
+      margin-right: 0;
+    }
+  }
 
   &.shadow {
-    color: $secondary-text;
-    border: 1px $secondary-stroke solid;
     box-shadow: 0 4px 16px rgba(213, 213, 213, 0.25), 0 0 12px rgba(213, 213, 213, 0.04),
       0 2px 2px rgba(213, 213, 213, 0.05);
   }
@@ -22,5 +50,12 @@
 
   i {
     margin-right: 0.8rem;
+  }
+
+  &.icon-right {
+    i {
+      margin-right: 0;
+      margin-left: 0.8rem;
+    }
   }
 }
