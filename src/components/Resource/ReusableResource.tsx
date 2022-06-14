@@ -28,7 +28,7 @@ export const ReusableResource = ({
   return (
     <div className="resource-wrapper">
       <div className={clsx(['resource-content', className])}>
-        <h4>{name}</h4>
+        <h4 className="type">{name}</h4>
         {annotation && <div className="annotation">{annotation}</div>}
         {schema ? (
           <SchemaView type="code" keyBlock={keyBlock} schema={schema} hideUsedElements={true} />

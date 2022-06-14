@@ -6,7 +6,7 @@ import {MainContent} from 'components/MainContent';
 import {Layout} from 'components/Layout';
 import './Editor.styles.scss';
 import 'react-toastify/dist/ReactToastify.css';
-import {ContactForm} from 'components/Modals/ContactForm';
+import {Contacts} from 'components/Modals/Contacts';
 import {screenWidthMultiplier} from 'utils/screenWidthMultiplier';
 import {editorModeType, ErrorType, SidebarDocType} from 'types';
 import {JDocContext, SidebarContext} from 'store';
@@ -143,10 +143,7 @@ export const EditorScreen = () => {
         </SidebarContext.Provider>
         <ToastContainer rtl={true} position="bottom-right" />
       </div>
-      <ContactForm
-        modalIsOpen={contactModalVisible}
-        onClose={() => setContactModalVisible(false)}
-      />
+      <Contacts modalIsOpen={contactModalVisible} onClose={() => setContactModalVisible(false)} />
     </JDocContext.Provider>
   );
 };

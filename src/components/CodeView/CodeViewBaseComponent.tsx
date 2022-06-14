@@ -45,18 +45,20 @@ export const CodeViewBaseComponent = ({
 
   return (
     <div ref={codeViewRef} className="code-view flex-auto">
-      <div className="header">
+      <div className={clsx('header', {collapsed: isCollapsible && !isOpen})}>
         <div className={nameClasses} onClick={toggle}>
           {isCollapsible && <i className={isOpen ? 'icon-arrow-down' : 'icon-arrow-right'} />}
           {name || ''}
         </div>
-        <ControlElements
-          keyBlock={keyBlock}
-          initType={'code'}
-          ableChangeView={true}
-          ableExpandRules={true}
-          ableExpandTypes={true}
-        />
+        {((isOpen && isCollapsible) || !isCollapsible) && (
+          <ControlElements
+            keyBlock={keyBlock}
+            initType={'code'}
+            ableChangeView={true}
+            ableExpandRules={true}
+            ableExpandTypes={true}
+          />
+        )}
       </div>
       <Wrapper isCollapsible={!!isCollapsible} isOpen={isOpen}>
         <pre>
