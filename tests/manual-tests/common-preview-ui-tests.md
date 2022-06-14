@@ -43,10 +43,6 @@
 
 ### Check scroll up and down using Pg Up, Pg Down, Cursor Down Arrow, Cursor Up Arrow
 
-### Check support window
-
-1. Open some item in contents sidebar. Check support window then (Ask a question, report a bug).
-
 ### Schema section must remember its state
 
 1. Change something in doc field, e. g.:
