@@ -65,6 +65,7 @@ export const ControlElements = ({
 
   const isHideCopy = false;
   const isExampleView = false;
+  const offsetY = 6;
 
   return (
     <div className="d-flex control-elements">
@@ -74,7 +75,7 @@ export const ControlElements = ({
             <i className="icon-notebook" />
             <i className="icon-arrow-down" />
           </DropdownToggle>
-          <DropdownMenu offsetY={6}>
+          <DropdownMenu offsetY={offsetY}>
             <div className="item">
               <i className="icon-notebook" />
               <span>Copy example</span>
@@ -96,7 +97,7 @@ export const ControlElements = ({
             <i className={iconViewMode} />
             <i className="icon-arrow-down" />
           </DropdownToggle>
-          <DropdownMenu offsetY={6}>
+          <DropdownMenu offsetY={offsetY}>
             <div
               onClick={() => setViewType(keyBlock, 'code')}
               className={clsx(['item', {active: viewType === 'code'}])}
@@ -128,7 +129,7 @@ export const ControlElements = ({
             <i className={iconTypes} />
             <i className="icon-arrow-down" />
           </DropdownToggle>
-          <DropdownMenu offsetY={6}>
+          <DropdownMenu offsetY={offsetY}>
             <div
               onClick={() => {
                 setExpandedTypes(keyBlock, true);
