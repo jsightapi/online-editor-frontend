@@ -1,5 +1,4 @@
 import React from 'react';
-import {Link} from 'react-router-dom';
 import {Dropdown} from 'components/Dropdown';
 import {DropdownToggle} from 'components/Dropdown/DropdownToggle';
 import {DropdownMenu} from 'components/Dropdown/DropdownMenu';
@@ -41,9 +40,10 @@ const menu: MenuType[] = [
 const DocsMenuItems = ({setIsMenuOpened}: DocsMenuItemsProps) => (
   <ul className="menu-items">
     {menu.map((v, key) => (
-      <Link
-        to={{pathname: v.link}}
+      <a
+        href={v.link}
         target="_blank"
+        rel="noreferrer noopener"
         key={key}
         onClick={() => setIsMenuOpened(false)}
       >
@@ -51,7 +51,7 @@ const DocsMenuItems = ({setIsMenuOpened}: DocsMenuItemsProps) => (
           <span>{v.name}</span>
           <img src={ExternalLink} />
         </li>
-      </Link>
+      </a>
     ))}
   </ul>
 );
