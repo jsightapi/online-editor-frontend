@@ -3,7 +3,6 @@
   border-radius: 4px 4px 0 0;
   overflow: hidden;
   position: relative;
-  margin-bottom: 2.4rem;
 
   thead {
     background-color: #f0f0f0;
@@ -27,11 +26,13 @@
       }
     }
   }
+
   tbody {
     tr {
       td:first-of-type {
         padding-left: 3.6rem;
       }
+
       &.divider {
         td {
           position: absolute;
@@ -40,9 +41,11 @@
           border-bottom: 1px solid #f0f0f2;
         }
       }
+
       td:nth-child(2) {
         padding-right: 16px;
       }
+
       td:nth-child(3) {
         max-width: 700px;
       }
@@ -52,6 +55,15 @@
       vertical-align: top;
       padding: 3rem 0 2rem;
       line-height: 2.4rem;
+
+      &:not(:first-child) {
+        padding-top: 3.9rem;
+      }
+
+      pre {
+        margin: 0;
+      }
+
       .code-font {
         font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New', monospace;
       }

@@ -1,5 +1,5 @@
-import React, {FC, useState} from 'react';
-import {Collapse} from 'react-collapse';
+import React, {useMemo, useState} from 'react';
+import AnimateHeight from 'react-animate-height';
 import './CollapsibleConent.scss';
 
 interface CollapsibleContentProps {
@@ -9,22 +9,28 @@ interface CollapsibleContentProps {
 }
 
 export const CollapsibleContent = ({children, title, rightContent}: CollapsibleContentProps) => {
-  const [isOpen, setIsOpen] = useState<boolean>(false);
+  const [height, setHeight] = useState<string | number>(0);
 
   const toggle = () => {
-    setIsOpen((prev) => !prev);
+    setHeight((prev) => (prev === 0 ? 'auto' : 0));
   };
+
+  const iconClassName = useMemo(() => (height === 0 ? 'icon-arrow-down' : 'icon-arrow-right'), [
+    height,
+  ]);
 
   return (
     <div className="collapsible-content">
       <div className="d-flex header">
         <span className="flex-auto" onClick={toggle}>
-          <i className={isOpen ? 'icon-arrow-down' : 'icon-arrow-right'} />
+          <i className={iconClassName} />
           {title}
         </span>
         {rightContent}
       </div>
-      <Collapse isOpened={isOpen}>{children}</Collapse>
+      <AnimateHeight duration={500} height={height}>
+        {children}
+      </AnimateHeight>
     </div>
   );
 };

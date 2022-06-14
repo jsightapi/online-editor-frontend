@@ -1,7 +1,7 @@
 import React, {useContext} from 'react';
 import {Link, useParams} from 'react-router-dom';
 import {MainRouterParams} from 'types/router';
-import {CollapsibleContent} from '../CollapsibleContent/CollapsibleContentNew';
+import {CollapsibleContent} from '../CollapsibleContent';
 import clsx from 'clsx';
 import {SidebarContext} from 'store';
 

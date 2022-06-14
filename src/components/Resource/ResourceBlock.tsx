@@ -46,9 +46,9 @@ export const ResourceBlock = ({
   };
 
   return (
-    <>
-      {!hideTitle && <h4>{title}</h4>}
+    <div>
+      {!hideTitle && <h4 className="resource-title">{title}</h4>}
       {renderView()}
-    </>
+    </div>
   );
 };

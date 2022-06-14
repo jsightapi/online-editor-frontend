@@ -70,7 +70,7 @@
 
   .body {
     height: $app-header-height;
-    padding: 16px 32px;
+    padding: 1.6rem 3.2rem;
     box-shadow: 0 6.0308px 22.3363px rgba(0, 0, 0, 0.0325822),
       0 1.79553px 6.6501px rgba(0, 0, 0, 0.0223074);
   }
@@ -96,14 +96,14 @@
   .menu {
     flex: 1;
     display: flex;
+    gap: 3.6rem;
 
-    &-switcher {
-      font-size: 14px;
-      text-align: left;
-      margin-left: 48px;
-      font-weight: 500;
-      margin-top: 10px;
-      cursor: pointer;
+    .item {
+      display: flex;
+
+      button {
+        font-weight: 500;
+      }
 
       i {
         font-size: 0.7rem;
@@ -121,18 +121,17 @@
       }
     }
 
-    &-items {
-      flex-direction: column;
-      row-gap: 24px;
+    .dropdown {
+      display: flex;
+      align-items: center;
+    }
 
+    .dropdown-items {
       li {
         display: flex;
         align-items: center;
-        font-size: 14px;
-        font-style: normal;
-        font-weight: 500;
-        text-align: left;
-        padding: 10px;
+        padding: 1rem;
+        cursor: pointer;
 
         &:hover {
           background: $main-stroke;
@@ -142,25 +141,27 @@
         }
       }
     }
+
     .dropdown-menu {
       border: 0;
       border-radius: 0;
       background: $background;
+      top: 0.5rem !important;
     }
   }
 
   .logo {
     position: relative;
     flex-shrink: 0;
-    padding-right: 30px;
+    padding-right: 4.8rem;
 
     span {
       position: absolute;
       top: 0;
       right: 0;
       color: $main-grey;
-      font-size: 12px;
-      line-height: 16px;
+      font-size: 1.2rem;
+      line-height: 1.6rem;
       font-weight: 500;
     }
 

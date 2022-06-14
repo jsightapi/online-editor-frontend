@@ -8,6 +8,7 @@ import {Description} from '../Description';
 import {MainContext} from 'store';
 import {ResourceMethodsTabs} from 'components/Resource/ResourceMethodsTabs';
 import './ResourceMethods.styles.scss';
+import {ResourceResponses} from 'components/Resource/ResourceResponses';
 
 interface ResourceMethodsProps {
   methods: ResourceType[];
@@ -46,7 +47,7 @@ export const ResourceMethods = ({methods, resourceKey, index}: ResourceMethodsPr
   };
 
   const getDisplayValue = (httpMethod: string) =>
-    tabs ? (httpMethod === currentMethod?.httpMethod ? 'block' : 'none') : 'block';
+    tabs ? (httpMethod === currentMethod?.httpMethod ? 'flex' : 'none') : 'flex';
 
   return (
     <>
@@ -70,10 +71,10 @@ export const ResourceMethods = ({methods, resourceKey, index}: ResourceMethodsPr
               <div className={clsx(['method-label', item.httpMethod.toLowerCase()])}>
                 {item.httpMethod}
               </div>
-              {item.annotation && <h4 className="item-annotation">{item.annotation}</h4>}
+              {item.annotation && <h4 className="method-annotation">{item.annotation}</h4>}
             </div>
           )}
-          {item.annotation && tabs && <h4 className="item-annotation">{item.annotation}</h4>}
+          {item.annotation && tabs && <h4 className="method-annotation">{item.annotation}</h4>}
           {item.description && <Description markdown={item.description} />}
           {item.pathVariables && (
             <ResourceBlock
@@ -112,7 +113,8 @@ export const ResourceMethods = ({methods, resourceKey, index}: ResourceMethodsPr
                 <ResourceBlock
                   keyBlock={`${resourceKey}-${indexMethod}-4`}
                   title="Request headers"
-                  type={pathQueriesViewMode}
+                  type={headersBodiesViewMode}
+                  typeBlock={'header-body'}
                   data={item.request.headers}
                   directiveType="header"
                 />
@@ -127,31 +129,12 @@ export const ResourceMethods = ({methods, resourceKey, index}: ResourceMethodsPr
             </>
           )}
           {item.responses && (
-            <>
-              <div className="title">Responses</div>
-              {item.responses.map((response, index) => (
-                <div key={`response-${response.code}-${index}`}>
-                  <ResponseCode code={response.code} annotation={response.annotation} />
-                  {response.headers && (
-                    <ResourceBlock
-                      keyBlock={`${resourceKey}-${indexMethod}-6-rh-${index}`}
-                      typeBlock={'header-body'}
-                      title="Response headers"
-                      type={headersBodiesViewMode}
-                      data={response.headers}
-                      directiveType="header"
-                    />
-                  )}
-                  <ResourceBlock
-                    keyBlock={`${resourceKey}-${indexMethod}-6-rb-${index}`}
-                    typeBlock={'header-body'}
-                    title="Response body"
-                    type={headersBodiesViewMode}
-                    data={response.body}
-                  />
-                </div>
-              ))}
-            </>
+            <ResourceResponses
+              responses={item.responses}
+              resourceKey={resourceKey}
+              indexMethod={indexMethod}
+              headersBodiesViewMode={headersBodiesViewMode}
+            />
           )}
         </div>
       ))}

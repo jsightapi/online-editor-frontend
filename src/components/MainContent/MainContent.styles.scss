@@ -23,28 +23,20 @@
     }
   }
 
-  h2 {
+  .resource-header, .reusable-header {
+    margin: 0 3rem 3.2rem;
     font-size: 2.8rem;
-    line-height: 3.64rem;
+    line-height: 3.6rem;
     font-weight: 600;
+  }
+
+  .resource-header {
     padding-bottom: 1.2rem;
+    border-bottom: 1px solid $secondary-stroke;
   }
 
-  hr {
-    width: 100%;
-    height: 1px;
-    background-color: #aab0b7;
-    opacity: 0.5;
-    margin: 0;
-    border: 0;
-  }
-
-  h3 {
-    margin-top: 3.2rem;
-    font-weight: 500;
-    font-size: 2.4rem;
-    line-height: 3.12rem;
-    margin-bottom: 1.2rem;
+  .reusable-header {
+    margin-top: 2.4rem;
   }
 }
 
@@ -64,9 +56,4 @@
 
 .main-resources {
   height: 100%;
-}
-
-.group-header {
-  padding-left: 3rem;
-  padding-right: 3rem;
 }
