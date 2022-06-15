@@ -36,6 +36,14 @@ When click to this item, the warning window must appear. Check:
 - Reset button, 
 - closing cross button.
 
+### "Docs"
+
+- Check each link in the Docs section.
+
+### "Ask a question"
+
+- Check "Ask a question" menu item.
+
 ## Code editor
 
 ### Editor-Render separator
