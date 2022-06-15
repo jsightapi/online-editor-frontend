@@ -73,9 +73,9 @@ Code content should not be changed.
 4. Move vertical line between code and docs. Open contents sidebar. Check that it does not overlap
    docs and does not leave empty space between docs and contents sidebar. Repeat several times in
    different positions of vertical line.
-5. Check any item in contents sidebar. Scroll away manually from this place. Change something in the
-   code. Check that documentation stays in the same place after refresh and do not scroll back to
-   the previous position.
+5. [!Important!] Check any item in contents sidebar. Scroll away manually from this place. Change
+   something in the code. Check that documentation stays in the same place after refresh and do not
+   scroll back to the previous position.
 6. Check that Contents works fine when there are a huge amount of items (vertical scroll must work).
 
 ## Performance

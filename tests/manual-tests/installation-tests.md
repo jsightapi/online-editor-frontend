@@ -1,5 +1,7 @@
 # Installation tests
 
+Check the installation guides in the readme files of the repositories.
+
 ## Online Editor Frontend
 
 1. Check happy install cases in the `Getting started` section.

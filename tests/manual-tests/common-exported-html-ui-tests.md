@@ -38,6 +38,7 @@
 1. Change something in doc field, e. g.:
    - schema section mode (e. g. Expand Types, Table View, Code View);
    - expand some type;
+   - collapse some `allOf` rule;
    - switch to some method (e. g. from GET to POST).
 2. Scroll up or down and come back.
 3. Check that schema section is in the same state as it was before scroll.

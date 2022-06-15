@@ -26,7 +26,7 @@
 1. Open the existing link in an other browser. Check that the code was properly saved.
 2. Check that the Share button is disabled.
 3. Change the JSight code. Check that the Share button is enabled.
-4. Click on Share → Save API.
+4. Click on `Share` → `Save API`.
 5. Check the new link (in the popup window and in the browser address line): the key must be new,
    the version number must be `1`. Copy the link and close the window.
 6. Check, that now the Share button is disabled.
@@ -80,6 +80,7 @@
    all steps in the same browser window without refresh.
 10. **Update not last version.** Get link with several versions (e.g. 3). Try to reproduce basic
     share test cases 2 and 3, but each time use not last version of the link (e.g. 1).
+11. **Empty code.** Repeat all the basic share test cases, but share an empty code each time.
 
 # Error cases
 
