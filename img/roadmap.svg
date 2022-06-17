@@ -1,0 +1,45 @@
+<svg width="1012" height="424" viewBox="0 0 1012 424" fill="none" xmlns="http://www.w3.org/2000/svg">
+<rect width="1012" height="424" rx="8" fill="#F8F8FA"/>
+<path opacity="0.5" d="M527 143H530V422.5C530 423.328 529.328 424 528.5 424V424C527.672 424 527 423.328 527 422.5V143Z" fill="#DBDBE1"/>
+<path opacity="0.5" d="M63 0H67V298C67 299.105 66.1046 300 65 300V300C63.8954 300 63 299.105 63 298V0Z" fill="#DBDBE1"/>
+<text fill="#1B1128" xml:space="preserve" style="white-space: pre" font-family="Helvetica" font-size="14" font-weight="bold" letter-spacing="0em"><tspan x="89" y="48.8296">Jun 2022</tspan></text>
+<text fill="#1B1128" xml:space="preserve" style="white-space: pre" font-family="Arial" font-size="13" letter-spacing="0em"><tspan x="89" y="72.0068">API is saved in the cloud, updated when new versions are created, </tspan><tspan x="89" y="91.0068">and shared via a unique URL.</tspan></text>
+<text fill="#1B1128" xml:space="preserve" style="white-space: pre" font-family="Helvetica" font-size="14" font-weight="bold" letter-spacing="0em"><tspan x="89" y="128.83">Apr &#x2013; Nov 2022</tspan></text>
+<text fill="#1B1128" xml:space="preserve" style="white-space: pre" font-family="Arial" font-size="13" letter-spacing="0em"><tspan x="89" y="154.007">Minor UI improvements.</tspan></text>
+<text fill="#1B1128" xml:space="preserve" style="white-space: pre" font-family="Helvetica" font-size="14" font-weight="bold" letter-spacing="0em"><tspan x="89" y="191.83">Jul 2022</tspan></text>
+<text fill="#1B1128" xml:space="preserve" style="white-space: pre" font-family="Arial" font-size="13" letter-spacing="0em"><tspan x="89" y="217.007">JSON-RPC 2.0 support.</tspan></text>
+<text fill="#1B1128" xml:space="preserve" style="white-space: pre" font-family="Helvetica" font-size="14" font-weight="bold" letter-spacing="0em"><tspan x="89" y="254.83">Aug 2022</tspan></text>
+<text fill="#1B1128" xml:space="preserve" style="white-space: pre" font-family="Arial" font-size="13" letter-spacing="0em"><tspan x="89" y="280.007">Download document in MarkDown, PDF, and DOCX formats.</tspan></text>
+<text fill="#1B1128" xml:space="preserve" style="white-space: pre" font-family="Helvetica" font-size="14" font-weight="bold" letter-spacing="0em"><tspan x="89" y="317.83">Aug 2022</tspan></text>
+<text fill="#1B1128" xml:space="preserve" style="white-space: pre" font-family="Arial" font-size="13" letter-spacing="0em"><tspan x="89" y="343.007">Quick Help built into the editor allows you to quickly access the </tspan><tspan x="89" y="362.007">necessary information on the JSight API language without leaving </tspan><tspan x="89" y="381.007">the editor.</tspan></text>
+<text fill="#1B1128" xml:space="preserve" style="white-space: pre" font-family="Helvetica" font-size="14" font-weight="bold" letter-spacing="0em"><tspan x="552" y="48.8296">Sep 2022</tspan></text>
+<text fill="#1B1128" xml:space="preserve" style="white-space: pre" font-family="Arial" font-size="13" letter-spacing="0em"><tspan x="552" y="74.0068">Converting the JSight specification to OpenAPI and vice versa. </tspan></text>
+<text fill="#1B1128" xml:space="preserve" style="white-space: pre" font-family="Arial" font-size="13" letter-spacing="0em"><tspan x="552" y="101.007">Automatic generation of API clients and API server stubs.</tspan></text>
+<text fill="#1B1128" xml:space="preserve" style="white-space: pre" font-family="Helvetica" font-size="14" font-weight="bold" letter-spacing="0em"><tspan x="552" y="138.83">Aug &#x2013; Dec 2022</tspan></text>
+<text fill="#1B1128" xml:space="preserve" style="white-space: pre" font-family="Arial" font-size="13" letter-spacing="0em"><tspan x="552" y="164.007">Support for other types of API: gRPC, Kafka, RabbitMQ, WebSocket.</tspan></text>
+<text fill="#1B1128" xml:space="preserve" style="white-space: pre" font-family="Helvetica" font-size="14" font-weight="bold" letter-spacing="0em"><tspan x="552" y="201.83">Oct 2022</tspan></text>
+<text fill="#1B1128" xml:space="preserve" style="white-space: pre" font-family="Arial" font-size="13" letter-spacing="0em"><tspan x="552" y="227.007">Sending test requests to the API.</tspan></text>
+<text fill="#1B1128" xml:space="preserve" style="white-space: pre" font-family="Helvetica" font-size="14" font-weight="bold" letter-spacing="0em"><tspan x="552" y="264.83">Nov 2022</tspan></text>
+<text fill="#1B1128" xml:space="preserve" style="white-space: pre" font-family="Arial" font-size="13" letter-spacing="0em"><tspan x="552" y="290.007">Create a virtual server on click.</tspan></text>
+<path d="M64 25.5C64 24.6716 64.6716 24 65.5 24V24C66.3284 24 67 24.6716 67 25.5V424H64V25.5Z" fill="url(#paint0_linear_561_4614)"/>
+<path d="M527 0H530V304.5C530 305.328 529.328 306 528.5 306V306C527.672 306 527 305.328 527 304.5V0Z" fill="url(#paint1_linear_561_4614)"/>
+<path d="M67 249H76C76.5523 249 77 249.448 77 250V250C77 250.552 76.5523 251 76 251H67V249Z" fill="#51C0AA"/>
+<path d="M67 312H76C76.5523 312 77 312.448 77 313V313C77 313.552 76.5523 314 76 314H67V312Z" fill="#45BBC7"/>
+<path d="M67 186H76C76.5523 186 77 186.448 77 187V187C77 187.552 76.5523 188 76 188H67V186Z" fill="#5DC68C"/>
+<path d="M530 196H539C539.552 196 540 196.448 540 197V197C540 197.552 539.552 198 539 198H530V196Z" fill="#66CA76"/>
+<path d="M530 259H539C539.552 259 540 259.448 540 260V260C540 260.552 539.552 261 539 261H530V259Z" fill="#75D24F"/>
+<path d="M67 123H76C76.5523 123 77 123.448 77 124V124C77 124.552 76.5523 125 76 125H67V123Z" fill="#69CC6E"/>
+<path d="M530 133H539C539.552 133 540 133.448 540 134V134C540 134.552 539.552 135 539 135H530V133Z" fill="#56C39D"/>
+<path d="M67 43H76C76.5523 43 77 43.4477 77 44V44C77 44.5523 76.5523 45 76 45H67V43Z" fill="#78D349"/>
+<path d="M530 43H539C539.552 43 540 43.4477 540 44V44C540 44.5523 539.552 45 539 45H530V43Z" fill="#41B9D3"/>
+<defs>
+<linearGradient id="paint0_linear_561_4614" x1="67.2678" y1="424" x2="67.2678" y2="-4.04428" gradientUnits="userSpaceOnUse">
+<stop stop-color="#30B0FB"/>
+<stop offset="1" stop-color="#80D731"/>
+</linearGradient>
+<linearGradient id="paint1_linear_561_4614" x1="530.268" y1="306" x2="530.268" y2="-21.4539" gradientUnits="userSpaceOnUse">
+<stop stop-color="#80D731"/>
+<stop offset="1" stop-color="#30B0FB"/>
+</linearGradient>
+</defs>
+</svg>
