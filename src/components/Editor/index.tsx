@@ -242,7 +242,7 @@ export const Editor = ({
       }
     }
     // eslint-disable-next-line
-  }, [isEditorLoaded, errorRow, content]);
+  }, [isEditorLoaded, errorRow, content, key, version]);
 
   useEffect(() => {
     if (reload && isEditorLoaded) {
