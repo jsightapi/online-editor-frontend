@@ -70,7 +70,6 @@ export const Editor = ({
   const decorationsRef = useRef<string[]>([]);
   const [isEditorLoaded, setIsEditorLoaded] = useState<boolean>(false);
   const dontUpdateSharingBtn = useRef<boolean>(false);
-
   const languagesList = ['jsight', 'jschema', 'markdown'];
   const currentLanguage = 'jsight';
 
@@ -157,8 +156,10 @@ export const Editor = ({
           scrollbar: {
             useShadows: false,
             vertical: 'visible',
-            verticalHasArrows: true,
-            arrowSize: 15,
+            verticalHasArrows: false,
+            horizontalHasArrows: false,
+            verticalScrollbarSize: 8,
+            horizontalScrollbarSize: 8,
           },
           contextmenu: false,
           renderLineHighlight: 'none',
@@ -247,7 +248,7 @@ export const Editor = ({
       }
     }
     // eslint-disable-next-line
-  }, [isEditorLoaded, errorRow, content]);
+  }, [isEditorLoaded, errorRow, content, key, version]);
 
   useEffect(() => {
     if (reload && isEditorLoaded) {

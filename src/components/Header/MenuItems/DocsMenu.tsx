@@ -38,7 +38,7 @@ const menu: MenuType[] = [
 ];
 
 const DocsMenuItems = ({setIsMenuOpened}: DocsMenuItemsProps) => (
-  <ul className="menu-items">
+  <ul className="dropdown-items">
     {menu.map((v, key) => (
       <a
         href={v.link}

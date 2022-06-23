@@ -8,7 +8,7 @@
   display: none;
   float: left;
   min-width: 10rem;
-  padding: 1rem 1.8rem 1rem 1.4rem;
+  padding: 1.2rem;
   color: #212529;
   text-align: left;
   list-style: none;
@@ -35,6 +35,10 @@
       font-size: 17px;
       top: 2px;
       position: relative;
+    }
+
+    [class^='icon-']+span {
+      margin-left: 1.2rem;
     }
 
     &.active {

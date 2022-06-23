@@ -24,13 +24,13 @@
 }
 
 .notification-error {
-  padding: 2.4rem !important;
   z-index: 9999;
-  width: 47vw;
-  right: 27vw;
+  width: 65.5rem;
+  right: 38rem;
 
   &.error {
     background: $secondary-red;
+    padding: 2.4rem;
   }
 
   .Toastify {
@@ -46,12 +46,7 @@
     &__toast-icon {
       margin-inline-end: 0;
       width: 1.6rem;
-
-      svg {
-        fill: #fff;
-        width: 1.6rem;
-        margin-top: 0.3rem;
-      }
+      color: #fff;
     }
   }
 }
@@ -64,6 +59,11 @@
     font-size: 1.6rem;
     font-weight: 600;
     margin-bottom: 0.6rem;
+    line-height: 2.1rem;
+  }
+
+  .message {
+    line-height: 2.1rem;
   }
 
   .btn-close {

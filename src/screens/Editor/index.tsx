@@ -14,7 +14,7 @@ import {Header} from 'components/Header';
 import {initCats} from 'screens/Editor/initCats';
 import {initDogs} from 'screens/Editor/initDogs';
 import {initPigs} from 'screens/Editor/initPigs';
-import {ContactForm} from 'components/Modals/ContactForm';
+import {Contacts} from 'components/Modals/Contacts';
 import {HeaderDoc} from 'components/Header/HeaderDoc';
 import {screenWidthMultiplier} from 'utils/screenWidthMultiplier';
 import {editorModeType, ExamplesType, SidebarDocType} from 'types';
@@ -267,10 +267,7 @@ export const EditorScreen = () => {
         <ToastContainer rtl={false} position="bottom-right" />
       </div>
       {!isExport && (
-        <ContactForm
-          modalIsOpen={contactModalVisible}
-          onClose={() => setContactModalVisible(false)}
-        />
+        <Contacts modalIsOpen={contactModalVisible} onClose={() => setContactModalVisible(false)} />
       )}
       <SharingForm
         modalIsOpen={sharingModalVisible}

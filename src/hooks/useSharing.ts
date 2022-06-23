@@ -7,6 +7,7 @@ import {SharingContext} from 'store/SharingStore';
 import {MainRouterParams} from 'types';
 import {notificationIds} from 'utils/notificationIds';
 import {SharingErrorNotification} from 'components/Notifications/SharingErrorNotification';
+import {IconError} from 'components/Notifications/IconError';
 
 const errorOptions: ToastOptions = {
   closeOnClick: false,
@@ -16,6 +17,7 @@ const errorOptions: ToastOptions = {
   hideProgressBar: true,
   closeButton: true,
   draggable: false,
+  icon: IconError,
 };
 
 export function useSharing() {

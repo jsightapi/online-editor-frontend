@@ -49,17 +49,17 @@ export const Header = ({
       <div className={clsx('body', 'd-flex')}>
         <HeaderLogo />
         <ul className="menu">
-          <li className="menu-switcher" onClick={switchFileMenu}>
+          <li className="item" onClick={switchFileMenu}>
             <FileMenu
               isMenuOpened={fileMenuVisible}
               setIsMenuOpened={setFileMenuVisible}
               setExampleMenuPopup={setExampleMenuPopup}
             />
           </li>
-          <li className="menu-switcher" onClick={switchDocsMenu}>
+          <li className="item" onClick={switchDocsMenu}>
             <DocsMenu isMenuOpened={docsMenuVisible} setIsMenuOpened={setDocsMenuVisible} />
           </li>
-          <li className="menu-switcher">
+          <li className="item">
             <button onClick={() => setContactModalVisible(true)}>Ask a question</button>
           </li>
         </ul>
