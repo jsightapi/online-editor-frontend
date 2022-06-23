@@ -14,6 +14,7 @@ import {JDocType} from 'types/exchange';
 import {SidebarContext, MainContext} from 'store';
 import {ResourceState, SchemaViewType, SelectedLineType} from 'store/MainStore';
 import './MainContent.styles.scss';
+import {usePrevious} from 'hooks/usePrevious';
 
 type SchemaPropertyType =
   | 'collapsedRules'
@@ -43,6 +44,8 @@ export const MainContent = React.memo(({jdocExchange, showRightSidebar}: MainCon
   const [schemasView, setSchemasView] = useState<SchemaViewType[]>([]);
   const [schemasData, setSchemasData] = useState<{[key: string]: SchemaData[]}>({});
   const [resourceState, setResourceState] = useState<ResourceState[]>([]);
+  const prevPath = usePrevious(path);
+  const prevCurrentUrl = usePrevious(currentUrl);
 
   const {isExport} = window as any;
 
@@ -223,7 +226,7 @@ export const MainContent = React.memo(({jdocExchange, showRightSidebar}: MainCon
 
     const index = jdocPositions.indexOf(`${currentPath?.replace(/({|})/gi, '-')}`);
 
-    if (~index && virtuosoRef?.current) {
+    if (~index && virtuosoRef?.current && (prevCurrentUrl !== currentUrl || prevPath !== path)) {
       virtuosoRef.current.scrollToIndex({
         index: index + 1,
         align: 'start',

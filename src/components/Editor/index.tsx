@@ -69,7 +69,7 @@ export const Editor = ({
   const jsightEditor = useRef<monaco.editor.IStandaloneCodeEditor | null>(null);
   const decorationsRef = useRef<string[]>([]);
   const [isEditorLoaded, setIsEditorLoaded] = useState<boolean>(false);
-
+  const dontUpdateSharingBtn = useRef<boolean>(false);
   const languagesList = ['jsight', 'jschema', 'markdown'];
   const currentLanguage = 'jsight';
 
@@ -80,7 +80,9 @@ export const Editor = ({
   const onContentChange = (editor: monaco.editor.IStandaloneCodeEditor) => {
     const content = getEditorValue(editor);
     setContent(content);
-    setDisableSharing(false);
+    if (!dontUpdateSharingBtn.current) {
+      setDisableSharing(false);
+    }
   };
 
   // TODO: "source.${language} is not correct for markdown. MD scope is "text.html.markdown".
@@ -197,28 +199,32 @@ export const Editor = ({
   }, []);
 
   useEffect(() => {
-    if (key && isEditorLoaded) {
-      (async () => {
-        try {
-          const result = await getExistingState(key, version);
-          const resultContent = result.data.content.replace('\\n', '\n');
-          if (jsightEditor.current) {
-            jsightEditor.current?.setValue(resultContent);
+    if (isEditorLoaded) {
+      if (key) {
+        dontUpdateSharingBtn.current = true;
+        (async () => {
+          try {
+            const result = await getExistingState(key, version);
+            const resultContent = result.data.content.replace('\\n', '\n');
+            if (jsightEditor.current) {
+              jsightEditor.current?.setValue(resultContent);
+            }
+            dontUpdateSharingBtn.current = false;
+            if (!version) {
+              history.push(`/r/${result.code}/${result.version}`);
+            }
+          } catch (error) {
+            if (error.Code) {
+              setError({
+                code: error.Code,
+                message: getDefaultErrorMessages(error.Code),
+              });
+            }
           }
-          if (!version) {
-            history.push(`/r/${result.code}/${result.version}`);
-          }
-        } catch (error) {
-          if (error.Code) {
-            setError({
-              code: error.Code,
-              message: getDefaultErrorMessages(error.Code),
-            });
-          }
-        }
-      })();
-    } else {
-      setDisableSharing(false);
+        })();
+      } else {
+        setDisableSharing(false);
+      }
     }
   }, [isEditorLoaded, key, version]);
 
