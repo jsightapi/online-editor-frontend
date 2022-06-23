@@ -1,5 +1,6 @@
 import React from 'react';
 import clsx from 'clsx';
+import {wrapInQuotes} from 'utils/wrapInQuotes';
 
 interface PropNameProps {
   name: string;
@@ -8,7 +9,7 @@ interface PropNameProps {
 
 export const PropName = React.memo(({name, isKeyShortcut}: PropNameProps) => (
   <span>
-    <span className={clsx(['name', {'shortcut-key': isKeyShortcut}])}>{name}</span>
+    <span className={clsx(['name', {'shortcut-key': isKeyShortcut}])}>{wrapInQuotes(name)}</span>
     <span className="punctuation-char">: </span>
   </span>
 ));
