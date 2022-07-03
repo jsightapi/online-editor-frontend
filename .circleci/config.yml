@@ -2,7 +2,7 @@ version: 2.1
 orbs:
   docker: circleci/docker@2.0.3
   jira: circleci/jira@1.3.1
-  common: jsight/common-ci@1.3.5
+  common: jsight/common-ci@1.3.7
 
 
 parameters:
@@ -30,6 +30,7 @@ workflows:
           env: dev
           image: jsight/dev-online-editor-frontend:<< pipeline.parameters.image-tag >>
           notification-message: Dev Online-editor-frontend updated from branch ${CIRCLE_BRANCH} (commit ${CIRCLE_SHA1})
+          trigger-mark: 'pipe << pipeline.number >>'
           post-steps:
             - jira/notify:
                 job_type: deployment
