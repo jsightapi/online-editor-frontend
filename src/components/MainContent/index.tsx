@@ -37,7 +37,7 @@ export const MainContent = React.memo(({jdocExchange, showRightSidebar}: MainCon
   const [jdocPositions, setJdocPositions] = useState<any>([]);
   const {path} = useParams<MainRouterParams>();
   const {currentUrl, currentDocSidebar, setCurrentDocSidebar} = useContext(SidebarContext);
-  const {headersBodiesCode, pathQueriesCode, typesExpand, rulesExpand} = useContext(
+  const {headersBodiesTypesCode, pathQueriesCode, typesExpand, rulesExpand} = useContext(
     GlobalSettingsContext
   );
   const [overscan, setOverscan] = useState(480);
@@ -53,12 +53,12 @@ export const MainContent = React.memo(({jdocExchange, showRightSidebar}: MainCon
     setSchemasView((prev) => {
       return prev.map((item) => {
         if (item.typeBlock === 'header-body') {
-          item['viewType'] = headersBodiesCode ? 'code' : 'table';
+          item['viewType'] = headersBodiesTypesCode ? 'code' : 'table';
         }
         return item;
       });
     });
-  }, [headersBodiesCode]);
+  }, [headersBodiesTypesCode]);
 
   useEffect(() => {
     setSchemasView((prev) => {

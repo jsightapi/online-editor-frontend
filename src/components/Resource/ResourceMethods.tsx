@@ -2,7 +2,6 @@ import React, {useContext, useMemo, useEffect} from 'react';
 import {ResourceType} from 'types/exchange';
 import clsx from 'clsx';
 import {ResourceBlock} from './ResourceBlock';
-import {ResponseCode} from './ResponseCode';
 import {GlobalSettingsContext} from '../Layout';
 import {Description} from '../Description';
 import {MainContext} from 'store';
@@ -17,7 +16,7 @@ interface ResourceMethodsProps {
 }
 
 export const ResourceMethods = ({methods, resourceKey, index}: ResourceMethodsProps) => {
-  const {headersBodiesCode, pathQueriesCode, tabs} = useContext(GlobalSettingsContext);
+  const {headersBodiesTypesCode, pathQueriesCode, tabs} = useContext(GlobalSettingsContext);
   const {resourceState, setResourceState} = useContext(MainContext);
 
   const currentMethod = useMemo(() => {
@@ -38,8 +37,8 @@ export const ResourceMethods = ({methods, resourceKey, index}: ResourceMethodsPr
     pathQueriesCode,
   ]);
 
-  const headersBodiesViewMode = useMemo(() => (headersBodiesCode ? 'code' : 'table'), [
-    headersBodiesCode,
+  const headersBodiesViewMode = useMemo(() => (headersBodiesTypesCode ? 'code' : 'table'), [
+    headersBodiesTypesCode,
   ]);
 
   const setHttpMethod = (method: string) => {
