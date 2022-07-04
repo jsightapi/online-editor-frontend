@@ -10,7 +10,8 @@
   }
 }
 
-.errorLine, .errorLine+.line-numbers {
+.errorLine,
+.errorLine + .line-numbers {
   background: $secondary-red;
   opacity: 0.65;
 }

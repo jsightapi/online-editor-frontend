@@ -3,7 +3,7 @@
 .sidebar-items {
   margin-top: 3.65rem;
 
-  +.sidebar-items {
+  + .sidebar-items {
     margin-top: 2rem;
   }
 
@@ -25,7 +25,7 @@
 
   > ul {
     padding-left: 0;
-    margin-top: .4rem;
+    margin-top: 0.4rem;
 
     > li {
       padding: 1.4rem 0 1.2rem;

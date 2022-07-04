@@ -37,7 +37,7 @@
     "start": "react-app-rewired start",
     "one": "./scripts/save-export-js.sh",
     "build-export": "prettier --write ./src && GENERATE_SOURCEMAP=false REACT_VIEW_TYPE=doc react-app-rewired build && ./scripts/save-export-js.sh",
-    "build": "GENERATE_SOURCEMAP=false react-app-rewired build && ./scripts/return-export-js.sh",
+    "build": "GENERATE_SOURCEMAP=false react-app-rewired build && ./scripts/return-export-js.sh && node createHtmlTemplate.js",
     "test": "react-app-rewired test",
     "eject": "react-scripts eject"
   },
