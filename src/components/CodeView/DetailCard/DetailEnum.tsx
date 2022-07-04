@@ -3,6 +3,7 @@ import {SchemaJSightContentType} from 'types/exchange';
 import {DetailObject} from './DetailObject';
 import clsx from 'clsx';
 import {MainContext} from 'store';
+import {wrapInQuotes} from 'utils/wrapInQuotes';
 
 interface DetailEnumProps {
   keyBlock: string;
@@ -51,7 +52,7 @@ export const DetailEnum = ({keyBlock, items, updateDetailWrapperHeight}: DetailE
           <span key={`${index}-${item.scalarValue}`} className="detail-code-line">
             <span>{' '.repeat(2)}</span>
             <span className={clsx('value', `value-${item.jsonType}`)}>
-              {item.scalarValue?.toString()}
+              {String(wrapInQuotes(item.scalarValue || '', item.jsonType !== 'string'))}
             </span>
             {index + 1 !== items.length && <span className="punctuation-char">, </span>}
           </span>

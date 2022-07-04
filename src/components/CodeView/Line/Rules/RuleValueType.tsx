@@ -6,6 +6,7 @@ import clsx from 'clsx';
 import {ObjectContext} from '../../store/ObjectContext';
 import {ShortcutLines} from '../ShortcutLines';
 import {useSchemaData} from 'components/CodeView/hooks/useSchemaData';
+import {wrapInQuotes} from 'utils/wrapInQuotes';
 
 export const RuleValueType = ({
   schemaName,
@@ -46,7 +47,7 @@ export const RuleValueType = ({
   return (
     <span>
       <span onClick={toggle} className={valueClass}>
-        {value}
+        {wrapInQuotes(value, !valueClass.includes('rule-value-string'))}
       </span>
       {objectSpanRef && objectSpanRef.current && expanded
         ? createPortal(
