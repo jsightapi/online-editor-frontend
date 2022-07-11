@@ -73,6 +73,9 @@ export const Editor = ({
   const languagesList = ['jsight', 'jschema', 'markdown'];
   const currentLanguage = 'jsight';
 
+  // @ts-ignore
+  window['jsightEditor'] = jsightEditor;
+
   const languages: monaco.languages.ILanguageExtensionPoint[] = languagesList.map((id) => ({
     id,
   }));
