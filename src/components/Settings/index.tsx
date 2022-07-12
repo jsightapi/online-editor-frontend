@@ -11,8 +11,8 @@ export const Settings = () => {
     setTabs,
     pathQueriesCode,
     setPathQueriesCode,
-    headersBodiesCode,
-    setHeadersBodiesCode,
+    headersBodiesTypesCode,
+    setHeadersBodiesTypesCode,
     rulesExpand,
     setRulesExpand,
     typesExpand,
@@ -45,12 +45,12 @@ export const Settings = () => {
                 value={tabs}
               />
               <SettingsItem
-                title={'Headers & bodies'}
+                title={'Headers & bodies & types'}
                 firstTab={['list', 'Code view']}
                 secondTab={['table', 'Table view']}
-                onClickFirst={() => setHeadersBodiesCode(true)}
-                onClickSecond={() => setHeadersBodiesCode(false)}
-                value={headersBodiesCode}
+                onClickFirst={() => setHeadersBodiesTypesCode(true)}
+                onClickSecond={() => setHeadersBodiesTypesCode(false)}
+                value={headersBodiesTypesCode}
               />
               <SettingsItem
                 title={'Path & queries'}

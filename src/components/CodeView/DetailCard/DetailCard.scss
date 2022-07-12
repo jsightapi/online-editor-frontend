@@ -139,12 +139,6 @@
 
   .value {
     color: $code-rule-value-sat;
-
-    &-string::before,
-    &-string::after {
-      content: '"';
-      color: $code-rule-value;
-    }
   }
 
   .comment {

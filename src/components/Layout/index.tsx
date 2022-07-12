@@ -5,12 +5,12 @@ import {Settings} from '../Settings';
 interface GlobalSettingsContextInterface {
   isOpen: boolean;
   tabs: boolean;
-  headersBodiesCode: boolean;
+  headersBodiesTypesCode: boolean;
   pathQueriesCode: boolean;
   typesExpand: boolean;
   rulesExpand: boolean;
   setTabs(value: boolean): void;
-  setHeadersBodiesCode(value: boolean): void;
+  setHeadersBodiesTypesCode(value: boolean): void;
   setPathQueriesCode(value: boolean): void;
   setTypesExpand(value: boolean): void;
   setRulesExpand(value: boolean): void;
@@ -29,7 +29,7 @@ interface LayoutProps {
 export const Layout = ({children, isShowSidebar, isShowSettings, side}: LayoutProps) => {
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const [tabs, setTabs] = useState<boolean>(true);
-  const [headersBodiesCode, setHeadersBodiesCode] = useState<boolean>(true);
+  const [headersBodiesTypesCode, setHeadersBodiesTypesCode] = useState<boolean>(true);
   const [pathQueriesCode, setPathQueriesCode] = useState<boolean>(false);
   const [typesExpand, setTypesExpand] = useState<boolean>(false);
   const [rulesExpand, setRulesExpand] = useState<boolean>(false);
@@ -39,13 +39,13 @@ export const Layout = ({children, isShowSidebar, isShowSettings, side}: LayoutPr
       value={{
         isOpen,
         tabs,
-        headersBodiesCode,
+        headersBodiesTypesCode,
         pathQueriesCode,
         typesExpand,
         rulesExpand,
         setIsOpen,
         setTabs,
-        setHeadersBodiesCode,
+        setHeadersBodiesTypesCode,
         setPathQueriesCode,
         setTypesExpand,
         setRulesExpand,

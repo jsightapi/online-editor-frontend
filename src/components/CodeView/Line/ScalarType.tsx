@@ -6,6 +6,7 @@ import {Rules} from './Rules';
 import {useSelectionLine} from 'components/CodeView/hooks/useSelectionLine';
 import clsx from 'clsx';
 import {ObjectContext} from 'components/CodeView/store/ObjectContext';
+import {wrapInQuotes} from 'utils/wrapInQuotes';
 
 interface ScalarTypeProps {
   content: SchemaJSightContentType;
@@ -57,6 +58,8 @@ export const ScalarType = ({
     [isSelected, isHovered, isHidden, expanded, content.inheritedFrom]
   );
 
+  const scalarClassName = useMemo(() => getScalarClassName(content.jsonType), [content.jsonType]);
+
   return (
     <ObjectContext.Provider value={{expanded, setExpanded, objectSpanRef}}>
       <span ref={objectSpanRef}>
@@ -75,8 +78,8 @@ export const ScalarType = ({
           {propName !== undefined && (
             <PropName isKeyShortcut={content.isKeyShortcut} name={propName} />
           )}
-          <span className={getScalarClassName(content.jsonType)}>
-            {String(content.scalarValue)}
+          <span className={scalarClassName}>
+            {String(wrapInQuotes(content.scalarValue || '', scalarClassName !== 'value-string'))}
           </span>
           {!isLastLine && <span className="punctuation-char">{','}</span>}
           <Rules
