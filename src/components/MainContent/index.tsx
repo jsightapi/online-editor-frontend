@@ -1,6 +1,6 @@
 import React, {useRef, useState, useEffect, useContext} from 'react';
 import {Virtuoso, VirtuosoHandle} from 'react-virtuoso';
-import {map} from 'lodash';
+import {map, mapValues} from 'lodash';
 import {useParams} from 'react-router-dom';
 import {MainRouterParams} from 'types/router';
 import {ApiInfo} from 'components/ApiInfo';
@@ -15,6 +15,7 @@ import {SidebarContext, MainContext} from 'store';
 import {ResourceState, SchemaViewType, SelectedLineType} from 'store/MainStore';
 import './MainContent.styles.scss';
 import {usePrevious} from 'hooks/usePrevious';
+import {emptySchemaData} from 'utils/emptySchemaData';
 
 type SchemaPropertyType =
   | 'collapsedRules'
@@ -80,6 +81,14 @@ export const MainContent = React.memo(({jdocExchange, showRightSidebar}: MainCon
         };
       });
     });
+
+    if (!typesExpand) {
+      setSchemasData((prev) => {
+        return mapValues(prev, () => {
+          return [emptySchemaData];
+        });
+      });
+    }
   }, [typesExpand]);
 
   useEffect(() => {
