@@ -1,7 +1,7 @@
 import {useContext, useMemo} from 'react';
 import {CodeContext} from 'components/CodeView/Code';
 import {useShowDetailInfo} from '../hooks/useShowDetailInfo';
-import {RulesType} from 'types/exchange';
+import {RuleType} from 'types/exchange';
 import {SchemaViewContext} from 'components/SchemaView';
 import {MainContext, SidebarContext} from 'store';
 
@@ -9,7 +9,7 @@ interface SelectionLineArgs {
   numberLine: string;
   parentInheritedNumber?: string;
   schemaName?: string;
-  rules?: RulesType;
+  rules?: any[];
   notes?: string;
 }
 

@@ -1,5 +1,5 @@
 import React, {useMemo, useRef, useState} from 'react';
-import {SchemaJSightContentType} from 'types/exchange';
+import {JsightSchemaElement} from 'types/exchange';
 import {PropName} from 'components/CodeView/Line/Element/PropName';
 import {getScalarClassName} from '../utils/getScalarClassName';
 import {Rules} from './Rules';
@@ -9,7 +9,7 @@ import {ObjectContext} from 'components/CodeView/store/ObjectContext';
 import {wrapInQuotes} from 'utils/wrapInQuotes';
 
 interface ScalarTypeProps {
-  content: SchemaJSightContentType;
+  content: JsightSchemaElement;
   tab: number;
   propName?: string;
   propType?: string;

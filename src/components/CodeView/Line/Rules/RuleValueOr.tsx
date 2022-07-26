@@ -1,5 +1,5 @@
 import React, {useContext, useEffect, useMemo} from 'react';
-import {SchemaJSightContentType} from 'types/exchange';
+import {JsightSchemaElement} from 'types/exchange';
 import {map} from 'lodash';
 import {createPortal} from 'react-dom';
 import clsx from 'clsx';
@@ -9,7 +9,7 @@ import {useSchemaData} from 'components/CodeView/hooks/useSchemaData';
 import {SchemaViewContext} from 'components/SchemaView';
 
 interface RuleValueOrProps {
-  items?: SchemaJSightContentType[];
+  items?: JsightSchemaElement[];
   parentNumber?: string;
   numberLine: string;
   level: number;
@@ -33,7 +33,7 @@ export const RuleValueOr = ({items, level, tab, numberLine, parentNumber}: RuleV
     setCurrentSchema(schemaName);
   };
 
-  const renderProperties = (properties: {[key: string]: SchemaJSightContentType | undefined}) => {
+  const renderProperties = (properties: {[key: string]: JsightSchemaElement | undefined}) => {
     let index = 0;
 
     return (
@@ -76,11 +76,11 @@ export const RuleValueOr = ({items, level, tab, numberLine, parentNumber}: RuleV
   };
 
   const renderItem = (
-    content: SchemaJSightContentType,
+    content: JsightSchemaElement,
     index: number,
     isLastItem: boolean
   ): JSX.Element | null => {
-    if (content.properties) {
+    if (content.items) {
       return (
         <span key={index.toString()}>
           {renderProperties(content.properties)}

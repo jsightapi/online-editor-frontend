@@ -1,5 +1,5 @@
 import React, {useContext, useRef} from 'react';
-import {RulesType, RuleType} from 'types/exchange';
+import {RuleType} from 'types/exchange';
 import {map} from 'lodash';
 import {DetailEnum} from './DetailEnum';
 import {TextWithTooltip} from 'components/TextWithTooltip';
@@ -10,7 +10,7 @@ import {MainContext, SidebarContext} from 'store';
 interface DetailCardProps {
   name: string;
   typeName?: string;
-  rules?: RulesType;
+  rules?: RuleType[];
   schemaName?: string;
   codeViewRef?: React.MutableRefObject<HTMLDivElement | null>;
   numberLine: string;
@@ -36,7 +36,7 @@ export const DetailCard = ({
   const {setCurrentDocSidebar} = useContext(SidebarContext);
   const {setSelectedLine} = useContext(MainContext);
 
-  const renderRule = (rule: RuleType, key: string, rulesLength: number, index: number) => {
+  const renderRule = (rule: any, key: number, rulesLength: number, index: number) => {
     if (['boolean', 'string', 'number', 'null'].includes(rule.jsonType)) {
       return (
         <span key={`rule-${key}`} className="detail-code-line">
@@ -75,7 +75,7 @@ export const DetailCard = ({
     setSelectedLine(null);
   };
 
-  const renderBody = (rules?: RulesType): JSX.Element => {
+  const renderBody = (rules?: any[]): JSX.Element => {
     let index = 0;
     const rulesKeys = Object.keys(rules || []);
     const rulesLength =
@@ -93,6 +93,7 @@ export const DetailCard = ({
             </span>
           )}
           {map(rules, (rule, key) => {
+            // @ts-ignore
             const preventRender = isTableView && key == 'type';
             !preventRender && index++;
             return !preventRender && renderRule(rule, key, rulesLength, index);

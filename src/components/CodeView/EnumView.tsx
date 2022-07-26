@@ -1,10 +1,10 @@
 import React from 'react';
 import {ControlElements} from '../ControlElements';
 import {LinesCollection} from './LinesCollection';
-import {SchemaJSightContentType} from 'types/exchange';
+import {JsightSchemaElement} from 'types/exchange';
 
 interface EnumViewProps {
-  content?: SchemaJSightContentType;
+  content?: JsightSchemaElement;
   name?: string;
   keyBlock: string;
 }

@@ -1,12 +1,12 @@
 import React from 'react';
-import {SchemaJSightContentType} from 'types/exchange';
+import {JsightSchemaElement} from 'types/exchange';
 import {map} from 'lodash';
 import {BracketOpen, BracketClose, ShortcutType, ScalarType} from './Line';
 import {Rules} from 'components/CodeView/Line/Rules';
 import './Line.styles.scss';
 
 interface JSightContentProps {
-  content: SchemaJSightContentType;
+  content: JsightSchemaElement;
   tab: number; // right indent
   propName?: string; // property name
   propType?: string; // property type
@@ -78,7 +78,7 @@ export const LinesCollection: (params: JSightContentProps) => JSX.Element[] = ({
         .sort((a, b) => Number(!!b.inheritedFrom) - Number(!!a.inheritedFrom))
         .forEach((value, index) => {
           const linesCollection = LinesCollection({
-            content: value as SchemaJSightContentType,
+            content: value as JsightSchemaElement,
             propName: value.key,
             propType: value.type,
             currentLine: lines.length + currentLine,

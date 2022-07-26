@@ -1,5 +1,5 @@
 import React, {useContext, useRef, useEffect, useMemo} from 'react';
-import {RulesType, SchemaJSightContentType} from 'types/exchange';
+import {JsightSchemaElement} from 'types/exchange';
 import {reduce, pickBy} from 'lodash';
 import {RuleItem} from './RuleItem';
 import {SchemaViewContext} from 'components/SchemaView';
@@ -8,7 +8,7 @@ import {RuleNote} from './RuleNote';
 import {useShowDetailInfo} from '../../hooks/useShowDetailInfo';
 
 interface RulesProps {
-  rules?: RulesType; // rules
+  rules?: any[]; // rules
   schemaName?: string; // schema that contains this rule
   numberLine: string; // line that contains this rule (1-2-3...)
   tab: number; // indentation
@@ -20,7 +20,7 @@ interface RulesProps {
   itemIndex?: number;
   typeName?: string;
   isLastLine?: boolean;
-  content?: SchemaJSightContentType;
+  content?: JsightSchemaElement;
 }
 
 const firstKeys = ['type', 'enum', 'allOf', 'or'];
@@ -57,11 +57,12 @@ export const Rules = ({
   useEffect(() => {
     updateAnnotations(
       {
-        rules: rules as RulesType,
+        rules: rules as any[],
         name:
           propName ||
           (itemIndex !== undefined ? (!isLastLine ? String(itemIndex) : `${itemIndex}–∞`) : ''),
-        typeName: propType || typeName || content?.jsonType || '',
+        // typeName: propType || typeName || content?.jsonType || '',
+        typeName: propType || typeName || '',
         numberLine,
         schemaName,
         spanRef: rulesSpanRef,
@@ -92,7 +93,7 @@ export const Rules = ({
         <span className="rules">
           <span>{'{ '}</span>
           {rules &&
-            reduce<RulesType, JSX.Element[]>(
+            reduce<any, JSX.Element[]>(
               rulesSortable,
               (result, currentValue, key) => {
                 let nextResult = [];
@@ -116,7 +117,7 @@ export const Rules = ({
                       tab={tab}
                       numberLine={numberLine}
                       parentNumber={parentNumber}
-                      propName={key}
+                      propName={String(key)}
                       rule={currentValue}
                       key={`rule-${key}`}
                       isLastRule={Object.keys(rules).length === ruleIndex}

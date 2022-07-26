@@ -1,122 +1,50 @@
-export type scalarType = string | number | boolean | null;
-
-export interface ResourceMethodsType {
-  [key: string]: ResourceInputType;
-}
+// export type scalarType = string | number | boolean | null;
+export type httpMethodType = 'GET' | 'POST' | 'PUT' | 'PATCH' | 'DELETE';
+export type schemaNotationType = 'jsight' | 'regex' | 'any' | 'empty';
+export type serializeFormatType =
+  | 'json'
+  | 'plainString'
+  | 'binary'
+  | 'htmlFormEncoded'
+  | 'noFormat';
+export type ruleNameType =
+  | 'type'
+  | 'optional'
+  | 'nullable'
+  | 'min'
+  | 'max'
+  | 'exclusiveMinimum'
+  | 'exclusiveMaximum'
+  | 'precision'
+  | 'minLength'
+  | 'maxLength'
+  | 'regexp'
+  | 'minItems'
+  | 'maxItems'
+  | 'or'
+  | 'additionalProperties'
+  | 'const'
+  | 'serializeFormat'
+  | 'serializedType'
+  | 'enum'
+  | 'allOf';
 
 export interface JDocType {
   jsight: string;
   info?: ApiInfoType;
   servers?: ServersInfoType;
   tags: TagsType;
-  resourceMethods: ResourceMethodsType;
+  interactions: {[key: string]: HttpInteractionType | JsonRpcInteractionType};
   userTypes?: UserTypesType;
   userEnums?: UserEnumsType;
 }
 
-export interface BodyType {
-  format: string;
-  schema: SchemaType;
+export interface UserTypesType {
+  [key: string]: UserTypeType;
 }
 
-export interface HeaderType {
-  schema: SchemaType;
-}
-
-export interface ResponsesType {
-  code: string;
-  annotation?: string;
-  headers?: HeaderType;
-  body: BodyType;
-}
-
-export interface RequestType {
-  body: BodyType;
-  headers?: {
-    format?: string;
-    schema: SchemaType;
-  };
-}
-
-export interface ResourceType {
-  httpMethod: string;
-  path: string;
-  annotation?: string;
-  description?: string;
-  responses?: ResponsesType[];
-  tags: string[];
-  pathVariables?: {schema: SchemaType};
-  query?: {schema?: SchemaType; example?: string; format: string};
-  request?: RequestType;
-}
-
-export interface ResourcePathType {
-  path: string;
-  methods?: ResourceType[];
-}
-
-export interface ResourcesType {
-  title: string;
-  annotation: string;
-  description: string;
-  resources: ResourcePathType[];
-  count: number;
-}
-
-export interface TagsType {
-  [key: string]: {
-    title: string;
-    annotation: string;
-    description: string;
-    resourceMethods: {
-      [key: string]: string[];
-    };
-  };
-}
-
-export interface ResourceInputType {
-  httpMethod: string;
-  path: string;
-  annotation?: string;
-  description?: string;
-  responses?: any[];
-  tags: string[];
-  pathVariables?: any;
-  query?: any;
-  request?: any;
-}
-
-export interface RuleType {
-  jsonType: string;
-  scalarValue?: scalarType;
-  items?: SchemaJSightContentType[];
-}
-
-export interface RulesType {
-  [key: string]: RuleType;
-}
-
-export interface SchemaJSightContentType {
-  isKeyShortcut?: boolean;
-  jsonType: string;
-  optional: boolean;
-  type?: string;
-  scalarValue?: scalarType;
-  note?: string;
-  inheritedFrom?: string;
-  items?: SchemaJSightContentType[];
-  rules?: RulesType;
-  properties?: {
-    [key: string]: SchemaJSightContentType | undefined;
-  };
-}
-
-export interface SchemaType {
-  notation: string; // 'jsight' | 'regex' | 'any';
-  content: SchemaJSightContentType;
-  usedUserTypes?: string[];
-  usedUserEnums?: string[];
-  example: string;
+interface UserEnumsType {
+  [key: string]: UserRuleType;
 }
 
 export interface ApiInfoType {
@@ -128,50 +56,125 @@ export interface ApiInfoType {
 export interface ServerType {
   annotation?: string;
   baseUrl: string;
-  baseUrlVariables?: {
-    schema: SchemaType;
-  };
 }
 
 export interface ServersInfoType {
   [key: string]: ServerType;
 }
 
-export interface UserEnumItemType {
-  jsonType: string;
-  note?: string;
-  scalarValue?: string;
+export interface TagsType {
+  [key: string]: TagType;
 }
 
-export interface UserEnumValueType {
-  jsonType: string;
-  items: UserEnumItemType[];
+export interface TagType {
+  name: string;
+  title: string;
+  annotation?: string;
+  description?: string;
+  interactionGroups: TagInteractionGroup[];
+  children?: TagsType;
 }
 
-export interface LinkType {
+export interface TagInteractionGroup {
+  protocol: string; // http | json-rpc-2.0
+  interactions: string[];
+}
+
+export interface HttpInteractionType {
+  id: string;
+  protocol: string; // http
+  httpMethod: httpMethodType;
+  path: string;
+  pathVariables?: {
+    schema: SchemaType;
+  };
+  tags: string[];
+  annotation?: string;
+  description?: string;
+  query?: QueryType;
+  request?: HttpRequestType;
+  responses?: HttpResponseType[];
+}
+
+export interface JsonRpcInteractionType {
+  id: string;
+  protocol: string; // json-rpc-2.0
+  path: string;
+  method: string;
+  pathVariables?: {
+    schema: SchemaType;
+  };
+  tags: string[];
+  annotation?: string;
+  description?: string;
+  params: SchemaType;
+  result: SchemaType;
+}
+
+export interface SchemaType {
+  notation: schemaNotationType;
+  content: JsightSchemaElement | string;
+  usedUserTypes?: string[];
+  usedUserEnums?: string[];
+  example?: string;
+}
+
+export interface JsightSchemaElement {
+  key?: string;
+  isKeyUserTypeRef?: boolean;
+  tokenType: string;
   type: string;
-  address: {
-    resourceMethod?: string;
-    type?: string;
+  optional: boolean;
+  scalarValue?: string;
+  inheritedFrom?: string;
+  note?: string;
+  rules?: RuleType[];
+  children?: JsightSchemaElement[];
+}
+
+export interface QueryType {
+  example?: string;
+  format: serializeFormatType;
+  schema: SchemaType;
+}
+
+export interface HttpRequestType {
+  headers?: {
+    schema: SchemaType;
+  };
+  body: {
+    format: serializeFormatType;
+    schema: SchemaType;
   };
 }
 
-export interface UserEnumType {
+export interface HttpResponseType {
+  code: string;
   annotation?: string;
-  value: SchemaJSightContentType;
-  links: LinkType[];
-}
-
-export interface UserEnumsType {
-  [key: string]: UserEnumType;
+  headers: {
+    schema: SchemaType;
+  };
+  body: {
+    format: serializeFormatType;
+    schema: SchemaType;
+  };
 }
 
 export interface UserTypeType {
   annotation?: string;
+  description?: string;
   schema: SchemaType;
-  links: LinkType[];
 }
 
-export interface UserTypesType {
-  [key: string]: UserTypeType;
+export interface UserRuleType {
+  annotation: string;
+  description: string;
+  value: RuleType;
+}
+
+export interface RuleType {
+  key: ruleNameType;
+  tokenType: string;
+  scalarValue?: string;
+  children: RuleType[];
 }

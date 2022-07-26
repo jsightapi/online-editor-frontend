@@ -1,5 +1,5 @@
 import React, {useContext, useMemo} from 'react';
-import {SchemaJSightContentType, SchemaType, UserTypesType} from 'types/exchange';
+import {JsightSchemaElement, SchemaType, UserTypesType} from 'types/exchange';
 import {map} from 'lodash';
 import {ControlElements} from '../ControlElements';
 import {PlainRow} from 'components/TableView/PlainRow';
@@ -16,7 +16,7 @@ interface TableViewProps {
 
 interface TableRowProps {
   key: string;
-  property: SchemaJSightContentType;
+  property: JsightSchemaElement;
   level: number;
   isNestedChild: boolean;
   jsonType: any;
@@ -202,7 +202,7 @@ export const TableView = ({keyBlock, schema, format, directiveType}: TableViewPr
               <span className="value">{schema?.content}</span>
             </span>
           ),
-        } as unknown) as SchemaJSightContentType,
+        } as unknown) as JsightSchemaElement,
         key: '<root>',
         isNestedChild: false,
         level: 1,
@@ -237,7 +237,7 @@ export const TableView = ({keyBlock, schema, format, directiveType}: TableViewPr
           type: 'object',
           rules: schema?.content.rules,
           note: schema?.content.note,
-        } as SchemaJSightContentType,
+        } as JsightSchemaElement,
         key: '<root>',
         isNestedChild: false,
         level: 1,

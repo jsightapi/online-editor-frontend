@@ -1,5 +1,5 @@
 import React, {useContext, useEffect, useMemo} from 'react';
-import {SchemaJSightContentType} from 'types/exchange';
+import {JsightSchemaElement} from 'types/exchange';
 import {DetailObject} from './DetailObject';
 import clsx from 'clsx';
 import {MainContext} from 'store';
@@ -7,7 +7,7 @@ import {wrapInQuotes} from 'utils/wrapInQuotes';
 
 interface DetailEnumProps {
   keyBlock: string;
-  items: SchemaJSightContentType[];
+  items: JsightSchemaElement[];
   updateDetailWrapperHeight(): void;
 }
 
@@ -27,7 +27,7 @@ export const DetailEnum = ({keyBlock, items, updateDetailWrapperHeight}: DetailE
     setExpandDetailCard(keyBlock, !isOpen);
   };
 
-  const renderItem = (item: SchemaJSightContentType, index: number): JSX.Element | null => {
+  const renderItem = (item: any /* JsightSchemaElement */, index: number): JSX.Element | null => {
     switch (item.jsonType) {
       case 'object':
         return item.properties ? (

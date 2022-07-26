@@ -1,10 +1,10 @@
 import React from 'react';
-import {SchemaJSightContentType} from 'types/exchange';
+import {JsightSchemaElement} from 'types/exchange';
 import {map} from 'lodash';
 
 interface DetailObjectProps {
   properties: {
-    [key: string]: SchemaJSightContentType | undefined;
+    [key: string]: JsightSchemaElement | undefined;
   };
   tab: number;
   isLast: boolean;

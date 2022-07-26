@@ -1,6 +1,6 @@
 import React, {useMemo, useState, useRef, useContext, useEffect} from 'react';
 import clsx from 'clsx';
-import {SchemaJSightContentType} from 'types/exchange';
+import {JsightSchemaElement} from 'types/exchange';
 import {PropName} from './Element/PropName';
 import {Rules} from './Rules';
 import {ObjectContext} from '../store/ObjectContext';
@@ -12,7 +12,7 @@ import {useSelectionLine} from 'components/CodeView/hooks/useSelectionLine';
 interface ShortcutTypeProps {
   parentNumber?: string;
   parentInheritedNumber?: string;
-  content: SchemaJSightContentType;
+  content: JsightSchemaElement;
   tab: number; // right indent
   propName?: string;
   schemasNames: string[];

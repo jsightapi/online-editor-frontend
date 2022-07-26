@@ -142,82 +142,81 @@ export const MainContent = React.memo(({jdocExchange, showRightSidebar}: MainCon
   };
 
   useEffect(() => {
-    const {info, servers, tags, resourceMethods, userTypes, userEnums} = jdocExchange;
-    const resources = getTreeResources(tags, resourceMethods);
-
-    const jdocList: JSX.Element[] = [];
-    const jdocPositions: string[] = [];
-
-    jdocList.push(<div className="space-header" />);
-
-    if (info) {
-      jdocList.push(<ApiInfo apiInfo={info} key="apiInfo" />);
-      jdocPositions.push('info');
-    }
-
-    if (servers) {
-      jdocList.push(<ServersInfo serversInfo={servers} key="servers" />);
-      jdocPositions.push('servers');
-    }
-
-    if (resources.length) {
-      let index = 0;
-      resources.map((item, resourceIndex) => {
-        jdocList.push(<h2 className="resource-header">{item.title}</h2>);
-        jdocPositions.push('resources');
-
-        item.resources.map((resource: any, itemIndex: number) => {
-          jdocList.push(
-            <Resource
-              resourceKey={`${resourceIndex}-${itemIndex}`}
-              key={`${resourceIndex}-${itemIndex}-${resource.path}`}
-              resource={resource}
-              index={index + itemIndex}
-            />
-          );
-          jdocPositions.push(`${resource.path.slice(1).replace(/({|})/gi, '-')}`);
-          setResourceState((prev) => [...prev, {method: ''}]);
-        });
-        index += item.resources.length;
-      });
-    }
-
-    if (userTypes) {
-      jdocList.push(<h2 className="reusable-header">Types</h2>);
-      jdocPositions.push('types');
-
-      map(jdocExchange.userTypes, (userType, key) => {
-        jdocList.push(
-          <ReusableResource
-            name={key}
-            key={`reusable-type-${key}`}
-            keyBlock={`rut-${key}`}
-            className="reusable-resource"
-            {...userType}
-          />
-        );
-        jdocPositions.push(key);
-      });
-    }
-
-    if (userEnums) {
-      jdocList.push(<h2 className="reusable-header">Enums</h2>);
-
-      map(jdocExchange.userEnums, (userEnum, key) =>
-        jdocList.push(
-          <ReusableResource
-            keyBlock={`rue-${key}`}
-            content={userEnum.value}
-            name={key}
-            className="reusable-resource"
-            key={`reusable-enum-${key}`}
-          />
-        )
-      );
-    }
-
-    setJdocList(jdocList);
-    setJdocPositions(jdocPositions);
+    // const {info, servers, tags, interactions, userTypes, userEnums} = jdocExchange;
+    // const resources = getTreeResources(tags, interactions);
+    //
+    // const jdocList: JSX.Element[] = [];
+    // const jdocPositions: string[] = [];
+    // jdocList.push(<div className="space-header" />);
+    //
+    // if (info) {
+    //   jdocList.push(<ApiInfo apiInfo={info} key="apiInfo" />);
+    //   jdocPositions.push('info');
+    // }
+    //
+    // if (servers) {
+    //   jdocList.push(<ServersInfo serversInfo={servers} key="servers" />);
+    //   jdocPositions.push('servers');
+    // }
+    //
+    // if (resources.length) {
+    //   let index = 0;
+    //   resources.map((item, resourceIndex) => {
+    //     jdocList.push(<h2 className="resource-header">{item.title}</h2>);
+    //     jdocPositions.push('resources');
+    //
+    //     item.resources.map((resource: any, itemIndex: number) => {
+    //       jdocList.push(
+    //         <Resource
+    //           resourceKey={`${resourceIndex}-${itemIndex}`}
+    //           key={`${resourceIndex}-${itemIndex}-${resource.path}`}
+    //           resource={resource}
+    //           index={index + itemIndex}
+    //         />
+    //       );
+    //       jdocPositions.push(`${resource.path.slice(1).replace(/({|})/gi, '-')}`);
+    //       setResourceState((prev) => [...prev, {method: ''}]);
+    //     });
+    //     index += item.resources.length;
+    //   });
+    // }
+    //
+    // if (userTypes) {
+    //   jdocList.push(<h2 className="reusable-header">Types</h2>);
+    //   jdocPositions.push('types');
+    //
+    //   map(jdocExchange.userTypes, (userType, key) => {
+    //     jdocList.push(
+    //       <ReusableResource
+    //         name={key}
+    //         key={`reusable-type-${key}`}
+    //         keyBlock={`rut-${key}`}
+    //         className="reusable-resource"
+    //         {...userType}
+    //       />
+    //     );
+    //     jdocPositions.push(key);
+    //   });
+    // }
+    //
+    // if (userEnums) {
+    //   jdocList.push(<h2 className="reusable-header">Enums</h2>);
+    //
+    //   map(jdocExchange.userEnums, (userEnum, key) =>
+    //     jdocList.push(
+    //       <ReusableResource
+    //         keyBlock={`rue-${key}`}
+    //         content={userEnum.value}
+    //         name={key}
+    //         className="reusable-resource"
+    //         key={`reusable-enum-${key}`}
+    //       />
+    //     )
+    //   );
+    // }
+    //
+    // setJdocList(jdocList);
+    // setJdocPositions(jdocPositions);
   }, [jdocExchange]);
 
   useEffect(() => {
@@ -273,13 +272,13 @@ export const MainContent = React.memo(({jdocExchange, showRightSidebar}: MainCon
               <i className="icon-close" />
             </button>
           )}
-          <Virtuoso
-            data={jdocList}
-            itemContent={(_, item) => item}
-            ref={virtuosoRef}
-            scrollerRef={(ref) => (virtuosoScrollerRef.current = ref)}
-            increaseViewportBy={overscan}
-          />
+          {/*<Virtuoso*/}
+          {/*  data={jdocList}*/}
+          {/*  itemContent={(_, item) => item}*/}
+          {/*  ref={virtuosoRef}*/}
+          {/*  scrollerRef={(ref) => (virtuosoScrollerRef.current = ref)}*/}
+          {/*  increaseViewportBy={overscan}*/}
+          {/*/>*/}
         </MainContext.Provider>
       </div>
     </div>

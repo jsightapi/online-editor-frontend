@@ -8,7 +8,7 @@ import React, {
   useRef,
   useState,
 } from 'react';
-import {RulesType, SchemaType} from 'types/exchange';
+import {RuleType, SchemaType} from 'types/exchange';
 import {LinesCollection} from './LinesCollection';
 import {createPortal} from 'react-dom';
 import {RightRules} from 'components/CodeView/RightRules';
@@ -20,7 +20,7 @@ import {MainContext, SidebarContext} from 'store';
 export interface AnnotationType {
   name: string; // name of the related property (shown in the card)
   typeName: string; // property type (shown in the card)
-  rules: RulesType; // rules list (shown in the card)
+  rules: RuleType[]; // rules list (shown in the card)
   note?: string; // comment (shown in the card if present)
   spanRef: MutableRefObject<HTMLSpanElement | null>; // reference to the line related to the card
   numberLine: string; // line number (to identify card on the same level)

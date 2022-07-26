@@ -1,7 +1,7 @@
 import React, {useContext, useMemo} from 'react';
 import clsx from 'clsx';
 import {Link} from 'react-router-dom';
-import {LinkType, SchemaJSightContentType, SchemaType} from 'types/exchange';
+import {JsightSchemaElement, SchemaType} from 'types/exchange';
 import {SchemaView} from '../SchemaView';
 import {EnumView} from '../CodeView/EnumView';
 import {CollapsibleContent} from '../CollapsibleContent';
@@ -10,8 +10,8 @@ import {GlobalSettingsContext} from 'components/Layout';
 interface ReusableResourceProps {
   name: string;
   schema?: SchemaType;
-  content?: SchemaJSightContentType;
-  links?: LinkType[];
+  content?: JsightSchemaElement;
+  links?: any[];
   annotation?: string;
   keyBlock: string;
   className?: string;
