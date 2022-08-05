@@ -1,15 +1,14 @@
 import React, {useContext, useEffect, useMemo} from 'react';
-import {JsightSchemaElement} from 'types/exchange';
-import {map} from 'lodash';
+import {RuleType} from 'types/exchange';
 import {createPortal} from 'react-dom';
 import clsx from 'clsx';
 import {ShortcutLines} from '../ShortcutLines';
 import {ObjectContext} from '../../store/ObjectContext';
 import {useSchemaData} from 'components/CodeView/hooks/useSchemaData';
-import {SchemaViewContext} from 'components/SchemaView';
+import {SchemaViewContext} from 'store';
 
 interface RuleValueOrProps {
-  items?: JsightSchemaElement[];
+  items?: RuleType[];
   parentNumber?: string;
   numberLine: string;
   level: number;
@@ -21,7 +20,7 @@ export const RuleValueOr = ({items, level, tab, numberLine, parentNumber}: RuleV
   const {currentSchema, setCurrentSchema} = useSchemaData({numberLine, parentNumber});
 
   const isTypeExist = useMemo(() => {
-    return items?.find((item) => item.jsonType === 'string' && item.scalarValue);
+    return items?.find((item) => item.tokenType === 'string' && item.scalarValue);
   }, [items]);
   const {collapsedRules} = useContext(SchemaViewContext);
 
@@ -33,20 +32,20 @@ export const RuleValueOr = ({items, level, tab, numberLine, parentNumber}: RuleV
     setCurrentSchema(schemaName);
   };
 
-  const renderProperties = (properties: {[key: string]: JsightSchemaElement | undefined}) => {
+  const renderProperties = (properties: RuleType[]) => {
     let index = 0;
 
     return (
       <span>
         <span>{'{ '}</span>
-        {map(properties, (value, key) => {
+        {properties.map((value) => {
           index++;
           return (
             value && (
-              <span key={key}>
-                <span className="name">{key}</span>
+              <span key={value.key}>
+                <span className="name">{value.key}</span>
                 <span className="punctuation-char">: </span>
-                {key === 'type' ? (
+                {value.key === 'type' ? (
                   <span
                     onClick={(e) => {
                       e.stopPropagation();
@@ -76,14 +75,14 @@ export const RuleValueOr = ({items, level, tab, numberLine, parentNumber}: RuleV
   };
 
   const renderItem = (
-    content: JsightSchemaElement,
+    content: RuleType,
     index: number,
     isLastItem: boolean
   ): JSX.Element | null => {
-    if (content.items) {
+    if (content.children) {
       return (
         <span key={index.toString()}>
-          {renderProperties(content.properties)}
+          {renderProperties(content.children)}
           {!isLastItem && <span className="punctuation-char">, </span>}
         </span>
       );

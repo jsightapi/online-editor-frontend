@@ -1,19 +1,17 @@
 import React from 'react';
-import {ResourcePathType} from 'types/exchange';
-import {ResourceMethods} from './ResourceMethods';
+import {HttpInteractionType} from 'types';
 
 interface ResourceProps {
-  resource: ResourcePathType;
+  resource: HttpInteractionType;
   resourceKey: string;
-  style?: React.CSSProperties;
   index: number;
 }
 
-export const Resource = ({resource, resourceKey, style, index}: ResourceProps) => (
-  <div className="resource-wrapper" style={style}>
+export const Resource = ({resource, resourceKey, index}: ResourceProps) => (
+  <div className="resource-wrapper">
     <h3>{resource.path}</h3>
-    {resource.methods && (
-      <ResourceMethods resourceKey={resourceKey} methods={resource.methods} index={index} />
-    )}
+    {/*{resource.methods && (*/}
+    {/*  <HttpMethods resourceKey={resourceKey} methods={resource.methods} index={index} />*/}
+    {/*)}*/}
   </div>
 );

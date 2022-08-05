@@ -64,38 +64,40 @@ export interface CodeViewProps {
  * @param props
  * @constructor
  */
-export const CodeView = (props: CodeViewProps) => (
-  <div className="code-view-wrapper">
-    <CodeViewBaseComponent {...props} />
-    {!props.hideUsedElements && (
-      <>
-        {props.schema?.usedUserTypes && (
-          <div className="used-element">
-            <CollapsibleContent title="Types">
-              {props.schema.usedUserTypes.map((value, index) => (
-                <UsedUserType
-                  keyBlock={`${props.keyBlock}-ut-${index}`}
-                  key={`type-${value}`}
-                  value={value}
-                />
-              ))}
-            </CollapsibleContent>
-          </div>
-        )}
-        {props.schema?.usedUserEnums && (
-          <div className="used-element">
-            <CollapsibleContent title="Enums">
-              {props.schema.usedUserEnums.map((value, index) => (
-                <UsedUserEnum
-                  keyBlock={`${props.keyBlock}-ue-${index}`}
-                  value={value}
-                  key={`enum-${value}`}
-                />
-              ))}
-            </CollapsibleContent>
-          </div>
-        )}
-      </>
-    )}
-  </div>
-);
+export const CodeView = (props: CodeViewProps) => {
+  return (
+    <div className="code-view-wrapper">
+      <CodeViewBaseComponent {...props} />
+      {!props.hideUsedElements && (
+        <>
+          {props.schema?.usedUserTypes && (
+            <div className="used-element">
+              <CollapsibleContent title="Types">
+                {props.schema.usedUserTypes.map((value, index) => (
+                  <UsedUserType
+                    keyBlock={`${props.keyBlock}-ut-${index}`}
+                    key={`type-${value}`}
+                    value={value}
+                  />
+                ))}
+              </CollapsibleContent>
+            </div>
+          )}
+          {props.schema?.usedUserEnums && (
+            <div className="used-element">
+              <CollapsibleContent title="Enums">
+                {props.schema.usedUserEnums.map((value, index) => (
+                  <UsedUserEnum
+                    keyBlock={`${props.keyBlock}-ue-${index}`}
+                    value={value}
+                    key={`enum-${value}`}
+                  />
+                ))}
+              </CollapsibleContent>
+            </div>
+          )}
+        </>
+      )}
+    </div>
+  );
+};

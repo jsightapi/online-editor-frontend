@@ -1,7 +1,7 @@
 import React, {useContext, useEffect, SyntheticEvent} from 'react';
 import {createPortal} from 'react-dom';
 import {RuleValueProps} from './RuleValue';
-import {SchemaViewContext} from 'components/SchemaView';
+import {SchemaViewContext} from 'store';
 import clsx from 'clsx';
 import {ObjectContext} from '../../store/ObjectContext';
 import {ShortcutLines} from '../ShortcutLines';

@@ -1,13 +1,8 @@
 import React, {useContext, useMemo} from 'react';
 import clsx from 'clsx';
-import {map} from 'lodash';
-
 import logo from '../../assets/images/icon-jsight.png';
 import logoWhite from '../../assets/images/icon_jsight_white.png';
-import {SidebarGroupRoutes} from './SidebarGroupRoutes';
-import {JDocContext, SidebarContext} from 'store';
-import {GlobalSettingsContext} from 'components/Layout';
-import {TagsType, TagType} from 'types';
+import {JDocContext, SidebarContext, GlobalSettingsContext} from 'store';
 
 import './SidebarContent.styles.scss';
 import {SidebarReusables} from 'components/SidebarContent/SidebarReusables';
@@ -24,8 +19,8 @@ interface SidebarContentProps {
 
 export const SidebarContent = ({side, isShowSettings, isShow}: SidebarContentProps) => {
   const {setIsOpen, isOpen} = useContext(GlobalSettingsContext);
-  const jdocData = useContext(JDocContext);
   const {setCurrentDocSidebar} = useContext(SidebarContext);
+  const jdocData = useContext(JDocContext);
 
   const tags = useMemo(() => jdocData?.tags || {}, [jdocData]);
 

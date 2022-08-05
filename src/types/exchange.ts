@@ -28,13 +28,24 @@ export type ruleNameType =
   | 'serializedType'
   | 'enum'
   | 'allOf';
+export type InteractionType = HttpInteractionType | JsonRpcInteractionType;
+export type tokenTypeType =
+  | 'object'
+  | 'array'
+  | 'string'
+  | 'number'
+  | 'boolean'
+  | 'null'
+  | 'annotation'
+  | 'reference';
 
 export interface JDocType {
+  jdocExchangeVersion: string;
   jsight: string;
   info?: ApiInfoType;
   servers?: ServersInfoType;
   tags: TagsType;
-  interactions: {[key: string]: HttpInteractionType | JsonRpcInteractionType};
+  interactions: {[key: string]: InteractionType};
   userTypes?: UserTypesType;
   userEnums?: UserEnumsType;
 }
@@ -43,7 +54,7 @@ export interface UserTypesType {
   [key: string]: UserTypeType;
 }
 
-interface UserEnumsType {
+export interface UserEnumsType {
   [key: string]: UserRuleType;
 }
 
@@ -71,19 +82,23 @@ export interface TagType {
   title: string;
   annotation?: string;
   description?: string;
-  interactionGroups: TagInteractionGroup[];
+  interactionGroups: TagInteractionGroupType[];
   children?: TagsType;
 }
 
-export interface TagInteractionGroup {
+export interface TagInteractionGroupType {
   protocol: string; // http | json-rpc-2.0
   interactions: string[];
 }
 
-export interface HttpInteractionType {
+export interface InteractionsWithProtocolType {
+  protocol: string; // http | json-rpc-2.0
+  interactions: InteractionType[];
+}
+
+interface InteractionBaseType {
   id: string;
-  protocol: string; // http
-  httpMethod: httpMethodType;
+  protocol: string; // http | json-rpc-2.0
   path: string;
   pathVariables?: {
     schema: SchemaType;
@@ -91,22 +106,17 @@ export interface HttpInteractionType {
   tags: string[];
   annotation?: string;
   description?: string;
+}
+
+export interface HttpInteractionType extends InteractionBaseType {
+  httpMethod: httpMethodType;
   query?: QueryType;
   request?: HttpRequestType;
   responses?: HttpResponseType[];
 }
 
-export interface JsonRpcInteractionType {
-  id: string;
-  protocol: string; // json-rpc-2.0
-  path: string;
+export interface JsonRpcInteractionType extends InteractionBaseType {
   method: string;
-  pathVariables?: {
-    schema: SchemaType;
-  };
-  tags: string[];
-  annotation?: string;
-  description?: string;
   params: SchemaType;
   result: SchemaType;
 }
@@ -122,12 +132,12 @@ export interface SchemaType {
 export interface JsightSchemaElement {
   key?: string;
   isKeyUserTypeRef?: boolean;
-  tokenType: string;
-  type: string;
+  tokenType: tokenTypeType;
+  type: string; //
   optional: boolean;
   scalarValue?: string;
   inheritedFrom?: string;
-  note?: string;
+  note?: string | JSX.Element;
   rules?: RuleType[];
   children?: JsightSchemaElement[];
 }
@@ -174,7 +184,8 @@ export interface UserRuleType {
 
 export interface RuleType {
   key: ruleNameType;
-  tokenType: string;
+  tokenType: tokenTypeType;
+  note?: string;
   scalarValue?: string;
-  children: RuleType[];
+  children?: RuleType[];
 }

@@ -5,10 +5,11 @@ import {get} from 'lodash';
 import {bracePairs} from 'utils/bracePairs';
 import {useSelectionLine} from '../../hooks/useSelectionLine';
 import {ObjectContext} from '../../store/ObjectContext';
+import {RuleType} from 'types';
 
 interface RulesRenderArgs {
   propName?: string;
-  rules?: any[];
+  rules: RuleType[];
   tab: number;
   numberLine: string;
 }
@@ -17,7 +18,7 @@ interface BracketOpenProps {
   tab: number;
   bracket: string;
   propName?: string;
-  rules?: any[];
+  rules: RuleType[];
   rulesRender?: (args: RulesRenderArgs) => JSX.Element;
   numberLine: string;
   parentNumber?: string;

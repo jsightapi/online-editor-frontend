@@ -6,7 +6,7 @@ import {Rules} from './Rules';
 import {ObjectContext} from '../store/ObjectContext';
 import {useSchemaData} from 'components/CodeView/hooks/useSchemaData';
 import {ShortcutLines} from 'components/CodeView/Line/ShortcutLines';
-import {SchemaViewContext} from 'components/SchemaView';
+import {SchemaViewContext} from 'store';
 import {useSelectionLine} from 'components/CodeView/hooks/useSelectionLine';
 
 interface ShortcutTypeProps {
@@ -46,7 +46,7 @@ export const ShortcutType = ({
     schemaName: content.inheritedFrom,
     rules: content.rules,
     parentInheritedNumber,
-    notes: content.note,
+    notes: content.note as string,
   });
 
   // user types array
@@ -99,7 +99,7 @@ export const ShortcutType = ({
             <i className="icon-star" />
           </span>
           <span>{' '.repeat(tab)}</span>
-          {propName && <PropName isKeyShortcut={content.isKeyShortcut} name={propName} />}
+          {propName && <PropName isKeyShortcut={content.isKeyUserTypeRef} name={propName} />}
           {userTypes.map((userType, key) => (
             <span key={key.toString()}>
               <span
@@ -123,8 +123,8 @@ export const ShortcutType = ({
             propName={propName}
             numberLine={numberLine}
             schemaName={schemasNames.slice(-1).pop()}
-            rules={content.rules}
-            note={content.note}
+            rules={content.rules || []}
+            note={content.note as string}
             itemIndex={itemIndex}
             typeName={content.type}
           />

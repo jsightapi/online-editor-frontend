@@ -1,61 +1,25 @@
-import React, {createContext, useState} from 'react';
+import React, {useContext} from 'react';
 import {SidebarContent} from '../SidebarContent';
+import {GlobalSettingsProvider, SidebarContext} from 'store';
 import {Settings} from '../Settings';
 
-interface GlobalSettingsContextInterface {
-  isOpen: boolean;
-  tabs: boolean;
-  headersBodiesTypesCode: boolean;
-  pathQueriesCode: boolean;
-  typesExpand: boolean;
-  rulesExpand: boolean;
-  setTabs(value: boolean): void;
-  setHeadersBodiesTypesCode(value: boolean): void;
-  setPathQueriesCode(value: boolean): void;
-  setTypesExpand(value: boolean): void;
-  setRulesExpand(value: boolean): void;
-  setIsOpen(value: boolean): void;
-}
-
-export const GlobalSettingsContext = createContext({} as GlobalSettingsContextInterface);
-
 interface LayoutProps {
-  isShowSidebar: boolean;
-  isShowSettings: boolean;
-  side: 'left' | 'right';
-  children?: React.ReactNode;
+  children: React.ReactNode;
+  isEditor: boolean;
 }
 
-export const Layout = ({children, isShowSidebar, isShowSettings, side}: LayoutProps) => {
-  const [isOpen, setIsOpen] = useState<boolean>(false);
-  const [tabs, setTabs] = useState<boolean>(true);
-  const [headersBodiesTypesCode, setHeadersBodiesTypesCode] = useState<boolean>(true);
-  const [pathQueriesCode, setPathQueriesCode] = useState<boolean>(false);
-  const [typesExpand, setTypesExpand] = useState<boolean>(false);
-  const [rulesExpand, setRulesExpand] = useState<boolean>(false);
+export const Layout = ({children, isEditor}: LayoutProps) => {
+  const {currentDocSidebar} = useContext(SidebarContext);
+  const isShowSidebar = isEditor ? currentDocSidebar === 'content' : true;
+  const side = isEditor ? 'right' : 'left';
 
   return (
-    <GlobalSettingsContext.Provider
-      value={{
-        isOpen,
-        tabs,
-        headersBodiesTypesCode,
-        pathQueriesCode,
-        typesExpand,
-        rulesExpand,
-        setIsOpen,
-        setTabs,
-        setHeadersBodiesTypesCode,
-        setPathQueriesCode,
-        setTypesExpand,
-        setRulesExpand,
-      }}
-    >
+    <GlobalSettingsProvider>
       <>
-        {isShowSettings && <Settings />}
-        <SidebarContent side={side} isShowSettings={isShowSettings} isShow={isShowSidebar} />
+        {!isEditor && <Settings />}
+        <SidebarContent side={side} isShowSettings={!isEditor} isShow={isShowSidebar} />
       </>
       {children}
-    </GlobalSettingsContext.Provider>
+    </GlobalSettingsProvider>
   );
 };

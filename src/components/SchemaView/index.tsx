@@ -1,18 +1,9 @@
-import React, {createContext, useContext, useLayoutEffect, useMemo} from 'react';
+import React, {useContext, useLayoutEffect, useMemo} from 'react';
 import {TableView} from '../TableView';
 import {SchemaType} from 'types/exchange';
 import {CodeView} from '../CodeView';
-import {GlobalSettingsContext} from '../Layout';
 import {ExampleView} from 'components/ExampleView';
-import {MainContext} from 'store';
-
-interface SchemaViewContextInterface {
-  collapsedRules: boolean;
-  expandedTypes: boolean;
-  viewType: string;
-}
-
-export const SchemaViewContext = createContext({} as SchemaViewContextInterface);
+import {MainContext, GlobalSettingsContext, SchemaViewContext} from 'store';
 
 interface SchemaViewProps {
   type: string;
@@ -23,8 +14,8 @@ interface SchemaViewProps {
   name?: string;
   example?: string;
   keyBlock: string;
-  directiveType?: string;
   typeBlock?: string;
+  block?: string;
 }
 
 export const SchemaView = ({
@@ -36,7 +27,7 @@ export const SchemaView = ({
   name,
   isCollapsible,
   keyBlock,
-  directiveType,
+  block,
   typeBlock,
 }: SchemaViewProps) => {
   const {typesExpand, rulesExpand} = useContext(GlobalSettingsContext);
@@ -77,14 +68,7 @@ export const SchemaView = ({
   const renderView = () => {
     switch (viewType) {
       case 'table':
-        return (
-          <TableView
-            keyBlock={keyBlock}
-            schema={schema}
-            format={format}
-            directiveType={directiveType}
-          />
-        );
+        return <TableView keyBlock={keyBlock} schema={schema} format={format} block={block} />;
       case 'code':
         return (
           <CodeView
@@ -103,15 +87,14 @@ export const SchemaView = ({
     }
   };
 
-  return (
-    <SchemaViewContext.Provider
-      value={{
-        collapsedRules,
-        expandedTypes,
-        viewType,
-      }}
-    >
-      {renderView()}
-    </SchemaViewContext.Provider>
+  const value = useMemo(
+    () => ({
+      collapsedRules,
+      expandedTypes,
+      viewType,
+    }),
+    [collapsedRules, expandedTypes, viewType]
   );
+
+  return <SchemaViewContext.Provider value={value}>{renderView()}</SchemaViewContext.Provider>;
 };

@@ -1,6 +1,5 @@
 import React, {useContext, useRef} from 'react';
 import {RuleType} from 'types/exchange';
-import {map} from 'lodash';
 import {DetailEnum} from './DetailEnum';
 import {TextWithTooltip} from 'components/TextWithTooltip';
 import {formatNotes} from '../utils/formatNotes';
@@ -36,8 +35,8 @@ export const DetailCard = ({
   const {setCurrentDocSidebar} = useContext(SidebarContext);
   const {setSelectedLine} = useContext(MainContext);
 
-  const renderRule = (rule: any, key: number, rulesLength: number, index: number) => {
-    if (['boolean', 'string', 'number', 'null'].includes(rule.jsonType)) {
+  const renderRule = (rule: RuleType, key: string, rulesLength: number, index: number) => {
+    if (['boolean', 'string', 'number', 'null'].includes(rule.tokenType)) {
       return (
         <span key={`rule-${key}`} className="detail-code-line">
           <span className="name">{key}</span>
@@ -46,9 +45,9 @@ export const DetailCard = ({
           {index !== rulesLength && <span className="punctuation-char">,</span>}
         </span>
       );
-    } else if (rule.jsonType === 'array') {
+    } else if (rule.tokenType === 'array') {
       return (
-        rule.items && (
+        rule.children && (
           <span key={`rule-${key}`}>
             <span className="detail-code-line">
               <span className="name">{key}</span>
@@ -57,7 +56,7 @@ export const DetailCard = ({
             <DetailEnum
               keyBlock={keyBlock}
               updateDetailWrapperHeight={updateDetailWrapperHeight}
-              items={rule.items}
+              items={rule.children}
             />
             <span className="detail-code-line">
               <span className="punctuation-char">]{index !== rulesLength && ','}</span>
@@ -75,7 +74,7 @@ export const DetailCard = ({
     setSelectedLine(null);
   };
 
-  const renderBody = (rules?: any[]): JSX.Element => {
+  const renderBody = (rules?: RuleType[]): JSX.Element => {
     let index = 0;
     const rulesKeys = Object.keys(rules || []);
     const rulesLength =
@@ -92,11 +91,10 @@ export const DetailCard = ({
               <span className="detail-code-line">&nbsp;</span>
             </span>
           )}
-          {map(rules, (rule, key) => {
-            // @ts-ignore
-            const preventRender = isTableView && key == 'type';
+          {(rules || []).map((rule) => {
+            const preventRender = isTableView && rule.key == 'type';
             !preventRender && index++;
-            return !preventRender && renderRule(rule, key, rulesLength, index);
+            return !preventRender && renderRule(rule, rule.key, rulesLength, index);
           })}
         </code>
       </pre>
