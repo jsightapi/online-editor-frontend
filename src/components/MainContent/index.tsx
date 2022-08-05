@@ -11,6 +11,7 @@ import {HttpInteractionType, JDocType} from 'types/exchange';
 import {MainContext, GlobalSettingsContext, SidebarContext, CurrentUrlContext} from 'store';
 import {ResourceState, SchemaViewType, SelectedLineType} from 'store/MainStore';
 import {usePrevious} from 'hooks/usePrevious';
+import {emptySchemaData} from 'utils/emptySchemaData';
 import {ResourceHttp} from 'components/Resource/Http';
 import './MainContent.styles.scss';
 
@@ -72,16 +73,24 @@ export const MainContent = React.memo(
       });
     }, [pathQueriesCode]);
 
-    useEffect(() => {
-      setSchemasView((prev) => {
-        return prev.map((item) => {
-          return {
-            ...item,
-            expandedTypes: typesExpand,
-          };
+  useEffect(() => {
+    setSchemasView((prev) => {
+      return prev.map((item) => {
+        return {
+          ...item,
+          expandedTypes: typesExpand,
+        };
+      });
+    });
+
+    if (!typesExpand) {
+      setSchemasData((prev) => {
+        return mapValues(prev, () => {
+          return [emptySchemaData];
         });
       });
-    }, [typesExpand]);
+    }
+  }, [typesExpand]);
 
     useEffect(() => {
       setSchemasView((prev) => {

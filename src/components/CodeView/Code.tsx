@@ -15,6 +15,7 @@ import {RightRules} from 'components/CodeView/RightRules';
 import {map} from 'lodash';
 import {RegexView} from 'components/CodeView/RegexView';
 import {MainContext, SidebarContext, SchemaViewContext, EditorContext} from 'store';
+import {emptySchemaData} from 'utils/emptySchemaData';
 
 export interface AnnotationType {
   name: string; // name of the related property (shown in the card)
@@ -24,11 +25,6 @@ export interface AnnotationType {
   spanRef: MutableRefObject<HTMLSpanElement | null>; // reference to the line related to the card
   numberLine: string; // line number (to identify card on the same level)
   schemaName?: string; // schema, the code relates to (undefined for root)
-}
-
-export interface AnnotationDeleteType {
-  numberLine: string;
-  parentNumber?: string;
 }
 
 export interface LinePosition {
@@ -67,11 +63,6 @@ interface CodeProps {
   name?: string;
   codeViewRef: React.MutableRefObject<HTMLDivElement | null>;
 }
-
-const emptySchemaData = {
-  detailAnnotations: [],
-  children: [],
-};
 
 export const Code = ({schema, tab, codeViewRef, keyBlock}: CodeProps) => {
   const divRulesRef = useRef<HTMLDivElement | null>(null);
