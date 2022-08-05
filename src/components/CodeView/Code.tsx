@@ -8,20 +8,19 @@ import React, {
   useRef,
   useState,
 } from 'react';
-import {RulesType, SchemaType} from 'types/exchange';
+import {RuleType, SchemaType} from 'types/exchange';
 import {LinesCollection} from './LinesCollection';
 import {createPortal} from 'react-dom';
 import {RightRules} from 'components/CodeView/RightRules';
 import {map} from 'lodash';
-import {SchemaViewContext} from 'components/SchemaView';
 import {RegexView} from 'components/CodeView/RegexView';
-import {MainContext, SidebarContext} from 'store';
+import {MainContext, SidebarContext, SchemaViewContext, EditorContext} from 'store';
 import {emptySchemaData} from 'utils/emptySchemaData';
 
 export interface AnnotationType {
   name: string; // name of the related property (shown in the card)
   typeName: string; // property type (shown in the card)
-  rules: RulesType; // rules list (shown in the card)
+  rules: RuleType[]; // rules list (shown in the card)
   note?: string; // comment (shown in the card if present)
   spanRef: MutableRefObject<HTMLSpanElement | null>; // reference to the line related to the card
   numberLine: string; // line number (to identify card on the same level)
@@ -74,15 +73,13 @@ export const Code = ({schema, tab, codeViewRef, keyBlock}: CodeProps) => {
   const [height, setHeight] = useState<number>(0);
   const {selectedLine, setSchemasData, schemasData} = useContext(MainContext);
   const {expandedTypes} = useContext(SchemaViewContext);
-  const {currentDocSidebar, setCurrentDocSidebar, editorWidth, isEditor} = useContext(
-    SidebarContext
-  );
+  const {currentDocSidebar, setCurrentDocSidebar} = useContext(SidebarContext);
+  const {editorWidth, isEditor} = useContext(EditorContext);
   const [isFirst, setIsFirst] = useState<boolean>(true);
 
-  const schemaData = useMemo(
-    () => (schemasData.hasOwnProperty(keyBlock) ? schemasData[keyBlock] : [emptySchemaData]),
-    [keyBlock, schemasData]
-  );
+  const schemaData = useMemo(() => {
+    return schemasData.hasOwnProperty(keyBlock) ? schemasData[keyBlock] : [emptySchemaData];
+  }, [keyBlock, schemasData]);
 
   useLayoutEffect(() => {
     if (!schemasData[keyBlock]) {
@@ -321,12 +318,12 @@ export const Code = ({schema, tab, codeViewRef, keyBlock}: CodeProps) => {
         value={{
           schemaData,
           hiddenInheritedSchemas,
+          hoveredSchema,
+          keyBlock,
           hideInheritedSchema,
           showInheritedSchema,
-          hoveredSchema,
           setHoveredSchema,
           updateAnnotations,
-          keyBlock,
         }}
       >
         {linesCollection}

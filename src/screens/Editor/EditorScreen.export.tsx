@@ -9,7 +9,7 @@ import 'react-toastify/dist/ReactToastify.css';
 import {Contacts} from 'components/Modals/Contacts';
 import {screenWidthMultiplier} from 'utils/screenWidthMultiplier';
 import {editorModeType, ErrorType, SidebarDocType} from 'types';
-import {JDocContext, SidebarContext} from 'store';
+import {JDocContext, SidebarContext, EditorContext} from 'store';
 import {getJDocExchange} from 'api/getJDocExchange';
 import {showEditorError} from 'utils/showEditorError';
 import {useDebounce} from 'hooks/useDebounce';
@@ -20,7 +20,6 @@ const {isExport} = window as any;
 const SCROLLBAR_WIDTH = 20;
 
 export const EditorScreen = () => {
-  const [currentUrl, setCurrentUrl] = useState<string | null>(null);
   const [viewMode, setViewMode] = useState<editorModeType>(isExport ? 'doc' : 'editor');
   // left sidebar
   const [codeContentsSidebar] = useState<boolean>(false);
@@ -98,13 +97,9 @@ export const EditorScreen = () => {
           exported: isExport,
         })}
       >
-        <SidebarContext.Provider
+        <EditorContext.Provider
           value={{
-            editorWidth: 0,
-            currentDocSidebar,
-            setCurrentDocSidebar,
-            currentUrl,
-            setCurrentUrl,
+            editorWidth,
             isEditor,
           }}
         >
@@ -116,12 +111,8 @@ export const EditorScreen = () => {
               }}
             >
               {jdocExchange ? (
-                <Layout
-                  isShowSidebar={isEditor ? currentDocSidebar === 'content' : true}
-                  isShowSettings={!isEditor}
-                  side={isEditor ? 'right' : 'left'}
-                >
-                  <MainContent jdocExchange={jdocExchange} showRightSidebar={!!currentDocSidebar} />
+                <Layout isEditor={isEditor}>
+                  {/*<MainContent jdocExchange={jdocExchange} showRightSidebar={!!currentDocSidebar} />*/}
                 </Layout>
               ) : (
                 <div className="flex-fluid" />
@@ -140,7 +131,7 @@ export const EditorScreen = () => {
               )}
             </div>
           </div>
-        </SidebarContext.Provider>
+        </EditorContext.Provider>
         <ToastContainer rtl={true} position="bottom-right" />
       </div>
       <Contacts modalIsOpen={contactModalVisible} onClose={() => setContactModalVisible(false)} />

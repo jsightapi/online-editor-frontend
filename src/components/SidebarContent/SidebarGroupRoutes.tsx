@@ -1,36 +1,51 @@
-import React, {useContext} from 'react';
-import {SidebarContext} from 'store';
-import {ResourcesType} from 'types/exchange';
+import React, {useContext, useMemo} from 'react';
+import {uniq} from 'lodash';
+import {CurrentUrlContext} from 'store/CurrentUrlStore';
+import {TagType} from 'types/exchange';
 import {Link, useParams} from 'react-router-dom';
 import clsx from 'clsx';
 import {MainRouterParams} from 'types/router';
 import {CollapsibleContent} from '../CollapsibleContent';
+import {SidebarRoutes} from 'components/SidebarContent/SidebarRoutes';
 import './SidebarGroupItems.styles.scss';
-
 const {isExport} = window as any;
 
 interface SidebarGroupRoutesProps {
-  item: ResourcesType;
-  index: number;
+  tag: TagType;
 }
 
-export const SidebarGroupRoutes = ({item, index}: SidebarGroupRoutesProps) => {
+export const SidebarGroupRoutes = ({tag}: SidebarGroupRoutesProps) => {
   const {path} = useParams<MainRouterParams>();
-  const {setCurrentUrl, currentUrl} = useContext(SidebarContext);
+  const {setCurrentUrl, currentUrl} = useContext(CurrentUrlContext);
+
+  const routes = useMemo(
+    () =>
+      tag.interactionGroups.reduce<string[]>((result, interactionGroup) => {
+        return [
+          ...result,
+          ...uniq(
+            interactionGroup.interactions.map((interaction) => {
+              return interaction.split(' ')[interactionGroup.protocol === 'http' ? 2 : 1];
+            })
+          ),
+        ];
+      }, []),
+    [tag]
+  );
 
   return (
     <li>
       <CollapsibleContent
-        title={item.title}
-        rightContent={<div className="number">{item.count}</div>}
+        title={tag.title}
+        rightContent={<div className="number">{routes.length}</div>}
       >
         <ul className="collapse">
-          {item.resources.map((route, resourceKey) => {
-            const linkTo = route.path.replace(/({|})/gi, '-');
-            return typeof route.path === 'string' ? (
+          {routes.map((route, index) => {
+            const linkTo = route.replace(/({|})/gi, '-');
+            return (
               <li
                 className={clsx([{active: linkTo.substring(1) === (isExport ? currentUrl : path)}])}
-                key={`${index}${resourceKey}${route}`}
+                key={`${index}-${route}`}
               >
                 {isExport ? (
                   <span
@@ -38,16 +53,15 @@ export const SidebarGroupRoutes = ({item, index}: SidebarGroupRoutesProps) => {
                       setCurrentUrl(linkTo.slice(1));
                     }}
                   >
-                    {route.path}
+                    {route}
                   </span>
                 ) : (
-                  <Link to={linkTo}>{route.path}</Link>
+                  <Link to={linkTo}>{route}</Link>
                 )}
               </li>
-            ) : (
-              <>{/** TODO: multilevel menu **/}</>
             );
           })}
+          <SidebarRoutes tags={tag.children} />
         </ul>
       </CollapsibleContent>
     </li>
