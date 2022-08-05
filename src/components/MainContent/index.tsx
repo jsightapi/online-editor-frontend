@@ -1,6 +1,6 @@
 import React, {useRef, useState, useEffect, useContext, useMemo} from 'react';
 import {Virtuoso, VirtuosoHandle} from 'react-virtuoso';
-import {compact, each, groupBy, isEqual, map} from 'lodash';
+import {compact, each, groupBy, isEqual, map, mapValues} from 'lodash';
 import {useParams} from 'react-router-dom';
 import {MainRouterParams} from 'types/router';
 import {ApiInfo} from 'components/ApiInfo';
@@ -73,24 +73,24 @@ export const MainContent = React.memo(
       });
     }, [pathQueriesCode]);
 
-  useEffect(() => {
-    setSchemasView((prev) => {
-      return prev.map((item) => {
-        return {
-          ...item,
-          expandedTypes: typesExpand,
-        };
-      });
-    });
-
-    if (!typesExpand) {
-      setSchemasData((prev) => {
-        return mapValues(prev, () => {
-          return [emptySchemaData];
+    useEffect(() => {
+      setSchemasView((prev) => {
+        return prev.map((item) => {
+          return {
+            ...item,
+            expandedTypes: typesExpand,
+          };
         });
       });
-    }
-  }, [typesExpand]);
+
+      if (!typesExpand) {
+        setSchemasData((prev) => {
+          return mapValues(prev, () => {
+            return [emptySchemaData];
+          });
+        });
+      }
+    }, [typesExpand]);
 
     useEffect(() => {
       setSchemasView((prev) => {
