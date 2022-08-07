@@ -1,5 +1,5 @@
 import React, {useContext, useEffect, useMemo} from 'react';
-import {SchemaJSightContentType} from 'types/exchange';
+import {RuleType} from 'types/exchange';
 import {DetailObject} from './DetailObject';
 import clsx from 'clsx';
 import {MainContext} from 'store';
@@ -7,7 +7,7 @@ import {wrapInQuotes} from 'utils/wrapInQuotes';
 
 interface DetailEnumProps {
   keyBlock: string;
-  items: SchemaJSightContentType[];
+  items: RuleType[];
   updateDetailWrapperHeight(): void;
 }
 
@@ -27,15 +27,15 @@ export const DetailEnum = ({keyBlock, items, updateDetailWrapperHeight}: DetailE
     setExpandDetailCard(keyBlock, !isOpen);
   };
 
-  const renderItem = (item: SchemaJSightContentType, index: number): JSX.Element | null => {
-    switch (item.jsonType) {
+  const renderItem = (item: RuleType, index: number): JSX.Element | null => {
+    switch (item.tokenType) {
       case 'object':
-        return item.properties ? (
+        return item.children ? (
           <DetailObject
             key={`${index}-${item.scalarValue}`}
             isLast={index + 1 === items.length}
             tab={2}
-            properties={item.properties}
+            properties={item.children}
           />
         ) : null;
       case 'annotation':
@@ -51,8 +51,8 @@ export const DetailEnum = ({keyBlock, items, updateDetailWrapperHeight}: DetailE
         return (
           <span key={`${index}-${item.scalarValue}`} className="detail-code-line">
             <span>{' '.repeat(2)}</span>
-            <span className={clsx('value', `value-${item.jsonType}`)}>
-              {String(wrapInQuotes(item.scalarValue || '', item.jsonType !== 'string'))}
+            <span className={clsx('value', `value-${item.tokenType}`)}>
+              {String(wrapInQuotes(item.scalarValue || '', item.tokenType !== 'string'))}
             </span>
             {index + 1 !== items.length && <span className="punctuation-char">, </span>}
           </span>

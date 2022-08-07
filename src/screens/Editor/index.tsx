@@ -18,11 +18,11 @@ import {Contacts} from 'components/Modals/Contacts';
 import {HeaderDoc} from 'components/Header/HeaderDoc';
 import {screenWidthMultiplier} from 'utils/screenWidthMultiplier';
 import {editorModeType, ExamplesType, SidebarDocType} from 'types';
-import {JDocContext, SidebarContext} from 'store';
+import {EditorContext, JDocContext, SidebarContext, SharingContext} from 'store';
+import {CurrentUrlProvider} from 'store/CurrentUrlStore';
 import {onOrientationChange} from 'utils/onOrientationChange';
 import {ErrorScreen} from 'screens/Error';
 import {SharingForm} from 'components/Modals/SharingForm';
-import {SharingContext} from 'store/SharingStore';
 import './Editor.styles.scss';
 import 'react-toastify/dist/ReactToastify.css';
 
@@ -32,7 +32,6 @@ const SCROLLBAR_WIDTH = 20;
 
 export const EditorScreen = () => {
   const {key, history} = useContext(SharingContext);
-  const [currentUrl, setCurrentUrl] = useState<string | null>(null);
   const [viewMode, setViewMode] = useState<editorModeType>(isExport ? 'doc' : 'editor');
   const [jsightCode, setJsightCode] = useState<string>(
     key ? '' : localStorage.getItem('jsightCode') || initCats
@@ -156,10 +155,6 @@ export const EditorScreen = () => {
     }
   };
 
-  const setDocSidebar = useCallback((sidebar: SidebarDocType) => {
-    setCurrentDocSidebar((prev) => (prev === sidebar ? null : sidebar));
-  }, []);
-
   const goToEditor = () => {
     setError(null);
     history.push('/');
@@ -169,9 +164,34 @@ export const EditorScreen = () => {
     setSharingModalVisible(true);
   };
 
+  const handleCurrentDocSidebar = useCallback((sidebar: SidebarDocType) => {
+    setCurrentDocSidebar((prev) => (prev === sidebar ? null : sidebar));
+  }, []);
+
+  const handleJsightCode = useCallback((code: string) => setJsightCode(code), []);
+  const handleDisableSharing = useCallback((value) => setDisableSharing(value), []);
+  const handleError = useCallback((error) => setError(error), []);
+  const handleReloadedEditor = useCallback(() => reloadedEditor(), []);
+
   if (error && error.code) {
     return <ErrorScreen goToEditor={goToEditor} code={error.code} message={error.message} />;
   }
+
+  const sidebarValue = useMemo(
+    () => ({
+      currentDocSidebar,
+      setCurrentDocSidebar,
+    }),
+    [currentDocSidebar]
+  );
+
+  const editorValue = useMemo(
+    () => ({
+      editorWidth,
+      isEditor,
+    }),
+    [isEditor, editorWidth]
+  );
 
   return (
     <JDocContext.Provider value={jdocExchange}>
@@ -196,16 +216,7 @@ export const EditorScreen = () => {
           exported: isExport,
         })}
       >
-        <SidebarContext.Provider
-          value={{
-            editorWidth,
-            currentDocSidebar,
-            setCurrentDocSidebar,
-            currentUrl,
-            setCurrentUrl,
-            isEditor,
-          }}
-        >
+        <EditorContext.Provider value={editorValue}>
           <div className={classes}>
             <Resizable
               bounds="parent"
@@ -223,13 +234,13 @@ export const EditorScreen = () => {
             >
               <Editor
                 content={jsightCode}
-                setContent={setJsightCode}
                 errorRow={errorRow}
                 scrollToRow={scrollToRow}
-                setDisableSharing={setDisableSharing}
-                setError={setError}
                 reload={reloadEditor}
-                reloadedEditor={reloadedEditor}
+                setContent={handleJsightCode}
+                setDisableSharing={handleDisableSharing}
+                setError={handleError}
+                reloadedEditor={handleReloadedEditor}
               />
             </Resizable>
             <div
@@ -238,21 +249,17 @@ export const EditorScreen = () => {
                 width: getDocWidth(screenWidth),
               }}
             >
-              {jdocExchange ? (
-                <Layout
-                  isShowSidebar={isEditor ? currentDocSidebar === 'content' : true}
-                  isShowSettings={!isEditor}
-                  side={isEditor ? 'right' : 'left'}
-                >
-                  <MainContent jdocExchange={jdocExchange} showRightSidebar={!!currentDocSidebar} />
-                </Layout>
-              ) : (
-                <div className="flex-fluid" />
-              )}
+              <CurrentUrlProvider>
+                <SidebarContext.Provider value={sidebarValue}>
+                  <Layout isEditor={isEditor}>
+                    <MainContent jdocExchange={jdocExchange} />
+                  </Layout>
+                </SidebarContext.Provider>
+              </CurrentUrlProvider>
               {isEditor && (
                 <div className="side-panel right-side">
                   <div
-                    onClick={() => setDocSidebar('content')}
+                    onClick={() => handleCurrentDocSidebar('content')}
                     className={clsx('side-panel-element', {
                       active: currentDocSidebar === 'content',
                     })}
@@ -263,7 +270,7 @@ export const EditorScreen = () => {
               )}
             </div>
           </div>
-        </SidebarContext.Provider>
+        </EditorContext.Provider>
         <ToastContainer rtl={false} position="bottom-right" />
       </div>
       {!isExport && (

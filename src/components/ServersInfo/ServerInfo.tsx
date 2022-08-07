@@ -1,6 +1,5 @@
 import React from 'react';
 import {ServerType} from 'types/exchange';
-import {SchemaView} from '../SchemaView';
 import './ServerInfo.styles.scss';
 
 interface SeverInfoProps {
@@ -19,15 +18,6 @@ export const ServerInfo = ({name, serverInfo}: SeverInfoProps) => (
         <div className="annotation">{serverInfo.annotation}</div>
       </div>
       <div className="base-url">{serverInfo.baseUrl}</div>
-      {serverInfo.baseUrlVariables && (
-        <div className="base-url-variables">
-          <SchemaView
-            keyBlock={'server-info'}
-            schema={serverInfo.baseUrlVariables.schema}
-            type="code"
-          />
-        </div>
-      )}
     </div>
   </div>
 );

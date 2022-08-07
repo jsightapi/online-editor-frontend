@@ -1,12 +1,11 @@
 import {useMemo} from 'react';
-import {RulesType} from 'types/exchange';
+import {RuleType} from 'types/exchange';
 import {countWords} from '../utils/countWords';
 
-export function useShowDetailInfo(rules?: RulesType, notes?: string) {
+export function useShowDetailInfo(rules?: RuleType[], notes?: string) {
   return useMemo(() => {
     if (rules) {
-      const rulesKeys = Object.keys(rules);
-      if (rulesKeys.length > 1 || rules[rulesKeys[0]].jsonType === 'array') {
+      if (rules.length > 1 || (rules.length && rules[0].tokenType === 'array')) {
         return true;
       }
     }

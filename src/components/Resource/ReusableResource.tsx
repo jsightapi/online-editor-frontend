@@ -1,17 +1,17 @@
 import React, {useContext, useMemo} from 'react';
 import clsx from 'clsx';
 import {Link} from 'react-router-dom';
-import {LinkType, SchemaJSightContentType, SchemaType} from 'types/exchange';
+import {RuleType, SchemaType} from 'types/exchange';
 import {SchemaView} from '../SchemaView';
 import {EnumView} from '../CodeView/EnumView';
 import {CollapsibleContent} from '../CollapsibleContent';
-import {GlobalSettingsContext} from 'components/Layout';
+import {GlobalSettingsContext} from 'store';
 
 interface ReusableResourceProps {
   name: string;
   schema?: SchemaType;
-  content?: SchemaJSightContentType;
-  links?: LinkType[];
+  content?: RuleType;
+  links?: any[];
   annotation?: string;
   keyBlock: string;
   className?: string;

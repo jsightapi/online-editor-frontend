@@ -1,9 +1,9 @@
 import React, {useContext} from 'react';
-import {RuleType, SchemaJSightContentType} from 'types/exchange';
+import {RuleType} from 'types/exchange';
 import {PropName} from 'components/CodeView/Line/Element/PropName';
 import {map} from 'lodash';
 import {RuleValue} from './RuleValue';
-import {SchemaViewContext} from 'components/SchemaView';
+import {SchemaViewContext} from 'store';
 import {RuleValueOr} from 'components/CodeView/Line/Rules/RuleValueOr';
 
 interface RuleItemProp {
@@ -31,21 +31,21 @@ export const RuleItem = ({
 }: RuleItemProp) => {
   const {collapsedRules} = useContext(SchemaViewContext);
 
-  const renderArrayItem = (item: SchemaJSightContentType): JSX.Element => {
-    if (item.jsonType === 'object') {
+  const renderArrayItem = (item: RuleType): JSX.Element => {
+    if (item.tokenType === 'object') {
       let index = 0;
       return (
         <span>
           <span>{'{ '}</span>
-          {item.properties &&
-            map(item.properties, (value, key) => {
+          {item.children &&
+            map(item.children, (value, key) => {
               index++;
               return (
                 <span key={key}>
                   <span className="name">{key}</span>
                   <span className="punctuation-char">: </span>
                   <span className="value">{String(value?.scalarValue)}</span>
-                  {index !== Object.keys(item.properties || {}).length && (
+                  {index !== (item.children || []).length && (
                     <span className="punctuation-char">, </span>
                   )}
                 </span>
@@ -65,19 +65,19 @@ export const RuleItem = ({
           value={String(item.scalarValue)}
           parentNumber={parentNumber}
           ruleProp={propName}
-          type={item.jsonType}
+          type={item.tokenType}
         />
       );
     }
   };
 
-  if (rule.jsonType === 'array') {
+  if (rule.tokenType === 'array') {
     return (
       <span>
         <span>{propName && <PropName name={propName} />}[ </span>
         {propName === 'or' ? (
           <RuleValueOr
-            items={rule.items}
+            items={rule.children || []}
             numberLine={numberLine}
             parentNumber={parentNumber}
             tab={tab}
@@ -85,15 +85,15 @@ export const RuleItem = ({
           />
         ) : (
           <span>
-            {rule.items &&
+            {rule.children &&
               (collapsedRules && alwaysInline ? (
-                <span className="rules-collapsed enum">{`+${rule.items.length}`}</span>
+                <span className="rules-collapsed enum">{`+${rule.children.length}`}</span>
               ) : (
-                rule.items.map((item, index) => {
-                  return item.scalarValue?.toString() || item.properties ? (
+                rule.children.map((item, index) => {
+                  return item.scalarValue?.toString() || item.children ? (
                     <span key={`rule-item-${index}`}>
                       {renderArrayItem(item)}
-                      {rule.items?.length !== index + 1 && (
+                      {rule.children?.length !== index + 1 && (
                         <span className="punctuation-char">, </span>
                       )}
                     </span>
@@ -120,7 +120,7 @@ export const RuleItem = ({
           className="value"
           schemaName={schemaName}
           tab={tab}
-          type={rule.jsonType}
+          type={rule.tokenType}
           ruleProp={propName}
         />
         {!isLastRule && <span className="punctuation-char">, </span>}

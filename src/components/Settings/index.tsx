@@ -1,5 +1,5 @@
 import React, {useContext} from 'react';
-import {GlobalSettingsContext} from '../Layout';
+import {GlobalSettingsContext} from 'store';
 import {SettingsItem} from './SettingsItem';
 import './Settings.styles.scss';
 

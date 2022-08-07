@@ -1,30 +1,26 @@
-import React from 'react';
-import {SchemaJSightContentType} from 'types/exchange';
+import React, {useMemo} from 'react';
+import {JsightSchemaElement} from 'types/exchange';
 import {DetailCard} from 'components/CodeView/DetailCard';
 
-interface TablePlainRowProps {
+interface TableRowProps {
   keyValue: string;
-  property: SchemaJSightContentType;
+  property: JsightSchemaElement;
   level: number;
   isNestedChild: boolean;
-  isLastItem: boolean;
-  parentJsonType: any;
-  rootIsEmptyArray: boolean;
+  isArrayLastItem?: boolean;
 }
 
-export const PlainRow = ({
+export const TableRow = ({
   keyValue,
   property,
   level,
-  isNestedChild,
-  parentJsonType,
-  isLastItem,
-  rootIsEmptyArray,
-}: TablePlainRowProps) => {
-  const leftOffset = level > 1 ? `${level * 20}px` : '0px';
-  const isParentArray = parentJsonType === 'array';
-  const isPropertyShortcut = property?.jsonType === 'shortcut';
-  const isArrayLastItem = isParentArray && isLastItem && !rootIsEmptyArray;
+  isNestedChild, // nested row
+  isArrayLastItem,
+}: TableRowProps) => {
+  const leftOffset = useMemo(() => (level > 1 ? `${level * 20}px` : '0px'), [level]);
+  const isPropertyShortcut = property?.tokenType === 'reference';
+  // const isParentArray = parentJsonType === 'array';
+  // const isArrayLastItem = isParentArray && isLastItem && !rootIsEmptyArray;
 
   return (
     <>
@@ -43,6 +39,7 @@ export const PlainRow = ({
           </div>
         </td>
         <td>{isPropertyShortcut ? property?.scalarValue : property?.type || ''}</td>
+        <td>{property?.scalarValue}</td>
         <td colSpan={2}>
           {property?.note && (
             <div style={{marginBottom: property?.rules ? '0.8rem' : ''}}>{property.note}</div>
