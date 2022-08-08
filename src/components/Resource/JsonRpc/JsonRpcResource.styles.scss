@@ -1,0 +1,15 @@
+.json-rpc-resource {
+  .resource-title {
+    padding-bottom: 0.8rem;
+    font-weight: 500;
+    font-size: 1.4rem;
+  }
+
+  &.params {
+    padding-bottom: 1.2rem;
+  }
+
+  &.result {
+    padding-bottom: 2.4rem;
+  }
+}

@@ -7,13 +7,15 @@ import {ApiInfo} from 'components/ApiInfo';
 import {ServersInfo} from 'components/ServersInfo';
 import {SchemaData} from 'components/CodeView/Code';
 import {ReusableResource} from 'components/Resource/ReusableResource';
-import {HttpInteractionType, JDocType} from 'types/exchange';
+import {HttpInteractionType, JDocType, JsonRpcInteractionType} from 'types/exchange';
 import {MainContext, GlobalSettingsContext, SidebarContext, CurrentUrlContext} from 'store';
 import {ResourceState, SchemaViewType, SelectedLineType} from 'store/MainStore';
 import {usePrevious} from 'hooks/usePrevious';
 import {emptySchemaData} from 'utils/emptySchemaData';
-import {ResourceHttp} from 'components/Resource/Http';
+import {HttpResource} from 'components/Resource/Http';
 import './MainContent.styles.scss';
+import {JsonRpcHeader} from 'components/Resource/JsonRpc/JsonRpcHeader';
+import {JsonRpcResource} from 'components/Resource/JsonRpc';
 
 type SchemaPropertyType =
   | 'collapsedRules'
@@ -172,7 +174,11 @@ export const MainContent = React.memo(
         if (Object.values(tags).length > 0) {
           let index = 0;
           each(tags, (tag, tagKey) => {
-            jdocList.push(<h2 className="resource-header">{tag.title}</h2>);
+            if (tag.interactionGroups.find((item) => item.protocol === 'json-rpc-2.0')) {
+              jdocList.push(<JsonRpcHeader title={tag.title} />);
+            } else {
+              jdocList.push(<h2 className="resource-header">{tag.title}</h2>);
+            }
             jdocPositions.push(`resource-${tagKey}`);
 
             tag.interactionGroups.forEach((interactionGroup) => {
@@ -180,30 +186,43 @@ export const MainContent = React.memo(
                 each(
                   groupBy(
                     compact(
-                      interactionGroup.interactions.map((interaction) => {
-                        return interactions.hasOwnProperty(interaction)
-                          ? interactions[interaction]
-                          : null;
-                      })
+                      interactionGroup.interactions.map((interaction) =>
+                        interactions.hasOwnProperty(interaction) ? interactions[interaction] : null
+                      )
                     ),
                     'path'
                   ),
                   (interactionsByPath, interactionPath) => {
-                    const interactionKey = `${interactionPath.slice(1).replace(/({|})/gi, '-')}`;
+                    const resourceKey = `${interactionPath.slice(1).replace(/({|})/gi, '-')}`;
                     jdocList.push(
-                      <ResourceHttp
-                        resourceKey={`${tagKey}-${interactionKey}`}
+                      <HttpResource
+                        resourceKey={`${tagKey}-${resourceKey}`}
                         path={interactionPath}
                         index={index}
-                        key={interactionPath}
+                        key={resourceKey}
                         interactions={interactionsByPath as HttpInteractionType[]}
                       />
                     );
-                    jdocPositions.push(interactionKey);
+                    jdocPositions.push(resourceKey);
                     setResourceState((prev) => [...prev, {method: ''}]);
                     index++;
                   }
                 );
+              } else if (interactionGroup.protocol === 'json-rpc-2.0') {
+                interactionGroup.interactions.forEach((interaction) => {
+                  if (interactions.hasOwnProperty(interaction)) {
+                    const resource = interactions[interaction] as JsonRpcInteractionType;
+                    const resourceKey = `${resource.path.slice(1).replace(/({|})/gi, '-')}-${
+                      resource.method
+                    }`;
+
+                    jdocList.push(
+                      <JsonRpcResource interaction={resource} resourceKey={resourceKey} />
+                    );
+
+                    jdocPositions.push(resourceKey);
+                  }
+                });
               }
             });
           });
