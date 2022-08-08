@@ -109,7 +109,6 @@
 
   .type-value {
     color: #ceb18e;
-    user-select: none;
   }
 
   .clickable-value {
@@ -216,11 +215,6 @@
 
     .name {
       color: $code-rule;
-
-      &::after,
-      &::before {
-        content: '';
-      }
     }
 
     .value {
