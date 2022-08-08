@@ -63,7 +63,6 @@ export const Rules = React.memo(
           name:
             propName ||
             (itemIndex !== undefined ? (!isLastLine ? String(itemIndex) : `${itemIndex}–∞`) : ''),
-          // typeName: propType || typeName || content?.jsonType || '',
           typeName: propType || typeName || '',
           numberLine,
           schemaName,
