@@ -74,7 +74,7 @@ export const RuleItem = ({
   if (rule.tokenType === 'array') {
     return (
       <span>
-        <span>{propName && <PropName name={propName} />}[ </span>
+        <span>{propName && <PropName wrappedInQuotes={false} name={propName} />}[ </span>
         {propName === 'or' ? (
           <RuleValueOr
             items={rule.children || []}
@@ -111,7 +111,7 @@ export const RuleItem = ({
   } else {
     return (
       <span>
-        {propName && <PropName name={propName} />}
+        {propName && <PropName wrappedInQuotes={false} name={propName} />}
         <RuleValue
           level={level}
           parentNumber={parentNumber}
