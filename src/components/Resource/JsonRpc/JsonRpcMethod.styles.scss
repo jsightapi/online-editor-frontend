@@ -1,0 +1,38 @@
+@import '../../../styles/variables';
+
+.json-rpc-method {
+  padding-bottom: 2rem;
+
+  .head {
+    padding: 0.8rem 1.6rem;
+    display: flex;
+    flex-direction: row;
+    gap: 1.6rem;
+    background-color: $main-stroke;
+    align-items: center;
+    border-radius: 4px;
+
+    .method-name {
+      border-radius: 4px;
+      padding: 0.5rem 0.8rem 0.6rem;
+      background-color: $code-key;
+      color: #fff;
+      text-transform: uppercase;
+      font-size: 1.2rem;
+      font-weight: 600;
+    }
+
+    .method-value {
+      font-weight: 500;
+    }
+
+    .method-annotation {
+      color: #676669;
+    }
+  }
+
+  .description {
+    padding-top: 1.6rem;
+    color: #676669;
+  }
+}

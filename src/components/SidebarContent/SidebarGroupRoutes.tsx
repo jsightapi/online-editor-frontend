@@ -8,58 +8,56 @@ import {MainRouterParams} from 'types/router';
 import {CollapsibleContent} from '../CollapsibleContent';
 import {SidebarRoutes} from 'components/SidebarContent/SidebarRoutes';
 import './SidebarGroupItems.styles.scss';
-const {isExport} = window as any;
+import {SidebarLink} from 'components/SidebarContent/SidebarLink';
 
 interface SidebarGroupRoutesProps {
   tag: TagType;
 }
 
-export const SidebarGroupRoutes = ({tag}: SidebarGroupRoutesProps) => {
-  const {path} = useParams<MainRouterParams>();
-  const {setCurrentUrl, currentUrl} = useContext(CurrentUrlContext);
+interface RouteGroup {
+  protocol: string;
+  resources: string[];
+}
 
-  const routes = useMemo(
+export const SidebarGroupRoutes = ({tag}: SidebarGroupRoutesProps) => {
+  const routeGroups = useMemo(
     () =>
-      tag.interactionGroups.reduce<string[]>((result, interactionGroup) => {
+      tag.interactionGroups.reduce<RouteGroup[]>((result, interactionGroup) => {
         return [
           ...result,
-          ...uniq(
-            interactionGroup.interactions.map((interaction) => {
-              return interaction.split(' ')[interactionGroup.protocol === 'http' ? 2 : 1];
-            })
-          ),
+          ...[
+            {
+              protocol: interactionGroup.protocol,
+              resources: uniq(
+                interactionGroup.interactions.map((interaction) => {
+                  return interaction.split(' ')[interactionGroup.protocol === 'http' ? 2 : 1];
+                })
+              ),
+            },
+          ],
         ];
       }, []),
-    [tag]
+    [tag.interactionGroups]
+  );
+
+  const count = useMemo(
+    () => routeGroups.reduce((result, routeGroup) => result + routeGroup.resources.length, 0),
+    [routeGroups]
   );
 
   return (
     <li>
-      <CollapsibleContent
-        title={tag.title}
-        rightContent={<div className="number">{routes.length}</div>}
-      >
+      <CollapsibleContent title={tag.title} rightContent={<div className="number">{count}</div>}>
         <ul className="collapse">
-          {routes.map((route, index) => {
-            const linkTo = route.replace(/({|})/gi, '-');
-            return (
-              <li
-                className={clsx([{active: linkTo.substring(1) === (isExport ? currentUrl : path)}])}
-                key={`${index}-${route}`}
-              >
-                {isExport ? (
-                  <span
-                    onClick={() => {
-                      setCurrentUrl(linkTo.slice(1));
-                    }}
-                  >
-                    {route}
-                  </span>
-                ) : (
-                  <Link to={linkTo}>{route}</Link>
-                )}
-              </li>
-            );
+          {routeGroups.map((routeGroup) => {
+            return routeGroup.resources.map((resource, index) => {
+              const linkTo =
+                routeGroup.protocol === 'http'
+                  ? resource.replace(/({|})/gi, '-')
+                  : `${tag.title.replace(/({|})/gi, '-')}-${resource}`;
+
+              return <SidebarLink linkTo={linkTo} resource={resource} key={linkTo} />;
+            });
           })}
           <SidebarRoutes tags={tag.children} />
         </ul>

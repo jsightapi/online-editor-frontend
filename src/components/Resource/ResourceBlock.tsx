@@ -14,6 +14,7 @@ interface ResourceBlockProps {
     example?: string;
   };
   block?: string;
+  className?: string;
 }
 
 export const ResourceBlock = ({
@@ -24,6 +25,7 @@ export const ResourceBlock = ({
   hideTitle,
   block,
   typeBlock,
+  className,
 }: ResourceBlockProps) => {
   const renderView = () => {
     const notation = data.schema?.notation;
@@ -46,7 +48,7 @@ export const ResourceBlock = ({
   };
 
   return (
-    <div>
+    <div className={className}>
       {!hideTitle && <h4 className="resource-title">{title}</h4>}
       {renderView()}
     </div>
