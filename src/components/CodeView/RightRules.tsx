@@ -40,7 +40,7 @@ export const RightRules = forwardRef<HTMLDivElement, RightRulesProps>(
       notes: '',
     });
 
-    const sortAnnotations = (a: any, b: any) => {
+    const sortAnnotations = (a: AnnotationType, b: AnnotationType) => {
       return a.numberLine > b.numberLine ? -1 : 1;
     };
 
@@ -86,22 +86,20 @@ export const RightRules = forwardRef<HTMLDivElement, RightRulesProps>(
               />
             )}
           </>
-          {annotations
-            .map((item) => (
-              <DetailCard
-                updateDetailWrapperHeight={updateDetailWrapperHeight}
-                key={`card-${item.numberLine}`}
-                name={item.name}
-                typeName={item.typeName}
-                rules={item.rules}
-                numberLine={item.numberLine}
-                schemaName={item.schemaName || ''}
-                codeViewRef={codeViewRef}
-                note={item.note}
-                keyBlock={keyBlock}
-              />
-            ))
-            .sort(sortAnnotations)}
+          {annotations.sort(sortAnnotations).map((item) => (
+            <DetailCard
+              updateDetailWrapperHeight={updateDetailWrapperHeight}
+              key={`card-${item.numberLine}`}
+              name={item.name}
+              typeName={item.typeName}
+              rules={item.rules}
+              numberLine={item.numberLine}
+              schemaName={item.schemaName || ''}
+              codeViewRef={codeViewRef}
+              note={item.note}
+              keyBlock={keyBlock}
+            />
+          ))}
         </div>
       </div>
     );

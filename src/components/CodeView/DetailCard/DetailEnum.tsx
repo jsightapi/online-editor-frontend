@@ -48,11 +48,17 @@ export const DetailEnum = ({keyBlock, items, updateDetailWrapperHeight}: DetailE
       case 'boolean':
       case 'string':
       case 'null':
+      case 'reference':
         return (
           <span key={`${index}-${item.scalarValue}`} className="detail-code-line">
             <span>{' '.repeat(2)}</span>
             <span className={clsx('value', `value-${item.tokenType}`)}>
-              {String(wrapInQuotes(item.scalarValue || '', item.tokenType !== 'string'))}
+              {String(
+                wrapInQuotes(
+                  item.scalarValue || '',
+                  !['string', 'reference'].includes(item.tokenType)
+                )
+              )}
             </span>
             {index + 1 !== items.length && <span className="punctuation-char">, </span>}
           </span>

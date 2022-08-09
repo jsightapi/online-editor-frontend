@@ -1,5 +1,5 @@
 import React, {useContext, useMemo} from 'react';
-import {RuleValueProps} from 'components/CodeView/Line/Rules/RuleValue';
+import {RuleValueProps} from './RuleValue';
 import {CodeContext} from 'components/CodeView/Code';
 import clsx from 'clsx';
 
@@ -48,7 +48,7 @@ export const RuleValueAllOf = ({value, numberLine, type}: RuleValueProps) => {
       onClick={toggle}
       className={clsx(valueClass, `rule-value-${type}`)}
     >
-      {value}
+      {`"${value}"`}
     </span>
   );
 };
