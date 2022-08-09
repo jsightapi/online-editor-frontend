@@ -34,13 +34,15 @@
 
 **JSight Online Editor** – you've never designed API so fast. We really mean it.
 
-1. 2–4 times less code.
-2. API design is 2–3 times faster.
-3. The API description process does not detract from the API design.
-4. It is extremely convenient to jointly design an API with the whole team in one go. No more
- multiple design iterations and edits required. All you need is to share the screen between the
- participants and come up with an API together right in the Editor. All this is possible thanks to
- the compactness and simplicity of the JSight language. [Compare JSight with Open API](#scroll--jsight-api-language).
+1. Write 2-4 times less code.
+2. Design API 2-3 times faster.
+3. Download beautiful HTML docs :book: or share API specifications in the cloud [:cloud:](https://editor.jsight.io).
+4. Do not distract from the API design because of the API description process.
+5. Design API together, it is extremely convenient with JSight language.  
+  No more multiple design iterations and edits required. All you need is to share the screen between
+  the participants and come up with an API together right in the Editor. All this is possible thanks
+  to the compactness and simplicity of the JSight language.  
+  [Compare JSight with Open API](#scroll--jsight-api-language).
 
 <div>  
   &nbsp; 
@@ -412,8 +414,17 @@ For more information on configuring the application, see the
 The JSight API language allows you to specify REST APIs with incredible speed and convenience. More
 information can be found in the [Quick
 Tutorial](https://jsight.io/docs/jsight-api-0-3-quick-tutorial) or in the [language
-specification](https://jsight.io/docs/jsight-api-0-3). Here we give examples of the same API
-described using JSight API and OpenAPI.
+specification](https://jsight.io/docs/jsight-api-0-3).
+
+JSight API language video lessons:
+
+<div align="center">
+
+<a href="https://www.youtube.com/watch?v=AegCETY9Cdk&list=PLy9sOecVhlybvRoDhGlzyMwKVxR-gFkdX"><img width="40%" src="./img/lesson1.png" alt="JSight API. Lesson 1" /></a>
+
+</div>
+
+Here we give examples of the same API described using JSight API and OpenAPI.
 
 <details open><summary>Example 1. The simplest</summary>
 
@@ -1581,7 +1592,22 @@ We did not describe this API in OpenAPI. It is too complicated and very long…
 
 ## :date: &nbsp; Roadmap
 
-<img src="./img/roadmap.svg"/>
+- **Aug &#x2013; Dec 2022**  
+  Minor UI improvements.
+- **Aug 2022**  
+  JSON-RPC 2.0 support.
+- **Sep 2022**  
+  Download document also in MarkDown, PDF, and DOCX formats.
+- **Oct 2022**  
+  Quick Help built into the editor allows you to quickly access the necessary information on the JSight API language without leaving the editor.
+- **Nov 2022**  
+  Converting the JSight specification to OpenAPI and vice versa.</tspan></text>
+- **Sep 2022**  
+  Converting the JSight specification to OpenAPI and vice versa. Automatic generation of API clients and API server stubs.
+- **Aug &#x2013; Dec 2022**  
+  Support for other types of API: gRPC, Kafka, RabbitMQ, WebSocket. Sending test requests to the API.
+- **Nov 2022**  
+  Create a virtual server on click.
 
 If you have any ideas or suggestions, please write to us:
 
@@ -1839,6 +1865,8 @@ details.
 
 - All JSight repositories: https://github.com/jsightapi.
 - GitHub discussions: https://github.com/jsightapi/online-editor-frontend/discussions.
+- JSight video lessons:
+  https://www.youtube.com/watch?v=AegCETY9Cdk&list=PLy9sOecVhlybvRoDhGlzyMwKVxR-gFkdX
 
 <div>  
   &nbsp; 
@@ -1858,6 +1886,10 @@ details.
 We sincerely thank all those without whom this project would not have been possible:
 
 - [Alchemist Accelerator](https://www.alchemistaccelerator.com/),
+- [Alexis](https://github.com/agvanti),
+- Timur Ibragimov,
+- [Petr Molchanov](https://github.com/d1rebear),
+- Carl Crawford,
 - [ReactJS](https://github.com/facebook/react),
 - [Monaco Editor](https://github.com/microsoft/monaco-editor),
 - [create-react-app](https://github.com/facebook/create-react-app),
