@@ -6,6 +6,7 @@ import {ShortcutLines} from '../ShortcutLines';
 import {ObjectContext} from '../../store/ObjectContext';
 import {useSchemaData} from 'components/CodeView/hooks/useSchemaData';
 import {SchemaViewContext} from 'store';
+import {wrapInQuotes} from 'utils/wrapInQuotes';
 
 interface RuleValueOrProps {
   items?: RuleType[];
@@ -49,18 +50,20 @@ export const RuleValueOr = ({items, level, tab, numberLine, parentNumber}: RuleV
                   <span
                     onClick={(e) => {
                       e.stopPropagation();
-                      (value.scalarValue as string)[0] === '@' &&
+                      value.tokenType === 'reference' &&
                         setSchema(value ? String(value.scalarValue) : null);
                     }}
                     className={clsx([
-                      (value.scalarValue as string)[0] === '@' ? 'clickable-value' : 'value',
+                      value.tokenType === 'reference' ? 'clickable-value' : 'value',
                       {expanded: currentSchema === value?.scalarValue},
                     ])}
                   >
-                    {value?.scalarValue}
+                    {wrapInQuotes(value.scalarValue || '')}
                   </span>
                 ) : (
-                  <span className="value">{value.scalarValue}</span>
+                  <span className="value">
+                    {wrapInQuotes(value.scalarValue || '', !['regex'].includes(value.key))}
+                  </span>
                 )}
                 {index !== Object.keys(properties).length && (
                   <span className="punctuation-char">, </span>
