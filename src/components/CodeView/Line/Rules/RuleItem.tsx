@@ -62,7 +62,7 @@ export const RuleItem = ({
           numberLine={numberLine}
           className="array-item"
           schemaName={schemaName}
-          value={String(item.scalarValue)}
+          value={item.tokenType === 'string' ? `"${item.scalarValue}"` : String(item.scalarValue)}
           parentNumber={parentNumber}
           ruleProp={propName}
           type={item.tokenType}
