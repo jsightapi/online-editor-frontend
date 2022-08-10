@@ -1,7 +1,6 @@
 import React, {useContext} from 'react';
 import {RuleType} from 'types/exchange';
 import {PropName} from 'components/CodeView/Line/Element/PropName';
-import {map} from 'lodash';
 import {RuleValue} from './RuleValue';
 import {SchemaViewContext} from 'store';
 import {RuleValueOr} from 'components/CodeView/Line/Rules/RuleValueOr';
@@ -33,24 +32,21 @@ export const RuleItem = ({
 
   const renderArrayItem = (item: RuleType): JSX.Element => {
     if (item.tokenType === 'object') {
-      let index = 0;
       return (
         <span>
           <span>{'{ '}</span>
-          {item.children &&
-            map(item.children, (value, key) => {
-              index++;
-              return (
-                <span key={key}>
-                  <span className="name">{key}</span>
-                  <span className="punctuation-char">: </span>
-                  <span className="value">{String(value?.scalarValue)}</span>
-                  {index !== (item.children || []).length && (
-                    <span className="punctuation-char">, </span>
-                  )}
-                </span>
-              );
-            })}
+          {(item.children || []).map((value, index) => {
+            return (
+              <span key={value.key}>
+                <span className="name">{value.key}</span>
+                <span className="punctuation-char">: </span>
+                <span className="value">{String(value?.scalarValue)}</span>
+                {index + 1 !== (item.children || []).length && (
+                  <span className="punctuation-char">, </span>
+                )}
+              </span>
+            );
+          })}
           <span>{' }'}</span>
         </span>
       );

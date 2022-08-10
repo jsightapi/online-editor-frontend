@@ -62,7 +62,10 @@ export const RuleValueOr = ({items, level, tab, numberLine, parentNumber}: RuleV
                   </span>
                 ) : (
                   <span className="value">
-                    {wrapInQuotes(value.scalarValue || '', !['regex'].includes(value.key))}
+                    {wrapInQuotes(
+                      value.scalarValue || '',
+                      !['regex', 'string'].includes(value.key)
+                    )}
                   </span>
                 )}
                 {index !== Object.keys(properties).length && (
@@ -95,15 +98,15 @@ export const RuleValueOr = ({items, level, tab, numberLine, parentNumber}: RuleV
           <span
             onClick={(e) => {
               e.stopPropagation();
-              (content.scalarValue as string)[0] === '@' &&
+              content.tokenType === 'reference' &&
                 setSchema(content?.scalarValue ? String(content?.scalarValue) : null);
             }}
             className={clsx([
-              (content.scalarValue as string)[0] === '@' ? 'clickable-value' : 'value',
+              content.tokenType === 'reference' ? 'clickable-value' : 'value',
               {expanded: currentSchema === content?.scalarValue},
             ])}
           >
-            {`"${content?.scalarValue}"`}
+            {wrapInQuotes(content?.scalarValue || '')}
           </span>
           {!isLastItem && <span className="punctuation-char">, </span>}
         </span>
