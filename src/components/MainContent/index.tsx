@@ -252,11 +252,13 @@ export const MainContent = React.memo(
           map(jdocExchange.userEnums, (userEnum, key) =>
             jdocList.push(
               <ReusableResource
+                name={key}
+                annotation={userEnum.annotation}
+                description={userEnum.description}
+                key={`reusable-enum-${key}`}
                 keyBlock={`rue-${key}`}
                 content={userEnum.value}
-                name={key}
                 className="reusable-resource"
-                key={`reusable-enum-${key}`}
               />
             )
           );

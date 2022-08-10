@@ -174,7 +174,13 @@ export const LinesCollection: (params: JSightContentProps) => JSX.Element[] = ({
       <span key={`line-${lines.length + currentLine + 1}`} className="code-line">
         <span className="number" />
         <span>{' '.repeat(tab)}</span>
-        <span className="comment">{`// ${content.note}`}</span>
+        {content.note && (
+          <span className="comment">{`// ${
+            typeof content.note === 'string'
+              ? content.note.replace(/(\r\n|\n|\r)/gm, '').trim()
+              : content.note
+          }`}</span>
+        )}
       </span>
     );
   } else if (['number', 'string', 'boolean', 'null'].includes(content.tokenType)) {
