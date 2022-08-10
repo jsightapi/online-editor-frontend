@@ -2,16 +2,16 @@
 <rect width="1012" height="424" rx="8" fill="#F8F8FA"/>
 <path opacity="0.5" d="M527 143H530V422.5C530 423.328 529.328 424 528.5 424V424C527.672 424 527 423.328 527 422.5V143Z" fill="#DBDBE1"/>
 <path opacity="0.5" d="M63 0H67V298C67 299.105 66.1046 300 65 300V300C63.8954 300 63 299.105 63 298V0Z" fill="#DBDBE1"/>
-<text fill="#1B1128" xml:space="preserve" style="white-space: pre" font-family="Helvetica" font-size="14" font-weight="bold" letter-spacing="0em"><tspan x="89" y="48.8296">Jun 2022</tspan></text>
-<text fill="#1B1128" xml:space="preserve" style="white-space: pre" font-family="Arial" font-size="13" letter-spacing="0em"><tspan x="89" y="72.0068">API is saved in the cloud, updated when new versions are created, </tspan><tspan x="89" y="91.0068">and shared via a unique URL.</tspan></text>
-<text fill="#1B1128" xml:space="preserve" style="white-space: pre" font-family="Helvetica" font-size="14" font-weight="bold" letter-spacing="0em"><tspan x="89" y="128.83">Apr &#x2013; Nov 2022</tspan></text>
-<text fill="#1B1128" xml:space="preserve" style="white-space: pre" font-family="Arial" font-size="13" letter-spacing="0em"><tspan x="89" y="154.007">Minor UI improvements.</tspan></text>
-<text fill="#1B1128" xml:space="preserve" style="white-space: pre" font-family="Helvetica" font-size="14" font-weight="bold" letter-spacing="0em"><tspan x="89" y="191.83">Jul 2022</tspan></text>
-<text fill="#1B1128" xml:space="preserve" style="white-space: pre" font-family="Arial" font-size="13" letter-spacing="0em"><tspan x="89" y="217.007">JSON-RPC 2.0 support.</tspan></text>
-<text fill="#1B1128" xml:space="preserve" style="white-space: pre" font-family="Helvetica" font-size="14" font-weight="bold" letter-spacing="0em"><tspan x="89" y="254.83">Aug 2022</tspan></text>
-<text fill="#1B1128" xml:space="preserve" style="white-space: pre" font-family="Arial" font-size="13" letter-spacing="0em"><tspan x="89" y="280.007">Download document in MarkDown, PDF, and DOCX formats.</tspan></text>
-<text fill="#1B1128" xml:space="preserve" style="white-space: pre" font-family="Helvetica" font-size="14" font-weight="bold" letter-spacing="0em"><tspan x="89" y="317.83">Aug 2022</tspan></text>
-<text fill="#1B1128" xml:space="preserve" style="white-space: pre" font-family="Arial" font-size="13" letter-spacing="0em"><tspan x="89" y="343.007">Quick Help built into the editor allows you to quickly access the </tspan><tspan x="89" y="362.007">necessary information on the JSight API language without leaving </tspan><tspan x="89" y="381.007">the editor.</tspan></text>
+<text fill="#1B1128" xml:space="preserve" style="white-space: pre" font-family="Helvetica" font-size="14" font-weight="bold" letter-spacing="0em"><tspan x="89" y="48.8296">Apr &#x2013; Dec 2022</tspan></text>
+<text fill="#1B1128" xml:space="preserve" style="white-space: pre" font-family="Arial" font-size="13" letter-spacing="0em"><tspan x="89" y="72.0068">Minor UI improvements.</tspan></text>
+<text fill="#1B1128" xml:space="preserve" style="white-space: pre" font-family="Helvetica" font-size="14" font-weight="bold" letter-spacing="0em"><tspan x="89" y="110.83">Aug 2022</tspan></text>
+<text fill="#1B1128" xml:space="preserve" style="white-space: pre" font-family="Arial" font-size="13" letter-spacing="0em"><tspan x="89" y="136.007">JSON-RPC 2.0 support.</tspan></text>
+<text fill="#1B1128" xml:space="preserve" style="white-space: pre" font-family="Helvetica" font-size="14" font-weight="bold" letter-spacing="0em"><tspan x="89" y="173.83">Sep 2022</tspan></text>
+<text fill="#1B1128" xml:space="preserve" style="white-space: pre" font-family="Arial" font-size="13" letter-spacing="0em"><tspan x="89" y="199.007">Download document also in MarkDown, PDF, and DOCX formats.</tspan></text>
+<text fill="#1B1128" xml:space="preserve" style="white-space: pre" font-family="Helvetica" font-size="14" font-weight="bold" letter-spacing="0em"><tspan x="89" y="236.83">Oct 2022</tspan></text>
+<text fill="#1B1128" xml:space="preserve" style="white-space: pre" font-family="Arial" font-size="13" letter-spacing="0em"><tspan x="89" y="262.007">Quick Help built into the editor allows you to quickly access the </tspan><tspan x="89" y="281.007">necessary information on the JSight API language without leaving </tspan><tspan x="89" y="300.007">the editor.</tspan></text>
+<text fill="#1B1128" xml:space="preserve" style="white-space: pre" font-family="Helvetica" font-size="14" font-weight="bold" letter-spacing="0em"><tspan x="89" y="337.83">Nov 2022</tspan></text>
+<text fill="#1B1128" xml:space="preserve" style="white-space: pre" font-family="Arial" font-size="13" letter-spacing="0em"><tspan x="89" y="363.007">Converting the JSight specification to OpenAPI and vice versa.</tspan></text>
 <text fill="#1B1128" xml:space="preserve" style="white-space: pre" font-family="Helvetica" font-size="14" font-weight="bold" letter-spacing="0em"><tspan x="552" y="48.8296">Sep 2022</tspan></text>
 <text fill="#1B1128" xml:space="preserve" style="white-space: pre" font-family="Arial" font-size="13" letter-spacing="0em"><tspan x="552" y="74.0068">Converting the JSight specification to OpenAPI and vice versa. </tspan></text>
 <text fill="#1B1128" xml:space="preserve" style="white-space: pre" font-family="Arial" font-size="13" letter-spacing="0em"><tspan x="552" y="101.007">Automatic generation of API clients and API server stubs.</tspan></text>
@@ -23,7 +23,7 @@
 <text fill="#1B1128" xml:space="preserve" style="white-space: pre" font-family="Arial" font-size="13" letter-spacing="0em"><tspan x="552" y="290.007">Create a virtual server on click.</tspan></text>
 <path d="M64 25.5C64 24.6716 64.6716 24 65.5 24V24C66.3284 24 67 24.6716 67 25.5V424H64V25.5Z" fill="url(#paint0_linear_561_4614)"/>
 <path d="M527 0H530V304.5C530 305.328 529.328 306 528.5 306V306C527.672 306 527 305.328 527 304.5V0Z" fill="url(#paint1_linear_561_4614)"/>
-<path d="M67 249H76C76.5523 249 77 249.448 77 250V250C77 250.552 76.5523 251 76 251H67V249Z" fill="#51C0AA"/>
+<path d="M67 231H76C76.5523 231 77 231.448 77 232V232C77 232.552 76.5523 233 76 233H67V231Z" fill="#51C0AA"/>
 <path d="M67 312H76C76.5523 312 77 312.448 77 313V313C77 313.552 76.5523 314 76 314H67V312Z" fill="#45BBC7"/>
 <path d="M67 186H76C76.5523 186 77 186.448 77 187V187C77 187.552 76.5523 188 76 188H67V186Z" fill="#5DC68C"/>
 <path d="M530 196H539C539.552 196 540 196.448 540 197V197C540 197.552 539.552 198 539 198H530V196Z" fill="#66CA76"/>
