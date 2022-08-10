@@ -30,7 +30,6 @@ export function useSelectionLine({
   const {collapsedRules} = useContext(SchemaViewContext);
   const {hoveredSchema, hiddenInheritedSchemas, keyBlock} = useContext(CodeContext);
   const {setCurrentDocSidebar} = useContext(SidebarContext);
-
   const isShowDetailInfo = useShowDetailInfo(rules, notes);
 
   const isSelected = useMemo(() => selectedLine?.numberLine === numberLine, [
@@ -46,7 +45,7 @@ export function useSelectionLine({
   );
 
   const isHidden = useMemo(() => {
-    return !!hiddenInheritedSchemas.find(
+    return !!(hiddenInheritedSchemas || []).find(
       (item) => item.schemaName === schemaName && item.numberLine === parentInheritedNumber
     );
   }, [hiddenInheritedSchemas, parentInheritedNumber, schemaName]);
