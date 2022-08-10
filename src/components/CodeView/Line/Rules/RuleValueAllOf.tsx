@@ -2,6 +2,7 @@ import React, {useContext, useMemo} from 'react';
 import {RuleValueProps} from './RuleValue';
 import {CodeContext} from 'components/CodeView/Code';
 import clsx from 'clsx';
+import {wrapInQuotes} from 'utils/wrapInQuotes';
 
 export const RuleValueAllOf = ({value, numberLine, type}: RuleValueProps) => {
   const {
@@ -48,7 +49,7 @@ export const RuleValueAllOf = ({value, numberLine, type}: RuleValueProps) => {
       onClick={toggle}
       className={clsx(valueClass, `rule-value-${type}`)}
     >
-      {`"${value}"`}
+      {wrapInQuotes(value)}
     </span>
   );
 };
