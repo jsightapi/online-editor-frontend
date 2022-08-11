@@ -47,7 +47,7 @@ export const RuleValueType = ({
   return (
     <span>
       <span onClick={toggle} className={valueClass}>
-        {wrapInQuotes(value, !valueClass.includes('rule-value-string'))}
+        {wrapInQuotes(value, !['regex', 'string', 'reference'].includes(type || ''))}
       </span>
       {objectSpanRef && objectSpanRef.current && expanded
         ? createPortal(

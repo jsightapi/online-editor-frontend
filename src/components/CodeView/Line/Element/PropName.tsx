@@ -12,7 +12,7 @@ export const PropName = React.memo(
   ({name, isKeyShortcut, wrappedInQuotes = true}: PropNameProps) => (
     <span>
       <span className={clsx(['name', {'shortcut-key': isKeyShortcut}])}>
-        {wrappedInQuotes ? wrapInQuotes(name) : name}
+        {!isKeyShortcut ? (wrappedInQuotes ? wrapInQuotes(name) : name) : name}
       </span>
       <span className="punctuation-char">: </span>
     </span>
