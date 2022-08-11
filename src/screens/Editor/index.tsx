@@ -91,7 +91,7 @@ export const EditorScreen = () => {
   });
 
   useEffect(() => {
-    if (jsightCodeDebounced) {
+    if (jsightCodeDebounced !== undefined) {
       (async () => {
         if (!isExport) {
           try {
