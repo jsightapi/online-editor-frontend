@@ -75,7 +75,7 @@ TYPE @pet // A pet.
 TYPE @cat // A cat.
 { // {allOf: "@pet"}
   "status": "relaxing",
-  "bestFriend": @cat,
+  "bestFriend": @cat, // {optional: true}
   "topFriends": { // {additionalProperties: true}
     @petName: @cat | @pig
   },

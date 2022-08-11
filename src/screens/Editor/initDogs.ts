@@ -1,7 +1,7 @@
 export const initDogs = `###
 JSight 0.3 Demo API.
 For more information, see official docs: 
-https://jsight.io/docs/jsight-api-0-3-quick-tutorial
+https://jsight.io/docs
 ###
 
 JSIGHT 0.3

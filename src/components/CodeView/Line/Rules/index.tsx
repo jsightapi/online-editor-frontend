@@ -57,21 +57,22 @@ export const Rules = React.memo(
     const isShowDetailInfo = useShowDetailInfo(rules, note);
 
     useEffect(() => {
-      updateAnnotations(
-        {
-          rules,
-          name:
-            propName ||
-            (itemIndex !== undefined ? (!isLastLine ? String(itemIndex) : `${itemIndex}–∞`) : ''),
-          typeName: propType || typeName || '',
-          numberLine,
-          schemaName,
-          spanRef: rulesSpanRef,
-          note,
-        },
-        isShowDetailInfo, // if true - add, otherwise - delete
-        parentNumber
-      );
+      updateAnnotations &&
+        updateAnnotations(
+          {
+            rules,
+            name:
+              propName ||
+              (itemIndex !== undefined ? (!isLastLine ? String(itemIndex) : `${itemIndex}–∞`) : ''),
+            typeName: propType || typeName || '',
+            numberLine,
+            schemaName,
+            spanRef: rulesSpanRef,
+            note,
+          },
+          isShowDetailInfo, // if true - add, otherwise - delete
+          parentNumber
+        );
     }, [
       rules,
       schemaName,
@@ -146,7 +147,11 @@ export const Rules = React.memo(
       return (
         <span className="comment">
           {' '}
-          // <RuleNote note={note} collapsedRules={collapsedRules} />
+          //{' '}
+          <RuleNote
+            note={note.replace(/(\r\n|\n|\r|\t)/gm, '').trim()}
+            collapsedRules={collapsedRules}
+          />
         </span>
       );
     } else {

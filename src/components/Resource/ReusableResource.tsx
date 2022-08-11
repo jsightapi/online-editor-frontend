@@ -13,6 +13,7 @@ interface ReusableResourceProps {
   content?: RuleType;
   links?: any[];
   annotation?: string;
+  description?: string;
   keyBlock: string;
   className?: string;
 }
