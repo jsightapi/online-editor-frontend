@@ -105,7 +105,6 @@ export const RuleItem = ({
       </span>
     );
   } else {
-    console.log(rule.tokenType);
     return (
       <span>
         {propName && <PropName wrappedInQuotes={false} name={propName} />}
