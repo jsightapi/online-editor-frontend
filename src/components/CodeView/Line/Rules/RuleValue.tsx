@@ -25,7 +25,12 @@ export const RuleValue = (props: RuleValueProps) => {
 
   return (
     <span className={clsx(props.className, `rule-value-${props.type}`)}>
-      {wrapInQuotes(props.value, !['regex', 'string'].includes(props.type || '')) as string}
+      {
+        wrapInQuotes(
+          props.value,
+          !['regex', 'string', 'reference'].includes(props.type || '')
+        ) as string
+      }
     </span>
   );
 };
