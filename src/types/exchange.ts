@@ -117,8 +117,8 @@ export interface HttpInteractionType extends InteractionBaseType {
 
 export interface JsonRpcInteractionType extends InteractionBaseType {
   method: string;
-  params: SchemaType;
-  result: SchemaType;
+  params?: SchemaType;
+  result?: SchemaType;
 }
 
 export interface SchemaType {
