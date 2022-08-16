@@ -9,7 +9,7 @@ import 'react-toastify/dist/ReactToastify.css';
 import {Contacts} from 'components/Modals/Contacts';
 import {screenWidthMultiplier} from 'utils/screenWidthMultiplier';
 import {editorModeType, ErrorType, SidebarDocType} from 'types';
-import {JDocContext, SidebarContext, EditorContext} from 'store';
+import {JDocContext, SidebarContext, EditorContext, CurrentUrlProvider} from 'store';
 import {getJDocExchange} from 'api/getJDocExchange';
 import {showEditorError} from 'utils/showEditorError';
 import {useDebounce} from 'hooks/useDebounce';
@@ -20,7 +20,7 @@ const {isExport} = window as any;
 const SCROLLBAR_WIDTH = 20;
 
 export const EditorScreen = () => {
-  const [viewMode, setViewMode] = useState<editorModeType>(isExport ? 'doc' : 'editor');
+  const [viewMode] = useState<editorModeType>(isExport ? 'doc' : 'editor');
   // left sidebar
   const [codeContentsSidebar] = useState<boolean>(false);
   //documentation sidebar on the right
@@ -85,9 +85,25 @@ export const EditorScreen = () => {
     [codeContentsSidebar, currentDocSidebar]
   );
 
-  const setDocSidebar = useCallback((sidebar: SidebarDocType) => {
+  const handleCurrentDocSidebar = useCallback((sidebar: SidebarDocType) => {
     setCurrentDocSidebar((prev) => (prev === sidebar ? null : sidebar));
   }, []);
+
+  const sidebarValue = useMemo(
+    () => ({
+      currentDocSidebar,
+      setCurrentDocSidebar,
+    }),
+    [currentDocSidebar]
+  );
+
+  const editorValue = useMemo(
+    () => ({
+      editorWidth,
+      isEditor,
+    }),
+    [isEditor, editorWidth]
+  );
 
   return (
     <JDocContext.Provider value={jdocExchange}>
@@ -97,12 +113,7 @@ export const EditorScreen = () => {
           exported: isExport,
         })}
       >
-        <EditorContext.Provider
-          value={{
-            editorWidth,
-            isEditor,
-          }}
-        >
+        <EditorContext.Provider value={editorValue}>
           <div className={classes}>
             <div
               className="doc"
@@ -110,17 +121,17 @@ export const EditorScreen = () => {
                 width: typeof editorWidth === 'string' ? parseInt(editorWidth) : editorWidth,
               }}
             >
-              {jdocExchange ? (
-                <Layout isEditor={isEditor}>
-                  {/*<MainContent jdocExchange={jdocExchange} showRightSidebar={!!currentDocSidebar} />*/}
-                </Layout>
-              ) : (
-                <div className="flex-fluid" />
-              )}
+              <CurrentUrlProvider>
+                <SidebarContext.Provider value={sidebarValue}>
+                  <Layout isEditor={isEditor}>
+                    <MainContent jdocExchange={jdocExchange} />
+                  </Layout>
+                </SidebarContext.Provider>
+              </CurrentUrlProvider>
               {isEditor && (
                 <div className="side-panel right-side">
                   <div
-                    onClick={() => setDocSidebar('content')}
+                    onClick={() => handleCurrentDocSidebar('content')}
                     className={clsx('side-panel-element', {
                       active: currentDocSidebar === 'content',
                     })}
