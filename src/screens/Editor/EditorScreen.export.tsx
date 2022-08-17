@@ -20,12 +20,12 @@ const {isExport} = window as any;
 const SCROLLBAR_WIDTH = 20;
 
 export const EditorScreen = () => {
-  const [viewMode] = useState<editorModeType>(isExport ? 'doc' : 'editor');
-  // left sidebar
-  const [codeContentsSidebar] = useState<boolean>(false);
+  const viewMode: editorModeType = isExport ? 'doc' : 'editor';
+  const jsightCode: string = localStorage.getItem('jsightCode') || initCats;
+  const codeContentsSidebar = false;
+
   //documentation sidebar on the right
   const [currentDocSidebar, setCurrentDocSidebar] = useState<SidebarDocType>(null);
-  const [jsightCode] = useState<string>(localStorage.getItem('jsightCode') || initCats);
   const [jdocExchange, setJdocExchange] = useState<JDocType>();
   const jsightCodeDebounced = useDebounce<string>(jsightCode, 600);
   const [contactModalVisible, setContactModalVisible] = useState<boolean>(false);
