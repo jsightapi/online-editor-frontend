@@ -3,7 +3,7 @@ export const wrapInQuotes = (
   withoutWrap = false
 ): string | number | boolean | null => {
   if (!withoutWrap) {
-    return `"${value}"`;
+    return JSON.stringify(value);
   }
 
   return value;
