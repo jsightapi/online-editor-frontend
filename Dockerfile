@@ -1,6 +1,6 @@
 # stage1 as builder
 FROM node:14-alpine as builder
-ARG API_URL="/api"
+ARG API_URL="/parse-jsight"
 ARG GTM_ID=""
 ARG CLOUD_URL="https://cloud.jsight.io"
 ENV REACT_APP_API_URL=$API_URL
