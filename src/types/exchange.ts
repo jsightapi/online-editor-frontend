@@ -60,8 +60,8 @@ export interface UserEnumsType {
 
 export interface ApiInfoType {
   title: string;
-  version: string;
-  description: string;
+  version?: string;
+  description?: string;
 }
 
 export interface ServerType {

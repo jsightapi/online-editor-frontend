@@ -11,9 +11,7 @@ import {Layout} from 'components/Layout';
 import {showEditorError} from 'utils/showEditorError';
 import {ErrorSimpleType, ErrorType} from 'types/error';
 import {Header} from 'components/Header';
-import {initCats} from 'screens/Editor/initCats';
-import {initDogs} from 'screens/Editor/initDogs';
-import {initPigs} from 'screens/Editor/initPigs';
+import {initCats, initDogs, initPigs} from './init';
 import {Contacts} from 'components/Modals/Contacts';
 import {HeaderDoc} from 'components/Header/HeaderDoc';
 import {screenWidthMultiplier} from 'utils/screenWidthMultiplier';
@@ -23,8 +21,9 @@ import {CurrentUrlProvider} from 'store/CurrentUrlStore';
 import {onOrientationChange} from 'utils/onOrientationChange';
 import {ErrorScreen} from 'screens/Error';
 import {SharingForm} from 'components/Modals/SharingForm';
-import './Editor.styles.scss';
 import 'react-toastify/dist/ReactToastify.css';
+import {HeaderMetaTags} from 'components/HeaderMetaTags';
+import './Editor.styles.scss';
 
 const {isExport} = window as any;
 
@@ -195,6 +194,7 @@ export const EditorScreen = () => {
 
   return (
     <JDocContext.Provider value={jdocExchange}>
+      <HeaderMetaTags />
       {!isExport ? (
         isEditor ? (
           <Header
