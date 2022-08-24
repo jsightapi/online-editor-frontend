@@ -60,8 +60,8 @@ export interface UserEnumsType {
 
 export interface ApiInfoType {
   title: string;
-  version: string;
-  description: string;
+  version?: string;
+  description?: string;
 }
 
 export interface ServerType {
@@ -117,8 +117,8 @@ export interface HttpInteractionType extends InteractionBaseType {
 
 export interface JsonRpcInteractionType extends InteractionBaseType {
   method: string;
-  params: SchemaType;
-  result: SchemaType;
+  params?: SchemaType;
+  result?: SchemaType;
 }
 
 export interface SchemaType {
