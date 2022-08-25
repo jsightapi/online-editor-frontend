@@ -5,6 +5,7 @@ import {TextWithTooltip} from 'components/TextWithTooltip';
 import {formatNotes} from '../utils/formatNotes';
 import './DetailCard.scss';
 import {MainContext, SidebarContext} from 'store';
+import {wrapInQuotes} from 'utils/wrapInQuotes';
 
 interface DetailCardProps {
   name: string;
@@ -36,12 +37,21 @@ export const DetailCard = ({
   const {setSelectedLine} = useContext(MainContext);
 
   const renderRule = (rule: RuleType, key: string, rulesLength: number, index: number) => {
-    if (['boolean', 'string', 'number', 'null'].includes(rule.tokenType)) {
+    if (['boolean', 'number', 'null'].includes(rule.tokenType)) {
       return (
         <span key={`rule-${key}`} className="detail-code-line">
           <span className="name">{key}</span>
           <span className="punctuation-char">: </span>
           <span className="value">{String(rule.scalarValue)}</span>
+          {index !== rulesLength && <span className="punctuation-char">,</span>}
+        </span>
+      );
+    } else if (['reference', 'string'].includes(rule.tokenType)) {
+      return (
+        <span key={`rule-${key}`} className="detail-code-line">
+          <span className="name">{key}</span>
+          <span className="punctuation-char">: </span>
+          <span className="value">{wrapInQuotes(rule.scalarValue || '')}</span>
           {index !== rulesLength && <span className="punctuation-char">,</span>}
         </span>
       );
