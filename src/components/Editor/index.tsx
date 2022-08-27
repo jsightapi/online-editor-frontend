@@ -4,7 +4,7 @@ import {createOnigScanner, createOnigString, loadWASM} from 'vscode-oniguruma';
 import {SimpleLanguageInfoProvider} from 'textmate/providers';
 import {registerLanguages} from 'textmate/register';
 import {rehydrateRegexps} from 'textmate/configuration';
-import VsCodeDarkTheme from 'textmate/themes/vs-dark-plus-theme';
+import VsCodeDarkTheme from 'themes/vs-dark-plus-theme.json';
 import type {LanguageId} from 'textmate/register';
 import type {ScopeName, TextMateGrammar, ScopeNameInfo} from 'textmate/providers';
 import {getExistingState} from 'api/codeSharing';
@@ -200,7 +200,7 @@ export const Editor = React.memo(
         };
       })();
       // eslint-disable-next-line
-  }, []);
+    }, []);
 
     useEffect(() => {
       if (isEditorLoaded) {
@@ -255,7 +255,7 @@ export const Editor = React.memo(
         }
       }
       // eslint-disable-next-line
-  }, [isEditorLoaded, errorRow, content, key, version]);
+    }, [isEditorLoaded, errorRow, content, key, version]);
 
     useEffect(() => {
       if (reload && isEditorLoaded) {
@@ -263,12 +263,12 @@ export const Editor = React.memo(
         reloadedEditor();
       }
       // eslint-disable-next-line
-  }, [isEditorLoaded, reload]);
+    }, [isEditorLoaded, reload]);
 
     useEffect(() => {
       errorRow && jsightEditor.current?.revealLine(errorRow, 0);
       // eslint-disable-next-line
-  }, [scrollToRow]);
+    }, [scrollToRow]);
 
     return (
       <div className="editor-parent">
