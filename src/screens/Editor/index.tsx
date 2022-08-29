@@ -23,6 +23,7 @@ import {ErrorScreen} from 'screens/Error';
 import {SharingForm} from 'components/Modals/SharingForm';
 import 'react-toastify/dist/ReactToastify.css';
 import {HeaderMetaTags} from 'components/HeaderMetaTags';
+import {AnnouncementBar} from 'components/AnnouncementBar';
 import './Editor.styles.scss';
 
 const {isExport} = window as any;
@@ -49,6 +50,14 @@ export const EditorScreen = () => {
   const [error, setError] = useState<ErrorSimpleType | null>(null);
   const [disableSharing, setDisableSharing] = useState<boolean>(true);
   const isEditor = useMemo(() => viewMode === 'editor', [viewMode]);
+  const [isShowAnnouncementBar, setIsShowAnnouncementBar] = useState<boolean>(
+    !localStorage.getItem('announcement.bar.hidden')
+  );
+
+  const handleCloseAnnouncementBar = () => {
+    setIsShowAnnouncementBar(false);
+    localStorage.setItem('announcement.bar.hidden', 'true');
+  };
 
   const screenWidth = window.innerWidth;
   const getEditorWidth = (screenWidth: number) => {
@@ -195,22 +204,29 @@ export const EditorScreen = () => {
   return (
     <JDocContext.Provider value={jdocExchange}>
       <HeaderMetaTags />
+      <AnnouncementBar
+        handleCloseClick={handleCloseAnnouncementBar}
+        isShow={isShowAnnouncementBar}
+      />
       {!isExport ? (
-        isEditor ? (
-          <Header
-            disableSharing={disableSharing}
-            setInitialContent={setInitialContent}
-            setViewMode={setViewMode}
-            setContactModalVisible={setContactModalVisible}
-            openSharingModal={openSharingModal}
-          />
-        ) : (
-          <HeaderDoc openSharingModal={openSharingModal} setViewMode={setViewMode} />
-        )
+        <div className={'p-relative'}>
+          {isEditor ? (
+            <Header
+              disableSharing={disableSharing}
+              setInitialContent={setInitialContent}
+              setViewMode={setViewMode}
+              setContactModalVisible={setContactModalVisible}
+              openSharingModal={openSharingModal}
+            />
+          ) : (
+            <HeaderDoc openSharingModal={openSharingModal} setViewMode={setViewMode} />
+          )}
+        </div>
       ) : (
         <div />
       )}
       <div
+        style={{top: isShowAnnouncementBar ? 97 : 64}}
         className={clsx('d-flex editor-wrapper', {
           'only-doc': !isEditor,
           exported: isExport,

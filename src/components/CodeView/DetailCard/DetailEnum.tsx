@@ -8,10 +8,16 @@ import {wrapInQuotes} from 'utils/wrapInQuotes';
 interface DetailEnumProps {
   keyBlock: string;
   items: RuleType[];
-  updateDetailWrapperHeight(): void;
+  updateDetailWrapperHeight?: () => void;
+  tab?: number;
 }
 
-export const DetailEnum = ({keyBlock, items, updateDetailWrapperHeight}: DetailEnumProps) => {
+export const DetailEnum = ({
+  keyBlock,
+  items,
+  updateDetailWrapperHeight,
+  tab = 0,
+}: DetailEnumProps) => {
   const {schemasView, setExpandDetailCard} = useContext(MainContext);
 
   const isOpen = useMemo(
@@ -20,7 +26,7 @@ export const DetailEnum = ({keyBlock, items, updateDetailWrapperHeight}: DetailE
   );
 
   useEffect(() => {
-    updateDetailWrapperHeight();
+    updateDetailWrapperHeight && updateDetailWrapperHeight();
   }, [isOpen]);
 
   const toggle = () => {
@@ -32,15 +38,17 @@ export const DetailEnum = ({keyBlock, items, updateDetailWrapperHeight}: DetailE
       case 'object':
         return item.children ? (
           <DetailObject
+            keyBlock={keyBlock}
             key={`${index}-${item.scalarValue}`}
             isLast={index + 1 === items.length}
-            tab={2}
+            tab={tab + 2}
             properties={item.children}
           />
         ) : null;
       case 'annotation':
         return (
           <span key={`annotation-${index.toString()}`} className="code-line">
+            <span>{' '.repeat(tab)}</span>
             <span className="comment">{`// ${item.note}`}</span>
           </span>
         );
@@ -51,7 +59,7 @@ export const DetailEnum = ({keyBlock, items, updateDetailWrapperHeight}: DetailE
       case 'reference':
         return (
           <span key={`${index}-${item.scalarValue}`} className="detail-code-line">
-            <span>{' '.repeat(2)}</span>
+            <span>{' '.repeat(2 + tab)}</span>
             <span className={clsx('value', `value-${item.tokenType}`)}>
               {String(
                 wrapInQuotes(

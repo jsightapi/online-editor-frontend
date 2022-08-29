@@ -1,0 +1,22 @@
+.announcement-bar {
+  background-color: #fafbfc;
+  border-bottom: 1px solid #f5f6f7;
+  align-items: center;
+  justify-content: center;
+  height: 3.3rem;
+
+  .content {
+    padding: 5px 0;
+
+    a {
+      text-decoration: underline;
+    }
+  }
+
+  .btn-close {
+    right: 5px;
+    position: absolute;
+    font-size: 1.8rem;
+    cursor: pointer;
+  }
+}
