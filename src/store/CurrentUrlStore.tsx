@@ -23,7 +23,7 @@ export const CurrentUrlProvider = ({children}: ProviderInterface) => {
 
   useEffect(() => {
     if (currentUrl) {
-      history.push(`/${currentUrl}`);
+      history.push(`/${currentUrl[0] === '/' ? currentUrl.slice(1) : currentUrl}`);
     }
   }, [currentUrl]);
 
