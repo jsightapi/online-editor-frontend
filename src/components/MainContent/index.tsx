@@ -177,7 +177,14 @@ export const MainContent = React.memo(
             if (tag.interactionGroups.find((item) => item.protocol === 'json-rpc-2.0')) {
               jdocList.push(<JsonRpcHeader title={tag.title} />);
             } else {
-              jdocList.push(<h2 className="resource-header">{tag.title}</h2>);
+              jdocList.push(
+                <div>
+                  <h2 className="resource-header">{tag.title}</h2>
+                  <div className="resource-wrapper">
+                    <div className="resource-spacer" />
+                  </div>
+                </div>
+              );
             }
             jdocPositions.push(`resource-${tagKey}`);
 
