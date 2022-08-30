@@ -181,10 +181,6 @@ export const EditorScreen = () => {
   const handleError = useCallback((error) => setError(error), []);
   const handleReloadedEditor = useCallback(() => reloadedEditor(), []);
 
-  if (error && error.code) {
-    return <ErrorScreen goToEditor={goToEditor} code={error.code} message={error.message} />;
-  }
-
   const sidebarValue = useMemo(
     () => ({
       currentDocSidebar,
@@ -200,6 +196,10 @@ export const EditorScreen = () => {
     }),
     [isEditor, editorWidth]
   );
+
+  if (error && error.code) {
+    return <ErrorScreen goToEditor={goToEditor} code={error.code} message={error.message} />;
+  }
 
   return (
     <JDocContext.Provider value={jdocExchange}>
