@@ -34,43 +34,54 @@ export const RuleValueOr = ({items, level, tab, numberLine, parentNumber}: RuleV
   };
 
   const renderProperties = (properties: RuleType[]) => {
-    let index = 0;
+    const renderEnum = (values: RuleType[]) => {
+      return values.map((val, index) => (
+        <span>
+          <span className="value">{val.scalarValue}</span>
+          {index + 1 !== values.length && <span className="punctuation-char">, </span>}
+        </span>
+      ));
+    };
+
+    const renderPropertyValue = (value: RuleType) => {
+      if (value.key === 'type') {
+        return (
+          <span
+            onClick={(e) => {
+              e.stopPropagation();
+              value.tokenType === 'reference' &&
+                setSchema(value ? String(value.scalarValue) : null);
+            }}
+            className={clsx([
+              value.tokenType === 'reference' ? 'clickable-value' : 'value',
+              {expanded: currentSchema === value?.scalarValue},
+            ])}
+          >
+            {wrapInQuotes(value.scalarValue || '')}
+          </span>
+        );
+      } else if (value.key === 'enum' && value.tokenType === 'array' && value.children) {
+        return renderEnum(value.children);
+      } else {
+        return (
+          <span className="value">
+            {wrapInQuotes(value.scalarValue || '', !['regex', 'string'].includes(value.key))}
+          </span>
+        );
+      }
+    };
 
     return (
       <span>
         <span>{'{ '}</span>
-        {properties.map((value) => {
-          index++;
+        {properties.map((value, index) => {
           return (
             value && (
               <span key={value.key}>
                 <span className="name">{value.key}</span>
                 <span className="punctuation-char">: </span>
-                {value.key === 'type' ? (
-                  <span
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      value.tokenType === 'reference' &&
-                        setSchema(value ? String(value.scalarValue) : null);
-                    }}
-                    className={clsx([
-                      value.tokenType === 'reference' ? 'clickable-value' : 'value',
-                      {expanded: currentSchema === value?.scalarValue},
-                    ])}
-                  >
-                    {wrapInQuotes(value.scalarValue || '')}
-                  </span>
-                ) : (
-                  <span className="value">
-                    {wrapInQuotes(
-                      value.scalarValue || '',
-                      !['regex', 'string'].includes(value.key)
-                    )}
-                  </span>
-                )}
-                {index !== Object.keys(properties).length && (
-                  <span className="punctuation-char">, </span>
-                )}
+                {renderPropertyValue(value)}
+                {index + 1 !== properties.length && <span className="punctuation-char">, </span>}
               </span>
             )
           );
