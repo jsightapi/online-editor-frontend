@@ -46,10 +46,8 @@ export const MainContent = React.memo(
     const [schemasView, setSchemasView] = useState<SchemaViewType[]>([]);
     const [schemasData, setSchemasData] = useState<{[key: string]: SchemaData[]}>({});
     const [resourceState, setResourceState] = useState<ResourceState[]>([]);
-    const prevPath = usePrevious(path);
-    const prevCurrentUrl = usePrevious(currentUrl);
-
-    const {isExport} = window as any;
+    // const prevPath = usePrevious(path);
+    // const prevCurrentUrl = usePrevious(currentUrl);
 
     const showRightSidebar = useMemo(() => !!currentDocSidebar, [currentDocSidebar]);
 
@@ -269,12 +267,16 @@ export const MainContent = React.memo(
     }, [jdocExchange]);
 
     useEffect(() => {
-      const currentPath = isExport ? currentUrl : path;
+      const currentPath = currentUrl || path;
+
       if (!currentPath) return;
 
       const index = jdocPositions.indexOf(`${currentPath?.replace(/({|})/gi, '-')}`);
 
-      if (~index && virtuosoRef?.current && (prevCurrentUrl !== currentUrl || prevPath !== path)) {
+      if (
+        ~index &&
+        virtuosoRef?.current /*(prevCurrentUrl !== currentUrl || prevPath !== path) */
+      ) {
         virtuosoRef.current.scrollToIndex({
           index: index + 1,
           align: 'start',

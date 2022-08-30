@@ -1,10 +1,6 @@
-import React, {useContext, useMemo} from 'react';
+import React, {useMemo} from 'react';
 import {uniq} from 'lodash';
-import {CurrentUrlContext} from 'store/CurrentUrlStore';
 import {TagType} from 'types/exchange';
-import {Link, useParams} from 'react-router-dom';
-import clsx from 'clsx';
-import {MainRouterParams} from 'types/router';
 import {CollapsibleContent} from '../CollapsibleContent';
 import {SidebarRoutes} from 'components/SidebarContent/SidebarRoutes';
 import './SidebarGroupItems.styles.scss';
