@@ -1,5 +1,5 @@
 import React, {useContext} from 'react';
-import {Link, useParams} from 'react-router-dom';
+import {useParams} from 'react-router-dom';
 import {MainRouterParams} from 'types';
 import {CurrentUrlContext} from 'store';
 import clsx from 'clsx';
@@ -20,17 +20,13 @@ export const SidebarLink = ({linkTo, resource}: SidebarLinkProps) => {
       className={clsx([{active: linkTo.slice(1) === (isExport ? currentUrl : path)}])}
       key={resource}
     >
-      {isExport ? (
-        <span
-          onClick={() => {
-            setCurrentUrl(linkTo.slice(1));
-          }}
-        >
-          {resource}
-        </span>
-      ) : (
-        <Link to={linkTo}>{resource}</Link>
-      )}
+      <span
+        onClick={() => {
+          setCurrentUrl(linkTo.slice(1));
+        }}
+      >
+        {resource}
+      </span>
     </li>
   );
 };

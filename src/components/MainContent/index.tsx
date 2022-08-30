@@ -46,10 +46,8 @@ export const MainContent = React.memo(
     const [schemasView, setSchemasView] = useState<SchemaViewType[]>([]);
     const [schemasData, setSchemasData] = useState<{[key: string]: SchemaData[]}>({});
     const [resourceState, setResourceState] = useState<ResourceState[]>([]);
-    const prevPath = usePrevious(path);
-    const prevCurrentUrl = usePrevious(currentUrl);
-
-    const {isExport} = window as any;
+    // const prevPath = usePrevious(path);
+    // const prevCurrentUrl = usePrevious(currentUrl);
 
     const showRightSidebar = useMemo(() => !!currentDocSidebar, [currentDocSidebar]);
 
@@ -177,7 +175,14 @@ export const MainContent = React.memo(
             if (tag.interactionGroups.find((item) => item.protocol === 'json-rpc-2.0')) {
               jdocList.push(<JsonRpcHeader title={tag.title} />);
             } else {
-              jdocList.push(<h2 className="resource-header">{tag.title}</h2>);
+              jdocList.push(
+                <div>
+                  <h2 className="resource-header">{tag.title}</h2>
+                  <div className="resource-wrapper">
+                    <div className="resource-spacer" />
+                  </div>
+                </div>
+              );
             }
             jdocPositions.push(`resource-${tagKey}`);
 
@@ -269,12 +274,16 @@ export const MainContent = React.memo(
     }, [jdocExchange]);
 
     useEffect(() => {
-      const currentPath = isExport ? currentUrl : path;
+      const currentPath = currentUrl || path;
+
       if (!currentPath) return;
 
       const index = jdocPositions.indexOf(`${currentPath?.replace(/({|})/gi, '-')}`);
 
-      if (~index && virtuosoRef?.current && (prevCurrentUrl !== currentUrl || prevPath !== path)) {
+      if (
+        ~index &&
+        virtuosoRef?.current /*(prevCurrentUrl !== currentUrl || prevPath !== path) */
+      ) {
         virtuosoRef.current.scrollToIndex({
           index: index + 1,
           align: 'start',
