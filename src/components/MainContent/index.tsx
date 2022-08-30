@@ -198,7 +198,7 @@ export const MainContent = React.memo(
                     'path'
                   ),
                   (interactionsByPath, interactionPath) => {
-                    const resourceKey = `${interactionPath.slice(1).replace(/({|})/gi, '-')}`;
+                    const resourceKey = `${interactionPath.replace(/({|})/gi, '-')}`;
                     jdocList.push(
                       <HttpResource
                         resourceKey={`${tagKey}-${resourceKey}`}
@@ -217,14 +217,13 @@ export const MainContent = React.memo(
                 interactionGroup.interactions.forEach((interaction) => {
                   if (interactions.hasOwnProperty(interaction)) {
                     const resource = interactions[interaction] as JsonRpcInteractionType;
-                    const resourceKey = `${resource.path.slice(1).replace(/({|})/gi, '-')}-${
+                    const resourceKey = `${resource.path.replace(/({|})/gi, '-')}-${
                       resource.method
                     }`;
 
                     jdocList.push(
                       <JsonRpcResource interaction={resource} resourceKey={resourceKey} />
                     );
-
                     jdocPositions.push(resourceKey);
                   }
                 });
@@ -254,7 +253,7 @@ export const MainContent = React.memo(
         if (userEnums) {
           jdocList.push(<h2 className="reusable-header">Enums</h2>);
 
-          map(jdocExchange.userEnums, (userEnum, key) =>
+          map(jdocExchange.userEnums, (userEnum, key) => {
             jdocList.push(
               <ReusableResource
                 name={key}
@@ -265,8 +264,9 @@ export const MainContent = React.memo(
                 content={userEnum.value}
                 className="reusable-resource"
               />
-            )
-          );
+            );
+            jdocPositions.push(key);
+          });
         }
         setJdocList(jdocList);
         setJdocPositions(jdocPositions);
