@@ -36,7 +36,7 @@ export const RuleValueOr = ({items, level, tab, numberLine, parentNumber}: RuleV
   const renderProperties = (properties: RuleType[]) => {
     const renderEnum = (values: RuleType[]) => {
       return values.map((val, index) => (
-        <span>
+        <span key={index.toString()}>
           <span className="value">{val.scalarValue}</span>
           {index + 1 !== values.length && <span className="punctuation-char">, </span>}
         </span>
