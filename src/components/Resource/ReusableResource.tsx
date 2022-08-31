@@ -1,17 +1,19 @@
-import React from 'react';
+import React, {useContext, useMemo} from 'react';
 import clsx from 'clsx';
 import {Link} from 'react-router-dom';
-import {LinkType, SchemaJSightContentType, SchemaType} from 'types/exchange';
+import {RuleType, SchemaType} from 'types/exchange';
 import {SchemaView} from '../SchemaView';
 import {EnumView} from '../CodeView/EnumView';
 import {CollapsibleContent} from '../CollapsibleContent';
+import {GlobalSettingsContext} from 'store';
 
 interface ReusableResourceProps {
   name: string;
   schema?: SchemaType;
-  content?: SchemaJSightContentType;
-  links?: LinkType[];
+  content?: RuleType;
+  links?: any[];
   annotation?: string;
+  description?: string;
   keyBlock: string;
   className?: string;
 }
@@ -25,13 +27,25 @@ export const ReusableResource = ({
   keyBlock,
   className,
 }: ReusableResourceProps) => {
+  const {headersBodiesTypesCode} = useContext(GlobalSettingsContext);
+
+  const userTypesViewMode = useMemo(() => (headersBodiesTypesCode ? 'code' : 'table'), [
+    headersBodiesTypesCode,
+  ]);
+
   return (
     <div className="resource-wrapper">
       <div className={clsx(['resource-content', className])}>
         <h4 className="type">{name}</h4>
         {annotation && <div className="annotation">{annotation}</div>}
         {schema ? (
-          <SchemaView type="code" keyBlock={keyBlock} schema={schema} hideUsedElements={true} />
+          <SchemaView
+            typeBlock="header-body"
+            type={userTypesViewMode}
+            keyBlock={keyBlock}
+            schema={schema}
+            hideUsedElements={true}
+          />
         ) : (
           <EnumView keyBlock={keyBlock} content={content} />
         )}

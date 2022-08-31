@@ -4,8 +4,7 @@ import {DropdownToggle} from '../Dropdown/DropdownToggle';
 import {DropdownMenu} from '../Dropdown/DropdownMenu';
 import clsx from 'clsx';
 import {ButtonDisabled} from 'components/ControlElements/ButtonDisabled';
-import {GlobalSettingsContext} from 'components/Layout';
-import {MainContext} from 'store';
+import {MainContext, GlobalSettingsContext} from 'store';
 import './ControlElements.styles.scss';
 
 interface ControlElementsProps {

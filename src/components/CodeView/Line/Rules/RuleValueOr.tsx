@@ -1,15 +1,15 @@
 import React, {useContext, useEffect, useMemo} from 'react';
-import {SchemaJSightContentType} from 'types/exchange';
-import {map} from 'lodash';
+import {RuleType} from 'types/exchange';
 import {createPortal} from 'react-dom';
 import clsx from 'clsx';
 import {ShortcutLines} from '../ShortcutLines';
 import {ObjectContext} from '../../store/ObjectContext';
 import {useSchemaData} from 'components/CodeView/hooks/useSchemaData';
-import {SchemaViewContext} from 'components/SchemaView';
+import {SchemaViewContext} from 'store';
+import {wrapInQuotes} from 'utils/wrapInQuotes';
 
 interface RuleValueOrProps {
-  items?: SchemaJSightContentType[];
+  items?: RuleType[];
   parentNumber?: string;
   numberLine: string;
   level: number;
@@ -21,7 +21,7 @@ export const RuleValueOr = ({items, level, tab, numberLine, parentNumber}: RuleV
   const {currentSchema, setCurrentSchema} = useSchemaData({numberLine, parentNumber});
 
   const isTypeExist = useMemo(() => {
-    return items?.find((item) => item.jsonType === 'string' && item.scalarValue);
+    return items?.find((item) => item.tokenType === 'string' && item.scalarValue);
   }, [items]);
   const {collapsedRules} = useContext(SchemaViewContext);
 
@@ -33,39 +33,55 @@ export const RuleValueOr = ({items, level, tab, numberLine, parentNumber}: RuleV
     setCurrentSchema(schemaName);
   };
 
-  const renderProperties = (properties: {[key: string]: SchemaJSightContentType | undefined}) => {
-    let index = 0;
+  const renderProperties = (properties: RuleType[]) => {
+    const renderEnum = (values: RuleType[]) => {
+      return values.map((val, index) => (
+        <span key={index.toString()}>
+          <span className="value">{val.scalarValue}</span>
+          {index + 1 !== values.length && <span className="punctuation-char">, </span>}
+        </span>
+      ));
+    };
+
+    const renderPropertyValue = (value: RuleType) => {
+      if (value.key === 'type') {
+        return (
+          <span
+            onClick={(e) => {
+              e.stopPropagation();
+              value.tokenType === 'reference' &&
+                setSchema(value ? String(value.scalarValue) : null);
+            }}
+            className={clsx([
+              value.tokenType === 'reference' ? 'clickable-value' : 'value',
+              {expanded: currentSchema === value?.scalarValue},
+            ])}
+          >
+            {wrapInQuotes(value.scalarValue || '')}
+          </span>
+        );
+      } else if (value.key === 'enum' && value.tokenType === 'array' && value.children) {
+        return renderEnum(value.children);
+      } else {
+        return (
+          <span className="value">
+            {wrapInQuotes(value.scalarValue || '', !['regex', 'string'].includes(value.key))}
+          </span>
+        );
+      }
+    };
 
     return (
       <span>
         <span>{'{ '}</span>
-        {map(properties, (value, key) => {
-          index++;
+        {properties.map((value, index) => {
           return (
             value && (
-              <span key={key}>
-                <span className="name">{key}</span>
+              <span key={value.key}>
+                <span className="name">{value.key}</span>
                 <span className="punctuation-char">: </span>
-                {key === 'type' ? (
-                  <span
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      (value.scalarValue as string)[0] === '@' &&
-                        setSchema(value ? String(value.scalarValue) : null);
-                    }}
-                    className={clsx([
-                      (value.scalarValue as string)[0] === '@' ? 'clickable-value' : 'value',
-                      {expanded: currentSchema === value?.scalarValue},
-                    ])}
-                  >
-                    {value?.scalarValue}
-                  </span>
-                ) : (
-                  <span className="value">{value.scalarValue}</span>
-                )}
-                {index !== Object.keys(properties).length && (
-                  <span className="punctuation-char">, </span>
-                )}
+                {renderPropertyValue(value)}
+                {index + 1 !== properties.length && <span className="punctuation-char">, </span>}
               </span>
             )
           );
@@ -76,14 +92,14 @@ export const RuleValueOr = ({items, level, tab, numberLine, parentNumber}: RuleV
   };
 
   const renderItem = (
-    content: SchemaJSightContentType,
+    content: RuleType,
     index: number,
     isLastItem: boolean
   ): JSX.Element | null => {
-    if (content.properties) {
+    if (content.children) {
       return (
         <span key={index.toString()}>
-          {renderProperties(content.properties)}
+          {renderProperties(content.children)}
           {!isLastItem && <span className="punctuation-char">, </span>}
         </span>
       );
@@ -93,15 +109,15 @@ export const RuleValueOr = ({items, level, tab, numberLine, parentNumber}: RuleV
           <span
             onClick={(e) => {
               e.stopPropagation();
-              (content.scalarValue as string)[0] === '@' &&
+              content.tokenType === 'reference' &&
                 setSchema(content?.scalarValue ? String(content?.scalarValue) : null);
             }}
             className={clsx([
-              (content.scalarValue as string)[0] === '@' ? 'clickable-value' : 'value',
+              content.tokenType === 'reference' ? 'clickable-value' : 'value',
               {expanded: currentSchema === content?.scalarValue},
             ])}
           >
-            {`"${content?.scalarValue}"`}
+            {wrapInQuotes(content?.scalarValue || '')}
           </span>
           {!isLastItem && <span className="punctuation-char">, </span>}
         </span>

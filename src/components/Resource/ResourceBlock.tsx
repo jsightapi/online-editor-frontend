@@ -13,7 +13,8 @@ interface ResourceBlockProps {
     schema?: SchemaType;
     example?: string;
   };
-  directiveType?: string;
+  block?: string;
+  className?: string;
 }
 
 export const ResourceBlock = ({
@@ -22,8 +23,9 @@ export const ResourceBlock = ({
   data,
   keyBlock,
   hideTitle,
-  directiveType,
+  block,
   typeBlock,
+  className,
 }: ResourceBlockProps) => {
   const renderView = () => {
     const notation = data.schema?.notation;
@@ -39,14 +41,14 @@ export const ResourceBlock = ({
             keyBlock={keyBlock}
             typeBlock={typeBlock}
             type={type}
-            directiveType={directiveType}
+            block={block}
           />
         );
     }
   };
 
   return (
-    <div>
+    <div className={className}>
       {!hideTitle && <h4 className="resource-title">{title}</h4>}
       {renderView()}
     </div>

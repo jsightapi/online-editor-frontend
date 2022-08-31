@@ -1,15 +1,14 @@
 import {useContext, useMemo} from 'react';
 import {CodeContext} from 'components/CodeView/Code';
 import {useShowDetailInfo} from '../hooks/useShowDetailInfo';
-import {RulesType} from 'types/exchange';
-import {SchemaViewContext} from 'components/SchemaView';
-import {MainContext, SidebarContext} from 'store';
+import {MainContext, SidebarContext, SchemaViewContext} from 'store';
+import {RuleType} from 'types';
 
 interface SelectionLineArgs {
   numberLine: string;
   parentInheritedNumber?: string;
   schemaName?: string;
-  rules?: RulesType;
+  rules?: RuleType[];
   notes?: string;
 }
 
@@ -31,7 +30,6 @@ export function useSelectionLine({
   const {collapsedRules} = useContext(SchemaViewContext);
   const {hoveredSchema, hiddenInheritedSchemas, keyBlock} = useContext(CodeContext);
   const {setCurrentDocSidebar} = useContext(SidebarContext);
-
   const isShowDetailInfo = useShowDetailInfo(rules, notes);
 
   const isSelected = useMemo(() => selectedLine?.numberLine === numberLine, [
@@ -47,7 +45,7 @@ export function useSelectionLine({
   );
 
   const isHidden = useMemo(() => {
-    return !!hiddenInheritedSchemas.find(
+    return !!(hiddenInheritedSchemas || []).find(
       (item) => item.schemaName === schemaName && item.numberLine === parentInheritedNumber
     );
   }, [hiddenInheritedSchemas, parentInheritedNumber, schemaName]);

@@ -1,64 +1,60 @@
-import React, {useContext, useMemo, useEffect} from 'react';
-import {ResourceType} from 'types/exchange';
+import React, {useCallback, useContext, useMemo} from 'react';
+import {GlobalSettingsContext, MainContext} from 'store';
+import {HttpInteractionType} from 'types';
+import {HttpMethodsTabs} from './HttpMethodsTabs';
 import clsx from 'clsx';
-import {ResourceBlock} from './ResourceBlock';
-import {ResponseCode} from './ResponseCode';
-import {GlobalSettingsContext} from '../Layout';
-import {Description} from '../Description';
-import {MainContext} from 'store';
-import {ResourceMethodsTabs} from 'components/Resource/ResourceMethodsTabs';
-import './ResourceMethods.styles.scss';
-import {ResourceResponses} from 'components/Resource/ResourceResponses';
+import {Description} from 'components/Description';
+import {ResourceBlock} from 'components/Resource/ResourceBlock';
+import {HttpResponses} from 'components/Resource/Http/HttpResponses';
+import './HttpResource.styles.scss';
+import '../Resource.styles.scss';
 
-interface ResourceMethodsProps {
-  methods: ResourceType[];
+interface HttpResourceProps {
+  interactions: HttpInteractionType[];
   resourceKey: string;
   index: number;
+  path: string;
 }
 
-export const ResourceMethods = ({methods, resourceKey, index}: ResourceMethodsProps) => {
-  const {headersBodiesCode, pathQueriesCode, tabs} = useContext(GlobalSettingsContext);
+export const HttpResource = ({interactions, resourceKey, index, path}: HttpResourceProps) => {
+  const {headersBodiesTypesCode, pathQueriesCode, tabs} = useContext(GlobalSettingsContext);
   const {resourceState, setResourceState} = useContext(MainContext);
 
   const currentMethod = useMemo(() => {
-    const method = resourceState[index].method;
+    const method = resourceState[index]?.method;
 
-    return methods.find((item) => (method ? item.httpMethod === method : true));
-  }, [index, methods, resourceState]);
+    return interactions.find((item) => (method ? item.httpMethod === method : true));
+  }, [index, interactions, resourceState]);
 
-  useEffect(() => {
-    if (!currentMethod?.httpMethod) {
-      setResourceState((prev) =>
-        prev.map((prevItem, i) => (i === index ? {method: methods[0].httpMethod} : prevItem))
-      );
-    }
-  }, [methods]);
+  const setHttpMethod = useCallback(
+    (method: string) => {
+      setResourceState((prev) => prev.map((prevItem, i) => (i === index ? {method} : prevItem)));
+    },
+    [index]
+  );
 
   const pathQueriesViewMode = useMemo(() => (pathQueriesCode ? 'code' : 'table'), [
     pathQueriesCode,
   ]);
 
-  const headersBodiesViewMode = useMemo(() => (headersBodiesCode ? 'code' : 'table'), [
-    headersBodiesCode,
+  const headersBodiesViewMode = useMemo(() => (headersBodiesTypesCode ? 'code' : 'table'), [
+    headersBodiesTypesCode,
   ]);
-
-  const setHttpMethod = (method: string) => {
-    setResourceState((prev) => prev.map((prevItem, i) => (i === index ? {method} : prevItem)));
-  };
 
   const getDisplayValue = (httpMethod: string) =>
     tabs ? (httpMethod === currentMethod?.httpMethod ? 'flex' : 'none') : 'flex';
 
   return (
-    <>
+    <div className="resource-wrapper">
+      <h3>{path}</h3>
       {tabs && (
-        <ResourceMethodsTabs
-          methods={methods}
+        <HttpMethodsTabs
+          methods={interactions.map((interaction) => interaction.httpMethod)}
           setHttpMethod={setHttpMethod}
           currentHttpMethod={currentMethod?.httpMethod}
         />
       )}
-      {methods.map((item, indexMethod) => (
+      {interactions.map((item, indexMethod) => (
         <div
           key={`resource-${item.httpMethod}-${item.path}`}
           className="resource-content"
@@ -86,12 +82,12 @@ export const ResourceMethods = ({methods, resourceKey, index}: ResourceMethodsPr
                 format: 'json',
                 schema: item.pathVariables?.schema,
               }}
-              directiveType="path"
+              block="path"
             />
           )}
           {item.query?.example && (
             <ResourceBlock
-              keyBlock={`${resourceKey}-${indexMethod}-2`}
+              keyBlock={`${path}-${indexMethod}-2`}
               title="Query"
               type={'example'}
               data={item.query}
@@ -99,7 +95,7 @@ export const ResourceMethods = ({methods, resourceKey, index}: ResourceMethodsPr
           )}
           {item.query?.schema && (
             <ResourceBlock
-              keyBlock={`${resourceKey}-${indexMethod}-3`}
+              keyBlock={`${path}-${indexMethod}-3`}
               title="Query"
               typeBlock={'path-query'}
               hideTitle={!!item.query?.example}
@@ -111,16 +107,16 @@ export const ResourceMethods = ({methods, resourceKey, index}: ResourceMethodsPr
             <>
               {item.request.headers && (
                 <ResourceBlock
-                  keyBlock={`${resourceKey}-${indexMethod}-4`}
+                  keyBlock={`${path}-${indexMethod}-4`}
                   title="Request headers"
                   type={headersBodiesViewMode}
                   typeBlock={'header-body'}
                   data={item.request.headers}
-                  directiveType="header"
+                  block="header"
                 />
               )}
               <ResourceBlock
-                keyBlock={`${resourceKey}-${indexMethod}-5`}
+                keyBlock={`${path}-${indexMethod}-5`}
                 title="Request body"
                 typeBlock={'header-body'}
                 type={headersBodiesViewMode}
@@ -129,15 +125,15 @@ export const ResourceMethods = ({methods, resourceKey, index}: ResourceMethodsPr
             </>
           )}
           {item.responses && (
-            <ResourceResponses
+            <HttpResponses
               responses={item.responses}
-              resourceKey={resourceKey}
+              resourceKey={path}
               indexMethod={indexMethod}
               headersBodiesViewMode={headersBodiesViewMode}
             />
           )}
         </div>
       ))}
-    </>
+    </div>
   );
 };

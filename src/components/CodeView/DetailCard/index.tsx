@@ -1,16 +1,16 @@
 import React, {useContext, useRef} from 'react';
-import {RulesType, RuleType} from 'types/exchange';
-import {map} from 'lodash';
+import {RuleType} from 'types/exchange';
 import {DetailEnum} from './DetailEnum';
 import {TextWithTooltip} from 'components/TextWithTooltip';
 import {formatNotes} from '../utils/formatNotes';
 import './DetailCard.scss';
 import {MainContext, SidebarContext} from 'store';
+import {wrapInQuotes} from 'utils/wrapInQuotes';
 
 interface DetailCardProps {
   name: string;
   typeName?: string;
-  rules?: RulesType;
+  rules?: RuleType[];
   schemaName?: string;
   codeViewRef?: React.MutableRefObject<HTMLDivElement | null>;
   numberLine: string;
@@ -37,7 +37,7 @@ export const DetailCard = ({
   const {setSelectedLine} = useContext(MainContext);
 
   const renderRule = (rule: RuleType, key: string, rulesLength: number, index: number) => {
-    if (['boolean', 'string', 'number', 'null'].includes(rule.jsonType)) {
+    if (['boolean', 'number', 'null'].includes(rule.tokenType)) {
       return (
         <span key={`rule-${key}`} className="detail-code-line">
           <span className="name">{key}</span>
@@ -46,9 +46,18 @@ export const DetailCard = ({
           {index !== rulesLength && <span className="punctuation-char">,</span>}
         </span>
       );
-    } else if (rule.jsonType === 'array') {
+    } else if (['reference', 'string'].includes(rule.tokenType)) {
       return (
-        rule.items && (
+        <span key={`rule-${key}`} className="detail-code-line">
+          <span className="name">{key}</span>
+          <span className="punctuation-char">: </span>
+          <span className="value">{wrapInQuotes(rule.scalarValue || '')}</span>
+          {index !== rulesLength && <span className="punctuation-char">,</span>}
+        </span>
+      );
+    } else if (rule.tokenType === 'array') {
+      return (
+        rule.children && (
           <span key={`rule-${key}`}>
             <span className="detail-code-line">
               <span className="name">{key}</span>
@@ -57,7 +66,7 @@ export const DetailCard = ({
             <DetailEnum
               keyBlock={keyBlock}
               updateDetailWrapperHeight={updateDetailWrapperHeight}
-              items={rule.items}
+              items={rule.children}
             />
             <span className="detail-code-line">
               <span className="punctuation-char">]{index !== rulesLength && ','}</span>
@@ -75,7 +84,7 @@ export const DetailCard = ({
     setSelectedLine(null);
   };
 
-  const renderBody = (rules?: RulesType): JSX.Element => {
+  const renderBody = (rules?: RuleType[]): JSX.Element => {
     let index = 0;
     const rulesKeys = Object.keys(rules || []);
     const rulesLength =
@@ -92,10 +101,10 @@ export const DetailCard = ({
               <span className="detail-code-line">&nbsp;</span>
             </span>
           )}
-          {map(rules, (rule, key) => {
-            const preventRender = isTableView && key == 'type';
+          {(rules || []).map((rule) => {
+            const preventRender = isTableView && rule.key == 'type';
             !preventRender && index++;
-            return !preventRender && renderRule(rule, key, rulesLength, index);
+            return !preventRender && renderRule(rule, rule.key, rulesLength, index);
           })}
         </code>
       </pre>

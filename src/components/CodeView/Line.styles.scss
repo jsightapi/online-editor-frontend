@@ -109,7 +109,6 @@
 
   .type-value {
     color: #ceb18e;
-    user-select: none;
   }
 
   .clickable-value {
@@ -162,23 +161,10 @@
     &.shortcut-key {
       color: #ceb18e;
     }
-
-    &:not(.shortcut-key) {
-      &::before,
-      &::after {
-        content: '"';
-      }
-    }
   }
 
   .value-string {
     color: $code-string;
-
-    &::before,
-    &::after {
-      content: '"';
-      color: $secondary-text;
-    }
   }
 
   .value-number {
@@ -199,12 +185,6 @@
 
   .rule-value {
     color: $code-rule-value;
-
-    &-string::before,
-    &-string::after {
-      content: '"';
-      color: $code-rule-value;
-    }
   }
 
   .comment {
@@ -235,11 +215,6 @@
 
     .name {
       color: $code-rule;
-
-      &::after,
-      &::before {
-        content: '';
-      }
     }
 
     .value {

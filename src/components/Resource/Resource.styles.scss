@@ -1,87 +1,4 @@
-@import 'src/styles/variables';
-
-.methods-tab {
-  overflow: hidden;
-  background: $background;
-  margin-bottom: 3.2rem;
-
-  button {
-    margin: 0;
-    padding: 0.9rem 3.2rem;
-    cursor: pointer;
-    background: rgba(245, 245, 245, 0.5);
-    border: 1px $secondary-stroke solid;
-    border-left-width: 0;
-
-    &:first-child {
-      border-top-left-radius: 4px;
-      border-bottom-left-radius: 4px;
-      border-left-width: 1px;
-    }
-
-    &:not(.active) {
-      +button:not(.active) {
-        margin-left: -1px;
-      }
-    }
-
-    &.active {
-      border-left-width: 1px;
-      margin-left: -1px;
-    }
-  }
-
-  .methods-space {
-    border-top-right-radius: 4px;
-    border-bottom-right-radius: 4px;
-    border: 1px $secondary-stroke solid;
-    border-left: 0;
-  }
-}
-
-.method-label {
-  padding: 0.8rem 2rem;
-  font-weight: 600;
-  border-radius: 4px;
-}
-
-.methods-tab {
-  .methods-space {
-    flex: 1;
-  }
-}
-.methods-tab button.active,
-.method-label {
-  color: #fff;
-  &.get {
-    border-color: #0D739E;
-    background-color: $secondary-blue;
-  }
-  &.post {
-    border-color: #679608;
-    background-color: $secondary-green;
-  }
-  &.put {
-    border-color: #DAA431;
-    background-color: $secondary-yellow;
-  }
-  &.patch {
-    border-color: #54A9A8;
-    background-color: $secondary-azure;
-  }
-  &.delete {
-    border-color: #AD301E;
-    background-color: $secondary-red;
-  }
-  &.head {
-    border-color: #6925D8;
-    background-color: $main-purple;
-  }
-  &.options {
-    border-color: #577765;
-    background-color: $secondary-oxley;
-  }
-}
+@import '../../styles/variables';
 
 .resource-wrapper {
   padding: 0 3rem 2.4rem;
@@ -105,7 +22,7 @@
 }
 
 .resource-content {
-  margin-bottom: 2.4rem;
+  padding-bottom: 2.4rem;
   gap: 3.2rem;
   flex-direction: column;
 
@@ -158,7 +75,7 @@
     align-items: center;
     margin: 4rem 0;
 
-    .item-annotation {
+    .method-annotation {
       margin-bottom: 0;
       line-height: 1.8rem;
       margin-left: 2rem;

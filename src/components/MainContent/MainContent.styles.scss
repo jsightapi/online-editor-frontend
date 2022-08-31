@@ -23,16 +23,27 @@
     }
   }
 
-  .resource-header, .reusable-header {
-    margin: 0 3rem 3.2rem;
+  .reusable-header, .resource-header {
     font-size: 2.8rem;
     line-height: 3.6rem;
     font-weight: 600;
   }
 
+  .reusable-header {
+    padding: 0 3rem 3.2rem;
+  }
+
   .resource-header {
-    padding-bottom: 1.2rem;
-    border-bottom: 1px solid $secondary-stroke;
+    padding: 0 3rem 1.2rem;
+
+    +.resource-wrapper {
+      padding-bottom: 3.2rem;
+    }
+  }
+
+  .resource-spacer {
+    height: 1px;
+    background-color: $secondary-stroke;
   }
 
   .reusable-header {

@@ -11,20 +11,20 @@ import {Layout} from 'components/Layout';
 import {showEditorError} from 'utils/showEditorError';
 import {ErrorSimpleType, ErrorType} from 'types/error';
 import {Header} from 'components/Header';
-import {initCats} from 'screens/Editor/initCats';
-import {initDogs} from 'screens/Editor/initDogs';
-import {initPigs} from 'screens/Editor/initPigs';
+import {initCats, initDogs, initPigs, initJsonRpc} from './init';
 import {Contacts} from 'components/Modals/Contacts';
 import {HeaderDoc} from 'components/Header/HeaderDoc';
 import {screenWidthMultiplier} from 'utils/screenWidthMultiplier';
 import {editorModeType, ExamplesType, SidebarDocType} from 'types';
-import {JDocContext, SidebarContext} from 'store';
+import {EditorContext, JDocContext, SidebarContext, SharingContext} from 'store';
+import {CurrentUrlProvider} from 'store/CurrentUrlStore';
 import {onOrientationChange} from 'utils/onOrientationChange';
 import {ErrorScreen} from 'screens/Error';
 import {SharingForm} from 'components/Modals/SharingForm';
-import {SharingContext} from 'store/SharingStore';
-import './Editor.styles.scss';
 import 'react-toastify/dist/ReactToastify.css';
+import {HeaderMetaTags} from 'components/HeaderMetaTags';
+import {AnnouncementBar} from 'components/AnnouncementBar';
+import './Editor.styles.scss';
 
 const {isExport} = window as any;
 
@@ -32,7 +32,6 @@ const SCROLLBAR_WIDTH = 20;
 
 export const EditorScreen = () => {
   const {key, history} = useContext(SharingContext);
-  const [currentUrl, setCurrentUrl] = useState<string | null>(null);
   const [viewMode, setViewMode] = useState<editorModeType>(isExport ? 'doc' : 'editor');
   const [jsightCode, setJsightCode] = useState<string>(
     key ? '' : localStorage.getItem('jsightCode') || initCats
@@ -51,6 +50,14 @@ export const EditorScreen = () => {
   const [error, setError] = useState<ErrorSimpleType | null>(null);
   const [disableSharing, setDisableSharing] = useState<boolean>(true);
   const isEditor = useMemo(() => viewMode === 'editor', [viewMode]);
+  const [isShowAnnouncementBar, setIsShowAnnouncementBar] = useState<boolean>(
+    !localStorage.getItem('announcement.bar.hidden')
+  );
+
+  const handleCloseAnnouncementBar = () => {
+    setIsShowAnnouncementBar(false);
+    localStorage.setItem('announcement.bar.hidden', 'true');
+  };
 
   const screenWidth = window.innerWidth;
   const getEditorWidth = (screenWidth: number) => {
@@ -92,7 +99,7 @@ export const EditorScreen = () => {
   });
 
   useEffect(() => {
-    if (jsightCodeDebounced) {
+    if (jsightCodeDebounced !== undefined) {
       (async () => {
         if (!isExport) {
           try {
@@ -150,15 +157,14 @@ export const EditorScreen = () => {
       case 'pigs':
         setInitJsightCode(initPigs);
         return;
+      case 'json-rpc':
+        setInitJsightCode(initJsonRpc);
+        return;
       default:
         setInitJsightCode(initCats);
         return;
     }
   };
-
-  const setDocSidebar = useCallback((sidebar: SidebarDocType) => {
-    setCurrentDocSidebar((prev) => (prev === sidebar ? null : sidebar));
-  }, []);
 
   const goToEditor = () => {
     setError(null);
@@ -169,43 +175,67 @@ export const EditorScreen = () => {
     setSharingModalVisible(true);
   };
 
+  const handleCurrentDocSidebar = useCallback((sidebar: SidebarDocType) => {
+    setCurrentDocSidebar((prev) => (prev === sidebar ? null : sidebar));
+  }, []);
+
+  const handleJsightCode = useCallback((code: string) => setJsightCode(code), []);
+  const handleDisableSharing = useCallback((value) => setDisableSharing(value), []);
+  const handleError = useCallback((error) => setError(error), []);
+  const handleReloadedEditor = useCallback(() => reloadedEditor(), []);
+
+  const sidebarValue = useMemo(
+    () => ({
+      currentDocSidebar,
+      setCurrentDocSidebar,
+    }),
+    [currentDocSidebar]
+  );
+
+  const editorValue = useMemo(
+    () => ({
+      editorWidth,
+      isEditor,
+    }),
+    [isEditor, editorWidth]
+  );
+
   if (error && error.code) {
     return <ErrorScreen goToEditor={goToEditor} code={error.code} message={error.message} />;
   }
 
   return (
     <JDocContext.Provider value={jdocExchange}>
+      <HeaderMetaTags />
+      <AnnouncementBar
+        handleCloseClick={handleCloseAnnouncementBar}
+        isShow={isShowAnnouncementBar}
+      />
       {!isExport ? (
-        isEditor ? (
-          <Header
-            disableSharing={disableSharing}
-            setInitialContent={setInitialContent}
-            setViewMode={setViewMode}
-            setContactModalVisible={setContactModalVisible}
-            openSharingModal={openSharingModal}
-          />
-        ) : (
-          <HeaderDoc openSharingModal={openSharingModal} setViewMode={setViewMode} />
-        )
+        <div className={'p-relative'}>
+          {isEditor ? (
+            <Header
+              disableSharing={disableSharing}
+              setInitialContent={setInitialContent}
+              setViewMode={setViewMode}
+              setContactModalVisible={setContactModalVisible}
+              openSharingModal={openSharingModal}
+            />
+          ) : (
+            <HeaderDoc openSharingModal={openSharingModal} setViewMode={setViewMode} />
+          )}
+        </div>
       ) : (
         <div />
       )}
       <div
+        style={{top: isShowAnnouncementBar ? 97 : 64}}
         className={clsx('d-flex editor-wrapper', {
           'only-doc': !isEditor,
           exported: isExport,
         })}
       >
-        <SidebarContext.Provider
-          value={{
-            editorWidth,
-            currentDocSidebar,
-            setCurrentDocSidebar,
-            currentUrl,
-            setCurrentUrl,
-            isEditor,
-          }}
-        >
+        <EditorContext.Provider value={editorValue}>
           <div className={classes}>
             <Resizable
               bounds="parent"
@@ -223,13 +253,13 @@ export const EditorScreen = () => {
             >
               <Editor
                 content={jsightCode}
-                setContent={setJsightCode}
                 errorRow={errorRow}
                 scrollToRow={scrollToRow}
-                setDisableSharing={setDisableSharing}
-                setError={setError}
                 reload={reloadEditor}
-                reloadedEditor={reloadedEditor}
+                setContent={handleJsightCode}
+                setDisableSharing={handleDisableSharing}
+                setError={handleError}
+                reloadedEditor={handleReloadedEditor}
               />
             </Resizable>
             <div
@@ -238,21 +268,17 @@ export const EditorScreen = () => {
                 width: getDocWidth(screenWidth),
               }}
             >
-              {jdocExchange ? (
-                <Layout
-                  isShowSidebar={isEditor ? currentDocSidebar === 'content' : true}
-                  isShowSettings={!isEditor}
-                  side={isEditor ? 'right' : 'left'}
-                >
-                  <MainContent jdocExchange={jdocExchange} showRightSidebar={!!currentDocSidebar} />
-                </Layout>
-              ) : (
-                <div className="flex-fluid" />
-              )}
+              <CurrentUrlProvider>
+                <SidebarContext.Provider value={sidebarValue}>
+                  <Layout isEditor={isEditor}>
+                    <MainContent jdocExchange={jdocExchange} />
+                  </Layout>
+                </SidebarContext.Provider>
+              </CurrentUrlProvider>
               {isEditor && (
                 <div className="side-panel right-side">
                   <div
-                    onClick={() => setDocSidebar('content')}
+                    onClick={() => handleCurrentDocSidebar('content')}
                     className={clsx('side-panel-element', {
                       active: currentDocSidebar === 'content',
                     })}
@@ -263,7 +289,7 @@ export const EditorScreen = () => {
               )}
             </div>
           </div>
-        </SidebarContext.Provider>
+        </EditorContext.Provider>
         <ToastContainer rtl={false} position="bottom-right" />
       </div>
       {!isExport && (

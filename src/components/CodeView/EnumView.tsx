@@ -1,10 +1,10 @@
 import React from 'react';
 import {ControlElements} from '../ControlElements';
 import {LinesCollection} from './LinesCollection';
-import {SchemaJSightContentType} from 'types/exchange';
+import {JsightSchemaElement, RuleType} from 'types/exchange';
 
 interface EnumViewProps {
-  content?: SchemaJSightContentType;
+  content?: RuleType;
   name?: string;
   keyBlock: string;
 }
@@ -24,7 +24,7 @@ export const EnumView = ({content, name, keyBlock}: EnumViewProps) => {
           {content && (
             <span className="schema-wrapper enum">
               {LinesCollection({
-                content,
+                content: (content as unknown) as JsightSchemaElement,
                 tab: 0,
                 isLastLine: true,
                 level: 0,

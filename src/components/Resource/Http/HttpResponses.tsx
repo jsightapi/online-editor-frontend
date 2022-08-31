@@ -1,16 +1,16 @@
 import React from 'react';
-import {ResponsesType} from 'types';
 import {ResponseCode} from 'components/Resource/ResponseCode';
 import {ResourceBlock} from 'components/Resource/ResourceBlock';
+import {HttpResponseType} from 'types';
 
 interface ResourceResponsesProps {
-  responses: ResponsesType[];
+  responses: HttpResponseType[];
   resourceKey: string;
   indexMethod: number;
   headersBodiesViewMode: 'code' | 'table';
 }
 
-export const ResourceResponses = ({
+export const HttpResponses = ({
   responses,
   resourceKey,
   indexMethod,
@@ -30,7 +30,7 @@ export const ResourceResponses = ({
                 title="Response headers"
                 type={headersBodiesViewMode}
                 data={response.headers}
-                directiveType="header"
+                block="header"
               />
             </div>
           )}
