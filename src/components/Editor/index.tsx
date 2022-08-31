@@ -217,6 +217,7 @@ export const Editor = React.memo(
               if (!version) {
                 history.push(`/r/${result.code}/${result.version}`);
               }
+              highlightError();
             } catch (error) {
               if (error.Code) {
                 setError({
@@ -234,8 +235,27 @@ export const Editor = React.memo(
 
     // process errors
     useEffect(() => {
-      if (isEditorLoaded && jsightEditor.current) {
-        // Highlight row if error exists
+      if (isEditorLoaded) {
+        highlightError();
+      }
+      // eslint-disable-next-line
+  }, [isEditorLoaded, errorRow, content]);
+
+    useEffect(() => {
+      if (reload && isEditorLoaded) {
+        jsightEditor.current?.setValue(content);
+        reloadedEditor();
+      }
+      // eslint-disable-next-line
+  }, [isEditorLoaded, reload]);
+
+    useEffect(() => {
+      errorRow && jsightEditor.current?.revealLine(errorRow, 0);
+      // eslint-disable-next-line
+  }, [scrollToRow]);
+
+    const highlightError = () => {
+      if (jsightEditor.current) {
         if (errorRow) {
           decorationsRef.current = jsightEditor.current.deltaDecorations(decorationsRef.current, [
             {
@@ -254,21 +274,7 @@ export const Editor = React.memo(
           );
         }
       }
-      // eslint-disable-next-line
-  }, [isEditorLoaded, errorRow, content, key, version]);
-
-    useEffect(() => {
-      if (reload && isEditorLoaded) {
-        jsightEditor.current?.setValue(content);
-        reloadedEditor();
-      }
-      // eslint-disable-next-line
-  }, [isEditorLoaded, reload]);
-
-    useEffect(() => {
-      errorRow && jsightEditor.current?.revealLine(errorRow, 0);
-      // eslint-disable-next-line
-  }, [scrollToRow]);
+    };
 
     return (
       <div className="editor-parent">
