@@ -66,9 +66,11 @@ export const SchemaView = ({
   }, [typesExpand, rulesExpand, type, keyBlock]);
 
   const renderView = () => {
+    const blockFormat = block !== 'path' ? format : '';
+
     switch (viewType) {
       case 'table':
-        return <TableView keyBlock={keyBlock} schema={schema} format={format} block={block} />;
+        return <TableView keyBlock={keyBlock} schema={schema} format={blockFormat} block={block} />;
       case 'code':
         return (
           <CodeView
@@ -76,7 +78,7 @@ export const SchemaView = ({
             isCollapsible={isCollapsible}
             name={name}
             schema={schema}
-            format={format}
+            format={blockFormat}
             hideUsedElements={hideUsedElements}
           />
         );
