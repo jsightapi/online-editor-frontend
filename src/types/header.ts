@@ -1,1 +1,1 @@
-export type ExamplesType = 'cats' | 'dogs' | 'pigs' | null;
+export type ExamplesType = 'cats' | 'dogs' | 'pigs' | 'json-rpc' | null;
