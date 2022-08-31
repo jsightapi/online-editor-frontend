@@ -21,7 +21,7 @@ export const HttpResource = ({interactions, resourceKey, index, path}: HttpResou
   const {resourceState, setResourceState} = useContext(MainContext);
 
   const currentMethod = useMemo(() => {
-    const method = resourceState[index].method;
+    const method = resourceState[index]?.method;
 
     return interactions.find((item) => (method ? item.httpMethod === method : true));
   }, [index, interactions, resourceState]);
