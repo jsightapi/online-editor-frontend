@@ -11,23 +11,19 @@
     cursor: pointer;
     background: rgba(245, 245, 245, 0.5);
     border: 1px $secondary-stroke solid;
-    border-left-width: 0;
+    border-right-width: 0;
 
-    &:first-child {
+    &:first-of-type {
       border-top-left-radius: 4px;
       border-bottom-left-radius: 4px;
-      border-left-width: 1px;
     }
 
-    &:not(.active) {
-      +button:not(.active) {
-        margin-left: -1px;
-      }
+    &:last-of-type, &.active {
+      border-right-width: 1px;
     }
 
-    &.active {
-      border-left-width: 1px;
-      margin-left: -1px;
+    &.active+button {
+      border-left-width: 0;
     }
   }
 
