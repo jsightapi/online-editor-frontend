@@ -209,7 +209,7 @@ export const Editor = React.memo(
           (async () => {
             try {
               const result = await getExistingState(key, version);
-              const resultContent = result.data.content.replace('\\n', '\n');
+              const resultContent = result.data.content;
               if (jsightEditor.current) {
                 jsightEditor.current?.setValue(resultContent);
               }
