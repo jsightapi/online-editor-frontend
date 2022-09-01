@@ -24,10 +24,15 @@ export const showEditorError = (error: ErrorType, setScrollToRow: () => void) =>
   const message = getError(error);
 
   if (!toast.isActive(ERROR_MESSAGE_DEFAULT_ID)) {
-    toast.warning(EditorErrorNotification({setScrollToRow, title, message}), showErrorOptions);
+    toast.warning(
+      <EditorErrorNotification message={message} title={title} setScrollToRow={setScrollToRow} />,
+      showErrorOptions
+    );
   } else {
     toast.update(ERROR_MESSAGE_DEFAULT_ID, {
-      render: EditorErrorNotification({setScrollToRow, title, message}),
+      render: (
+        <EditorErrorNotification message={message} title={title} setScrollToRow={setScrollToRow} />
+      ),
     });
   }
 };

@@ -154,7 +154,6 @@ export const MainContent = React.memo(
     useEffect(() => {
       if (jdocExchange) {
         const {info, servers, tags, interactions, userTypes, userEnums} = jdocExchange;
-
         const jdocList: JSX.Element[] = [];
         const jdocPositions: string[] = [];
         jdocList.push(<div className="space-header" />);
@@ -271,6 +270,9 @@ export const MainContent = React.memo(
         setJdocList(jdocList);
         setJdocPositions(jdocPositions);
       }
+      return () => {
+        setResourceState([]);
+      };
     }, [jdocExchange]);
 
     useEffect(() => {

@@ -11,7 +11,7 @@ import {Layout} from 'components/Layout';
 import {showEditorError} from 'utils/showEditorError';
 import {ErrorSimpleType, ErrorType} from 'types/error';
 import {Header} from 'components/Header';
-import {initCats, initDogs, initPigs} from './init';
+import {initCats, initDogs, initPigs, initJsonRpc} from './init';
 import {Contacts} from 'components/Modals/Contacts';
 import {HeaderDoc} from 'components/Header/HeaderDoc';
 import {screenWidthMultiplier} from 'utils/screenWidthMultiplier';
@@ -156,6 +156,9 @@ export const EditorScreen = () => {
         return;
       case 'pigs':
         setInitJsightCode(initPigs);
+        return;
+      case 'json-rpc':
+        setInitJsightCode(initJsonRpc);
         return;
       default:
         setInitJsightCode(initCats);
