@@ -61,7 +61,13 @@ export const RuleValueOr = ({items, level, tab, numberLine, parentNumber}: RuleV
           </span>
         );
       } else if (value.key === 'enum' && value.tokenType === 'array' && value.children) {
-        return renderEnum(value.children);
+        return (
+          <span>
+            <span>[ </span>
+            {renderEnum(value.children)}
+            <span> ]</span>
+          </span>
+        );
       } else {
         return (
           <span className="value">
