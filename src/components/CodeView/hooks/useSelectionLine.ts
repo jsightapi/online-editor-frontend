@@ -32,10 +32,10 @@ export function useSelectionLine({
   const {setCurrentDocSidebar} = useContext(SidebarContext);
   const isShowDetailInfo = useShowDetailInfo(rules, notes);
 
-  const isSelected = useMemo(() => selectedLine?.numberLine === numberLine, [
-    numberLine,
-    selectedLine,
-  ]);
+  const isSelected = useMemo(
+    () => selectedLine?.numberLine === numberLine && selectedLine?.keyBlock === keyBlock,
+    [numberLine, keyBlock, selectedLine]
+  );
 
   const isHovered = useMemo(
     () =>

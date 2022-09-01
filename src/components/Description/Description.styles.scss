@@ -68,6 +68,22 @@
     margin-bottom: 20px;
   }
 
+  code {
+    font-family: 'JetBrainsMono', monospace;
+    background: $main-stroke;
+    font-size: 0.9em;
+    border-radius: 3px;
+    display: inline;
+    padding-top: 2px;
+    padding-right: 0.5ch;
+    padding-left: 0.5ch;
+    white-space: pre-wrap;
+    overflow-wrap: break-word;
+    overflow-x: auto;
+    overflow-y: auto;
+    -webkit-box-decoration-break: clone;
+  }
+
   table {
     border-spacing: 0px;
     border-collapse: separate;

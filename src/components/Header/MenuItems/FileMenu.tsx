@@ -39,6 +39,14 @@ const FileMenuItems = ({setIsMenuOpened, setExampleMenuPopup}: FileMenuItemsProp
     >
       Reset example "Pigs"
     </li>
+    <li
+      onClick={() => {
+        setIsMenuOpened(false);
+        setExampleMenuPopup('json-rpc');
+      }}
+    >
+      Reset JSON-RPC example
+    </li>
   </ul>
 );
 

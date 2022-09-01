@@ -4,8 +4,8 @@ import {useSharing} from 'hooks/useSharing';
 import {Dropdown} from 'components/Dropdown';
 import {DropdownToggle} from 'components/Dropdown/DropdownToggle';
 import {DropdownMenu} from 'components/Dropdown/DropdownMenu';
-import './ShareButton.styles.scss';
 import {SharingContext} from 'store/SharingStore';
+import './ShareButton.styles.scss';
 
 interface ShareButtonProps {
   openSharingModal(): void;

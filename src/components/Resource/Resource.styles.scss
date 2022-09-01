@@ -22,7 +22,7 @@
 }
 
 .resource-content {
-  margin-bottom: 2.4rem;
+  padding-bottom: 2.4rem;
   gap: 3.2rem;
   flex-direction: column;
 
@@ -75,7 +75,7 @@
     align-items: center;
     margin: 4rem 0;
 
-    .item-annotation {
+    .method-annotation {
       margin-bottom: 0;
       line-height: 1.8rem;
       margin-left: 2rem;

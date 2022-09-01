@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useCallback, useEffect, useRef} from 'react';
 import './Notifications.styles.scss';
 
 export interface CustomNotificationsProps {
@@ -11,9 +11,33 @@ export const EditorErrorNotification = ({
   message,
   title,
   setScrollToRow,
-}: CustomNotificationsProps) => (
-  <div className="notification-error-inner" onClick={() => setScrollToRow && setScrollToRow()}>
-    {title && <div className="title">{title}</div>}
-    <div className="message">{message}</div>
-  </div>
-);
+}: CustomNotificationsProps) => {
+  const notificationRef = useRef<HTMLDivElement | null>(null);
+
+  const handleNotificationClick = useCallback(() => {
+    setScrollToRow && setScrollToRow();
+  }, []);
+
+  useEffect(() => {
+    const notificationElement = notificationRef.current?.closest<HTMLDivElement>(
+      '.notification-error'
+    );
+
+    ['click', 'touchstart'].forEach((event) =>
+      notificationElement?.addEventListener(event, handleNotificationClick, true)
+    );
+
+    return () => {
+      ['click', 'touchstart'].forEach((event) =>
+        notificationElement?.removeEventListener(event, handleNotificationClick, true)
+      );
+    };
+  }, [handleNotificationClick]);
+
+  return (
+    <div ref={notificationRef} className="notification-error-inner">
+      {title && <div className="title">{title}</div>}
+      <div className="message">{message}</div>
+    </div>
+  );
+};

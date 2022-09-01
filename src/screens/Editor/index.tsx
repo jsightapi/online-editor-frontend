@@ -11,7 +11,7 @@ import {Layout} from 'components/Layout';
 import {showEditorError} from 'utils/showEditorError';
 import {ErrorSimpleType, ErrorType} from 'types/error';
 import {Header} from 'components/Header';
-import {initCats, initDogs, initPigs} from './init';
+import {initCats, initDogs, initPigs, initJsonRpc} from './init';
 import {Contacts} from 'components/Modals/Contacts';
 import {HeaderDoc} from 'components/Header/HeaderDoc';
 import {screenWidthMultiplier} from 'utils/screenWidthMultiplier';
@@ -157,6 +157,9 @@ export const EditorScreen = () => {
       case 'pigs':
         setInitJsightCode(initPigs);
         return;
+      case 'json-rpc':
+        setInitJsightCode(initJsonRpc);
+        return;
       default:
         setInitJsightCode(initCats);
         return;
@@ -181,10 +184,6 @@ export const EditorScreen = () => {
   const handleError = useCallback((error) => setError(error), []);
   const handleReloadedEditor = useCallback(() => reloadedEditor(), []);
 
-  if (error && error.code) {
-    return <ErrorScreen goToEditor={goToEditor} code={error.code} message={error.message} />;
-  }
-
   const sidebarValue = useMemo(
     () => ({
       currentDocSidebar,
@@ -200,6 +199,10 @@ export const EditorScreen = () => {
     }),
     [isEditor, editorWidth]
   );
+
+  if (error && error.code) {
+    return <ErrorScreen goToEditor={goToEditor} code={error.code} message={error.message} />;
+  }
 
   return (
     <JDocContext.Provider value={jdocExchange}>

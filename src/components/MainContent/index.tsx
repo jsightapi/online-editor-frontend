@@ -46,10 +46,8 @@ export const MainContent = React.memo(
     const [schemasView, setSchemasView] = useState<SchemaViewType[]>([]);
     const [schemasData, setSchemasData] = useState<{[key: string]: SchemaData[]}>({});
     const [resourceState, setResourceState] = useState<ResourceState[]>([]);
-    const prevPath = usePrevious(path);
-    const prevCurrentUrl = usePrevious(currentUrl);
-
-    const {isExport} = window as any;
+    // const prevPath = usePrevious(path);
+    // const prevCurrentUrl = usePrevious(currentUrl);
 
     const showRightSidebar = useMemo(() => !!currentDocSidebar, [currentDocSidebar]);
 
@@ -156,7 +154,6 @@ export const MainContent = React.memo(
     useEffect(() => {
       if (jdocExchange) {
         const {info, servers, tags, interactions, userTypes, userEnums} = jdocExchange;
-
         const jdocList: JSX.Element[] = [];
         const jdocPositions: string[] = [];
         jdocList.push(<div className="space-header" />);
@@ -177,7 +174,14 @@ export const MainContent = React.memo(
             if (tag.interactionGroups.find((item) => item.protocol === 'json-rpc-2.0')) {
               jdocList.push(<JsonRpcHeader title={tag.title} />);
             } else {
-              jdocList.push(<h2 className="resource-header">{tag.title}</h2>);
+              jdocList.push(
+                <div>
+                  <h2 className="resource-header">{tag.title}</h2>
+                  <div className="resource-wrapper">
+                    <div className="resource-spacer" />
+                  </div>
+                </div>
+              );
             }
             jdocPositions.push(`resource-${tagKey}`);
 
@@ -193,7 +197,7 @@ export const MainContent = React.memo(
                     'path'
                   ),
                   (interactionsByPath, interactionPath) => {
-                    const resourceKey = `${interactionPath.slice(1).replace(/({|})/gi, '-')}`;
+                    const resourceKey = `${interactionPath.replace(/({|})/gi, '-')}`;
                     jdocList.push(
                       <HttpResource
                         resourceKey={`${tagKey}-${resourceKey}`}
@@ -212,14 +216,13 @@ export const MainContent = React.memo(
                 interactionGroup.interactions.forEach((interaction) => {
                   if (interactions.hasOwnProperty(interaction)) {
                     const resource = interactions[interaction] as JsonRpcInteractionType;
-                    const resourceKey = `${resource.path.slice(1).replace(/({|})/gi, '-')}-${
+                    const resourceKey = `${resource.path.replace(/({|})/gi, '-')}-${
                       resource.method
                     }`;
 
                     jdocList.push(
                       <JsonRpcResource interaction={resource} resourceKey={resourceKey} />
                     );
-
                     jdocPositions.push(resourceKey);
                   }
                 });
@@ -249,7 +252,7 @@ export const MainContent = React.memo(
         if (userEnums) {
           jdocList.push(<h2 className="reusable-header">Enums</h2>);
 
-          map(jdocExchange.userEnums, (userEnum, key) =>
+          map(jdocExchange.userEnums, (userEnum, key) => {
             jdocList.push(
               <ReusableResource
                 name={key}
@@ -260,21 +263,29 @@ export const MainContent = React.memo(
                 content={userEnum.value}
                 className="reusable-resource"
               />
-            )
-          );
+            );
+            jdocPositions.push(key);
+          });
         }
         setJdocList(jdocList);
         setJdocPositions(jdocPositions);
       }
+      return () => {
+        setResourceState([]);
+      };
     }, [jdocExchange]);
 
     useEffect(() => {
-      const currentPath = isExport ? currentUrl : path;
+      const currentPath = currentUrl || path;
+
       if (!currentPath) return;
 
       const index = jdocPositions.indexOf(`${currentPath?.replace(/({|})/gi, '-')}`);
 
-      if (~index && virtuosoRef?.current && (prevCurrentUrl !== currentUrl || prevPath !== path)) {
+      if (
+        ~index &&
+        virtuosoRef?.current /*(prevCurrentUrl !== currentUrl || prevPath !== path) */
+      ) {
         virtuosoRef.current.scrollToIndex({
           index: index + 1,
           align: 'start',
