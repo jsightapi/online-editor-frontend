@@ -308,7 +308,7 @@
 					"end": "(,)|(?=\\})",
 					"patterns": [
 						{
-							"include": "#rulesStringArray"
+							"include": "#rulesEnumValuesArray"
 						},
 						{
 							"include": "#colonOrInvalid"
@@ -430,7 +430,7 @@
 				}
 			]
 		},
-		"rulesStringArray": {
+		"rulesEnumValuesArray": {
 			"begin": "\\[",
 			"beginCaptures": {
 				"0": {
@@ -450,6 +450,9 @@
 				},
 				{
 					"include": "#rulesNumber"
+				},
+				{
+					"include": "#rulesBoolean"
 				},
 				{
 					"match": ",",
@@ -544,8 +547,8 @@
 			]
 		},
 		"rulesBoolean": {
-			"comment": "No reason to support «null» yet.",
-			"match": "\\b(?:true|false)\\b",
+			"comment": "Have other scopes than booleans in values",
+			"match": "\\b(?:true|false|null)\\b",
 			"name": "constant.language.jschema.rule.value.boolean"
 		},
 		"rulesSubschemaName": {
