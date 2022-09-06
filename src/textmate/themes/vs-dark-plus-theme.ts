@@ -1,5 +1,5 @@
 // Theme data derived from:
-// https://github.com/microsoft/vscode/raw/a716714a88891cad69c0753fb95923870df295f5/extensions/theme-defaults/themes/dark_plus.json
+// https: //github.com/microsoft/vscode/raw/a716714a88891cad69c0753fb95923870df295f5/extensions/theme-defaults/themes/dark_plus.json
 
 // This satisfies the contract of IRawTheme as defined in vscode-textmate.
 export default {
@@ -41,7 +41,7 @@ export default {
       },
     },
     {
-      name: 'JSight technical root directives ( MACRO, PASTE.)',
+      name: 'JSight macro directives (MACRO, PASTE)',
       scope: 'keyword.other.jsight.directive.root.technical.macro',
       settings: {
         foreground: '#ff4ffc',
@@ -55,7 +55,14 @@ export default {
       },
     },
     {
-      name: 'JSight method directives',
+      name: 'JSight «Protocol» directive',
+      scope: 'keyword.control.jsight.directive.protocol',
+      settings: {
+        foreground: '#48cccb',
+      },
+    },
+    {
+      name: 'JSight method directives (incl. RPC «Method»)',
       scope: 'keyword.jsight.directive.method',
       settings: {
         foreground: '#48cccb',
@@ -69,10 +76,17 @@ export default {
       },
     },
     {
-      name: 'JSight various name parameters (@serverName, @macroName etc..)',
+      name: 'JSight various name parameters (@serverName, etc..)',
       scope: 'entity.other.attribute-name.jsight.parameter.name',
       settings: {
         foreground: '#ff8070',
+      },
+    },
+    {
+      name: 'JSight rpc method name parameter',
+      scope: 'entity.other.attribute-name.jsight.parameter.name.rpc',
+      settings: {
+        foreground: '#6ee9e9',
       },
     },
     {
