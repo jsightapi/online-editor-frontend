@@ -22,7 +22,6 @@ import {onOrientationChange} from 'utils/onOrientationChange';
 import {ErrorScreen} from 'screens/Error';
 import {SharingForm} from 'components/Modals/SharingForm';
 import 'react-toastify/dist/ReactToastify.css';
-import {HeaderMetaTags} from 'components/HeaderMetaTags';
 import {AnnouncementBar} from 'components/AnnouncementBar';
 import './Editor.styles.scss';
 
@@ -206,7 +205,6 @@ export const EditorScreen = () => {
 
   return (
     <JDocContext.Provider value={jdocExchange}>
-      <HeaderMetaTags />
       <AnnouncementBar
         handleCloseClick={handleCloseAnnouncementBar}
         isShow={isShowAnnouncementBar}
