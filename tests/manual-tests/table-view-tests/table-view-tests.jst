@@ -162,7 +162,7 @@ POST /array/everything
 
 # OBJECT in the root
 
-POST /object/everything // TODO: uncomment a line when bug fixed
+POST /object/everything
   Query
     { // {additionalProperties: true} - Object of everything.
       "field1": 1, // Integer.
@@ -174,8 +174,8 @@ POST /object/everything // TODO: uncomment a line when bug fixed
       },
       "field4": @cat, // Type @cat.
       "field5": @cat | @dog, // Type @cat or @dog.
-      @catId: @cat // {optional: true} - @cat with the @catId key.
-      # "@catId": "@cat" // Check that it differs from the previous line! TODO: uncomment when bug is fixed.
+      @catId: @cat, // {optional: true} - @cat with the @catId key.
+      "@catId": "@cat" // Check that it differs from the previous line!
     }
 
 # Check field order in object
