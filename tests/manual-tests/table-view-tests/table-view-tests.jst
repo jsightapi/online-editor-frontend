@@ -29,7 +29,7 @@ POST /types/test-rule-type-standard-types
 POST /types/test-scalar-types-by-example // Correspondence between the JSON and JSight Schema data types
   Query
     {
-      "string": "some string and escaped characters \" \\ \/ \b \f \n \r \t \u043f\u0440\u0438\u0432\u0435\u0442",
+      "string": "some string and escaped characters \" \\ \/ \b \f \n \r \t. Hello, 世界",
       "integerPositive": 1,
       "integerNegative": -123,
       "integerZero": 0,
@@ -93,7 +93,7 @@ POST /scalar/boolean
 
 POST /scalar/integer
   Query
-    12 // {min: 1} - Scalar integer.  
+    12 // {min: 1} - Scalar integer.
 
 POST /scalar/float
   Query
@@ -114,7 +114,7 @@ POST /scalar/enum
 POST /scalar/mixed
   Query
     "A" /* {or: [
-              {type: "integer"}, 
+              {type: "integer"},
               {type: "string"}
             ]}
           - Scalar mixed.
@@ -122,7 +122,7 @@ POST /scalar/mixed
 
 POST /scalar/email
   Query
-    "tom@cats.ru" // {type: "email"} - Email.      
+    "tom@cats.ru" // {type: "email"} - Email.
 
 POST /scalar/user-type
   Query
@@ -157,7 +157,7 @@ POST /array/everything
       @dog | @cat, // Type @cat or @dog.
       [ // Array.
         "string" // String
-      ]    
+      ]
     ]
 
 # OBJECT in the root
@@ -176,7 +176,7 @@ POST /object/everything // TODO: uncomment a line when bug fixed
       "field5": @cat | @dog, // Type @cat or @dog.
       @catId: @cat // {optional: true} - @cat with the @catId key.
       # "@catId": "@cat" // Check that it differs from the previous line! TODO: uncomment when bug is fixed.
-    } 
+    }
 
 # Check field order in object
 
@@ -188,7 +188,7 @@ POST /object/field-order // Compare field order 1 → 2 → 3.
 
 TYPE @parentType // Miss it. It is helpful type for previous test.
 {
-  "parentField1": 1, // 1 
+  "parentField1": 1, // 1
   "parentField2": 2  // 2
 }
 
@@ -207,10 +207,10 @@ POST /rules/different
 POST /size/long-description
   Query
   {
-    "longDescription": "description" /* Here is an extra long description, which is so long, 
-                                        that  it is hardly imagine how long it is. That's long! 
+    "longDescription": "description" /* Here is an extra long description, which is so long,
+                                        that  it is hardly imagine how long it is. That's long!
                                         Just very very very very long. */
-  }  
+  }
 
 # Check extra long Key
 
@@ -218,7 +218,7 @@ POST /size/long-key
   Query
   {
     "thisIsTheExtraLongKeySoExtraLongThatItIsJustUnbelievablyLong": "description"
-  }  
+  }
 
 # helpfull types
 TYPE @_________________________THANKS_FOR_TESTING________________________
@@ -227,7 +227,7 @@ TYPE @_________________________THANKS_FOR_TESTING________________________
 TYPE @cat
 {
   "catField": 1
-}  
+}
 
 TYPE @dog
 {
@@ -238,4 +238,4 @@ TYPE @catId
   "catString"
 
 TYPE @dogId
-  "dogString"  
+  "dogString"
