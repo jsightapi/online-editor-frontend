@@ -1,6 +1,7 @@
 import React, {useMemo} from 'react';
 import {JsightSchemaElement} from 'types/exchange';
 import {DetailCard} from 'components/CodeView/DetailCard';
+import {wrapInQuotes} from 'utils/wrapInQuotes';
 
 interface TableRowProps {
   keyValue: string;
@@ -39,7 +40,7 @@ export const TableRow = ({
           </div>
         </td>
         <td>{isPropertyShortcut ? property?.scalarValue : property?.type || ''}</td>
-        <td>{property?.scalarValue}</td>
+        <td>{JSON.stringify(property?.scalarValue || '').replace(/(^"|"$)/g, '')}</td>
         <td colSpan={2}>
           {property?.note && (
             <div style={{marginBottom: property?.rules ? '0.8rem' : ''}}>{property.note}</div>
