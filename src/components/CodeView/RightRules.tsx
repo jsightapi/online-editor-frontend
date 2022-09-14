@@ -46,19 +46,19 @@ export const RightRules = forwardRef<HTMLDivElement, RightRulesProps>(
 
     useEffect(() => {
       if (!annotations.length) {
-        const selectedLineObj = linesCollection?.filter((item: JSX.Element) => {
+        const selectedLineObj = linesCollection?.find((item: JSX.Element) => {
           return item.key === 'line-' + selectedLine?.numberLine;
         });
 
-        if (selectedLineObj && selectedLineObj.length) {
+        if (selectedLineObj) {
           setRulesDataWithoutAnnotations({
-            propName: selectedLineObj[0].props.propName,
-            propType: selectedLineObj[0].props.propType,
-            notes: selectedLineObj[0].props?.content?.note,
+            propName: selectedLineObj.props.propName,
+            propType: selectedLineObj.props.propType,
+            notes: selectedLineObj.props?.content?.note,
           });
         }
       }
-    }, [selectedLine?.numberLine]);
+    }, [selectedLine, linesCollection]);
 
     return (
       <div
@@ -86,20 +86,22 @@ export const RightRules = forwardRef<HTMLDivElement, RightRulesProps>(
               />
             )}
           </>
-          {annotations.sort(sortAnnotations).map((item) => (
-            <DetailCard
-              updateDetailWrapperHeight={updateDetailWrapperHeight}
-              key={`card-${item.numberLine}`}
-              name={item.name}
-              typeName={item.typeName}
-              rules={item.rules}
-              numberLine={item.numberLine}
-              schemaName={item.schemaName || ''}
-              codeViewRef={codeViewRef}
-              note={item.note}
-              keyBlock={keyBlock}
-            />
-          ))}
+          {annotations.sort(sortAnnotations).map((item) => {
+            return (
+              <DetailCard
+                updateDetailWrapperHeight={updateDetailWrapperHeight}
+                key={`card-${item.numberLine}`}
+                name={item.name}
+                typeName={item.typeName}
+                rules={item.rules}
+                numberLine={item.numberLine}
+                schemaName={item.schemaName || ''}
+                codeViewRef={codeViewRef}
+                note={item.note}
+                keyBlock={keyBlock}
+              />
+            );
+          })}
         </div>
       </div>
     );

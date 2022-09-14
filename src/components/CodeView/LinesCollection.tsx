@@ -59,7 +59,7 @@ export const LinesCollection: (params: JSightContentProps) => JSX.Element[] = ({
             <Rules
               schemaName={schemasNames.slice(-1).pop()}
               note={content.note as string}
-              propType={propType}
+              propType={'object'}
               level={level}
               content={content}
               {...args}
@@ -116,7 +116,7 @@ export const LinesCollection: (params: JSightContentProps) => JSX.Element[] = ({
         numberLine={`${parentNumber ? `${parentNumber}-` : ''}${lines.length + currentLine + 1}`}
         rulesRender={(args) => (
           <Rules
-            propType={propType}
+            propType={'array'}
             schemaName={schemasNames.slice(-1).pop()}
             note={content.note as string}
             level={level}
