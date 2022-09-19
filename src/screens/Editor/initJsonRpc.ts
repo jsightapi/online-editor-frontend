@@ -24,7 +24,7 @@ URL /rpc
     Result
       @cat
 
-  Method updateCatAge // Update the information about the age of a cat.
+  Method updateCatAge // Update the information about a cat’s age.
     Params
       {
         "id": 1, // Cat’s id.
