@@ -492,25 +492,25 @@ TYPE @testUserTypeReferences
 
 TYPE @testShortRecursion
 {
-  "testShortRecursion": @testShortRecursion,
-  "testLongRecursion" : @testLongRecursion,
+  "testShortRecursion": @testShortRecursion, // {optional: true}
+  "testLongRecursion" : @testLongRecursion, 
   "testBothRecursions": @testShortRecursion | @testLongRecursion
 }
 
 TYPE @testLongRecursion
 {
-  "testShortRecursion": @testShortRecursion
+  "testShortRecursion": @testShortRecursion // {optional: true}
 }
 
 # Test USER TYPE reference in key
 TYPE @testUserTypeReferenceInKey
 {
-  @catId: @cat
+  @dogId: @cat
 }
 
 TYPE @testUserTypeReferenceInKeyInteger
 {
-  @catId: 12
+  @dogId: 12
 }
 
 TYPE @testFakeUserTypeReferenceInKey
@@ -520,12 +520,12 @@ TYPE @testFakeUserTypeReferenceInKey
 
 TYPE @testUserTypeReferenceInKeyWithRules
 {
-  @catId: @cat // {optional: true}
+  @dogId: @dog // {optional: true}
 }
 
 TYPE @testPseudoDuplicates // TODO: wait for fix.
 {
-  @catId  : 1
+  @dogId  : 1
   # "@catId": 1  TODO: uncomment when fixed.
 }
 
@@ -550,7 +550,7 @@ TYPE @testRequiredFieldsMarks
   "required2": {
     "optional3": 1,            // {optional: true}
     "required3": "2002-01-01", // {optional: false, "type": "date"}
-    @catId: 12.1 // Required.
+    @dogId: 12.1 // Required.
   },
   "optional3": [ // {optional: true}
     "optionalItem1",
@@ -558,7 +558,7 @@ TYPE @testRequiredFieldsMarks
   ],
   "required4": @catId,
   "optional4": @catId, // {optional: true}
-  @catId: true // {optional: true} - Optional.
+  @dogId: true // {optional: true} - Optional.
 }
 
 # Test Expand types button
@@ -568,7 +568,7 @@ TYPE @testExpandTypesRoot // Switch to "Expand types" mode. Check that only firs
 
 TYPE @testExpandTypesInside // Switch to "Expand types" mode. Check that only first level is expanding. Then check collapsing.
 {
-  @catId      : @cat,
+  @dogId      : @dog,
   "twoTypes"  : @cat | @dog,
   "threeTypes": @cat | @dog | @pig,
   "array": [
