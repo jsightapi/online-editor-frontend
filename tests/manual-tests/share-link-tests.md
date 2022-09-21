@@ -57,12 +57,12 @@
 3. **Reset example.** Repeat all the basic share test cases, but check if you can reset an example
    just before sharing a link, and immediately after sharing a link, and immediately after opening a
    link in a new browser.
-4. **Close window.** Repeat all the basic share test cases, but try to close the browser window
-   every time after changing a saved JSight code. Browser must show a warning, that the code was not
-   saved.
-5. **Previous button.** Repeat all the basic share test cases, but try to press the "Previous"
-   browser button every time after changing a saved JSight code. Browser must show a warning, that
+4. NOT IMPLEMENTED. **Close window.** Repeat all the basic share test cases, but try to close the
+   browser window every time after changing a saved JSight code. Browser must show a warning, that
    the code was not saved.
+5. NOT IMPLEMENTED. **Previous button.** Repeat all the basic share test cases, but try to press the
+   "Previous" browser button every time after changing a saved JSight code. Browser must show a
+   warning, that the code was not saved.
 6. **Change code.** Repeat all the basic share test cases, but set in the editor another code any
    time before opening a new shared link. For example, use this code:
 
