@@ -5,16 +5,14 @@ import React, {
   useEffect,
   useLayoutEffect,
   useMemo,
-  useRef,
   useState,
 } from 'react';
 import {RuleType, SchemaType} from 'types/exchange';
 import {LinesCollection} from './LinesCollection';
 import {createPortal} from 'react-dom';
 import {RightRules} from 'components/CodeView/RightRules';
-import {map} from 'lodash';
 import {RegexView} from 'components/CodeView/RegexView';
-import {MainContext, SidebarContext, SchemaViewContext, EditorContext} from 'store';
+import {MainContext, SidebarContext, SchemaViewContext} from 'store';
 import {emptySchemaData} from 'utils/emptySchemaData';
 
 export interface AnnotationType {
@@ -65,16 +63,12 @@ interface CodeProps {
 }
 
 export const Code = ({schema, tab, codeViewRef, keyBlock}: CodeProps) => {
-  const divRulesRef = useRef<HTMLDivElement | null>(null);
-  const [topOffset, setTopOffset] = useState<number>(0);
-  const [rightOffset, setRightOffset] = useState<number>(0);
   const [hiddenInheritedSchemas, setHiddenInheritedSchemas] = useState<SchemaLinePosition[]>([]);
   const [hoveredSchema, setHoveredSchema] = useState<SchemaLinePosition | null>(null);
   const [height, setHeight] = useState<number>(0);
   const {selectedLine, setSchemasData, schemasData} = useContext(MainContext);
   const {expandedTypes} = useContext(SchemaViewContext);
   const {currentDocSidebar, setCurrentDocSidebar} = useContext(SidebarContext);
-  const {editorWidth, isEditor} = useContext(EditorContext);
   const [isFirst, setIsFirst] = useState<boolean>(true);
 
   const schemaData = useMemo(() => {
@@ -208,64 +202,7 @@ export const Code = ({schema, tab, codeViewRef, keyBlock}: CodeProps) => {
     } else {
       setHeight((codeViewRef.current?.getBoundingClientRect().height || 0) + 65);
     }
-    // eslint-disable-next-line
   }, [selectedLine]);
-
-  useEffect(() => {
-    if (!isFirst) {
-      const wrapper = divRulesRef.current?.closest<HTMLDivElement>('.resource-content');
-      const rightOffset = wrapper ? parseInt(getComputedStyle(wrapper).paddingRight) : 0;
-      setRightOffset(rightOffset);
-    }
-  }, [editorWidth, isEditor]);
-
-  useLayoutEffect(() => {
-    const wrapper = divRulesRef.current?.closest<HTMLDivElement>('.resource-content');
-    const rightOffset = wrapper ? parseInt(getComputedStyle(wrapper).paddingRight) : 0;
-    setRightOffset(rightOffset);
-
-    if (selectedLine?.keyBlock === keyBlock && currentDocSidebar === 'rules') {
-      // finding active element, that is being set
-      const detailActiveElements = divRulesRef.current?.querySelectorAll<HTMLSpanElement>(
-        `[data-name="line-${selectedLine.numberLine}"]`
-      );
-
-      const detailActiveElement =
-        detailActiveElements && detailActiveElements.length ? detailActiveElements[0] : null;
-
-      map(document.getElementsByClassName('detail-card'), (item) =>
-        item.classList.remove('active')
-      );
-      map(document.getElementsByClassName('right-rules-wrapper'), (item) =>
-        item.classList.remove('active')
-      );
-
-      detailActiveElements?.forEach((item) => {
-        item.classList.add('active');
-        item.parentElement?.parentElement?.classList.add('active');
-      });
-
-      const codeLineElement = annotations.find(
-        (item) => selectedLine?.numberLine === item.numberLine
-      )?.spanRef.current;
-
-      if (detailActiveElement && codeLineElement) {
-        const detailActiveOffset = detailActiveElement.getBoundingClientRect().top;
-        const codeLineDocumentOffset = codeLineElement?.getBoundingClientRect().top;
-        setTopOffset((prev) => {
-          if (detailActiveOffset > codeLineDocumentOffset) {
-            return prev - (detailActiveOffset - codeLineDocumentOffset) - 39;
-          } else if (detailActiveOffset < codeLineDocumentOffset) {
-            return prev + (codeLineDocumentOffset - detailActiveOffset) - 39;
-          } else {
-            return prev;
-          }
-        });
-
-        updateHeight(detailActiveElement, codeLineDocumentOffset);
-      }
-    }
-  }, [selectedLine, currentDocSidebar, keyBlock, codeViewRef]);
 
   const updateHeight = (detailActiveElement: HTMLSpanElement, codeLineDocumentOffset: number) => {
     const detailActiveElementHeight = detailActiveElement ? detailActiveElement.offsetHeight : 0;
@@ -280,27 +217,6 @@ export const Code = ({schema, tab, codeViewRef, keyBlock}: CodeProps) => {
       (codeViewRef && codeViewRef.current ? codeViewRef.current.offsetHeight : 0)
     ) {
       setHeight(detailWrapperHeight + 65);
-    }
-  };
-
-  const updateDetailWrapperHeight = () => {
-    if (selectedLine?.keyBlock === keyBlock && currentDocSidebar === 'rules') {
-      const detailActiveElements = divRulesRef.current?.querySelectorAll<HTMLSpanElement>(
-        `[data-name="line-${selectedLine.numberLine}"]`
-      );
-
-      const detailActiveElement =
-        detailActiveElements && detailActiveElements.length ? detailActiveElements[0] : null;
-
-      const codeLineElement = annotations.find(
-        (item) => selectedLine?.numberLine === item.numberLine
-      )?.spanRef.current;
-
-      if (detailActiveElement && codeLineElement) {
-        const codeLineDocumentOffset = codeLineElement?.getBoundingClientRect().top;
-
-        updateHeight(detailActiveElement, codeLineDocumentOffset);
-      }
     }
   };
 
@@ -331,14 +247,12 @@ export const Code = ({schema, tab, codeViewRef, keyBlock}: CodeProps) => {
           ? createPortal(
               <RightRules
                 keyBlock={keyBlock}
-                ref={divRulesRef}
                 annotations={annotations}
                 codeViewRef={codeViewRef}
                 height={height}
-                topOffset={topOffset}
-                rightOffset={rightOffset}
-                updateDetailWrapperHeight={updateDetailWrapperHeight}
                 linesCollection={linesCollection}
+                updateHeight={updateHeight}
+                isFirst={isFirst}
               />,
               codeViewRef.current
             )
