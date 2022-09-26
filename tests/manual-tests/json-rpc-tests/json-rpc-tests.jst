@@ -1,4 +1,4 @@
-export const initJsonRpc = `JSIGHT 0.3
+JSIGHT 0.3
 
 TYPE @cat
 {
@@ -43,6 +43,10 @@ URL /rpc
     Result
       19 // {min: 0}
 
+  Method deleteCats // Remove cats by their IDs.
+    Params
+      [1,2,3]
+
   Method deleteAllCats // Remove all cats.
     Description
-        The method removes all cats without filtering.`;
+        The method removes all cats without filtering.

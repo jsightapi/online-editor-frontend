@@ -9,6 +9,8 @@ interface CurrentUrlContextInterface {
 
 export const CurrentUrlContext = createContext({} as CurrentUrlContextInterface);
 
+const {isExport} = window as any;
+
 export const CurrentUrlProvider = ({children}: ProviderInterface) => {
   const [currentUrl, setCurrentUrl] = useState<string | null>(null); // for export mode
   const history = useHistory();
@@ -22,7 +24,7 @@ export const CurrentUrlProvider = ({children}: ProviderInterface) => {
   );
 
   useEffect(() => {
-    if (currentUrl) {
+    if (currentUrl && !isExport) {
       history.push(`/${currentUrl[0] === '/' ? currentUrl.slice(1) : currentUrl}`);
     }
   }, [currentUrl]);
