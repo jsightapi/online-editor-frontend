@@ -199,6 +199,8 @@ export const EditorScreen = () => {
     [isEditor, editorWidth]
   );
 
+  const topOffset = useMemo(() => (isShowAnnouncementBar ? 97 : 64), [isShowAnnouncementBar]);
+
   if (error && error.code) {
     return <ErrorScreen goToEditor={goToEditor} code={error.code} message={error.message} />;
   }
@@ -227,7 +229,7 @@ export const EditorScreen = () => {
         <div />
       )}
       <div
-        style={{top: isShowAnnouncementBar ? 97 : 64}}
+        style={{top: topOffset, height: `calc(100% - ${topOffset}px)`}}
         className={clsx('d-flex editor-wrapper', {
           'only-doc': !isEditor,
           exported: isExport,
