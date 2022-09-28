@@ -51,7 +51,7 @@ export const MainContent = React.memo(
     const showRightSidebar = useMemo(() => !!currentDocSidebar, [currentDocSidebar]);
 
     useEffect(() => {
-      if (!currentUrl) {
+      if (!currentUrl && path) {
         const currentPath = path[0] !== '@' ? '/' + path : path;
         const index = jdocPositions.indexOf(`${currentPath.replace(/({|})/gi, '-')}`);
 

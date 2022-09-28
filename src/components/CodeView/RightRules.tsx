@@ -124,7 +124,7 @@ export const RightRules: FC<RightRulesProps> = ({
         return item.key === 'line-' + selectedLine?.numberLine;
       });
 
-      if (selectedLineObj) {
+      if (selectedLineObj && selectedLineObj.length > 0) {
         setRulesDataWithoutAnnotations({
           propName: selectedLineObj[0].props.propName,
           propType: selectedLineObj[0].props.propType,
