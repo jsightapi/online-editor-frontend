@@ -21,7 +21,7 @@
 
 # Logo
 
-1. Check that "Powered by JSight" panel click directs to editor page.
+1. Check that "Powered by JSight" panel click directs to https://jsight.io/.
 
 # Upload
 

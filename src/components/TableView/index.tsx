@@ -52,7 +52,7 @@ export const TableView = ({keyBlock, schema, format, block}: TableViewProps) => 
         <tr>
           <th>Key / Index</th>
           <th>Type</th>
-          <th>Description</th>
+          <th>Example</th>
           <th>
             <ControlElements keyBlock={keyBlock} initType={'table'} ableChangeView={true} />
           </th>

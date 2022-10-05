@@ -10,7 +10,6 @@ import {ReusableResource} from 'components/Resource/ReusableResource';
 import {HttpInteractionType, JDocType, JsonRpcInteractionType} from 'types/exchange';
 import {MainContext, GlobalSettingsContext, SidebarContext, CurrentUrlContext} from 'store';
 import {ResourceState, SchemaViewType, SelectedLineType} from 'store/MainStore';
-import {usePrevious} from 'hooks/usePrevious';
 import {emptySchemaData} from 'utils/emptySchemaData';
 import {HttpResource} from 'components/Resource/Http';
 import './MainContent.styles.scss';
@@ -40,16 +39,32 @@ export const MainContent = React.memo(
     const {headersBodiesTypesCode, pathQueriesCode, typesExpand, rulesExpand} = useContext(
       GlobalSettingsContext
     );
-    const {currentUrl} = useContext(CurrentUrlContext);
+    const {currentUrl, setCurrentUrl} = useContext(CurrentUrlContext);
     const {currentDocSidebar, setCurrentDocSidebar} = useContext(SidebarContext);
     const [overscan, setOverscan] = useState(480);
     const [schemasView, setSchemasView] = useState<SchemaViewType[]>([]);
     const [schemasData, setSchemasData] = useState<{[key: string]: SchemaData[]}>({});
     const [resourceState, setResourceState] = useState<ResourceState[]>([]);
-    // const prevPath = usePrevious(path);
-    // const prevCurrentUrl = usePrevious(currentUrl);
+    // @ts-ignore
+    window['mainContent'] = virtuosoRef;
 
     const showRightSidebar = useMemo(() => !!currentDocSidebar, [currentDocSidebar]);
+
+    useEffect(() => {
+      if (!currentUrl && path) {
+        const currentPath = path[0] !== '@' ? '/' + path : path;
+        const index = jdocPositions.indexOf(`${currentPath.replace(/({|})/gi, '-')}`);
+
+        if (~index && virtuosoRef?.current) {
+          virtuosoRef.current.scrollToIndex({
+            index: index + 1,
+            align: 'start',
+            behavior: 'auto',
+          });
+          setCurrentUrl(path);
+        }
+      }
+    }, [path, jdocPositions]);
 
     useEffect(() => {
       setSchemasView((prev) => {
@@ -269,30 +284,14 @@ export const MainContent = React.memo(
         }
         setJdocList(jdocList);
         setJdocPositions(jdocPositions);
+
+        // @ts-ignore
+        window['jdocPositions'] = jdocPositions;
       }
       return () => {
         setResourceState([]);
       };
     }, [jdocExchange]);
-
-    useEffect(() => {
-      const currentPath = currentUrl || path;
-
-      if (!currentPath) return;
-
-      const index = jdocPositions.indexOf(`${currentPath?.replace(/({|})/gi, '-')}`);
-
-      if (
-        ~index &&
-        virtuosoRef?.current /*(prevCurrentUrl !== currentUrl || prevPath !== path) */
-      ) {
-        virtuosoRef.current.scrollToIndex({
-          index: index + 1,
-          align: 'start',
-          behavior: 'auto',
-        });
-      }
-    }, [path, currentUrl, jdocPositions]);
 
     const value = useMemo(
       () => ({

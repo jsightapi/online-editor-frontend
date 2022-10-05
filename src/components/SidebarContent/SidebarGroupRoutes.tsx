@@ -46,7 +46,7 @@ export const SidebarGroupRoutes = ({tag}: SidebarGroupRoutesProps) => {
       <CollapsibleContent title={tag.title} rightContent={<div className="number">{count}</div>}>
         <ul className="collapse">
           {routeGroups.map((routeGroup) => {
-            return routeGroup.resources.map((resource, index) => {
+            return routeGroup.resources.map((resource) => {
               const linkTo =
                 routeGroup.protocol === 'http'
                   ? resource.replace(/({|})/gi, '-')

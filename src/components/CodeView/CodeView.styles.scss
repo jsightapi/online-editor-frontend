@@ -1,6 +1,7 @@
 @import 'src/styles/variables';
 
-.code-view, .params-table {
+.code-view,
+.params-table {
   code {
     font-family: 'JetBrainsMono', monospace;
     font-weight: 400;
@@ -25,7 +26,7 @@
       line-height: 2.4rem;
       box-sizing: border-box;
       box-shadow: 0 4px 16px rgba(213, 213, 213, 0.25), 0 0 12px rgba(213, 213, 213, 0.04),
-      0 2px 2px rgba(213, 213, 213, 0.05);
+        0 2px 2px rgba(213, 213, 213, 0.05);
       border-radius: 4px;
       margin-left: 1.7rem;
       margin-top: 0.5rem;
@@ -92,6 +93,8 @@
     color: #aab0b7;
     font-family: 'IBMPlexSans', serif;
     display: flex;
+    height: 3rem;
+
     &:hover {
       background-color: transparent;
     }
@@ -100,7 +103,7 @@
       position: absolute;
       right: 1.4rem;
       font-size: 1.2rem;
-      bottom: 1rem;
+      bottom: 2rem;
       line-height: 1.56rem;
     }
 
