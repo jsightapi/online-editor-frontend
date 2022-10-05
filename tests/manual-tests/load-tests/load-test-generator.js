@@ -1,3 +1,12 @@
+/*
+
+How to run: 
+
+1. Output in cli: `node .\load-test-generator.js`.
+2. Output to file: `node .\load-test-generator.js > random200Urls.jst`.
+
+*/
+
 function coin()
 {
   return Math.random() >= 0.5;
@@ -96,6 +105,14 @@ for (var i = 1; i < 200; i++) {
       console.log(``);
     }
     if(coin()) {
+      console.log(`URL /rpc${i}\n  Protocol json-rpc-2.0`)
+      for(var mn = 0; mn < Math.random() * 5; mn ++)
+      {
+        printMethod(`m${i}${mn}`);
+      }
+      console.log(``);
+    }
+    if(coin()) {
       printType(`@type${i}`);
       console.log(``);
     }
@@ -143,10 +160,35 @@ function printType(name="noname") {
   }
 }
 
+function printMethod(name="noname") {
+  console.log(`  Method ${name} // The method ${name}`);
+  if(coin()) {
+    console.log(`    Params`);
+    if(coin()) {
+      printObject(`    `);
+    } else {
+      printArray(`    `);
+    }    
+  }
+  if(coin()) {
+    console.log(`    Result`);
+    if(coin()) {
+      printObject(`    `);
+    } else {
+      printArray(`    `);
+    }    
+  }
+}
+
+
 function printObject(tab=""){
   console.log(tab + "{");
   for (var i = 0; i < Math.random()*10; i++) {
-    console.log( tab + "  \"field" + i + "\": " + i + ",");
+    let rules = ``;
+    if( coin() ) {
+      rules = ` // {optional: true, min: 0} - Field ${i} description.`
+    }
+    console.log( tab + "  \"field" + i + "\": " + i + "," + rules);
   }
   console.log( tab + "  \"field" + i + "\": " + i);
   console.log(tab + "}")
@@ -155,7 +197,11 @@ function printObject(tab=""){
 function printArray(tab=""){
   console.log(tab + "[");
   for (var i = 0; i < Math.random()*5; i++) {
-    console.log( tab + "  \"item" + i + "\""+ ",");
+    let rules = ``;
+    if( coin() ) {
+      rules = ` // {minLength: 0} - The item ${i} huge description and comment.`
+    }
+    console.log( tab + "  \"item" + i + "\"" + "," + rules);
   }
   console.log( tab + "  \"item" + i + "\"");
   console.log(tab + "]")

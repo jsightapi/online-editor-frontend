@@ -5,12 +5,13 @@
 3. Directive TYPE tests.
 4. Frontend load tests.
 5. HTTP-method tests.
-6. INFO and SERVER tests.
-7. Common Syntax tests.
-8. Markdown tests.
-9. Details card tests.
-10. Table View tests.
-11. Settings tests.
+6. JSON-RPC tests.
+7. INFO and SERVER tests.
+8. Common Syntax tests.
+9. Markdown tests.
+10. Details card tests.
+11. Table View tests.
+12. Settings tests.
 
 # Contents Sidebar tests
 

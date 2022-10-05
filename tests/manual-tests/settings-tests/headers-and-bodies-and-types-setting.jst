@@ -31,6 +31,17 @@ GET /headers-and-bodies/{stub}
   Query
     "must NOT change" // must NOT change.
 
+URL /rpc
+  Protocol json-rpc-2.0
+  Method some_method
+    Params
+    {
+      "MUST change": 1
+    }
+    Result
+    {
+      "MUST change": 2
+    }
 
 TYPE @type // MUST change.
   "MUST change" // MUST change

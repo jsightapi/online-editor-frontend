@@ -46,6 +46,18 @@ URL /rules/{stub}
         "4": @type
       }
 
+URL /rpc
+  Protocol json-rpc-2.0
+  Method some_method
+    Params
+    {
+      "foo": "bar" // {optional: true, maxLength: 100}
+    }
+    Result
+    [
+      "foo" // Very long comment here.
+    ]
+    
 TYPE @type
 {
   "foo": "bar" // {optional: true, maxLength: 100} - Very long comment here.

@@ -32,6 +32,21 @@ GET /test-directive/explicit-boundaries
       )
   )
 
+URL /json-rpc
+  Protocol json-rpc-2.0
+  Method method1
+  Method method2
+  (
+    Params
+    (
+      [1]
+    )
+    Result
+    (
+      2
+    )
+  )
+
 GET /test-comments # single-line comment
 # single-line comment
   200 // Annotation # single-line comment
@@ -59,3 +74,5 @@ GET /test-comments # single-line comment
                         "3"
                       ]} */
       }
+
+    
