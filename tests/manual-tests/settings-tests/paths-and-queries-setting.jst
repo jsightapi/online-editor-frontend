@@ -31,5 +31,17 @@ URL /paths-and-queries/{stub}
       Body
         "must NOT change" // must NOT change.
 
+URL /rpc
+  Protocol json-rpc-2.0
+  Method some_method
+    Params
+    {
+      "MUST NOT change": 1
+    }
+    Result
+    {
+      "MUST NOT change": 2
+    }
+
 TYPE @type // must NOT change.
   "type" // must NOT change.
