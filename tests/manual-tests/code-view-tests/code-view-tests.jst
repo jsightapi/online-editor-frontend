@@ -24,8 +24,7 @@ TYPE @testStandardTypesByExample // Correspondence between the JSON and JSight S
   "floatPositive2": 1.23,
   "floatNegative": -1.2,
   "floatZero": 0.0,
-  # "decimalPositive1": 0.12, // {precision : 2} TODO: uncomment after bug fix.
-  "decimalPositive1": 0.12, // {precision: 2}
+  "decimalPositive1": 0.12, // {precision : 2}
   "decimalPositive2": 0.1,  // {precision: 1}
   "decimalNegative": -0.12, // {precision: 2}
   "boolean1": true,
@@ -523,10 +522,11 @@ TYPE @testUserTypeReferenceInKeyWithRules
   @dogId: @dog // {optional: true}
 }
 
-TYPE @testPseudoDuplicates // TODO: wait for fix.
+// TODO: add to auto tests
+TYPE @testPseudoDuplicates
 {
-  @dogId  : 1
-  # "@catId": 1  TODO: uncomment when fixed.
+  @dogId  : 1,
+  "@dogId": 2
 }
 
 # Test inline rules / collapse rules
