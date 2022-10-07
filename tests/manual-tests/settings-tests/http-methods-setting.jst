@@ -1,5 +1,9 @@
 JSIGHT 0.3
 
+URL /rpcBefore
+  Protocol json-rpc-2.0
+  Method justInCase
+  
 URL /http-methods
   GET // In the HTTP methods "Tabs" mode you see only this method.
   PUT // In the HTTP methods "Plain" mode you see also four methods: (1 of 4).
@@ -14,3 +18,7 @@ URL /http-methods
     200
       "bar"
   DELETE // (4 of 4)
+
+URL /rpcAfter
+  Protocol json-rpc-2.0
+  Method justInCase
