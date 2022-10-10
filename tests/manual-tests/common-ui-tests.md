@@ -36,6 +36,10 @@ When click to this item, the warning window must appear. Check:
 - Reset button, 
 - closing cross button.
 
+### Docs menu links
+
+Check all the links in the Docs menu.
+
 ## Code editor
 
 ### Editor-Render separator
@@ -69,6 +73,12 @@ Code content should not be changed.
    code. Check that documentation stays in the same place after refresh and do not scroll back to
    the previous position.
 6. Check that Contents works fine when there are a huge amount of items (vertical scroll must work).
+
+# Give us a star popup panel
+
+1. Check the github link.
+2. Close the popup.
+3. Refresh the page, check that now it is closed permanently.
 
 ## Performance
 
