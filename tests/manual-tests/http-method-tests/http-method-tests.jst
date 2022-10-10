@@ -238,7 +238,7 @@
       }
 
   GET /test-query/very-long-query-string
-    Query "verylongquery_verylongquery_verylongquery_verylongquery_verylongquery_verylongquery_verylongquery_verylongquery_verylongquery_verylongquery_"
+    Query "verylongquery_verylongquery_verylongquery_verylongquery_verylongquery_verylongquery_verylongquery_verylongquery_verylongquery_verylongquery_verylongquery_verylongquery_verylongquery_verylongquery_verylongquery_verylongquery_verylongquery_verylongquery_verylongquery_verylongquery_"
       "string"
 
   GET /test-query/url-encoded-quirks // TODO: we need create tests of url-encoded problems.    
@@ -404,8 +404,8 @@
 
   POST /test-response/headers-and-body
     Description
-      1. [ ! ] Check `Request headers` section is shown.
-      2. [ ! ] Check `Request body` section is shown.
+      1. [ ! ] Check `Response headers` section is shown.
+      2. [ ! ] Check `Response body` section is shown.
     303
       Headers
         {
@@ -416,7 +416,7 @@
 
   PUT /test-response/body
     Description
-      [ ! ] Check `Request body` section is shown.
+      [ ! ] Check `Response body` section is shown.
     304      
       Body
         {

@@ -1,0 +1,65 @@
+JSIGHT 0.3
+
+INFO
+  Description
+    Check Table View mode in different type of sections.
+
+POST /http
+  Query
+    {
+      "Check table view": "value",
+      "cat": @cat,
+      "array": ["item0", "item 1-∞"]
+    }
+  Request
+    Headers
+      {
+        "Check table view": "value",
+        "cat": @cat,
+        "array": ["item0", "item 1-∞"]
+      }
+    Body
+      {
+        "Check table view": "value",
+        "cat": @cat,
+        "array": ["item0", "item 1-∞"]
+      }
+  200
+    Headers
+      {
+        "Check table view": "value",
+        "cat": @cat,
+        "array": ["item0", "item 1-∞"]
+      }
+    Body
+      [
+        "Check table view",
+        @cat,
+        ["item0", "item 1-∞"]
+      ]
+
+URL /rpc
+  Protocol json-rpc-2.0
+  Method checkTableView
+    Params
+      [
+        "Check table view",
+        @cat,
+        ["item0", "item 1-∞"]
+      ]    
+    Result
+      {
+        "Check table view": "value",
+        "cat": @cat,
+        "array": ["item0", "item 1-∞"]
+      }    
+
+TYPE @checkTableView
+{
+  "Check table view": "value",
+  "cat": @cat,
+  "array": ["item0", "item 1-∞"]
+}   
+
+TYPE @cat
+{}

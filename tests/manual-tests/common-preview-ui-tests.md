@@ -26,6 +26,12 @@
    not suspend. Especially check it on paths with parameters, e. g. `/cats/{id}`.
 3. Check that Contents works fine when there are a huge amount of items (vertical scroll must work).
 
+# Give us a star popup panel
+
+1. Check the github link.
+2. Close the popup.
+3. Refresh the page, check that now it is closed permanently.
+
 # Logo
 
 1. Check that "Powered by JSight" panel click directs to https://jsight.io/.
