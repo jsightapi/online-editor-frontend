@@ -86,7 +86,7 @@ export const DetailCard = ({
 
   const renderBody = (rules?: RuleType[]): JSX.Element => {
     let index = 0;
-    const rulesLength = rules?.filter((rule) => !(isTableView && rule.key == 'type')).length;
+    const rulesLength = rules?.filter((rule) => !(isTableView && rule.key == 'type')).length || 0;
 
     return (
       <pre className="body">
@@ -102,7 +102,7 @@ export const DetailCard = ({
           {(rules || []).map((rule) => {
             const preventRender = isTableView && rule.key == 'type';
             !preventRender && index++;
-            return !preventRender && renderRule(rule, rule.key, (rulesLength || 0), index);
+            return !preventRender && renderRule(rule, rule.key, rulesLength, index);
           })}
         </code>
       </pre>
