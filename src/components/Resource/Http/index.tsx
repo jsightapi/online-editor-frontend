@@ -63,15 +63,22 @@ export const HttpResource = ({interactions, resourceKey, index, path}: HttpResou
           }}
         >
           {!tabs && (
-            <div className="d-flex method-label-wrapper">
-              <div className={clsx(['method-label', item.httpMethod.toLowerCase()])}>
-                {item.httpMethod}
+            <div className="http-method-annotation-description">
+              <div className="d-flex method-label-wrapper">
+                <div className={clsx(['method-label', item.httpMethod.toLowerCase()])}>
+                  {item.httpMethod}
+                </div>
+                {item.annotation && <h4 className="method-annotation">{item.annotation}</h4>}
               </div>
-              {item.annotation && <h4 className="method-annotation">{item.annotation}</h4>}
+              {item.description && <Description markdown={item.description} />}
             </div>
           )}
-          {item.annotation && tabs && <h4 className="method-annotation">{item.annotation}</h4>}
-          {item.description && <Description markdown={item.description} />}
+          {tabs && ( item.annotation || item.description ) && (
+            <div className="http-method-annotation-description">
+              {item.annotation && <h4 className="method-annotation">{item.annotation}</h4>}
+              {item.description && <Description markdown={item.description} />}
+            </div>
+          )}
           {item.pathVariables && (
             <ResourceBlock
               title="Path parameters"
