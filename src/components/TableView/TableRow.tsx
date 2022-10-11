@@ -40,7 +40,6 @@ export const TableRow = ({
           </div>
         </td>
         <td>{isPropertyShortcut ? property?.scalarValue : property?.type || ''}</td>
-        <td>{JSON.stringify(property?.scalarValue || '').replace(/(^"|"$)/g, '')}</td>
         <td colSpan={2}>
           {property?.note && (
             <div style={{marginBottom: property?.rules ? '0.8rem' : ''}}>{property.note}</div>
