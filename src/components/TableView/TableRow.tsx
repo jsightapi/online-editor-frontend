@@ -1,7 +1,6 @@
 import React, {useMemo} from 'react';
 import {JsightSchemaElement} from 'types/exchange';
 import {DetailCard} from 'components/CodeView/DetailCard';
-import {wrapInQuotes} from 'utils/wrapInQuotes';
 
 interface TableRowProps {
   keyValue: string;
@@ -18,7 +17,7 @@ export const TableRow = ({
   isNestedChild, // nested row
   isArrayLastItem,
 }: TableRowProps) => {
-  const leftOffset = useMemo(() => (level > 1 ? `${level * 20}px` : '0px'), [level]);
+  const leftOffset = useMemo(() => (level > 1 ? `${level * 20}px` : '0'), [level]);
   const isPropertyShortcut = property?.tokenType === 'reference';
   // const isParentArray = parentJsonType === 'array';
   // const isArrayLastItem = isParentArray && isLastItem && !rootIsEmptyArray;

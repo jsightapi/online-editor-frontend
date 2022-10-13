@@ -21,13 +21,10 @@ export const RowsCollection = ({
   let rows: JSX.Element[] = [];
 
   if (content.tokenType === 'reference') {
-    // if (block === 'header') {
-    //
-    // }
     rows.push(
       <TableRow
-        key={`${level}-${level === 0 ? 'root' : content.key}`}
-        keyValue={level === 0 ? '<root>' : content.key || ''}
+        key={`${level}-${level === 0 ? 'root' : content.key || key}`}
+        keyValue={level === 0 ? '<root>' : content.key || String(key)}
         level={level + 1}
         property={content}
         isNestedChild={isNestedChild}
@@ -50,7 +47,7 @@ export const RowsCollection = ({
         isNestedChild: level > 0,
         level: level + 1,
         content: item,
-        key: String(isArray ? index : item.key),
+        key: String(isArray ? index : item.key || index),
         isArrayLastItem: isArray && (content.children || []).length - 1 === index,
       });
       rows = rows.concat(childrenRows);
