@@ -30,7 +30,7 @@ export const TableRow = ({
           <div className="param-key">
             {isArrayLastItem ? (
               <span className="d-flex">
-                <span>{keyValue}-</span>
+                <span>{keyValue}&ndash;</span>
                 <span className="param-key-symbol">&infin;</span>
               </span>
             ) : (
