@@ -56,7 +56,7 @@ POST /types/test-scalar-types-by-example // Correspondence between the JSON and 
     }
 
 # Test omitting rule `type`
-POST /types/testRuleTypeIsOmmitedProperty // Check that there is no rule `type` in table view column `Example`.
+POST /types/testRuleTypeIsOmmitedProperty // Check that there is no rule `type` in table view column `DESCRIPTION`.
   Query
     {
       "typeRuleOnly": 1, // {type: "integer"} - Must be no rules below.
@@ -64,7 +64,7 @@ POST /types/testRuleTypeIsOmmitedProperty // Check that there is no rule `type` 
                                              - Must be only `optional: true, nullable: true` */
     }
 
-POST /types/testRuleTypeIsOmmitedArray // Check that there is no rule `type` in table view column `Example`.
+POST /types/testRuleTypeIsOmmitedArray // Check that there is no rule `type` in table view column `DESCRIPTION`.
   Query
     [
       1, // {type: "integer"} - Must be no rules below.
@@ -72,12 +72,12 @@ POST /types/testRuleTypeIsOmmitedArray // Check that there is no rule `type` in 
                                              - Must be only `nullable: true` */
     ]
 
-POST /types/testRuleTypeIsOmmitedScalar1 // Check that there is no rule `type` in table view column `Example`.
+POST /types/testRuleTypeIsOmmitedScalar1 // Check that there is no rule `type` in table view column `DESCRIPTION`.
   Query
     "some string" /* {nullable: true, type: "string"}
                                              - Must be only `nullable: true` */
 
-POST /types/testRuleTypeIsOmmitedScalar2 // Check that there is no rule `type` in table view column `Example`.
+POST /types/testRuleTypeIsOmmitedScalar2 // Check that there is no rule `type` in table view column `DESCRIPTION`.
   Query
     "some string" /* {type: "string"} - Must be no rules below. */
 
