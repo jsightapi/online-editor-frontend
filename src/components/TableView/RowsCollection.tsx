@@ -17,6 +17,7 @@ export const RowsCollection = ({
   level = 0,
   isNestedChild = false,
   key,
+  isArrayLastItem
 }: RowsCollectionProps): JSX.Element[] => {
   let rows: JSX.Element[] = [];
 
@@ -28,6 +29,7 @@ export const RowsCollection = ({
         level={level + 1}
         property={content}
         isNestedChild={isNestedChild}
+        isArrayLastItem={isArrayLastItem}
       />
     );
   } else if (content.tokenType === 'object' || content.tokenType === 'array') {
@@ -39,6 +41,7 @@ export const RowsCollection = ({
         level={level + 1}
         property={content}
         isNestedChild={isNestedChild}
+        isArrayLastItem={isArrayLastItem}       
       />
     );
     content.children?.forEach((item, index) => {
@@ -60,6 +63,7 @@ export const RowsCollection = ({
         level={level + 1}
         property={content}
         isNestedChild={isNestedChild}
+        isArrayLastItem={isArrayLastItem}
       />
     );
   }
