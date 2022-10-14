@@ -3,11 +3,11 @@ JSIGHT 0.3
 # Test
 TYPE @testSectionButtonsZIndex /* 1) Open a details card.
                                   2) Press menu button.
-                                  3) Check that menu panel 
-                                     is not hiding under 
+                                  3) Check that menu panel
+                                     is not hiding under
                                      the details card. */
   12 // {min: 1, max: 100}
-  
+
 # Test long one-line schemas
 TYPE @testOneLineLongSchema // Test that it looks normally in code view and does not overlap notation label.
   "veryLongSchemaJustExtremelyLongveryLongSchemaJustExtremelyLongveryLongSchemaJustExtremelyLongveryLongSchemaJustExtremelyLong" // {type: "string"}
@@ -16,7 +16,7 @@ TYPE @testOneLineLongSchema // Test that it looks normally in code view and does
 
 TYPE @testStandardTypesByExample // Correspondence between the JSON and JSight Schema data types
 {
-  "string": "some string and escaped characters \" \\ \/ \b \f \n \r \t \u043f\u0440\u0438\u0432\u0435\u0442",
+  "string": "Some string and escaped characters \" \\ \/ \b \f \n \r \t \u4e16\u754c",
   "integerPositive": 1,
   "integerNegative": -123,
   "integerZero": 0,
@@ -108,28 +108,28 @@ TYPE @testSingleLineAnnotationInObject
 }
 
 TYPE @testMultiLineAnnotationInRoot
-  22 /* Check 
+  22 /* Check
         annotation.*/
 
 TYPE @testMultiLineAnnotationInArray
-[ /* Check 
+[ /* Check
      annotation 1.*/
-  "item" /* Check 
+  "item" /* Check
     annotation 2. */
 ]
 
 TYPE @testMultiLineAnnotationInObject
-{ /* Check 
+{ /* Check
      annotation 1. */
-  "key": "value" /* Check 
+  "key": "value" /* Check
                     annotation 2. */
 }
 
 TYPE @testOneWordAnnotation // Check absense of "..." panel.
-  "one word" // One  
+  "one word" // One
 
 TYPE @testTwoWordsAnnotation // Check absense of "..." panel.
-  "two words" // Two words  
+  "two words" // Two words
 
 TYPE @testThreeWordsAnnotation // Check absense of "..." panel.
   "three words" // Three words annotation
@@ -180,9 +180,9 @@ TYPE @testRulesInRoot
   true // {const: true, nullable: true} - Annotation.
 
 TYPE @testMultilineRules
-[ /* 
+[ /*
       {minItems: 1,
-       maxItems: 10} 
+       maxItems: 10}
        - Annotation.
   */
   "item", /* {
@@ -304,7 +304,7 @@ TYPE @testRuleOrSimple // Check that it collapses in `Collapse rules` mode.
 TYPE @testRuleOrGroupOfRules // Check that it collapses in `Collapse rules` mode.
 {
   "data": "abc" /* {or: [
-                     {type: "string" , maxLength: 3}, 
+                     {type: "string" , maxLength: 3},
                      {type: "integer", min: 0}
                    ]} */
 }
@@ -320,7 +320,7 @@ TYPE @testRuleOrUserTypes // Check that it is never collapsed in `Collapse rules
 TYPE @testRuleOrMixed // Check that it is never collapsed in `Collapse rules` mode.
 {
   "data": "abc" /* {or: [
-                     "@cat", 
+                     "@cat",
                      {type: "string", maxLength: 3}
                    ]} */
 }
@@ -402,7 +402,7 @@ TYPE @testAllOflevels // Test the fields order: 1-1-2-2-3-3.
 # Test multiple allOf order
 
 TYPE @testMultipleAllOfOrder1 // Must be 1-2-3-4.
-{ // {allOf: ["@allOf1", "@allOf2"]} 
+{ // {allOf: ["@allOf1", "@allOf2"]}
 }
 
 TYPE @testMultipleAllOfOrder2 // Must be 3-4-1-2.
@@ -492,7 +492,7 @@ TYPE @testUserTypeReferences
 TYPE @testShortRecursion
 {
   "testShortRecursion": @testShortRecursion, // {optional: true}
-  "testLongRecursion" : @testLongRecursion, 
+  "testLongRecursion" : @testLongRecursion,
   "testBothRecursions": @testShortRecursion | @testLongRecursion
 }
 
@@ -635,4 +635,4 @@ TYPE @pigId
 TYPE @catList
 [
   @cat
-]  
+]
