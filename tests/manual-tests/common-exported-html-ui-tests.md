@@ -22,11 +22,13 @@
 
 # Logo
 
-1. Check that "Powered by JSight" panel click directs to https://jsight.io/.
+1. Check that "Powered by JSight" panel click directs to https://jsight.io/ (must be opened in the
+   new tab).
 
 # Upload
 
-1. Review all resources, which are uploaded during opening the HTML file.
+1. Review all resources, which are uploaded during opening the HTML file. Only fonts and images must
+   be loaded. No code, no css (both code and css must be embedded in the file).
 
 ## Virtual Scroll
 

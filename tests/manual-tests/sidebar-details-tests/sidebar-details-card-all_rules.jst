@@ -151,13 +151,18 @@ TYPE @allOf
   }
 }
 
+TYPE @typeReference
+{
+  @catId: @cat // {optional: true, nullable: false}
+}
+
 # HELPER-TYPES
 
 TYPE @_________________________THANKS_FOR_TESTING_______________________
   "No need to test below!"
 
 TYPE @catId
-  1
+  "1"
 
 TYPE @dogId
   2
