@@ -249,6 +249,31 @@ GET /extremely-wierd-endpoint
   200 
     @very_strange_type_123
 
+
+#------------------------------------------- JSON RPC ---------------------------------------------------
+
+URL /json-rpc-api
+  Protocol json-rpc-2.0
+  Method getCat /* Get a cat by its id. */
+    Params
+    {
+      "id": @catId // Cat's id.
+    }
+    Result
+      @cat
+  Method getAllcats // Returns all cats.
+    Params
+    {
+      "limit": 30, // {min: 1, max: 1000}
+      "offset": 0  // {min: 0}
+    }
+    Result
+    {
+      "itemsCount": 30,
+      "offset": 0,
+      "items": [@cat]
+    }
+
 #------------------------------------------- TYPES ------------------------------------------------------    
 
 TYPE @cat // A cat.

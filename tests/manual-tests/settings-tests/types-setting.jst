@@ -40,6 +40,16 @@ URL /types/{stub}
         "4": @mustExpandList
       }
 
+URL /rpc
+  Protocol json-rpc-2.0
+  Method some_method
+    Params
+    {
+      "mustExpand": @mustExpand
+    }
+    Result
+      @mustExpand
+
 TYPE @type
   @mustExpand
 
@@ -58,6 +68,7 @@ TYPE @mustExpandScalar
 
 TYPE @mustExpandList
 [
+  "EXPANDED!",
   @mustNot,
   @mustNot
 ]

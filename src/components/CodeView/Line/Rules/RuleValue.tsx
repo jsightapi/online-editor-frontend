@@ -2,6 +2,7 @@ import React from 'react';
 import {RuleValueType} from './RuleValueType';
 import {RuleValueAllOf} from './RuleValueAllOf';
 import clsx from 'clsx';
+import {wrapInQuotes} from 'utils/wrapInQuotes';
 
 export interface RuleValueProps {
   value: string;
@@ -22,5 +23,14 @@ export const RuleValue = (props: RuleValueProps) => {
     return <RuleValueAllOf {...props} />;
   }
 
-  return <span className={clsx(props.className, `rule-value-${props.type}`)}>{props.value}</span>;
+  return (
+    <span className={clsx(props.className, `rule-value-${props.type}`)}>
+      {
+        wrapInQuotes(
+          props.value,
+          !['regex', 'string', 'reference'].includes(props.type || '')
+        ) as string
+      }
+    </span>
+  );
 };

@@ -1,11 +1,12 @@
 import React, {useContext, useEffect, SyntheticEvent} from 'react';
 import {createPortal} from 'react-dom';
 import {RuleValueProps} from './RuleValue';
-import {SchemaViewContext} from 'components/SchemaView';
+import {SchemaViewContext} from 'store';
 import clsx from 'clsx';
 import {ObjectContext} from '../../store/ObjectContext';
 import {ShortcutLines} from '../ShortcutLines';
 import {useSchemaData} from 'components/CodeView/hooks/useSchemaData';
+import {wrapInQuotes} from 'utils/wrapInQuotes';
 
 export const RuleValueType = ({
   schemaName,
@@ -46,7 +47,7 @@ export const RuleValueType = ({
   return (
     <span>
       <span onClick={toggle} className={valueClass}>
-        {value}
+        {wrapInQuotes(value, !['regex', 'string', 'reference'].includes(type || ''))}
       </span>
       {objectSpanRef && objectSpanRef.current && expanded
         ? createPortal(

@@ -7,6 +7,8 @@ import {SharingContext} from 'store/SharingStore';
 import {MainRouterParams} from 'types';
 import {notificationIds} from 'utils/notificationIds';
 import {SharingErrorNotification} from 'components/Notifications/SharingErrorNotification';
+import {IconError} from 'components/Notifications/IconError';
+import * as monaco from 'monaco-editor';
 
 const errorOptions: ToastOptions = {
   closeOnClick: false,
@@ -16,16 +18,22 @@ const errorOptions: ToastOptions = {
   hideProgressBar: true,
   closeButton: true,
   draggable: false,
+  icon: IconError,
 };
 
 export function useSharing() {
   const {path} = useParams<MainRouterParams>();
   const {key, history} = useContext(SharingContext);
+  const jsightEditor: React.MutableRefObject<monaco.editor.IStandaloneCodeEditor | null> = window.hasOwnProperty(
+    'jsightEditor'
+  )
+    ? (window as any).jsightEditor
+    : null;
 
   const createState = () => {
-    const content = localStorage.getItem('jsightCode');
+    const content = jsightEditor.current?.getValue();
 
-    if (content) {
+    if (content !== undefined) {
       return createNewState(content)
         .then((response) => {
           history.push(`/r/${response.code}/${response.version}${path ? `#${path}` : ''}`);
@@ -40,9 +48,9 @@ export function useSharing() {
   };
 
   const updateExistState = () => {
-    const content = localStorage.getItem('jsightCode');
+    const content = jsightEditor.current?.getValue();
 
-    if (content) {
+    if (content !== undefined) {
       return updateState(key, content)
         .then((response) => {
           history.push(`/r/${response.code}/${response.version}${path ? `#${path}` : ''}`);

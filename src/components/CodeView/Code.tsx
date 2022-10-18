@@ -5,31 +5,24 @@ import React, {
   useEffect,
   useLayoutEffect,
   useMemo,
-  useRef,
   useState,
 } from 'react';
-import {RulesType, SchemaType} from 'types/exchange';
+import {RuleType, SchemaType} from 'types/exchange';
 import {LinesCollection} from './LinesCollection';
 import {createPortal} from 'react-dom';
 import {RightRules} from 'components/CodeView/RightRules';
-import {map} from 'lodash';
-import {SchemaViewContext} from 'components/SchemaView';
 import {RegexView} from 'components/CodeView/RegexView';
-import {MainContext, SidebarContext} from 'store';
+import {MainContext, SidebarContext, SchemaViewContext} from 'store';
+import {emptySchemaData} from 'utils/emptySchemaData';
 
 export interface AnnotationType {
   name: string; // name of the related property (shown in the card)
   typeName: string; // property type (shown in the card)
-  rules: RulesType; // rules list (shown in the card)
+  rules: RuleType[]; // rules list (shown in the card)
   note?: string; // comment (shown in the card if present)
   spanRef: MutableRefObject<HTMLSpanElement | null>; // reference to the line related to the card
   numberLine: string; // line number (to identify card on the same level)
   schemaName?: string; // schema, the code relates to (undefined for root)
-}
-
-export interface AnnotationDeleteType {
-  numberLine: string;
-  parentNumber?: string;
 }
 
 export interface LinePosition {
@@ -69,29 +62,18 @@ interface CodeProps {
   codeViewRef: React.MutableRefObject<HTMLDivElement | null>;
 }
 
-const emptySchemaData = {
-  detailAnnotations: [],
-  children: [],
-};
-
 export const Code = ({schema, tab, codeViewRef, keyBlock}: CodeProps) => {
-  const divRulesRef = useRef<HTMLDivElement | null>(null);
-  const [topOffset, setTopOffset] = useState<number>(0);
-  const [rightOffset, setRightOffset] = useState<number>(0);
   const [hiddenInheritedSchemas, setHiddenInheritedSchemas] = useState<SchemaLinePosition[]>([]);
   const [hoveredSchema, setHoveredSchema] = useState<SchemaLinePosition | null>(null);
   const [height, setHeight] = useState<number>(0);
   const {selectedLine, setSchemasData, schemasData} = useContext(MainContext);
   const {expandedTypes} = useContext(SchemaViewContext);
-  const {currentDocSidebar, setCurrentDocSidebar, editorWidth, isEditor} = useContext(
-    SidebarContext
-  );
+  const {currentDocSidebar, setCurrentDocSidebar} = useContext(SidebarContext);
   const [isFirst, setIsFirst] = useState<boolean>(true);
 
-  const schemaData = useMemo(
-    () => (schemasData.hasOwnProperty(keyBlock) ? schemasData[keyBlock] : [emptySchemaData]),
-    [keyBlock, schemasData]
-  );
+  const schemaData = useMemo(() => {
+    return schemasData.hasOwnProperty(keyBlock) ? schemasData[keyBlock] : [emptySchemaData];
+  }, [keyBlock, schemasData]);
 
   useLayoutEffect(() => {
     if (!schemasData[keyBlock]) {
@@ -220,64 +202,7 @@ export const Code = ({schema, tab, codeViewRef, keyBlock}: CodeProps) => {
     } else {
       setHeight((codeViewRef.current?.getBoundingClientRect().height || 0) + 65);
     }
-    // eslint-disable-next-line
   }, [selectedLine]);
-
-  useEffect(() => {
-    if (!isFirst) {
-      const wrapper = divRulesRef.current?.closest<HTMLDivElement>('.resource-content');
-      const rightOffset = wrapper ? parseInt(getComputedStyle(wrapper).paddingRight) : 0;
-      setRightOffset(rightOffset);
-    }
-  }, [editorWidth, isEditor]);
-
-  useLayoutEffect(() => {
-    const wrapper = divRulesRef.current?.closest<HTMLDivElement>('.resource-content');
-    const rightOffset = wrapper ? parseInt(getComputedStyle(wrapper).paddingRight) : 0;
-    setRightOffset(rightOffset);
-
-    if (selectedLine?.keyBlock === keyBlock && currentDocSidebar === 'rules') {
-      // finding active element, that is being set
-      const detailActiveElements = divRulesRef.current?.querySelectorAll<HTMLSpanElement>(
-        `[data-name="line-${selectedLine.numberLine}"]`
-      );
-
-      const detailActiveElement =
-        detailActiveElements && detailActiveElements.length ? detailActiveElements[0] : null;
-
-      map(document.getElementsByClassName('detail-card'), (item) =>
-        item.classList.remove('active')
-      );
-      map(document.getElementsByClassName('right-rules-wrapper'), (item) =>
-        item.classList.remove('active')
-      );
-
-      detailActiveElements?.forEach((item) => {
-        item.classList.add('active');
-        item.parentElement?.parentElement?.classList.add('active');
-      });
-
-      const codeLineElement = annotations.find(
-        (item) => selectedLine?.numberLine === item.numberLine
-      )?.spanRef.current;
-
-      if (detailActiveElement && codeLineElement) {
-        const detailActiveOffset = detailActiveElement.getBoundingClientRect().top;
-        const codeLineDocumentOffset = codeLineElement?.getBoundingClientRect().top;
-        setTopOffset((prev) => {
-          if (detailActiveOffset > codeLineDocumentOffset) {
-            return prev - (detailActiveOffset - codeLineDocumentOffset) - 39;
-          } else if (detailActiveOffset < codeLineDocumentOffset) {
-            return prev + (codeLineDocumentOffset - detailActiveOffset) - 39;
-          } else {
-            return prev;
-          }
-        });
-
-        updateHeight(detailActiveElement, codeLineDocumentOffset);
-      }
-    }
-  }, [selectedLine, currentDocSidebar, keyBlock, codeViewRef]);
 
   const updateHeight = (detailActiveElement: HTMLSpanElement, codeLineDocumentOffset: number) => {
     const detailActiveElementHeight = detailActiveElement ? detailActiveElement.offsetHeight : 0;
@@ -295,27 +220,6 @@ export const Code = ({schema, tab, codeViewRef, keyBlock}: CodeProps) => {
     }
   };
 
-  const updateDetailWrapperHeight = () => {
-    if (selectedLine?.keyBlock === keyBlock && currentDocSidebar === 'rules') {
-      const detailActiveElements = divRulesRef.current?.querySelectorAll<HTMLSpanElement>(
-        `[data-name="line-${selectedLine.numberLine}"]`
-      );
-
-      const detailActiveElement =
-        detailActiveElements && detailActiveElements.length ? detailActiveElements[0] : null;
-
-      const codeLineElement = annotations.find(
-        (item) => selectedLine?.numberLine === item.numberLine
-      )?.spanRef.current;
-
-      if (detailActiveElement && codeLineElement) {
-        const codeLineDocumentOffset = codeLineElement?.getBoundingClientRect().top;
-
-        updateHeight(detailActiveElement, codeLineDocumentOffset);
-      }
-    }
-  };
-
   if (schema.notation === 'jsight' && typeof schema.content === 'object') {
     const linesCollection = LinesCollection({
       content: schema.content,
@@ -330,12 +234,12 @@ export const Code = ({schema, tab, codeViewRef, keyBlock}: CodeProps) => {
         value={{
           schemaData,
           hiddenInheritedSchemas,
+          hoveredSchema,
+          keyBlock,
           hideInheritedSchema,
           showInheritedSchema,
-          hoveredSchema,
           setHoveredSchema,
           updateAnnotations,
-          keyBlock,
         }}
       >
         {linesCollection}
@@ -343,14 +247,12 @@ export const Code = ({schema, tab, codeViewRef, keyBlock}: CodeProps) => {
           ? createPortal(
               <RightRules
                 keyBlock={keyBlock}
-                ref={divRulesRef}
                 annotations={annotations}
                 codeViewRef={codeViewRef}
                 height={height}
-                topOffset={topOffset}
-                rightOffset={rightOffset}
-                updateDetailWrapperHeight={updateDetailWrapperHeight}
                 linesCollection={linesCollection}
+                updateHeight={updateHeight}
+                isFirst={isFirst}
               />,
               codeViewRef.current
             )

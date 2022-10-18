@@ -1,0 +1,47 @@
+JSIGHT 0.3
+
+INFO
+  Description
+  (
+    Change the "Headers & bodies & types" setting and check, that only
+    Header, Body and Types sections change its view.
+  )
+
+GET /headers-and-bodies
+  Request
+    Headers
+    {
+      "MUST change": "1" // MUST change.
+    }
+    Body
+      "MUST change" // MUST change.
+  200
+    Headers
+    {
+      "MUST change": "1" // MUST change.
+    }
+    Body
+      "MUST change" // MUST change.
+
+GET /headers-and-bodies/{stub}
+  Path
+  {
+    "stub": 1 // must NOT change.
+  }
+  Query
+    "must NOT change" // must NOT change.
+
+URL /rpc
+  Protocol json-rpc-2.0
+  Method some_method
+    Params
+    {
+      "MUST change": 1
+    }
+    Result
+    {
+      "MUST change": 2
+    }
+
+TYPE @type // MUST change.
+  "MUST change" // MUST change

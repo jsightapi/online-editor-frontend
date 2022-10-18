@@ -1,6 +1,6 @@
 JSIGHT 0.3
 
-# Test 
+# Test
 TYPE @testSectionButtonsZIndex /* 1) Open a details card.
                                   2) Press menu button.
                                   3) Check that menu panel 
@@ -197,6 +197,17 @@ TYPE @testMultilineRules
   }
 ]
 
+TYPE @testRulesOrder // Switch to the "Inline rules" mode. Rules must have 1 → 2 → 3 order.
+  "2" // {minLength: 1, regex: "2", maxLength: 3}
+
+TYPE @testMovingSomeRulesToFirstPlace
+{
+  "checkTypeMoves" : 1,  // {nullable: true , type: "integer"}
+  "checkEnumMoves" : 2,  // {nullable: false, optional: true, enum: [1, 2]}
+  "checkOrMoves"   : 12, // {nullable: false, or: ["@catId", "@dogId"]}
+  "checkAllOfMoves": {}  // {nullable: true, allOf: "@cat"}
+}
+
 # Rule `type`
 
 TYPE @testRuleTypeStandardTypes
@@ -205,10 +216,10 @@ TYPE @testRuleTypeStandardTypes
   "floatPositive1"  : 1.2,  // {type: "float"}
   "boolean1"        : true, // {type: "boolean"}
   "array": [ // {type: "array"}
-    "array item" // {type: "string"}
+    "string" // {type: "string"}
   ],
   "object": { // {type: "object"}
-    "objectField": null // {type: null}
+    "null": null // {type: null}
   },
   "decimal" : 43.21, // {type: "decimal", precision: 2}
   "email": "name@domain.com", // {type: "email"}
@@ -481,25 +492,25 @@ TYPE @testUserTypeReferences
 
 TYPE @testShortRecursion
 {
-  "testShortRecursion": @testShortRecursion,
-  "testLongRecursion" : @testLongRecursion,
+  "testShortRecursion": @testShortRecursion, // {optional: true}
+  "testLongRecursion" : @testLongRecursion, 
   "testBothRecursions": @testShortRecursion | @testLongRecursion
 }
 
 TYPE @testLongRecursion
 {
-  "testShortRecursion": @testShortRecursion
+  "testShortRecursion": @testShortRecursion // {optional: true}
 }
 
 # Test USER TYPE reference in key
 TYPE @testUserTypeReferenceInKey
 {
-  @catId: @cat
+  @dogId: @cat
 }
 
 TYPE @testUserTypeReferenceInKeyInteger
 {
-  @catId: 12
+  @dogId: 12
 }
 
 TYPE @testFakeUserTypeReferenceInKey
@@ -509,12 +520,12 @@ TYPE @testFakeUserTypeReferenceInKey
 
 TYPE @testUserTypeReferenceInKeyWithRules
 {
-  @catId: @cat // {optional: true}
+  @dogId: @dog // {optional: true}
 }
 
-TYPE @testPseudoDuplicates
+TYPE @testPseudoDuplicates // TODO: wait for fix.
 {
-  @catId  : 1
+  @dogId  : 1
   # "@catId": 1  TODO: uncomment when fixed.
 }
 
@@ -531,16 +542,6 @@ TYPE @testInlineRulesCollapseRules // Switch mode to "Inline Rules" and see how 
   ]
 }
 
-# Test moving some rules to beginning
-
-TYPE @testMovingSomeRulesToFirstPlace
-{
-  "checkTypeMoves" : 1,  // {nullable: true , type: "integer"}
-  "checkEnumMoves" : 2,  // {nullable: false, optional: true, enum: [1, 2]}
-  "checkOrMoves"   : 12, // {nullable: false, or: ["@catId", "@dogId"]}
-  "checkAllOfMoves": {}  // {nullable: true, allOf: "@cat"}
-}
-
 # Test required fields marks on the left
 TYPE @testRequiredFieldsMarks
 {
@@ -549,7 +550,7 @@ TYPE @testRequiredFieldsMarks
   "required2": {
     "optional3": 1,            // {optional: true}
     "required3": "2002-01-01", // {optional: false, "type": "date"}
-    @catId: 12.1 // Required.
+    @dogId: 12.1 // Required.
   },
   "optional3": [ // {optional: true}
     "optionalItem1",
@@ -557,7 +558,7 @@ TYPE @testRequiredFieldsMarks
   ],
   "required4": @catId,
   "optional4": @catId, // {optional: true}
-  @catId: true // {optional: true} - Optional.
+  @dogId: true // {optional: true} - Optional.
 }
 
 # Test Expand types button
@@ -567,7 +568,7 @@ TYPE @testExpandTypesRoot // Switch to "Expand types" mode. Check that only firs
 
 TYPE @testExpandTypesInside // Switch to "Expand types" mode. Check that only first level is expanding. Then check collapsing.
 {
-  @catId      : @cat,
+  @dogId      : @dog,
   "twoTypes"  : @cat | @dog,
   "threeTypes": @cat | @dog | @pig,
   "array": [

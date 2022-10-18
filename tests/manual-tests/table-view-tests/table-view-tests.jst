@@ -7,29 +7,29 @@ POST /types/test-rule-type-standard-types
     {
       "integerPositive" : 1,    // {type: "integer"}
       "floatPositive1"  : 1.2,  // {type: "float"}
-      "boolean"        : true, // {type: "boolean"}
+      "boolean"         : true, // {type: "boolean"}
       "array": [ // {type: "array"}
-        "array item" // {type: "string"}
+        "array item" // {type: "string"} - Must be `string`.
       ],
       "object": { // {type: "object"}
-        "objectField": null // {type: null}
+        "null": null // {type: null}
       },
-      "decimal" : 43.21, // {type: "decimal", precision: 2}
-      "email": "name@domain.com", // {type: "email"}
-      "uri": "https://domain.com/", // {type: "uri"}
-      "date": "2021-12-16", // {type: "date"}
-      "datetime": "2006-01-02T15:04:05+07:00", // {type: "datetime"}
-      "uuid": "550e8400-e29b-41d4-a716-446655440000", // {type: "uuid"}
+      "decimal"  : 43.21, // {type: "decimal", precision: 2}
+      "email"    : "name@domain.com", // {type: "email"}
+      "uri"      : "https://domain.com/", // {type: "uri"}
+      "date"     : "2021-12-16", // {type: "date"}
+      "datetime" : "2006-01-02T15:04:05+07:00", // {type: "datetime"}
+      "uuid"     : "550e8400-e29b-41d4-a716-446655440000", // {type: "uuid"}
       "enumPlain": "white", // {type: "enum", enum: ["white", "black"]}
       "enumMixed": 2.3, // {type: "enum", enum: [1, 2.3, "a", "b", true, false, null]}
-      "mixed": "abc", // {type: "mixed", or: [{type: "string"}, {type: "integer", min: 0}]}
-      "any": 456 // {type: "any"}
+      "mixed"    : "abc", // {type: "mixed", or: [{type: "string"}, {type: "integer", min: 0}]}
+      "any"      : 456 // {type: "any"}
     }
 
 POST /types/test-scalar-types-by-example // Correspondence between the JSON and JSight Schema data types
   Query
     {
-      "string": "some string and escaped characters \" \\ \/ \b \f \n \r \t \u043f\u0440\u0438\u0432\u0435\u0442",
+      "string": "some string and escaped characters \" \\ \/ \b \f \n \r \t. Hello, 世界",
       "integerPositive": 1,
       "integerNegative": -123,
       "integerZero": 0,
@@ -43,7 +43,7 @@ POST /types/test-scalar-types-by-example // Correspondence between the JSON and 
       "boolean2": false,
       "null": null,
       "object": {
-        "key": "value"
+        "string": "value"
       },
       "array": [
         1, // Integer.
@@ -56,7 +56,7 @@ POST /types/test-scalar-types-by-example // Correspondence between the JSON and 
     }
 
 # Test omitting rule `type`
-POST /types/testRuleTypeIsOmmitedProperty // Check that there is no type rule in table view column `Description`.
+POST /types/testRuleTypeIsOmmitedProperty // Check that there is no rule `type` in table view column `Example`.
   Query
     {
       "typeRuleOnly": 1, // {type: "integer"} - Must be no rules below.
@@ -64,7 +64,7 @@ POST /types/testRuleTypeIsOmmitedProperty // Check that there is no type rule in
                                              - Must be only `optional: true, nullable: true` */
     }
 
-POST /types/testRuleTypeIsOmmitedArray // Check that there is no type rule in table view column `Description`.
+POST /types/testRuleTypeIsOmmitedArray // Check that there is no rule `type` in table view column `Example`.
   Query
     [
       1, // {type: "integer"} - Must be no rules below.
@@ -72,12 +72,12 @@ POST /types/testRuleTypeIsOmmitedArray // Check that there is no type rule in ta
                                              - Must be only `nullable: true` */
     ]
 
-POST /types/testRuleTypeIsOmmitedScalar1 // Check that there is no type rule in table view column `Description`.
+POST /types/testRuleTypeIsOmmitedScalar1 // Check that there is no rule `type` in table view column `Example`.
   Query
     "some string" /* {nullable: true, type: "string"}
                                              - Must be only `nullable: true` */
 
-POST /types/testRuleTypeIsOmmitedScalar2 // Check that there is no type rule in table view column `Description`.
+POST /types/testRuleTypeIsOmmitedScalar2 // Check that there is no rule `type` in table view column `Example`.
   Query
     "some string" /* {type: "string"} - Must be no rules below. */
 
@@ -93,7 +93,7 @@ POST /scalar/boolean
 
 POST /scalar/integer
   Query
-    12 // {min: 1} - Scalar integer.  
+    12 // {min: 1} - Scalar integer.
 
 POST /scalar/float
   Query
@@ -114,7 +114,7 @@ POST /scalar/enum
 POST /scalar/mixed
   Query
     "A" /* {or: [
-              {type: "integer"}, 
+              {type: "integer"},
               {type: "string"}
             ]}
           - Scalar mixed.
@@ -122,19 +122,19 @@ POST /scalar/mixed
 
 POST /scalar/email
   Query
-    "tom@cats.ru" // {type: "email"}          
+    "tom@cats.ru" // {type: "email"} - Email.
 
 POST /scalar/user-type
   Query
-    @cat // {nullable: true} - Scalar user type.
+    @cat // {nullable: true} - User type @cat.
 
 POST /scalar/several-user-types
   Query
-    @cat | @dog // {type: "mixed"} - Scalar several user types.
+    @cat | @dog // {type: "mixed"} - User type @cat or @dog.
 
 POST /scalar/notation-regex
   200 regex
-    /.*/
+    /[!] Check this regex in the `Table View`/
 
 # ARRAY in the root
 
@@ -147,17 +147,17 @@ POST /array/everything
     [ // {maxItems: 200} - Array of everything.
       1, // Integer.
       "some string", // String.
-      { // Internal object.
-        "id": 1 // {min: 1} - Identificator.
+      { // Object.
+        "integer": 1 // {min: 1} - Integer.
       },
       true, // Boolean.
       1.5,  // Float.
       1.123, // {precision: 3} - Decimal.
-      @cat, // Type reference.
-      @dog | @cat, // Several types reference.
-      [ // Internal array.
-        "string"
-      ]    
+      @cat, // Type @cat.
+      @dog | @cat, // Type @cat or @dog.
+      [ // Array.
+        "string" // String
+      ]
     ]
 
 # OBJECT in the root
@@ -166,30 +166,30 @@ POST /object/everything
   Query
     { // {additionalProperties: true} - Object of everything.
       "field1": 1, // Integer.
-      "field2": [  // Internal array.
+      "field2": [  // Array.
         "string" // String.
       ],
-      "field3": { // Internal object.
+      "field3": { // Object.
         "field31": true // Boolean.
       },
-      "field4": @cat, // Cat.
-      "field5": @cat | @dog, // Cat or dog.
-      @catId: @cat // {optional: true} - Cat with id in the key.
-      # "@catId": "@cat" // Check that it differs from the previous line! TODO: uncomment when bug is fixed.
-    } 
+      "field4": @cat, // Type @cat.
+      "field5": @cat | @dog, // Type @cat or @dog.
+      @catId: @cat, // {optional: true} - @cat with the @catId key.
+      "@catId": "@cat" // Check that it differs from the previous line!
+    }
 
 # Check field order in object
 
-POST /object/field-order // Compare field order with Code View. Must be the same.
+POST /object/field-order // Compare field order 1 → 2 → 3.
   Query
     { // {allOf: "@parentType"}
-      "childField3": 3
+      "childField3": 3 // 3
     }
 
 TYPE @parentType // Miss it. It is helpful type for previous test.
 {
-  "parentField1": 1,
-  "parentField2": 2
+  "parentField1": 1, // 1
+  "parentField2": 2  // 2
 }
 
 # Check different rules
@@ -207,10 +207,10 @@ POST /rules/different
 POST /size/long-description
   Query
   {
-    "longDescription": "description" /* Here is an extra long description, which is so long, 
-                                        that  it is hardly imagine how long it is. That's long! 
+    "longDescription": "description" /* Here is an extra long description, which is so long,
+                                        that  it is hardly imagine how long it is. That's long!
                                         Just very very very very long. */
-  }  
+  }
 
 # Check extra long Key
 
@@ -218,16 +218,16 @@ POST /size/long-key
   Query
   {
     "thisIsTheExtraLongKeySoExtraLongThatItIsJustUnbelievablyLong": "description"
-  }  
+  }
 
 # helpfull types
-TYPE @STOP_HERE // Thank you for testing! No need to check below.
-  {}
+TYPE @_________________________THANKS_FOR_TESTING________________________
+  "NO NEED TO TEST FURTHER. Thank you!"
 
 TYPE @cat
 {
   "catField": 1
-}  
+}
 
 TYPE @dog
 {
@@ -238,4 +238,4 @@ TYPE @catId
   "catString"
 
 TYPE @dogId
-  "dogString"  
+  "dogString"

@@ -2,9 +2,7 @@ JSIGHT 0.3
 
 INFO
   Description
-     1. Check that all rules are displayed in a details card correctly
-     (quotes, signs, syntax).
-
+     1. Check that all rules are displayed in a details card correctly (quotes, signs, syntax).
      2. Check that details card is shown only in "Collapse rules" mode. But not in "Inline rules" mode.
 
 TYPE @nullable_optional
@@ -120,7 +118,7 @@ TYPE @additionalProperties
   },
   "any": { // {additionalProperties: "any", nullable: false}
   },
-  "userType": { // {additionalProperties: "@cat", nullable: false}
+  "@cat": { // {additionalProperties: "@cat", nullable: false}
   }
 
   # Req. status is TODO.
@@ -153,11 +151,10 @@ TYPE @allOf
   }
 }
 
-
 # HELPER-TYPES
 
-TYPE @THANKS // Thank you so much for testing! No need to test further types.
-  "THANKS FOR TESTING!"
+TYPE @_________________________THANKS_FOR_TESTING_______________________
+  "No need to test below!"
 
 TYPE @catId
   1

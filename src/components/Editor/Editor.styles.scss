@@ -4,7 +4,13 @@
   border: 1px solid red;
 }
 
-.errorLine {
+.editor {
+  .slider {
+    border-radius: 4px;
+  }
+}
+
+.errorLine, .errorLine+.line-numbers {
   background: $secondary-red;
   opacity: 0.65;
 }

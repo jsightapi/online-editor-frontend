@@ -3,8 +3,6 @@
 	"name": "JSight",
 	"scopeName": "source.jsight",
 	"patterns": [
-
-
 		{
 			"include": "#jsightDir"
 		},
@@ -24,10 +22,28 @@
 			"include": "#urlDir"
 		},
 		{
+			"include": "#protocolDir"
+		},
+		{
 			"include": "#typeDir"
 		},
 		{
+			"include": "#enumDir"
+		},
+		{
+			"include": "#tagDir"
+		},
+		{
+			"include": "#tagsDir"
+		},
+		{
 			"include": "#methodsDirs"
+		},
+		{
+			"include": "#rpcMethodDir"
+		},
+		{
+			"include": "#rpcParamsAndResultDirs"
 		},
 		{
 			"include": "#descriptionDir"
@@ -36,7 +52,7 @@
 			"include": "#baseUrlDir"
 		},
 		{
-			"include": "#headersAndPathDir"
+			"include": "#headersAndPathDirs"
 		},
 		{
 			"include": "#queryDir"
@@ -185,7 +201,7 @@
 			}]
 		},
 		"macroPasteDirs": {
-			"comment": "TODO !! «MACRO» and «PASTE» directives",
+			"comment": "«MACRO» and «PASTE» directives",
 			"begin": "^\\s*(MACRO|PASTE)\\b\\s*(@[a-zA-Z_][a-zA-Z_0-9]*)?",
 			"beginCaptures": {
 				"1": {"name": "keyword.other.jsight.directive.root.technical.macro"},
@@ -224,7 +240,7 @@
 							"name": "entity.other.attribute-name.jsight.parameter.name.server"
 						}
 					},
-					"end": "(?=^\\s*(\\d\\d\\d|TESTDIR|JSIGHT|INFO|SERVER|MACRO|PASTE|INCLUDE|DIR|TAG|TYPE|ENUM|URL|GET|POST|PUT|PATCH|DELETE|Description|Request|Headers|Query|Path|Body|BaseUrl)\\b)",
+					"end": "(?=^\\s*(\\d\\d\\d|TESTDIR|JSIGHT|INFO|SERVER|MACRO|PASTE|INCLUDE|DIR|TAG|TYPE|ENUM|URL|GET|POST|PUT|PATCH|DELETE|BaseUrl|Title|Version|Description|Request|Headers|Query|Path|Body|Tags|Protocol|Method|Params|Result)\\b)",
 					"contentName": "debug.directive.Server.afterKeyAndParams",
 					"patterns": [
 						{
@@ -251,7 +267,7 @@
 							"name": "constant.language.jsight.parameter.notation"
 						}
 					},
-					"while": "^(?!\\s*(TESTDIR|JSIGHT|INFO|SERVER|MACRO|PASTE|INCLUDE|DIR|TAG|TYPE|ENUM|URL|GET|POST|PUT|PATCH|DELETE|Description)\\b)",
+					"end": "^(?=\\s*(TESTDIR|JSIGHT|INFO|SERVER|MACRO|PASTE|INCLUDE|DIR|TAG|TYPE|ENUM|URL|GET|POST|PUT|PATCH|DELETE|BaseUrl|Title|Version|Description|Request|Headers|Query|Path|Body|Tags|Protocol|Method|Params|Result)\\b)",
 					"contentName": "debug.directive.Type.afterKeyAndParams",
 					"patterns": [
 						{
@@ -259,7 +275,8 @@
 						},
 						{
 							"begin": "(?=^\\s*(@[a-zA-Z_][a-zA-Z_0-9]*|\\{|\\[|true|false|null|\".*\"|\\d+))",
-							"end": "(?=^\\s*(TESTDIR|JSIGHT|INFO|SERVER|MACRO|PASTE|INCLUDE|DIR|TAG|TYPE|ENUM|URL|GET|POST|PUT|PATCH|DELETE|Description)\\b)",
+							"end": "^(?=\\s*(TESTDIR|JSIGHT|INFO|SERVER|MACRO|PASTE|INCLUDE|DIR|TAG|TYPE|ENUM|URL|GET|POST|PUT|PATCH|DELETE|BaseUrl|Title|Version|Description|Request|Headers|Query|Path|Body|Tags|Protocol|Method|Params|Result)\\b)",
+							"contentName": "debug.directive.Type.afterKeyAndParams.body",
 							"patterns": [
 								{
 									"include": "source.jschema"
@@ -273,6 +290,76 @@
 				}
 			]
 		},
+		"enumDir": {
+			"comment": "«ENUM» directive",
+			"patterns": [
+				{
+					"comment": "STARTING with «ENUM» keyword. Type name param matched as optional so that keyword would highlight before typing name",
+					"begin": "^\\s*(ENUM)\\s*(@[a-zA-Z_][a-zA-Z_0-9]*)?",
+					"captures": {
+						"1": {
+							"name": "keyword.jsight.directive.root.api"
+						},
+						"2": {
+							"name": "entity.other.attribute-name.jsight.parameter.name.usertype.definition"
+						}
+					},
+					"end": "^(?=\\s*(TESTDIR|JSIGHT|INFO|SERVER|MACRO|PASTE|INCLUDE|DIR|TAG|TYPE|ENUM|URL|GET|POST|PUT|PATCH|DELETE|BaseUrl|Title|Version|Description|Request|Headers|Query|Path|Body|Tags|Protocol|Method|Params|Result)\\b)",
+					"contentName": "debug.directive.Enum.afterKeyAndParams",
+					"patterns": [
+						{
+							"include": "#annotationsAndComments"
+						},
+						{
+							"begin": "(?=^\\s*(\\[))",
+							"end": "^(?=\\s*(TESTDIR|JSIGHT|INFO|SERVER|MACRO|PASTE|INCLUDE|DIR|TAG|TYPE|ENUM|URL|GET|POST|PUT|PATCH|DELETE|BaseUrl|Title|Version|Description|Request|Headers|Query|Path|Body|Tags|Protocol|Method|Params|Result)\\b)",
+							"contentName": "debug.directive.Enum.afterKeyAndParams.body",
+							"patterns": [
+								{
+									"include": "source.jschema"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+
+		"tagDir": {
+			"comment": "«TAG» directive",
+			"patterns": [
+				{
+					"comment": "STARTING with «TAG» keyword. Type name param matched as optional so that keyword would highlight before typing name",
+					"match": "^\\s*(TAG)\\s*(@[a-zA-Z_][a-zA-Z_0-9]*)?",
+					"captures": {
+						"1": {
+							"name": "keyword.jsight.directive.root.api"
+						},
+						"2": {
+							"name": "entity.other.attribute-name.jsight.parameter.name.tag.definition"
+						}
+					}
+				}
+			]
+		},
+		"tagsDir": {
+			"comment": "«Tags» directive",
+			"patterns": [
+				{
+					"comment": "STARTING with «TAG» keyword. Type name param matched as optional so that keyword would highlight before typing name",
+					"match": "^\\s*(Tags)\\s*((@[a-zA-Z_][a-zA-Z_0-9]*\\s*)+)?",
+					"captures": {
+						"1": {
+							"name": "keyword.control.jsight.directive.inner"
+						},
+						"2": {
+							"name": "entity.other.attribute-name.jsight.parameter.name.usertype.link"
+						}
+					}
+				}
+			]
+		},
+
 		"urlDir": {
 			"comment": "«URL» directive. Path parameter matches as optional, so that URL would highlight begore path is provided",
 			"begin": "^\\s*(URL)\\s*(\\/\\S*)?",
@@ -287,7 +374,7 @@
 					}]
 				}
 			},
-			"end": "(?=^\\s*(\\d\\d\\d|TESTDIR|JSIGHT|INFO|SERVER|MACRO|PASTE|INCLUDE|DIR|TAG|TYPE|ENUM|URL|GET|POST|PUT|PATCH|DELETE|Description|Request|Headers|Query|Path|Body)\\b)",
+			"end": "(?=^\\s*(\\d\\d\\d|TESTDIR|JSIGHT|INFO|SERVER|MACRO|PASTE|INCLUDE|DIR|TAG|TYPE|ENUM|URL|GET|POST|PUT|PATCH|DELETE|BaseUrl|Title|Version|Description|Request|Headers|Query|Path|Body|Tags|Protocol|Method|Params|Result)\\b)",
 			"contentName": "debug.directive.Url.afterKeyAndParams",
 			"patterns": [
 				{
@@ -313,7 +400,7 @@
 							]
 						}
 					},
-					"end": "(?=^\\s*(\\d\\d\\d|TESTDIR|JSIGHT|INFO|SERVER|MACRO|PASTE|INCLUDE|DIR|TAG|TYPE|ENUM|URL|GET|POST|PUT|PATCH|DELETE|Description|Request|Headers|Query|Path|Body)\\b)",
+					"end": "(?=^\\s*(\\d\\d\\d|TESTDIR|JSIGHT|INFO|SERVER|MACRO|PASTE|INCLUDE|DIR|TAG|TYPE|ENUM|URL|GET|POST|PUT|PATCH|DELETE|BaseUrl|Title|Version|Description|Request|Headers|Query|Path|Body|Tags|Protocol|Method|Params|Result)\\b)",
 					"contentName": "debug.directive.Method.afterKeyAndParams",
 					"patterns": [
 						{
@@ -337,7 +424,7 @@
 							]
 						}
 					},
-					"end": "(?=^\\s*(\\d\\d\\d|TESTDIR|JSIGHT|INFO|SERVER|MACRO|PASTE|INCLUDE|DIR|TAG|TYPE|ENUM|URL|GET|POST|PUT|PATCH|DELETE|Description|Request|Headers|Query|Path|Body)\\b)",
+					"end": "(?=^\\s*(\\d\\d\\d|TESTDIR|JSIGHT|INFO|SERVER|MACRO|PASTE|INCLUDE|DIR|TAG|TYPE|ENUM|URL|GET|POST|PUT|PATCH|DELETE|BaseUrl|Title|Version|Description|Request|Headers|Query|Path|Body|Tags|Protocol|Method|Params|Result)\\b)",
 					"contentName": "debug.directive.Method.afterKeyAndParams",
 					"patterns": [
 						{
@@ -348,8 +435,74 @@
 			]
 
 		},
+		
+		"protocolDir": {
+			"comment": "«Protocol»",
+			"patterns": [{
+				"name": "keyword.control.jsight.directive.protocol",
+				"match": "^\\s*(Protocol)\\b"
+			}]
+		},
+		"rpcMethodDir": {
+			"patterns": [
+				{
+					"comment": "«Method» directive. Second begin group is made optional so that «Method» will highlight before typing name", 
+					"begin": "^\\s*(Method)\\s*(\\S+)?",
+					"beginCaptures": {
+						"1": {
+							"name": "keyword.jsight.directive.method.rpc"
+						},
+						"2": {
+							"name": "entity.other.attribute-name.jsight.parameter.name.rpc"
+						}
+					},
+					"end": "(?=^\\s*(\\d\\d\\d|TESTDIR|JSIGHT|INFO|SERVER|MACRO|PASTE|INCLUDE|DIR|TAG|TYPE|ENUM|URL|GET|POST|PUT|PATCH|DELETE|BaseUrl|Title|Version|Description|Request|Headers|Query|Path|Body|Tags|Protocol|Method|Params|Result)\\b)",
+					"contentName": "debug.directive.Method.rpc.afterKeyAndParams",
+					"patterns": [
+						{
+							"include": "#annotationsAndComments"
+						}
+					]
+				}
+			]
+		},
+		"rpcParamsAndResultDirs": {
+			"comment": "«Params», «Result». Have no params, no annotations and only jshema body. Matching keyword. Ending with any directive, except \\d\\d\\d (response code).",
+			"patterns": [
+				{
+					"begin": "^\\s*(Params|Result)",
+					"beginCaptures": {
+						"0": {
+							"name": "keyword.control.jsight.directive.inner"
+						}
+					},
+					"end": "(?=^\\s*(TESTDIR|JSIGHT|INFO|SERVER|MACRO|PASTE|INCLUDE|DIR|TAG|TYPE|ENUM|URL|GET|POST|PUT|PATCH|DELETE|BaseUrl|Title|Version|Description|Request|Headers|Query|Path|Body|Tags|Protocol|Method|Params|Result)\\b)",
+					"patterns": [
+						{
+							"comment": "Matching before valid jschema syntax to pass to to jschema highlighter",
+							"begin": "(?=\\s*(@[a-zA-Z_][a-zA-Z_0-9]*|\\d+|\\{|\\[|true|false|null|\".*\"))",
+							"end": "(?=^\\s*(TESTDIR|JSIGHT|INFO|SERVER|MACRO|PASTE|INCLUDE|DIR|TAG|TYPE|ENUM|URL|GET|POST|PUT|PATCH|DELETE|BaseUrl|Title|Version|Description|Request|Headers|Query|Path|Body|Tags|Protocol|Method|Params|Result)\\b)",
+							"contentName": "debug.rpcParamsOrResult.body",
+							"patterns": [
+								{
+									"include": "source.jschema"
+								}
+							]
+						},
+						{
+							"include": "#comments"
+						}
+					]
+				}
+			]
+		},
+
+
+
+
+
 		"simpleDirectives": {
-			"comment": "TODO: leave only the ones not described explicitly in own pattern",
+			"comment": "«Title» and «Version» dirs",
 			"patterns": [{
 				"name": "keyword.control.jsight.directive.inner",
 				"match": "^\\s*(Title|Version)\\b"
@@ -368,7 +521,7 @@
 							"name": "string.quoted.double.jsight.parameter.baseurl"
 						}
 					},
-					"end": "(?=^\\s*(\\d\\d\\d|TESTDIR|JSIGHT|INFO|SERVER|MACRO|PASTE|INCLUDE|DIR|TAG|TYPE|ENUM|URL|GET|POST|PUT|PATCH|DELETE|Description|Request|Headers|Query|Path|Body|BaseUrl)\\b)",
+					"end": "(?=^\\s*(\\d\\d\\d|TESTDIR|JSIGHT|INFO|SERVER|MACRO|PASTE|INCLUDE|DIR|TAG|TYPE|ENUM|URL|GET|POST|PUT|PATCH|DELETE|BaseUrl|Title|Version|Description|Request|Headers|Query|Path|Body|Tags|Protocol|Method|Params|Result)\\b)",
 					"contentName": "debug.directive.BaseUrl.afterKeyAndParams",
 					"patterns": [
 						{
@@ -391,7 +544,7 @@
 							"name": "comment.line.jsight"
 						}
 					},
-					"end": "(?<=^\\s*\\))|((?=^\\s*(\\d\\d\\d|JSIGHT|INFO|SERVER|MACRO|PASTE|INCLUDE|DIR|TAG|TYPE|ENUM|URL|GET|POST|PUT|PATCH|DELETE|Title|Version|Description|Request|Headers|Query|Path|Body)))",
+					"end": "(?<=^\\s*\\))|((?=^\\s*(\\d\\d\\d|TESTDIR|JSIGHT|INFO|SERVER|MACRO|PASTE|INCLUDE|DIR|TAG|TYPE|ENUM|URL|GET|POST|PUT|PATCH|DELETE|BaseUrl|Title|Version|Description|Request|Headers|Query|Path|Body|Tags|Protocol|Method|Params|Result)))",
 					"contentName": "debug.directive.Description.body",
 					"patterns": [
 						{
@@ -401,15 +554,15 @@
 						},
 						{
 							"begin": "^",
-							"end": "(?=^\\s*(\\d\\d\\d|JSIGHT|INFO|SERVER|MACRO|PASTE|INCLUDE|DIR|TAG|TYPE|ENUM|URL|GET|POST|PUT|PATCH|DELETE|Title|Version|Description|Request|Headers|Query|Path|Body))",
+							"end": "(?=^\\s*(\\d\\d\\d|TESTDIR|JSIGHT|INFO|SERVER|MACRO|PASTE|INCLUDE|DIR|TAG|TYPE|ENUM|URL|GET|POST|PUT|PATCH|DELETE|BaseUrl|Title|Version|Description|Request|Headers|Query|Path|Body|Tags|Protocol|Method|Params|Result))",
 							"contentName": "debug.directive.Description.body.markdown"
 						}
 					]
 				}
 			]
 		},
-		"headersAndPathDir": {
-			"comment": "TODO: Headers, Path — Directives that have no params, no annotations and only object or usertype in the body",
+		"headersAndPathDirs": {
+			"comment": "Headers, Path — Directives that have no params, no annotations and only object or usertype in the body",
 			"patterns": [
 				{
 					"begin": "^\\s*(Headers|Path)",
@@ -418,11 +571,11 @@
 							"name": "keyword.control.jsight.directive.inner"
 						}
 					},
-					"end": "(?=^\\s*(\\d\\d\\d|TESTDIR|JSIGHT|INFO|SERVER|MACRO|PASTE|INCLUDE|DIR|TAG|TYPE|ENUM|URL|GET|POST|PUT|PATCH|DELETE|Description|Request|Headers|Query|Path|Body)\\b)",
+					"end": "(?=^\\s*(\\d\\d\\d|TESTDIR|JSIGHT|INFO|SERVER|MACRO|PASTE|INCLUDE|DIR|TAG|TYPE|ENUM|URL|GET|POST|PUT|PATCH|DELETE|BaseUrl|Title|Version|Description|Request|Headers|Query|Path|Body|Tags|Protocol|Method|Params|Result)\\b)",
 					"patterns": [
 						{
 							"begin": "(?=^\\s*(@[a-zA-Z_][a-zA-Z_0-9]*|\\{))",
-							"end": "(?=^\\s*(\\d\\d\\d|TESTDIR|JSIGHT|INFO|SERVER|MACRO|PASTE|INCLUDE|DIR|TAG|TYPE|ENUM|URL|GET|POST|PUT|PATCH|DELETE|Description|Request|Headers|Query|Path|Body)\\b)",
+							"end": "(?=^\\s*(\\d\\d\\d|TESTDIR|JSIGHT|INFO|SERVER|MACRO|PASTE|INCLUDE|DIR|TAG|TYPE|ENUM|URL|GET|POST|PUT|PATCH|DELETE|BaseUrl|Title|Version|Description|Request|Headers|Query|Path|Body|Tags|Protocol|Method|Params|Result)\\b)",
 							"contentName": "debug.HeadersOrPath.body",
 							"patterns": [
 								{
@@ -453,11 +606,11 @@
 							"name": "constant.language.jsight.parameter.query.format"
 						}
 					},
-					"end": "(?=^\\s*(\\d\\d\\d|TESTDIR|JSIGHT|INFO|SERVER|MACRO|PASTE|INCLUDE|DIR|TAG|TYPE|ENUM|URL|GET|POST|PUT|PATCH|DELETE|Description|Request|Headers|Query|Path|Body)\\b)",
+					"end": "(?=^\\s*(\\d\\d\\d|TESTDIR|JSIGHT|INFO|SERVER|MACRO|PASTE|INCLUDE|DIR|TAG|TYPE|ENUM|URL|GET|POST|PUT|PATCH|DELETE|BaseUrl|Title|Version|Description|Request|Headers|Query|Path|Body|Tags|Protocol|Method|Params|Result)\\b)",
 					"patterns": [
 						{
 							"begin": "(?=^\\s*(@[a-zA-Z_][a-zA-Z_0-9]*|\\{|\\[|\"))",
-							"end": "(?=^\\s*(\\d\\d\\d|TESTDIR|JSIGHT|INFO|SERVER|MACRO|PASTE|INCLUDE|DIR|TAG|TYPE|ENUM|URL|GET|POST|PUT|PATCH|DELETE|Description|Request|Headers|Query|Path|Body)\\b)",
+							"end": "(?=^\\s*(\\d\\d\\d|TESTDIR|JSIGHT|INFO|SERVER|MACRO|PASTE|INCLUDE|DIR|TAG|TYPE|ENUM|URL|GET|POST|PUT|PATCH|DELETE|BaseUrl|Title|Version|Description|Request|Headers|Query|Path|Body|Tags|Protocol|Method|Params|Result)\\b)",
 							"contentName": "debug.Query.body",
 							"patterns": [
 								{
@@ -477,7 +630,7 @@
 				{
 					"comment": "Responses-jsight. MATCHING before three-digit response code keyword (with jsight notation param or no params) to deal with everything inside patterns. Ending right before any directive except response.",
 					"begin": "(?=^\\s*(\\d\\d\\d)\\s*)",
-					"end": "(?=^\\s*(TESTDIR|JSIGHT|INFO|SERVER|MACRO|PASTE|INCLUDE|DIR|TAG|TYPE|ENUM|URL|GET|POST|PUT|PATCH|DELETE|Description|Request|Headers|Query|Path|Body)\\b)",
+					"end": "(?=^\\s*(TESTDIR|JSIGHT|INFO|SERVER|MACRO|PASTE|INCLUDE|DIR|TAG|TYPE|ENUM|URL|GET|POST|PUT|PATCH|DELETE|BaseUrl|Title|Version|Description|Request|Headers|Query|Path|Body|Tags|Protocol|Method|Params|Result)\\b)",
 					"patterns": [
 						{
 							"comment": "Responses-regex. MATCHING three-digit code keyword with regex notation. Ending with regex string. Allowing annotations and comments in between.",
@@ -503,7 +656,7 @@
 							]
 						},
 						{
-							"comment": "Responses-usertype. MATCHING before three-digit response code keyword (with user type link) to deal with everything inside patterns. Ending right before any directive except response.",
+							"comment": "Responses-usertype. MATCHING three-digit response code keyword (with user type link) to deal with everything inside patterns. Ending right before any directive except response.",
 							"match": "^\\s*(\\d\\d\\d)\\s*(@[a-zA-Z_][a-zA-Z_0-9]*|\\[@[a-zA-Z_][a-zA-Z_0-9]*\\])\\s*",
 							"captures": {
 								"1": {
@@ -555,7 +708,7 @@
 						{
 							"comment": "PASSING jschema body to jschema highlighter",
 							"begin": "(?=\\s*(@[a-zA-Z_][a-zA-Z_0-9]*|\\{|\\[|true|false|null|\".*\"))",
-							"end": "(?=^\\s*(\\d\\d\\d|TESTDIR|JSIGHT|INFO|SERVER|MACRO|PASTE|INCLUDE|DIR|TAG|TYPE|ENUM|URL|GET|POST|PUT|PATCH|DELETE|Description|Request|Headers|Query|Path|Body)\\b)",
+							"end": "(?=^\\s*(\\d\\d\\d|TESTDIR|JSIGHT|INFO|SERVER|MACRO|PASTE|INCLUDE|DIR|TAG|TYPE|ENUM|URL|GET|POST|PUT|PATCH|DELETE|BaseUrl|Title|Version|Description|Request|Headers|Query|Path|Body|Tags|Protocol|Method|Params|Result)\\b)",
 							"patterns": [
 								{
 									"include": "source.jschema"
@@ -572,7 +725,7 @@
 				{
 					"comment": "Request. MATCHING before «Request» keyword to deal with everything inside patterns. Ending right before any directive except «Request» (no problems since Requests cannot be chained)",
 					"begin": "(?=^\\s*(Request)\\s*)",
-					"end": "(?=^\\s*(TESTDIR|JSIGHT|INFO|SERVER|MACRO|PASTE|INCLUDE|DIR|TAG|TYPE|ENUM|URL|GET|POST|PUT|PATCH|DELETE|Description|Headers|Query|Path|Body)\\b)",
+					"end": "(?=^\\s*(TESTDIR|JSIGHT|INFO|SERVER|MACRO|PASTE|INCLUDE|DIR|TAG|TYPE|ENUM|URL|GET|POST|PUT|PATCH|DELETE|BaseUrl|Title|Version|Description|Headers|Query|Path|Body|Tags|Protocol|Method|Params|Result)\\b)",
 					"contentName": "debug.directive.Request.whole",
 					"patterns": [
 						{
@@ -623,7 +776,7 @@
 							}
 						},
 						{
-							"comment": "END with in literal OR before jschema open OR before supported inner directive",
+							"comment": "Request with jsight.",
 							"begin": "(Request)\\s*(jsight)?\\s*",
 							"beginCaptures": {
 								"1": {
@@ -662,7 +815,7 @@
 				{
 					"comment": "MATCHING before «Body» keyword to deal with everything inside patterns. Ending right before any directive except «Body» (no problems since Body cannot be chained)",
 					"begin": "(?=^\\s*(Body)\\s*)",
-					"end": "(?=^\\s*(TESTDIR|JSIGHT|INFO|SERVER|MACRO|PASTE|INCLUDE|DIR|TAG|TYPE|ENUM|URL|GET|POST|PUT|PATCH|DELETE|Description|Request|Headers|Query|Path)\\b)",
+					"end": "(?=^\\s*(TESTDIR|JSIGHT|INFO|SERVER|MACRO|PASTE|INCLUDE|DIR|TAG|TYPE|ENUM|URL|GET|POST|PUT|PATCH|DELETE|BaseUrl|Title|Version|Description|Request|Headers|Query|Path|Tags|Protocol|Method|Params|Result)\\b)",
 					"contentName": "debug.directive.Body.whole",
 					"patterns": [
 						{
@@ -765,7 +918,7 @@
 			"patterns": [
 				{
 					"begin": "(?=^\\s*(@[a-zA-Z_][a-zA-Z_0-9]*|\\{|\\[|true|false|null|\".*\"))",
-					"end": "(?=^\\s*(\\d\\d\\d|Request|TESTDIR|JSIGHT|INFO|SERVER|MACRO|PASTE|INCLUDE|DIR|TAG|TYPE|ENUM|URL|GET|POST|PUT|PATCH|DELETE|Description|Headers|Query|Path)\\b)",
+					"end": "(?=^\\s*(\\d\\d\\d|TESTDIR|JSIGHT|INFO|SERVER|MACRO|PASTE|INCLUDE|DIR|TAG|TYPE|ENUM|URL|GET|POST|PUT|PATCH|DELETE|BaseUrl|Title|Version|Description|Request|Headers|Query|Path|Body|Tags|Protocol|Method|Params|Result)\\b)",
 					"patterns": [
 						{
 							"include": "source.jschema"

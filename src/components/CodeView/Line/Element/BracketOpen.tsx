@@ -2,14 +2,14 @@ import React, {useMemo, useRef, useState} from 'react';
 import {PropName} from './PropName';
 import clsx from 'clsx';
 import {get} from 'lodash';
-import {RulesType} from 'types/exchange';
 import {bracePairs} from 'utils/bracePairs';
 import {useSelectionLine} from '../../hooks/useSelectionLine';
 import {ObjectContext} from '../../store/ObjectContext';
+import {RuleType} from 'types';
 
 interface RulesRenderArgs {
   propName?: string;
-  rules?: RulesType;
+  rules: RuleType[];
   tab: number;
   numberLine: string;
 }
@@ -18,7 +18,7 @@ interface BracketOpenProps {
   tab: number;
   bracket: string;
   propName?: string;
-  rules?: RulesType;
+  rules: RuleType[];
   rulesRender?: (args: RulesRenderArgs) => JSX.Element;
   numberLine: string;
   parentNumber?: string;

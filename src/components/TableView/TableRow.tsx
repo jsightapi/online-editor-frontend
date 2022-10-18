@@ -1,30 +1,26 @@
-import React from 'react';
-import {SchemaJSightContentType} from 'types/exchange';
+import React, {useMemo} from 'react';
+import {JsightSchemaElement} from 'types/exchange';
 import {DetailCard} from 'components/CodeView/DetailCard';
 
-interface TablePlainRowProps {
+interface TableRowProps {
   keyValue: string;
-  property: SchemaJSightContentType;
+  property: JsightSchemaElement;
   level: number;
   isNestedChild: boolean;
-  isLastItem: boolean;
-  parentJsonType: any;
-  rootIsEmptyArray: boolean;
+  isArrayLastItem?: boolean;
 }
 
-export const PlainRow = ({
+export const TableRow = ({
   keyValue,
   property,
   level,
-  isNestedChild,
-  parentJsonType,
-  isLastItem,
-  rootIsEmptyArray,
-}: TablePlainRowProps) => {
-  const leftOffset = level > 1 ? `${level * 20}px` : '0px';
-  const isParentArray = parentJsonType === 'array';
-  const isPropertyShortcut = property?.jsonType === 'shortcut';
-  const isArrayLastItem = isParentArray && isLastItem && !rootIsEmptyArray;
+  isNestedChild, // nested row
+  isArrayLastItem,
+}: TableRowProps) => {
+  const leftOffset = useMemo(() => (level > 1 ? `${level * 20}px` : '0'), [level]);
+  const isPropertyShortcut = property?.tokenType === 'reference';
+  // const isParentArray = parentJsonType === 'array';
+  // const isArrayLastItem = isParentArray && isLastItem && !rootIsEmptyArray;
 
   return (
     <>
@@ -34,7 +30,7 @@ export const PlainRow = ({
           <div className="param-key">
             {isArrayLastItem ? (
               <span className="d-flex">
-                <span>{keyValue}-</span>
+                <span>{keyValue}&ndash;</span>
                 <span className="param-key-symbol">&infin;</span>
               </span>
             ) : (

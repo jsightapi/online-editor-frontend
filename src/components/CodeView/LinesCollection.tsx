@@ -1,12 +1,11 @@
 import React from 'react';
-import {SchemaJSightContentType} from 'types/exchange';
-import {map} from 'lodash';
+import {JsightSchemaElement} from 'types/exchange';
 import {BracketOpen, BracketClose, ShortcutType, ScalarType} from './Line';
 import {Rules} from 'components/CodeView/Line/Rules';
 import './Line.styles.scss';
 
 interface JSightContentProps {
-  content: SchemaJSightContentType;
+  content: JsightSchemaElement;
   tab: number; // right indent
   propName?: string; // property name
   propType?: string; // property type
@@ -36,8 +35,8 @@ export const LinesCollection: (params: JSightContentProps) => JSX.Element[] = ({
 }) => {
   let lines: JSX.Element[] = [];
 
-  if (content.jsonType === 'object') {
-    const propertiesLength = Object.keys(content.properties || {}).length;
+  if (content.tokenType === 'object') {
+    const propertiesLength = (content.children || []).length;
     const bracketOpenNumberLine = `${parentNumber ? `${parentNumber}-` : ''}${
       lines.length + currentLine + 1
     }`;
@@ -50,17 +49,17 @@ export const LinesCollection: (params: JSightContentProps) => JSX.Element[] = ({
           key={`line-${lines.length + currentLine + 1}`}
           bracket="{"
           propName={propName}
-          isKeyShortcut={content.isKeyShortcut}
+          isKeyShortcut={content.isKeyUserTypeRef}
           numberLine={bracketOpenNumberLine}
           tab={tab}
-          rules={content.rules}
+          rules={content.rules || []}
           optional={content.optional}
-          notes={content.note}
+          notes={content.note as string}
           rulesRender={(args) => (
             <Rules
               schemaName={schemasNames.slice(-1).pop()}
-              note={content.note}
-              propType={propType}
+              note={content.note as string}
+              propType={'object'}
               level={level}
               content={content}
               {...args}
@@ -70,19 +69,17 @@ export const LinesCollection: (params: JSightContentProps) => JSX.Element[] = ({
       );
     }
 
-    if (content.properties) {
-      // first go through ingerited poperties
-      map(content.properties, (value, key) => {
-        return {...value, key};
-      })
+    if (content.children && propertiesLength) {
+      // first go through inherited properties
+      content.children
         .sort((a, b) => Number(!!b.inheritedFrom) - Number(!!a.inheritedFrom))
         .forEach((value, index) => {
           const linesCollection = LinesCollection({
-            content: value as SchemaJSightContentType,
+            content: value as JsightSchemaElement,
             propName: value.key,
             propType: value.type,
             currentLine: lines.length + currentLine,
-            isLastLine: index + 1 === Object.keys(content.properties || {}).length,
+            isLastLine: index + 1 === content.children?.length,
             schemasNames,
             tab: tab + 2,
             parentNumber,
@@ -102,8 +99,8 @@ export const LinesCollection: (params: JSightContentProps) => JSX.Element[] = ({
         />
       );
     }
-  } else if (content.jsonType === 'array') {
-    const itemsLength = content.items?.length;
+  } else if (content.tokenType === 'array') {
+    const itemsLength = content.children?.length;
 
     lines.push(
       <BracketOpen
@@ -113,15 +110,15 @@ export const LinesCollection: (params: JSightContentProps) => JSX.Element[] = ({
         key={`line-${lines.length + currentLine + 1}`}
         propName={propName}
         tab={tab}
-        rules={content.rules}
+        rules={content.rules || []}
         optional={content.optional}
-        notes={content.note}
+        notes={content.note as string}
         numberLine={`${parentNumber ? `${parentNumber}-` : ''}${lines.length + currentLine + 1}`}
         rulesRender={(args) => (
           <Rules
-            propType={propType}
+            propType={'array'}
             schemaName={schemasNames.slice(-1).pop()}
-            note={content.note}
+            note={content.note as string}
             level={level}
             parentNumber={parentNumber}
             content={content}
@@ -131,13 +128,13 @@ export const LinesCollection: (params: JSightContentProps) => JSX.Element[] = ({
       />
     );
 
-    if (content.items) {
-      content.items.forEach((item, index) => {
+    if (content.children) {
+      content.children.forEach((item, index) => {
         const contentLines = LinesCollection({
           content: item,
           tab: tab + 2,
           currentLine: lines.length + currentLine,
-          isLastLine: index + 1 === content.items?.length,
+          isLastLine: index + 1 === itemsLength,
           propType: item.type,
           schemasNames,
           parentNumber,
@@ -156,7 +153,7 @@ export const LinesCollection: (params: JSightContentProps) => JSX.Element[] = ({
         />
       );
     }
-  } else if (content.jsonType === 'shortcut') {
+  } else if (content.tokenType === 'reference') {
     lines.push(
       <ShortcutType
         key={`line-${lines.length + currentLine + 1}`}
@@ -172,15 +169,21 @@ export const LinesCollection: (params: JSightContentProps) => JSX.Element[] = ({
         itemIndex={itemIndex}
       />
     );
-  } else if (content.jsonType === 'annotation') {
+  } else if (content.tokenType === 'annotation') {
     lines.push(
       <span key={`line-${lines.length + currentLine + 1}`} className="code-line">
         <span className="number" />
         <span>{' '.repeat(tab)}</span>
-        <span className="comment">{`// ${content.note}`}</span>
+        {content.note && (
+          <span className="comment">{`// ${
+            typeof content.note === 'string'
+              ? content.note.replace(/(\r\n|\n|\r)/gm, '').trim()
+              : content.note
+          }`}</span>
+        )}
       </span>
     );
-  } else if (['number', 'string', 'boolean', 'null'].includes(content.jsonType)) {
+  } else if (['number', 'string', 'boolean', 'null'].includes(content.tokenType)) {
     lines.push(
       <ScalarType
         level={level}

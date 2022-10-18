@@ -1,7 +1,7 @@
 @import 'src/styles/variables';
 
 .server-info {
-  margin-top: 3.2rem;
+  margin-top: 2rem;
 
   .before {
     color: $main-grey;
@@ -32,7 +32,6 @@
     width: 100%;
     div {
       display: flex;
-      align-items: center;
     }
   }
 

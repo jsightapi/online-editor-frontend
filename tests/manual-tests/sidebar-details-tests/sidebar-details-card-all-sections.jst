@@ -1,0 +1,40 @@
+JSIGHT 0.3
+
+INFO
+  Title "Check details cards in different sections"
+  Description
+  (
+    Check, that you can open details card in all types of sections.
+  )
+
+URL /http
+  POST
+    Request
+    {
+      "open details card": "open", // Check this details card.
+      "check details card in the type": @type
+    }
+    200
+    {
+      "open details card": "open", // {optional: true} - Check this details card.
+      "check details card in the type": @type
+    }
+
+URL /rpc
+  Protocol json-rpc-2.0
+  Method method
+    Params
+    {
+      "open details card": "open", // {minLength: 1, maxLength: 100}
+      "check details card in the type": @type
+    }
+    Result
+    {
+      "open details card": "open", // Check this details card.
+      "check details card in the type": @type
+    }
+
+TYPE @type
+{
+  "open details card": "open" // {minLength: 1, maxLength: 100}
+}

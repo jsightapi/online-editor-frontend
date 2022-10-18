@@ -14,7 +14,7 @@ interface FileMenuProps extends FileMenuItemsProps {
 }
 
 const FileMenuItems = ({setIsMenuOpened, setExampleMenuPopup}: FileMenuItemsProps) => (
-  <ul className="menu-items">
+  <ul className="dropdown-items">
     <li
       onClick={() => {
         setIsMenuOpened(false);
@@ -38,6 +38,14 @@ const FileMenuItems = ({setIsMenuOpened, setExampleMenuPopup}: FileMenuItemsProp
       }}
     >
       Reset example "Pigs"
+    </li>
+    <li
+      onClick={() => {
+        setIsMenuOpened(false);
+        setExampleMenuPopup('json-rpc');
+      }}
+    >
+      Reset JSON-RPC example
     </li>
   </ul>
 );

@@ -1,13 +1,12 @@
 import React, {useContext, useMemo} from 'react';
-import {getTreeResources} from 'utils/getResources';
-import {SidebarGroupRoutes} from './SidebarGroupRoutes';
-import {SidebarReusables} from './SidebarReusables';
+import clsx from 'clsx';
 import logo from '../../assets/images/icon-jsight.png';
 import logoWhite from '../../assets/images/icon_jsight_white.png';
-import clsx from 'clsx';
-import {JDocContext, SidebarContext} from 'store';
-import {GlobalSettingsContext} from 'components/Layout';
+import {JDocContext, SidebarContext, GlobalSettingsContext} from 'store';
+
 import './SidebarContent.styles.scss';
+import {SidebarReusables} from 'components/SidebarContent/SidebarReusables';
+import {SidebarRoutes} from 'components/SidebarContent/SidebarRoutes';
 
 const {isExport} = window as any;
 
@@ -20,13 +19,10 @@ interface SidebarContentProps {
 
 export const SidebarContent = ({side, isShowSettings, isShow}: SidebarContentProps) => {
   const {setIsOpen, isOpen} = useContext(GlobalSettingsContext);
-  const jdocData = useContext(JDocContext);
   const {setCurrentDocSidebar} = useContext(SidebarContext);
+  const jdocData = useContext(JDocContext);
 
-  const resources = useMemo(
-    () => (jdocData?.tags ? getTreeResources(jdocData.tags, jdocData?.resourceMethods) : []),
-    [jdocData]
-  );
+  const tags = useMemo(() => jdocData?.tags || {}, [jdocData]);
 
   const toggleShowSettings = () => {
     setIsOpen(!isOpen);
@@ -51,9 +47,6 @@ export const SidebarContent = ({side, isShowSettings, isShow}: SidebarContentPro
           <div className="flex-auto">
             <i className="icon-menu" /> <h2>Contents</h2>
           </div>
-          {/*<a href="#">*/}
-          {/*  <i className="icon-arrow-left" />*/}
-          {/*</a>*/}
           {!(side === 'left' || isExport) && (
             <button onClick={() => setCurrentDocSidebar(null)}>
               <i className="icon-close" />
@@ -62,11 +55,7 @@ export const SidebarContent = ({side, isShowSettings, isShow}: SidebarContentPro
         </div>
         <div className="sidebar-items">
           <h3>Resources</h3>
-          <ul>
-            {resources.map((item, index) => (
-              <SidebarGroupRoutes key={`${index}-${item.title}`} item={item} index={index} />
-            ))}
-          </ul>
+          <SidebarRoutes tags={tags} />
         </div>
         {(jdocData?.userTypes || jdocData?.userEnums) && (
           <div className="sidebar-items">

@@ -31,7 +31,7 @@ export const createNewState = (content: string) => {
     },
   };
 
-  return runRequest<CodeSharingParamsType>(`${cloudUrl}/item`, {body: JSON.stringify(item)}, 7000);
+  return runRequest<CodeSharingParamsType>(`${cloudUrl}/item`, {body: JSON.stringify(item)}, 5000);
 };
 
 export const updateState = (code: string, content: string) => {
@@ -46,7 +46,7 @@ export const updateState = (code: string, content: string) => {
   return runRequest<CodeSharingParamsType>(
     `${cloudUrl}/item/${code}`,
     {body: JSON.stringify(item)},
-    7000
+    5000
   );
 };
 
