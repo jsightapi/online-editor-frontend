@@ -356,8 +356,8 @@ TYPE @testEnums
 
 # Rule `allOf`
 
-TYPE @testSingleAllOfInRoot
-{ // {allOf: "@cat"}
+TYPE @testSingleAllOfInRoot // TODO: add to auto tests
+{ // {allOf: "@allOfBase"}
   "additionalField": 1
 }
 
@@ -376,8 +376,16 @@ TYPE @testAllOfInside
   }
 }
 
-TYPE @testAllOfRedundandComma // Check that there is no redundand comma after last @cat property
-  {} // {allOf: "@cat"}
+TYPE @testAllOfRedundandComma /* Check that there is no redundand comma after last @cat property.
+                                 TODO: add to auto tests. */
+  {} // {allOf: "@allOfBase"}
+
+TYPE @allOfBase // Skip this type
+{
+  "scalar": "",
+  "array": [],
+  "object": {}
+}
 
 # Test allOf hierarchy
 

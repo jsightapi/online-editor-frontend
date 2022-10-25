@@ -28,13 +28,14 @@
 
 # Give us a star popup panel
 
-1. Check the github link.
+1. Check the github link (must be opened in the new tab).
 2. Close the popup.
 3. Refresh the page, check that now it is closed permanently.
 
 # Logo
 
-1. Check that "Powered by JSight" panel click directs to https://jsight.io/.
+1. Check that "Powered by JSight" panel click directs to https://jsight.io/ (must be opened in the
+   new tab).
 
 # Code Editor and Preview
 
@@ -49,10 +50,6 @@
 ### Check smooth scroll up and down
 
 ### Check scroll up and down using Pg Up, Pg Down, Cursor Down Arrow, Cursor Up Arrow
-
-### Check support window
-
-1. Open some item in contents sidebar. Check support window then (Ask a question, report a bug).
 
 ### Schema section must remember its state
 

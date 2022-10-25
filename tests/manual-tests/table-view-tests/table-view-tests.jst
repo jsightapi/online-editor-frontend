@@ -81,6 +81,15 @@ POST /types/testRuleTypeIsOmmitedScalar2 // Check that there is no rule `type` i
   Query
     "some string" /* {type: "string"} - Must be no rules below. */
 
+# enum
+
+POST /enum/expand-all // Check, that the enum "Expand All" buttons work independently.
+  Query
+    {
+      "enum1": 1, // {type: "enum", enum: [1, 2, 3, 4, 5, 6, 7, 8, 9]}
+      "enum2": 2  // {type: "enum", enum: [1, 2, 3, 4, 5, 6, 7, 8, 9]}
+    }
+
 # SCALARS IN THE ROOT
 
 POST /scalar/string
@@ -159,6 +168,39 @@ POST /array/everything
         "string" // String
       ]
     ]
+
+GET /array/last-item-scalar
+  Query
+    [
+      "string1",
+      "string2"  // Check `1–∞` in the index.
+    ]
+
+GET /array/last-item-array
+  Query
+    [
+      "string1", 
+      [ // Check `1–∞` in the index.
+        "string2" // Check `0–∞` in the index.
+      ]
+    ]
+
+GET /array/last-item-object
+  Query
+    [
+      "string1",
+      { // Check `1–∞` in the index.
+        "key": "string2" 
+      }
+    ]
+
+GET /array/last-item-reference
+  Query
+    [
+      "string1",
+      @cat // Check `1–∞` in the index.
+    ]
+
 
 # OBJECT in the root
 
