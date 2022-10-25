@@ -86,9 +86,7 @@ export const DetailCard = ({
 
   const renderBody = (rules?: RuleType[]): JSX.Element => {
     let index = 0;
-    const rulesKeys = Object.keys(rules || []);
-    const rulesLength =
-      rulesKeys.includes('type') && isTableView ? rulesKeys.length - 1 : rulesKeys.length;
+    const rulesLength = rules?.filter((rule) => !(isTableView && rule.key == 'type')).length || 0;
 
     return (
       <pre className="body">

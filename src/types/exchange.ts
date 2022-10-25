@@ -18,7 +18,7 @@ export type ruleNameType =
   | 'precision'
   | 'minLength'
   | 'maxLength'
-  | 'regexp'
+  | 'regex'
   | 'minItems'
   | 'maxItems'
   | 'or'

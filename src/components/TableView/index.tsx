@@ -30,14 +30,7 @@ export const TableView = ({keyBlock, schema, format, block}: TableViewProps) => 
             tokenType: 'string',
             type: 'string',
             optional: false,
-            rules: [{key: 'regexp', tokenType: 'string', scalarValue: schema?.content as string}],
-            note: (
-              <span className="detail-code-line code-font">
-                <span className="name">{schema?.notation}</span>
-                <span className="punctuation-char">{`:\u00A0`}</span>
-                <span className="value">{schema?.content}</span>
-              </span>
-            ),
+            rules: [{key: 'regex', tokenType: 'string', scalarValue: schema?.content as string}],
           }}
         />
       );
@@ -52,7 +45,7 @@ export const TableView = ({keyBlock, schema, format, block}: TableViewProps) => 
         <tr>
           <th>Key / Index</th>
           <th>Type</th>
-          <th>Example</th>
+          <th>Description</th>
           <th>
             <ControlElements keyBlock={keyBlock} initType={'table'} ableChangeView={true} />
           </th>

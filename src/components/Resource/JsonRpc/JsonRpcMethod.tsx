@@ -1,5 +1,6 @@
 import React from 'react';
 import './JsonRpcMethod.styles.scss';
+import {Description} from 'components/Description';
 
 interface JsonRpcMethodProps {
   method: string;
@@ -17,7 +18,7 @@ export const JsonRpcMethod = ({method, description, annotation}: JsonRpcMethodPr
           {annotation && <div className="method-annotation">{annotation}</div>}
         </div>
       </div>
-      {description && <div className="description">{description}</div>}
+      {description && <Description markdown={description} />}
     </div>
   );
 };
