@@ -79,10 +79,10 @@ export const CustomMessage: FC<CustmomMessageProps> = ({customMessageUrl}) => {
         <div className="content" dangerouslySetInnerHTML={{__html: message.content}} />
         <div className="footer">
           <button className="close-forever" onClick={onCloseForever}>
-            Close forever
+            Close Forever
           </button>
           <button className="close-show-later" onClick={closeModal}>
-            Later...
+            Show Later
           </button>
         </div>
       </div>
