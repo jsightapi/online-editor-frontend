@@ -11,6 +11,7 @@ export const CookieExceptShown: FC<CookieExceptShownProps> = ({onAccept}) => {
 
   const onCookieReject = () => setIsModalOpen(false);
 
+  // eslint-disable-next-line
   const goToCookiesPolicy = (e: React.MouseEvent<HTMLElement>) => {
     e.preventDefault();
     /** TODO implement this method later (when the cookie policy window will be ready)*/
