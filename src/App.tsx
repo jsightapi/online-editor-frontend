@@ -13,8 +13,8 @@ import './styles/globals.scss';
 import {HashRouterParams} from 'types';
 import {SharingContext} from 'store/SharingStore';
 import {CookieExceptShown} from 'components/Modals/CookieExceptShown';
-import './components/Modals/style.scss';
 import {CustomMessage} from 'components/Modals/CustomMessage';
+import './components/Modals/style.scss';
 
 const {isExport} = window as any;
 
