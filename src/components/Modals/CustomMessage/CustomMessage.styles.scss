@@ -1,19 +1,7 @@
 @import 'src/styles/variables';
 
 .custom-message-modal {
-  padding: 28px 32px;
-
   .custom-message {
-    .header {
-      justify-content: flex-end;
-
-      .btn-close i {
-        font-size: 2rem;
-        color: $main-purple;
-        opacity: 0.35;
-      }
-    }
-
     .content {
       padding: 1.7rem 0;
     }

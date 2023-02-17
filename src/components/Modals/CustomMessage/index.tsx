@@ -67,15 +67,11 @@ export const CustomMessage: FC<CustmomMessageProps> = ({customMessageUrl}) => {
           width: message?.width ? `${message.width}px` : 'auto',
           minWidth: message?.width ? 'unset' : '680px',
           maxWidth: message?.width ? 'unset' : '90vw',
+          padding: '25px 32px 42px',
         },
       }}
     >
       <div className="custom-message">
-        <div className="d-flex header">
-          <button onClick={closeModal} className="btn-close">
-            <i className="icon-close" />
-          </button>
-        </div>
         <div className="content" dangerouslySetInnerHTML={{__html: message.content}} />
         <div className="footer">
           <button className="close-forever" onClick={onCloseForever}>
