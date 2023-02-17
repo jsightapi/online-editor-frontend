@@ -1,4 +1,4 @@
-import React, {Suspense} from 'react';
+import React, {Suspense, useState} from 'react';
 import {
   Switch,
   BrowserRouter as Router,
@@ -13,9 +13,12 @@ import './styles/globals.scss';
 import {HashRouterParams} from 'types';
 import {SharingContext} from 'store/SharingStore';
 import {CookieExceptShown} from 'components/Modals/CookieExceptShown';
+import {CustomMessage} from 'components/Modals/CustomMessage';
 import './components/Modals/style.scss';
 
 const {isExport} = window as any;
+
+const customMessageUrl = process.env.REACT_APP_CUSTOM_MESSAGE_URL;
 
 const isCookieExceptModalOpen = !Boolean(localStorage.getItem('isCookieExceptShown'));
 
@@ -42,10 +45,21 @@ const EditorWithPathScreen = () => {
 };
 
 const App = () => {
+  const [cookieModalOpened, setCookieModalOpened] = useState(isCookieExceptModalOpen);
+
+  const onCloseCookieModal = () => {
+    setCookieModalOpened(false);
+    onCookieExceptClose();
+  };
+
   return (
     <Router>
       <Suspense fallback={<div>Loading...</div>}>
-        {isCookieExceptModalOpen && <CookieExceptShown onAccept={onCookieExceptClose} />}
+        {cookieModalOpened ? (
+          <CookieExceptShown onAccept={onCloseCookieModal} />
+        ) : (
+          customMessageUrl && <CustomMessage customMessageUrl={customMessageUrl} />
+        )}
         <Switch>
           <Route path="/" exact component={EditorWithPathScreen} />
           <Route path="/r/:key/:version?" exact component={EditorWithPathScreen} />
