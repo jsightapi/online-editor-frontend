@@ -1,4 +1,4 @@
-import React, {Suspense} from 'react';
+import React, {Suspense, useState} from 'react';
 import {
   Switch,
   BrowserRouter as Router,
@@ -45,13 +45,21 @@ const EditorWithPathScreen = () => {
 };
 
 const App = () => {
-  console.log(customMessageUrl);
+  const [cookieModalOpened, setCookieModalOpened] = useState(isCookieExceptModalOpen);
+
+  const onCloseCookieModal = () => {
+    setCookieModalOpened(false);
+    onCookieExceptClose();
+  };
 
   return (
     <Router>
       <Suspense fallback={<div>Loading...</div>}>
-        {isCookieExceptModalOpen && <CookieExceptShown onAccept={onCookieExceptClose} />}
-        {customMessageUrl && <CustomMessage customMessageUrl={customMessageUrl} />}
+        {cookieModalOpened ? (
+          <CookieExceptShown onAccept={onCloseCookieModal} />
+        ) : (
+          customMessageUrl && <CustomMessage customMessageUrl={customMessageUrl} />
+        )}
         <Switch>
           <Route path="/" exact component={EditorWithPathScreen} />
           <Route path="/r/:key/:version?" exact component={EditorWithPathScreen} />
