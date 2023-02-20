@@ -1,5 +1,7 @@
 import {FC, useEffect, useState} from 'react';
 import Modal from 'react-modal';
+import {Button} from 'components/Button';
+
 import './CustomMessage.styles.scss';
 
 interface CustmomMessageProps {
@@ -74,12 +76,12 @@ export const CustomMessage: FC<CustmomMessageProps> = ({customMessageUrl}) => {
       <div className="custom-message">
         <div className="content" dangerouslySetInnerHTML={{__html: message.content}} />
         <div className="footer">
-          <button className="close-forever" onClick={onCloseForever}>
+          <Button className="button close-forever" onClick={onCloseForever}>
             Close Forever
-          </button>
-          <button className="close-show-later" onClick={closeModal}>
+          </Button>
+          <Button className="button close-show-later" onClick={closeModal}>
             Show Later
-          </button>
+          </Button>
         </div>
       </div>
     </Modal>
