@@ -3,13 +3,11 @@ import Modal from 'react-modal';
 import './CookieExceptShown.styles.scss';
 
 interface CookieExceptShownProps {
-  onAccept: () => void;
+  onClose: () => void;
 }
 
-export const CookieExceptShown: FC<CookieExceptShownProps> = ({onAccept}) => {
+export const CookieExceptShown: FC<CookieExceptShownProps> = ({onClose}) => {
   const [isModalOpen, setIsModalOpen] = useState<boolean>(true);
-
-  const onCookieReject = () => setIsModalOpen(false);
 
   // eslint-disable-next-line
   const goToCookiesPolicy = (e: React.MouseEvent<HTMLElement>) => {
@@ -18,8 +16,13 @@ export const CookieExceptShown: FC<CookieExceptShownProps> = ({onAccept}) => {
   };
 
   const onCookiePolicyAccept = () => {
-    onAccept();
     setIsModalOpen(false);
+    onClose();
+  };
+
+  const onCookiePolicyReject = () => {
+    setIsModalOpen(false);
+    onClose();
   };
 
   return (
@@ -33,7 +36,7 @@ export const CookieExceptShown: FC<CookieExceptShownProps> = ({onAccept}) => {
       <div className="cookie-except">
         <div className="d-flex header">
           <div className="title">🍪 Cookie Consent</div>
-          <button onClick={onCookieReject} className="btn-close">
+          <button onClick={onCookiePolicyReject} className="btn-close">
             <i className="icon-close" />
           </button>
         </div>
