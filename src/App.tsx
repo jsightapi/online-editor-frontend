@@ -56,7 +56,7 @@ const App = () => {
     <Router>
       <Suspense fallback={<div>Loading...</div>}>
         {cookieModalOpened ? (
-          <CookieExceptShown onAccept={onCloseCookieModal} />
+          <CookieExceptShown onClose={onCloseCookieModal} />
         ) : (
           customMessageUrl && <CustomMessage customMessageUrl={customMessageUrl} />
         )}
