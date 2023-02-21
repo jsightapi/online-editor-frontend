@@ -3,9 +3,11 @@ FROM node:14-alpine as builder
 ARG API_URL="/parse-jsight"
 ARG GTM_ID=""
 ARG CLOUD_URL="https://cloud.jsight.io"
+ARG CUSTOM_MESSAGE_URL="https://jsightapi.github.io/online-editor-custom-messages.json"
 ENV REACT_APP_API_URL=$API_URL
 ENV REACT_APP_GTM_ID=$GTM_ID
 ENV REACT_APP_CLOUD_URL=$CLOUD_URL
+ENV REACT_APP_CUSTOM_MESSAGE_URL=$CUSTOM_MESSAGE_URL
 RUN npm i -g npm@8
 # Set working directory
 WORKDIR /app

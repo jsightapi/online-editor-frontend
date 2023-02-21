@@ -73,7 +73,7 @@ export const HttpResource = ({interactions, resourceKey, index, path}: HttpResou
               {item.description && <Description markdown={item.description} />}
             </div>
           )}
-          {tabs && ( item.annotation || item.description ) && (
+          {tabs && (item.annotation || item.description) && (
             <div className="http-method-annotation-description">
               {item.annotation && <h4 className="method-annotation">{item.annotation}</h4>}
               {item.description && <Description markdown={item.description} />}

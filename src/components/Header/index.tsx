@@ -60,6 +60,17 @@ export const Header = ({
             <DocsMenu isMenuOpened={docsMenuVisible} setIsMenuOpened={setDocsMenuVisible} />
           </li>
           <li className="item">
+            <button>
+              <a
+                href="https://jsight.io/products/jsight-validator/"
+                target="_blank"
+                rel="noreferrer noopener"
+              >
+                Message validator
+              </a>
+            </button>
+          </li>
+          <li className="item">
             <button onClick={() => setContactModalVisible(true)}>Ask a question</button>
           </li>
         </ul>

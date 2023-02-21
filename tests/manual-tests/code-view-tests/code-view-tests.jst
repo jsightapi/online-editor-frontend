@@ -3,11 +3,11 @@ JSIGHT 0.3
 # Test
 TYPE @testSectionButtonsZIndex /* 1) Open a details card.
                                   2) Press menu button.
-                                  3) Check that menu panel 
-                                     is not hiding under 
+                                  3) Check that menu panel
+                                     is not hiding under
                                      the details card. */
   12 // {min: 1, max: 100}
-  
+
 # Test long one-line schemas
 TYPE @testOneLineLongSchema // Test that it looks normally in code view and does not overlap notation label.
   "veryLongSchemaJustExtremelyLongveryLongSchemaJustExtremelyLongveryLongSchemaJustExtremelyLongveryLongSchemaJustExtremelyLong" // {type: "string"}
@@ -16,7 +16,7 @@ TYPE @testOneLineLongSchema // Test that it looks normally in code view and does
 
 TYPE @testStandardTypesByExample // Correspondence between the JSON and JSight Schema data types
 {
-  "string": "some string and escaped characters \" \\ \/ \b \f \n \r \t \u043f\u0440\u0438\u0432\u0435\u0442",
+  "string": "Some string and escaped characters \" \\ \/ \b \f \n \r \t \u4e16\u754c",
   "integerPositive": 1,
   "integerNegative": -123,
   "integerZero": 0,
@@ -24,8 +24,7 @@ TYPE @testStandardTypesByExample // Correspondence between the JSON and JSight S
   "floatPositive2": 1.23,
   "floatNegative": -1.2,
   "floatZero": 0.0,
-  # "decimalPositive1": 0.12, // {precision : 2} TODO: uncomment after bug fix.
-  "decimalPositive1": 0.12, // {precision: 2}
+  "decimalPositive1": 0.12, // {precision : 2}
   "decimalPositive2": 0.1,  // {precision: 1}
   "decimalNegative": -0.12, // {precision: 2}
   "boolean1": true,
@@ -109,28 +108,28 @@ TYPE @testSingleLineAnnotationInObject
 }
 
 TYPE @testMultiLineAnnotationInRoot
-  22 /* Check 
+  22 /* Check
         annotation.*/
 
 TYPE @testMultiLineAnnotationInArray
-[ /* Check 
+[ /* Check
      annotation 1.*/
-  "item" /* Check 
+  "item" /* Check
     annotation 2. */
 ]
 
 TYPE @testMultiLineAnnotationInObject
-{ /* Check 
+{ /* Check
      annotation 1. */
-  "key": "value" /* Check 
+  "key": "value" /* Check
                     annotation 2. */
 }
 
 TYPE @testOneWordAnnotation // Check absense of "..." panel.
-  "one word" // One  
+  "one word" // One
 
 TYPE @testTwoWordsAnnotation // Check absense of "..." panel.
-  "two words" // Two words  
+  "two words" // Two words
 
 TYPE @testThreeWordsAnnotation // Check absense of "..." panel.
   "three words" // Three words annotation
@@ -181,9 +180,9 @@ TYPE @testRulesInRoot
   true // {const: true, nullable: true} - Annotation.
 
 TYPE @testMultilineRules
-[ /* 
+[ /*
       {minItems: 1,
-       maxItems: 10} 
+       maxItems: 10}
        - Annotation.
   */
   "item", /* {
@@ -305,7 +304,7 @@ TYPE @testRuleOrSimple // Check that it collapses in `Collapse rules` mode.
 TYPE @testRuleOrGroupOfRules // Check that it collapses in `Collapse rules` mode.
 {
   "data": "abc" /* {or: [
-                     {type: "string" , maxLength: 3}, 
+                     {type: "string" , maxLength: 3},
                      {type: "integer", min: 0}
                    ]} */
 }
@@ -321,7 +320,7 @@ TYPE @testRuleOrUserTypes // Check that it is never collapsed in `Collapse rules
 TYPE @testRuleOrMixed // Check that it is never collapsed in `Collapse rules` mode.
 {
   "data": "abc" /* {or: [
-                     "@cat", 
+                     "@cat",
                      {type: "string", maxLength: 3}
                    ]} */
 }
@@ -357,8 +356,8 @@ TYPE @testEnums
 
 # Rule `allOf`
 
-TYPE @testSingleAllOfInRoot
-{ // {allOf: "@cat"}
+TYPE @testSingleAllOfInRoot // TODO: add to auto tests
+{ // {allOf: "@allOfBase"}
   "additionalField": 1
 }
 
@@ -377,8 +376,16 @@ TYPE @testAllOfInside
   }
 }
 
-TYPE @testAllOfRedundandComma // Check that there is no redundand comma after last @cat property
-  {} // {allOf: "@cat"}
+TYPE @testAllOfRedundandComma /* Check that there is no redundand comma after last @cat property.
+                                 TODO: add to auto tests. */
+  {} // {allOf: "@allOfBase"}
+
+TYPE @allOfBase // Skip this type
+{
+  "scalar": "",
+  "array": [],
+  "object": {}
+}
 
 # Test allOf hierarchy
 
@@ -403,7 +410,7 @@ TYPE @testAllOflevels // Test the fields order: 1-1-2-2-3-3.
 # Test multiple allOf order
 
 TYPE @testMultipleAllOfOrder1 // Must be 1-2-3-4.
-{ // {allOf: ["@allOf1", "@allOf2"]} 
+{ // {allOf: ["@allOf1", "@allOf2"]}
 }
 
 TYPE @testMultipleAllOfOrder2 // Must be 3-4-1-2.
@@ -493,7 +500,7 @@ TYPE @testUserTypeReferences
 TYPE @testShortRecursion
 {
   "testShortRecursion": @testShortRecursion, // {optional: true}
-  "testLongRecursion" : @testLongRecursion, 
+  "testLongRecursion" : @testLongRecursion,
   "testBothRecursions": @testShortRecursion | @testLongRecursion
 }
 
@@ -523,10 +530,11 @@ TYPE @testUserTypeReferenceInKeyWithRules
   @dogId: @dog // {optional: true}
 }
 
-TYPE @testPseudoDuplicates // TODO: wait for fix.
+// TODO: add to auto tests
+TYPE @testPseudoDuplicates
 {
-  @dogId  : 1
-  # "@catId": 1  TODO: uncomment when fixed.
+  @dogId  : 1,
+  "@dogId": 2
 }
 
 # Test inline rules / collapse rules
@@ -635,4 +643,4 @@ TYPE @pigId
 TYPE @catList
 [
   @cat
-]  
+]

@@ -1,0 +1,30 @@
+JSIGHT 0.3
+
+INFO
+  Description
+    1. Copy with Ctrl+C the schema under `/test2` request query.
+    2. Paste this schema with Ctrl+V instead of `/test1` request query schema.
+    3. Check, that everything is ok in the Table View.
+    4. Press Ctrl+Z. Check, that everything is ok in the Table View.
+
+POST /test1
+  Query
+  [
+    @cat,
+    @dog
+  ]
+
+POST /test2
+  Query
+  {
+    "cat": [
+      @cat,
+      @dog
+    ]
+  }
+
+TYPE @cat
+{}
+
+TYPE @dog
+{}

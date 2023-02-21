@@ -53,7 +53,7 @@ URL /cats
     200 // Cat’s list.
       Headers
         { # we shouldn't forget to add "additionalProperties: true" to JDoc Exchange Schema
-          "Content-Type": "application/json" // {const: true}
+          "content-type": "application/json" // {const: true}
         }
       Body [@cat]
       
@@ -212,7 +212,7 @@ PATCH /dogs/{id}
   }
   Headers
   { // {allOf: "@standardHeaders"}
-    "Content-type": "application/json"
+    "content-type": "application/json"
   }
 
   200 // Status is successfully changed.
@@ -225,7 +225,7 @@ URL /dogs/{id}
     Request
       Headers 
       {
-        "Content-type": "application/json" // {const: true}
+        "content-type": "application/json" // {const: true}
       }
 
       Body 

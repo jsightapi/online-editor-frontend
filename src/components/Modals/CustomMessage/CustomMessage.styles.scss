@@ -1,0 +1,29 @@
+@import 'src/styles/variables';
+
+.custom-message-modal {
+  .custom-message {
+    .content {
+      padding: 1.7rem 0;
+    }
+
+    .footer {
+      padding-top: 1.7rem;
+      display: flex;
+      justify-content: flex-end;
+
+      button {
+        padding: 1rem 4.6rem;
+        border-radius: 4px;
+        font-size: 1.6rem;
+        line-height: 2.4rem;
+        font-weight: 600;
+        margin-left: 20px;
+        transition: 0.3s background;
+
+        &:hover {
+          background: #f8f8fa;
+        }
+      }
+    }
+  }
+}

@@ -156,8 +156,8 @@
 
   GET /test-query/common 
     Description
-      1. [ ! ] Check QueryExample is shown.
-      2. [ ! ] Check Query section is shown.
+      1. [ ! ] Check **QueryExample** is shown.
+      2. [ ! ] Check **Query** section is shown.
       3. [ ! ] Check `htmlFormEncoded` format is shown.
     Query "fields[field1]=S"
       {
@@ -169,9 +169,9 @@
 
   PUT /test-query/format-htmlFormEncoded
     Description
-      1. [ ! ] Check QueryExample is shown.
-      2. [ ! ] Check Query section is shown.
-      3. [ ! ] Check htmlFormEncoded format is shown.
+      1. [ ! ] Check **QueryExample** is shown.
+      2. [ ! ] Check **Query** section is shown.
+      3. [ ! ] Check `htmlFormEncoded` format is shown.
     Query "page=1" htmlFormEncoded
       {
         "page": 1
@@ -185,7 +185,7 @@
 
   PATCH /test-query/no-example
     Description
-      1. [ ! ] Check that there is no QueryExample section.
+      1. [ ! ] Check that there is **no QueryExample** section.
       2. [ ! ] Check `htmlFormEncoded` format is shown.
 
     Query
@@ -195,7 +195,7 @@
 
   PATCH /test-query/no-example-format-htmlFormEncoded
     Description
-      1. [ ! ] Check that there is no QueryExample section.
+      1. [ ! ] Check that there is **no QueryExample** section.
       2. [ ! ] Check `htmlFormEncoded` format is shown.
     Query htmlFormEncoded
       {
@@ -204,7 +204,7 @@
 
   POST /test-query/no-example-format-noFormat
     Description
-      1. [ ! ] Check that there is no QueryExample section.
+      1. [ ! ] Check that there is **no QueryExample** section.
       2. [ ! ] Check `noFormat` format is shown.
     Query noFormat
       "any" // You can put any string in query.
@@ -238,7 +238,7 @@
       }
 
   GET /test-query/very-long-query-string
-    Query "verylongquery_verylongquery_verylongquery_verylongquery_verylongquery_verylongquery_verylongquery_verylongquery_verylongquery_verylongquery_"
+    Query "verylongquery_verylongquery_verylongquery_verylongquery_verylongquery_verylongquery_verylongquery_verylongquery_verylongquery_verylongquery_verylongquery_verylongquery_verylongquery_verylongquery_verylongquery_verylongquery_verylongquery_verylongquery_verylongquery_verylongquery_"
       "string"
 
   GET /test-query/url-encoded-quirks // TODO: we need create tests of url-encoded problems.    
@@ -267,14 +267,14 @@
   PUT /test-request/type-array-of-regex-type
     Description
       Check:
-      1. [ ! ] The array of `@regexType`.
+      1. [ ! ] `[ @regexType ]`
       2. [ ! ] `jsight • json` label.
     Request [@regexType]
 
   PUT /test-request/type-array-of-jsight-type
     Description
       Check:
-      1. [ ! ] The array of `@cat`.
+      1. [ ! ] `[ @cat ]`
       2. [ ! ] `jsight • json` label.
     Request [@cat]
 
@@ -371,14 +371,14 @@
   PUT /test-response/type-array-jsight-type
     Description
       Check:
-      1. [ ! ] The array of `@cat`.
+      1. [ ! ] `[ @cat ]`
       2. [ ! ] `jsight • json` label.
     201 [@cat]
 
   PUT /test-response/type-array-regex-type
     Description
       Check:
-      1. [ ! ] The array of `@regexType`.
+      1. [ ! ] `[ @regexType ]`
       2. [ ! ] `jsight • json` label.
     202 [@regexType]
 
@@ -404,8 +404,8 @@
 
   POST /test-response/headers-and-body
     Description
-      1. [ ! ] Check `Request headers` section is shown.
-      2. [ ! ] Check `Request body` section is shown.
+      1. [ ! ] Check `Response headers` section is shown.
+      2. [ ! ] Check `Response body` section is shown.
     303
       Headers
         {
@@ -416,7 +416,7 @@
 
   PUT /test-response/body
     Description
-      [ ! ] Check `Request body` section is shown.
+      [ ! ] Check `Response body` section is shown.
     304      
       Body
         {
@@ -510,14 +510,14 @@
 
   PUT /test-body/type-array-jsight
     Description
-      1. [ ! ] Check the array of type `@cat`.
+      1. [ ! ] Check `[ @cat ]`.
       2. [ ! ] Check `jsight • json` label.
     201 
       Body [@cat]
 
   PUT /test-body/type-array-regex
     Description
-      1. [ ! ] Check the array of type `@regexType`.
+      1. [ ! ] Check `[ @regexType ]`.
       2. [ ! ] Check `jsight • json` label.    
     Request
       Body [@regexType]
