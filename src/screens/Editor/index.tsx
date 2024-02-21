@@ -23,6 +23,11 @@ import {ErrorScreen} from 'screens/Error';
 import {SharingForm} from 'components/Modals/SharingForm';
 import 'react-toastify/dist/ReactToastify.css';
 import {AnnouncementBar} from 'components/AnnouncementBar';
+
+import IconOpenAPI from 'assets/images/icons/openapi.svg';
+import IconHTMLDoc from 'assets/images/icons/htmldoc.svg';
+import IconContents from 'assets/images/icons/contents.svg';
+
 import './Editor.styles.scss';
 
 const {isExport} = window as any;
@@ -278,12 +283,28 @@ export const EditorScreen = () => {
               {isEditor && (
                 <div className="side-panel right-side">
                   <div
+                    onClick={() => handleCurrentDocSidebar('openapi')}
+                    className={clsx('side-panel-element', {
+                      active: currentDocSidebar === 'openapi',
+                    })}
+                  >
+                    <img src={IconOpenAPI} /> OpenAPI
+                  </div>
+                  <div
+                    onClick={() => handleCurrentDocSidebar('htmldoc')}
+                    className={clsx('side-panel-element', {
+                      active: currentDocSidebar === 'htmldoc',
+                    })}
+                  >
+                    <img src={IconHTMLDoc} /> HTML Doc
+                  </div>
+                  <div
                     onClick={() => handleCurrentDocSidebar('content')}
                     className={clsx('side-panel-element', {
                       active: currentDocSidebar === 'content',
                     })}
                   >
-                    <i className="icon-list" /> Contents
+                    <img src={IconContents} /> Contents
                   </div>
                 </div>
               )}

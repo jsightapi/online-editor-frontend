@@ -13,14 +13,17 @@
     border-bottom-right-radius: 0;
   }
 
-  .btn+.btn {
+  .btn + .btn {
     margin-left: -1px;
   }
 }
 
 .btn {
-  padding-left: 2.4rem;
-  padding-right: 2.4rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding-left: 1.4rem;
+  padding-right: 1.4rem;
   border-radius: 4px;
   font-weight: 500;
   font-size: 1.4rem;

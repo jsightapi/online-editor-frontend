@@ -7,9 +7,12 @@ import {FileMenu} from './MenuItems/FileMenu';
 import {useExport} from 'hooks/useExport';
 import {editorModeType, ExamplesType} from 'types';
 import {ShareButton} from 'components/ShareButton';
-import './Header.styles.scss';
 import {Example} from '../Modals/Example';
 import Modal from 'react-modal';
+import {Toggle} from 'components/Toggle';
+import {DownloadMenu} from './MenuItems/DownloadMenu';
+
+import './Header.styles.scss';
 
 interface HeaderProps {
   setInitialContent(content: ExamplesType): void;
@@ -28,9 +31,13 @@ export const Header = ({
 }: HeaderProps) => {
   const [docsMenuVisible, setDocsMenuVisible] = useState<boolean>(false);
   const [fileMenuVisible, setFileMenuVisible] = useState<boolean>(false);
+  const [downloadMenuVisible, setDownloadMenuVisible] = useState<boolean>(false);
   const [examplePopup, setExampleMenuPopup] = useState<ExamplesType>(null);
+
   const switchDocsMenu = () => setDocsMenuVisible(!docsMenuVisible);
   const switchFileMenu = () => setFileMenuVisible(!fileMenuVisible);
+  const switchDownloadMenu = () => setDownloadMenuVisible(!downloadMenuVisible);
+
   const [saveHtml] = useExport();
 
   if (examplePopup) {
@@ -71,14 +78,25 @@ export const Header = ({
             </button>
           </li>
           <li className="item">
+            <button>OpenAPI</button>
+          </li>
+          <li className="item">
             <button onClick={() => setContactModalVisible(true)}>Ask a question</button>
           </li>
         </ul>
         <div className="control-buttons">
+          <Toggle leftOption="JSON" rightOption="YAML" isEquivalent={true} />
           <Button title="Report a bug" icon="bug" onClick={() => setContactModalVisible(true)} />
           <div className="group-btn">
-            <Button title="Export" icon="download" onClick={saveHtml} />
-            <Button title="Preview" icon="preview" onClick={() => setViewMode('doc')} />
+            <Button title="HTML Preview" icon="preview" onClick={() => setViewMode('doc')}>
+              HTML Preview
+            </Button>
+            <Button title="Download" icon="download" onClick={switchDownloadMenu}>
+              <DownloadMenu
+                isMenuOpened={downloadMenuVisible}
+                setIsMenuOpened={setDownloadMenuVisible}
+              />
+            </Button>
           </div>
           <ShareButton disableSharing={disableSharing} openSharingModal={openSharingModal} />
         </div>
