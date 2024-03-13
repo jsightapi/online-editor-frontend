@@ -1,16 +1,16 @@
-import React, {useState} from 'react';
+import React, {useContext, useState} from 'react';
 import clsx from 'clsx';
 import {Button} from '../Button';
 import {HeaderLogo} from './HeaderLogo';
 import {DocsMenu} from './MenuItems/DocsMenu';
 import {FileMenu} from './MenuItems/FileMenu';
-import {useExport} from 'hooks/useExport';
 import {editorModeType, ExamplesType} from 'types';
 import {ShareButton} from 'components/ShareButton';
 import {Example} from '../Modals/Example';
 import Modal from 'react-modal';
 import {Toggle} from 'components/Toggle';
 import {DownloadMenu} from './MenuItems/DownloadMenu';
+import {SidebarContext} from 'store';
 
 import './Header.styles.scss';
 
@@ -34,11 +34,13 @@ export const Header = ({
   const [downloadMenuVisible, setDownloadMenuVisible] = useState<boolean>(false);
   const [examplePopup, setExampleMenuPopup] = useState<ExamplesType>(null);
 
+  const {currentDocSidebar, currentOpenApiFormat, setCurrentOpenApiFormat} = useContext(
+    SidebarContext
+  );
+
   const switchDocsMenu = () => setDocsMenuVisible(!docsMenuVisible);
   const switchFileMenu = () => setFileMenuVisible(!fileMenuVisible);
   const switchDownloadMenu = () => setDownloadMenuVisible(!downloadMenuVisible);
-
-  const [saveHtml] = useExport();
 
   if (examplePopup) {
     Modal.setAppElement('#root');
@@ -85,7 +87,17 @@ export const Header = ({
           </li>
         </ul>
         <div className="control-buttons">
-          <Toggle leftOption="JSON" rightOption="YAML" isEquivalent={true} />
+          {currentDocSidebar === 'openapi' && (
+            <Toggle
+              leftOption="JSON"
+              rightOption="YAML"
+              defaultOption={currentOpenApiFormat === 'yaml' ? 'YAML' : 'JSON'}
+              isEquivalent={true}
+              onChange={(value: boolean) =>
+                setCurrentOpenApiFormat && setCurrentOpenApiFormat(value ? 'yaml' : 'json')
+              }
+            />
+          )}
           <Button title="Report a bug" icon="bug" onClick={() => setContactModalVisible(true)} />
           <div className="group-btn">
             <Button title="HTML Preview" icon="preview" onClick={() => setViewMode('doc')}>

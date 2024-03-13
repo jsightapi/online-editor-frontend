@@ -1,9 +1,33 @@
-.dropdown {
+@import 'src/styles/variables';
+
+.app-header .dropdown {
   button {
     font-weight: 500;
   }
 
   i {
     margin-left: 8px;
+  }
+
+  .icon {
+    margin-right: 8px;
+  }
+
+  .dropdown-items li.item {
+    display: flex;
+    flex-direction: row;
+    align-items: flex-start;
+  }
+
+  .name {
+    font-size: 14px;
+    font-weight: 500;
+    color: $main-text;
+  }
+
+  .desc {
+    font-size: 12px;
+    font-weight: 400;
+    color: $secondary-text;
   }
 }

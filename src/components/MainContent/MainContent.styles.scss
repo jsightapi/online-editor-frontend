@@ -23,7 +23,8 @@
     }
   }
 
-  .reusable-header, .resource-header {
+  .reusable-header,
+  .resource-header {
     font-size: 2.8rem;
     line-height: 3.6rem;
     font-weight: 600;
@@ -36,7 +37,7 @@
   .resource-header {
     padding: 0 3rem 1.2rem;
 
-    +.resource-wrapper {
+    + .resource-wrapper {
       padding-bottom: 3.2rem;
     }
   }
@@ -67,4 +68,27 @@
 
 .main-resources {
   height: 100%;
+}
+
+.openapi-wrapper {
+  display: flex;
+}
+
+.openapi-lines {
+  padding: 20px 0;
+  width: 54px;
+  font-family: 'JetBrainsMono', serif;
+  font-size: 14px;
+  text-align: center;
+  background-color: $secondary-grey;
+  color: $main-grey;
+}
+
+.openapi-content {
+  margin: 0;
+  padding: 20px 24px;
+  white-space: pre-wrap;
+  font-family: 'JetBrainsMono', serif;
+  font-size: 14px;
+  flex: 1;
 }

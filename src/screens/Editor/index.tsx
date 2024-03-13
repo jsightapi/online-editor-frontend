@@ -15,7 +15,7 @@ import {initCats, initDogs, initPigs, initJsonRpc} from './init';
 import {Contacts} from 'components/Modals/Contacts';
 import {HeaderDoc} from 'components/Header/HeaderDoc';
 import {screenWidthMultiplier} from 'utils/screenWidthMultiplier';
-import {editorModeType, ExamplesType, SidebarDocType} from 'types';
+import {editorModeType, ExamplesType, OpenApiFormatType, SidebarDocType} from 'types';
 import {EditorContext, JDocContext, SidebarContext, SharingContext} from 'store';
 import {CurrentUrlProvider} from 'store/CurrentUrlStore';
 import {onOrientationChange} from 'utils/onOrientationChange';
@@ -44,6 +44,7 @@ export const EditorScreen = () => {
   const [codeContentsSidebar] = useState<boolean>(false);
   //documentation sidebar on the right
   const [currentDocSidebar, setCurrentDocSidebar] = useState<SidebarDocType>(null);
+  const [currentOpenApiFormat, setCurrentOpenApiFormat] = useState<OpenApiFormatType>('yaml');
   const [jdocExchange, setJdocExchange] = useState<JDocType>();
   const [errorRow, setErrorRow] = useState<number | null>(null);
   const [scrollToRow, setScrollToRow] = useState<boolean>(false);
@@ -192,8 +193,10 @@ export const EditorScreen = () => {
     () => ({
       currentDocSidebar,
       setCurrentDocSidebar,
+      currentOpenApiFormat,
+      setCurrentOpenApiFormat,
     }),
-    [currentDocSidebar]
+    [currentDocSidebar, currentOpenApiFormat]
   );
 
   const editorValue = useMemo(
@@ -219,13 +222,15 @@ export const EditorScreen = () => {
       {!isExport ? (
         <div className={'p-relative'}>
           {isEditor ? (
-            <Header
-              disableSharing={disableSharing}
-              setInitialContent={setInitialContent}
-              setViewMode={setViewMode}
-              setContactModalVisible={setContactModalVisible}
-              openSharingModal={openSharingModal}
-            />
+            <SidebarContext.Provider value={sidebarValue}>
+              <Header
+                disableSharing={disableSharing}
+                setInitialContent={setInitialContent}
+                setViewMode={setViewMode}
+                setContactModalVisible={setContactModalVisible}
+                openSharingModal={openSharingModal}
+              />
+            </SidebarContext.Provider>
           ) : (
             <HeaderDoc openSharingModal={openSharingModal} setViewMode={setViewMode} />
           )}
@@ -276,7 +281,7 @@ export const EditorScreen = () => {
               <CurrentUrlProvider>
                 <SidebarContext.Provider value={sidebarValue}>
                   <Layout isEditor={isEditor}>
-                    <MainContent jdocExchange={jdocExchange} />
+                    <MainContent jdocExchange={jdocExchange} jsightCode={jsightCodeDebounced} />
                   </Layout>
                 </SidebarContext.Provider>
               </CurrentUrlProvider>

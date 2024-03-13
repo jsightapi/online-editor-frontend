@@ -2,13 +2,18 @@ import React from 'react';
 import {Dropdown} from 'components/Dropdown';
 import {DropdownToggle} from 'components/Dropdown/DropdownToggle';
 import {DropdownMenu} from 'components/Dropdown/DropdownMenu';
-import ExternalLink from 'assets/images/icons/vector.svg';
+
+import IconOpenAPI from 'assets/images/icons/openapi.svg';
+import IconHTMLDoc from 'assets/images/icons/htmldoc.svg';
 
 import './DownloadMenu.styles.scss';
+import {useExport} from 'hooks/useExport';
 
 interface MenuType {
+  icon: string;
   name: string;
-  link: string;
+  desc: string;
+  action: () => Promise<void>;
 }
 
 interface DocsMenuProps {
@@ -20,52 +25,61 @@ interface DocsMenuItemsProps {
   setIsMenuOpened: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
-const menu: MenuType[] = [
-  {
-    name: 'Quick Tutorial',
-    link: 'https://jsight.io/docs/jsight-api-0-3-quick-tutorial',
-  },
-  {
-    name: 'JSight API 0.3 Specification',
-    link: 'https://jsight.io/docs/jsight-api-0-3',
-  },
-  {
-    name: 'JSight Schema 0.3 Specification',
-    link: 'https://jsight.io/docs/jsight-schema-0-3',
-  },
-  {
-    name: 'Quick Help',
-    link: 'https://jsight.io/docs/jsight-api-0-3-quick-help',
-  },
-];
+export const DownloadMenu = ({isMenuOpened, setIsMenuOpened}: DocsMenuProps) => {
+  const [saveHtml] = useExport();
 
-const DownloadMenuItems = ({setIsMenuOpened}: DocsMenuItemsProps) => (
-  <ul className="dropdown-items">
-    {menu.map((v, key) => (
-      <a
-        href={v.link}
-        target="_blank"
-        rel="noreferrer noopener"
-        key={key}
-        onClick={() => setIsMenuOpened(false)}
-      >
-        <li>
-          <span>{v.name}</span>
-          <img src={ExternalLink} />
-        </li>
-      </a>
-    ))}
-  </ul>
-);
+  const menu: MenuType[] = [
+    {
+      icon: IconHTMLDoc,
+      name: 'HTML page',
+      desc: 'Download the prettified documentation page',
+      action: saveHtml,
+    },
+    {
+      icon: IconOpenAPI,
+      name: 'OpenAPI JSON',
+      desc: 'Download the converted OpenAPI JSON code',
+      action: saveHtml,
+    },
+    {
+      icon: IconOpenAPI,
+      name: 'OpenAPI YAML',
+      desc: 'Download the converted OpenAPI YAML code',
+      action: saveHtml,
+    },
+  ];
 
-export const DownloadMenu = ({isMenuOpened, setIsMenuOpened}: DocsMenuProps) => (
-  <Dropdown params={{isOpen: isMenuOpened, setIsOpen: setIsMenuOpened}}>
-    <DropdownToggle>
-      Download <i className={isMenuOpened ? 'icon-arrow-up' : 'icon-arrow-down'} />
-    </DropdownToggle>
+  const DownloadMenuItems = ({setIsMenuOpened}: DocsMenuItemsProps) => (
+    <ul className="dropdown-items">
+      {menu.map((v, key) => (
+        <div
+          key={key}
+          onClick={() => {
+            v.action();
+            setIsMenuOpened(false);
+          }}
+        >
+          <li className="item">
+            <img className="icon" src={v.icon} />
+            <div className="info">
+              <div className="name">{v.name}</div>
+              <div className="desc">{v.desc}</div>
+            </div>
+          </li>
+        </div>
+      ))}
+    </ul>
+  );
 
-    <DropdownMenu offsetY={15} offsetX={15} placement="bottom-end">
-      <DownloadMenuItems setIsMenuOpened={setIsMenuOpened} />
-    </DropdownMenu>
-  </Dropdown>
-);
+  return (
+    <Dropdown params={{isOpen: isMenuOpened, setIsOpen: setIsMenuOpened}}>
+      <DropdownToggle>
+        Download <i className={isMenuOpened ? 'icon-arrow-up' : 'icon-arrow-down'} />
+      </DropdownToggle>
+
+      <DropdownMenu offsetY={15} offsetX={15} placement="bottom-end">
+        <DownloadMenuItems setIsMenuOpened={setIsMenuOpened} />
+      </DropdownMenu>
+    </Dropdown>
+  );
+};
