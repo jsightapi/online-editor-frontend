@@ -331,8 +331,6 @@ export const MainContent = React.memo(
       }
     }, [openApiContent]);
 
-    console.log(openApiLinesCount);
-
     const value = useMemo(
       () => ({
         showRightSidebar,
@@ -384,7 +382,7 @@ export const MainContent = React.memo(
                   }}
                   className="sidebar-rules-close"
                   onClick={() => {
-                    setCurrentDocSidebar(null);
+                    setCurrentDocSidebar('htmldoc');
                     setSelectedLine(null);
                   }}
                 >

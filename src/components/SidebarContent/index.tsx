@@ -48,7 +48,7 @@ export const SidebarContent = ({side, isShowSettings, isShow}: SidebarContentPro
             <i className="icon-menu" /> <h2>Contents</h2>
           </div>
           {!(side === 'left' || isExport) && (
-            <button onClick={() => setCurrentDocSidebar(null)}>
+            <button onClick={() => setCurrentDocSidebar('htmldoc')}>
               <i className="icon-close" />
             </button>
           )}

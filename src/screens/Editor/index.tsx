@@ -43,7 +43,7 @@ export const EditorScreen = () => {
   // left sidebar
   const [codeContentsSidebar] = useState<boolean>(false);
   //documentation sidebar on the right
-  const [currentDocSidebar, setCurrentDocSidebar] = useState<SidebarDocType>(null);
+  const [currentDocSidebar, setCurrentDocSidebar] = useState<SidebarDocType>('htmldoc');
   const [currentOpenApiFormat, setCurrentOpenApiFormat] = useState<OpenApiFormatType>('yaml');
   const [jdocExchange, setJdocExchange] = useState<JDocType>();
   const [errorRow, setErrorRow] = useState<number | null>(null);
@@ -181,7 +181,7 @@ export const EditorScreen = () => {
   };
 
   const handleCurrentDocSidebar = useCallback((sidebar: SidebarDocType) => {
-    setCurrentDocSidebar((prev) => (prev === sidebar ? null : sidebar));
+    setCurrentDocSidebar((prev) => (prev === sidebar ? 'htmldoc' : sidebar));
   }, []);
 
   const handleJsightCode = useCallback((code: string) => setJsightCode(code), []);
@@ -298,16 +298,22 @@ export const EditorScreen = () => {
                   <div
                     onClick={() => handleCurrentDocSidebar('htmldoc')}
                     className={clsx('side-panel-element', {
-                      active: currentDocSidebar === 'htmldoc',
+                      active: currentDocSidebar === 'htmldoc' || currentDocSidebar === 'rules',
                     })}
                   >
                     <img src={IconHTMLDoc} /> HTML Doc
                   </div>
                   <div
-                    onClick={() => handleCurrentDocSidebar('content')}
+                    onClick={() =>
+                      currentDocSidebar !== 'openapi' && handleCurrentDocSidebar('content')
+                    }
                     className={clsx('side-panel-element', {
                       active: currentDocSidebar === 'content',
+                      disabled: currentDocSidebar === 'openapi',
                     })}
+                    title={
+                      currentDocSidebar === 'openapi' ? 'Not available while in OpenAPI view' : ''
+                    }
                   >
                     <img src={IconContents} /> Contents
                   </div>

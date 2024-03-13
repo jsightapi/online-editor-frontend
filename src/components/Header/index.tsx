@@ -34,9 +34,12 @@ export const Header = ({
   const [downloadMenuVisible, setDownloadMenuVisible] = useState<boolean>(false);
   const [examplePopup, setExampleMenuPopup] = useState<ExamplesType>(null);
 
-  const {currentDocSidebar, currentOpenApiFormat, setCurrentOpenApiFormat} = useContext(
-    SidebarContext
-  );
+  const {
+    currentDocSidebar,
+    setCurrentDocSidebar,
+    currentOpenApiFormat,
+    setCurrentOpenApiFormat,
+  } = useContext(SidebarContext);
 
   const switchDocsMenu = () => setDocsMenuVisible(!docsMenuVisible);
   const switchFileMenu = () => setFileMenuVisible(!fileMenuVisible);
@@ -80,7 +83,7 @@ export const Header = ({
             </button>
           </li>
           <li className="item">
-            <button>OpenAPI</button>
+            <button onClick={() => setCurrentDocSidebar('openapi')}>OpenAPI</button>
           </li>
           <li className="item">
             <button onClick={() => setContactModalVisible(true)}>Ask a question</button>
