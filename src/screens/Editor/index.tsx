@@ -189,6 +189,14 @@ export const EditorScreen = () => {
   const handleError = useCallback((error) => setError(error), []);
   const handleReloadedEditor = useCallback(() => reloadedEditor(), []);
 
+  const jdocValue = useMemo(
+    () => ({
+      jdocExchange,
+      jsightCode: jsightCodeDebounced,
+    }),
+    [jdocExchange, jsightCodeDebounced]
+  );
+
   const sidebarValue = useMemo(
     () => ({
       currentDocSidebar,
@@ -214,7 +222,7 @@ export const EditorScreen = () => {
   }
 
   return (
-    <JDocContext.Provider value={jdocExchange}>
+    <JDocContext.Provider value={jdocValue}>
       <AnnouncementBar
         handleCloseClick={handleCloseAnnouncementBar}
         isShow={isShowAnnouncementBar}

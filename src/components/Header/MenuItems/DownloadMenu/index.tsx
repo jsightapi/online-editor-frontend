@@ -26,7 +26,7 @@ interface DocsMenuItemsProps {
 }
 
 export const DownloadMenu = ({isMenuOpened, setIsMenuOpened}: DocsMenuProps) => {
-  const [saveHtml] = useExport();
+  const {saveHtml, saveJson, saveYaml} = useExport();
 
   const menu: MenuType[] = [
     {
@@ -39,13 +39,13 @@ export const DownloadMenu = ({isMenuOpened, setIsMenuOpened}: DocsMenuProps) => 
       icon: IconOpenAPI,
       name: 'OpenAPI JSON',
       desc: 'Download the converted OpenAPI JSON code',
-      action: saveHtml,
+      action: saveJson,
     },
     {
       icon: IconOpenAPI,
       name: 'OpenAPI YAML',
       desc: 'Download the converted OpenAPI YAML code',
-      action: saveHtml,
+      action: saveYaml,
     },
   ];
 

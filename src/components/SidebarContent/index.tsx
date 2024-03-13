@@ -20,7 +20,7 @@ interface SidebarContentProps {
 export const SidebarContent = ({side, isShowSettings, isShow}: SidebarContentProps) => {
   const {setIsOpen, isOpen} = useContext(GlobalSettingsContext);
   const {setCurrentDocSidebar} = useContext(SidebarContext);
-  const jdocData = useContext(JDocContext);
+  const {jdocExchange: jdocData} = useContext(JDocContext);
 
   const tags = useMemo(() => jdocData?.tags || {}, [jdocData]);
 

@@ -21,7 +21,7 @@ export const ShortcutLines = ({
   tab,
   disableOpenBracket,
 }: ShortcutLinesProps) => {
-  const jdocData = useContext(JDocContext);
+  const {jdocExchange: jdocData} = useContext(JDocContext);
 
   const userType = useMemo(() => {
     const schemaName = schemasNames.slice(-1).pop();

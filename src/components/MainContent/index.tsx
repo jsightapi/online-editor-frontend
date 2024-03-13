@@ -16,6 +16,7 @@ import './MainContent.styles.scss';
 import {JsonRpcHeader} from 'components/Resource/JsonRpc/JsonRpcHeader';
 import {JsonRpcResource} from 'components/Resource/JsonRpc';
 import clsx from 'clsx';
+import {convert} from 'api/convert';
 
 type SchemaPropertyType =
   | 'collapsedRules'
@@ -139,19 +140,8 @@ export const MainContent = React.memo(
         const convertJsight = async () => {
           setOpenApiContent('');
           setOpenApiLinesCount(0);
-          try {
-            const res = await fetch(
-              `https://dev.editor.jsight.io/convert-jsight?to=openapi-3.0.3&format=${currentOpenApiFormat}`,
-              {
-                method: 'POST',
-                body: JSON.stringify(jsightCode),
-              }
-            );
-            const result = await res.text();
-            setOpenApiContent(result);
-          } catch (err) {
-            throw err;
-          }
+          const result = await convert(jsightCode, currentOpenApiFormat);
+          setOpenApiContent(result);
         };
 
         convertJsight();

@@ -1,9 +1,10 @@
 import {useContext} from 'react';
 import {find} from 'lodash';
 import {JDocContext} from 'store';
+import {convert} from 'api/convert';
 
 export function useExport() {
-  const jdocData = useContext(JDocContext);
+  const {jdocExchange: jdocData, jsightCode} = useContext(JDocContext);
 
   const renderHtml: () => Promise<string | null> = async () => {
     const styles = document.querySelectorAll('style');
@@ -16,6 +17,7 @@ export function useExport() {
 
     let scriptLink = '';
     let styleLink = '';
+
     if (process.env.NODE_ENV !== 'production') {
       const scripts = document.querySelectorAll('script');
       scriptLink = find(scripts, (script) => script.src.indexOf('static/js') !== -1)?.src || '';
@@ -63,7 +65,7 @@ export function useExport() {
             <meta name="application-name" content="&nbsp;"/>
             <meta name="msapplication-TileColor" content="#FFFFFF"/>
             <meta name="msapplication-TileImage" content="${hostName + '/mstile-144x144.png'}"/>
-        
+
             <meta property="og:title" content="JSight — the Best API documentation language and tool"/>
             <meta property="og:description" content="Are you fed up of OpenAPI? JSight is the simplest, user-friendly, compact language for description of REST API. Feel the difference compared to Swagger!"/>
             <meta property="og:type" content="website"/>
@@ -74,7 +76,7 @@ export function useExport() {
             <meta property="og:image:height" content="720">
             <meta property="og:site_name" content="JSight.io">
             <meta property="fb:app_id" content="609425093466922">
-        
+
             <meta name="twitter:card" content="summary_large_image">
             <meta name="twitter:site" content="@jsightapi">
             <meta name="twitter:creator" content="@jsightapi">
@@ -98,19 +100,37 @@ export function useExport() {
     return null;
   };
 
+  const save = (text: string, title: string, type: string) => {
+    const content = [text];
+    const bl = new Blob(content, {type});
+    const a = document.createElement('a');
+    a.href = URL.createObjectURL(bl);
+    a.download = title;
+    a.hidden = true;
+    document.body.appendChild(a);
+    a.click();
+  };
+
   const saveHtml = async () => {
-    const documentHtml = await renderHtml();
-    if (documentHtml) {
-      const htmlContent = [documentHtml];
-      const bl = new Blob(htmlContent, {type: 'text/html'});
-      const a = document.createElement('a');
-      a.href = URL.createObjectURL(bl);
-      a.download = 'jsight-document.html';
-      a.hidden = true;
-      document.body.appendChild(a);
-      a.click();
+    const html = await renderHtml();
+    if (html) {
+      save(html, 'jsight-document.html', 'text/html');
     }
   };
 
-  return [saveHtml];
+  const saveJson = async () => {
+    const json = await convert(jsightCode, 'json');
+    if (json) {
+      save(json, 'jsight-document.json', 'text/json');
+    }
+  };
+
+  const saveYaml = async () => {
+    const yaml = await convert(jsightCode, 'yaml');
+    if (yaml) {
+      save(yaml, 'jsight-document.yaml', 'application/yaml');
+    }
+  };
+
+  return {saveHtml, saveJson, saveYaml};
 }
