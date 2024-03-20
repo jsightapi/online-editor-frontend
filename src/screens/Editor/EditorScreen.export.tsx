@@ -25,7 +25,7 @@ export const EditorScreen = () => {
   const codeContentsSidebar = false;
 
   //documentation sidebar on the right
-  const [currentDocSidebar, setCurrentDocSidebar] = useState<SidebarDocType>(null);
+  const [currentDocSidebar, setCurrentDocSidebar] = useState<SidebarDocType>('htmldoc');
   const [jdocExchange, setJdocExchange] = useState<JDocType>();
   const jsightCodeDebounced = useDebounce<string>(jsightCode, 600);
   const [contactModalVisible, setContactModalVisible] = useState<boolean>(false);
@@ -86,8 +86,16 @@ export const EditorScreen = () => {
   );
 
   const handleCurrentDocSidebar = useCallback((sidebar: SidebarDocType) => {
-    setCurrentDocSidebar((prev) => (prev === sidebar ? null : sidebar));
+    setCurrentDocSidebar((prev) => (prev === sidebar ? 'htmldoc' : sidebar));
   }, []);
+
+  const jdocValue = useMemo(
+    () => ({
+      jdocExchange,
+      jsightCode: jsightCodeDebounced,
+    }),
+    [jdocExchange, jsightCodeDebounced]
+  );
 
   const sidebarValue = useMemo(
     () => ({
@@ -106,7 +114,7 @@ export const EditorScreen = () => {
   );
 
   return (
-    <JDocContext.Provider value={jdocExchange}>
+    <JDocContext.Provider value={jdocValue}>
       <div
         className={clsx('d-flex editor-wrapper', {
           'only-doc': !isEditor,

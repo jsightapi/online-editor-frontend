@@ -10,8 +10,8 @@ interface HeaderDocProps {
 }
 
 export const HeaderDoc = ({setViewMode}: HeaderDocProps) => {
-  const jdocData = useContext(JDocContext);
-  const [saveHtml] = useExport();
+  const {jdocExchange: jdocData} = useContext(JDocContext);
+  const {saveHtml} = useExport();
 
   return (
     <div className="app-header">
