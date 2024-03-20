@@ -80,7 +80,7 @@ export const DetailCard = ({
   };
 
   const closeDetailCard = () => {
-    setCurrentDocSidebar(null);
+    setCurrentDocSidebar('htmldoc');
     setSelectedLine(null);
   };
 

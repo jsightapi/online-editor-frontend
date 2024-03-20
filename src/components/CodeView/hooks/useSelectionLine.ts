@@ -55,7 +55,7 @@ export function useSelectionLine({
     if (isShowDetailInfo && collapsedRules) {
       setSelectedLine((prev) => {
         if (prev?.numberLine === numberLine && prev?.keyBlock === keyBlock) {
-          setCurrentDocSidebar(null);
+          setCurrentDocSidebar('htmldoc');
           return null;
         }
 
@@ -67,7 +67,7 @@ export function useSelectionLine({
       });
     } else {
       setSelectedLine(null);
-      setCurrentDocSidebar(null);
+      setCurrentDocSidebar('htmldoc');
     }
   };
 

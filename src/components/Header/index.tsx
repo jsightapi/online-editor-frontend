@@ -1,15 +1,18 @@
-import React, {useState} from 'react';
+import React, {useContext, useState} from 'react';
 import clsx from 'clsx';
 import {Button} from '../Button';
 import {HeaderLogo} from './HeaderLogo';
 import {DocsMenu} from './MenuItems/DocsMenu';
 import {FileMenu} from './MenuItems/FileMenu';
-import {useExport} from 'hooks/useExport';
 import {editorModeType, ExamplesType} from 'types';
 import {ShareButton} from 'components/ShareButton';
-import './Header.styles.scss';
 import {Example} from '../Modals/Example';
 import Modal from 'react-modal';
+import {Toggle} from 'components/Toggle';
+import {DownloadMenu} from './MenuItems/DownloadMenu';
+import {SidebarContext} from 'store';
+
+import './Header.styles.scss';
 
 interface HeaderProps {
   setInitialContent(content: ExamplesType): void;
@@ -28,10 +31,19 @@ export const Header = ({
 }: HeaderProps) => {
   const [docsMenuVisible, setDocsMenuVisible] = useState<boolean>(false);
   const [fileMenuVisible, setFileMenuVisible] = useState<boolean>(false);
+  const [downloadMenuVisible, setDownloadMenuVisible] = useState<boolean>(false);
   const [examplePopup, setExampleMenuPopup] = useState<ExamplesType>(null);
+
+  const {
+    currentDocSidebar,
+    setCurrentDocSidebar,
+    currentOpenApiFormat,
+    setCurrentOpenApiFormat,
+  } = useContext(SidebarContext);
+
   const switchDocsMenu = () => setDocsMenuVisible(!docsMenuVisible);
   const switchFileMenu = () => setFileMenuVisible(!fileMenuVisible);
-  const [saveHtml] = useExport();
+  const switchDownloadMenu = () => setDownloadMenuVisible(!downloadMenuVisible);
 
   if (examplePopup) {
     Modal.setAppElement('#root');
@@ -71,14 +83,35 @@ export const Header = ({
             </button>
           </li>
           <li className="item">
+            <button onClick={() => setCurrentDocSidebar('openapi')}>OpenAPI</button>
+          </li>
+          <li className="item">
             <button onClick={() => setContactModalVisible(true)}>Ask a question</button>
           </li>
         </ul>
         <div className="control-buttons">
+          {currentDocSidebar === 'openapi' && (
+            <Toggle
+              leftOption="JSON"
+              rightOption="YAML"
+              defaultOption={currentOpenApiFormat === 'yaml' ? 'YAML' : 'JSON'}
+              isEquivalent={true}
+              onChange={(value: boolean) =>
+                setCurrentOpenApiFormat && setCurrentOpenApiFormat(value ? 'yaml' : 'json')
+              }
+            />
+          )}
           <Button title="Report a bug" icon="bug" onClick={() => setContactModalVisible(true)} />
           <div className="group-btn">
-            <Button title="Export" icon="download" onClick={saveHtml} />
-            <Button title="Preview" icon="preview" onClick={() => setViewMode('doc')} />
+            <Button title="HTML Preview" icon="preview" onClick={() => setViewMode('doc')}>
+              HTML Preview
+            </Button>
+            <Button title="Download" icon="download" onClick={switchDownloadMenu}>
+              <DownloadMenu
+                isMenuOpened={downloadMenuVisible}
+                setIsMenuOpened={setDownloadMenuVisible}
+              />
+            </Button>
           </div>
           <ShareButton disableSharing={disableSharing} openSharingModal={openSharingModal} />
         </div>

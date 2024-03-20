@@ -58,7 +58,10 @@
       margin-left: 0;
       margin-right: 0;
       flex: 1;
-      /* overflow-y: scroll; */
+
+      &.scrollable {
+        overflow-y: scroll;
+      }
 
       .main-body {
         padding: 0;
@@ -118,6 +121,11 @@
         display: inline-block;
         margin-bottom: 1rem;
         font-size: 1rem;
+      }
+
+      &.disabled {
+        opacity: 0.5;
+        cursor: not-allowed;
       }
     }
   }

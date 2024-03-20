@@ -15,7 +15,7 @@ import {initCats, initDogs, initPigs, initJsonRpc} from './init';
 import {Contacts} from 'components/Modals/Contacts';
 import {HeaderDoc} from 'components/Header/HeaderDoc';
 import {screenWidthMultiplier} from 'utils/screenWidthMultiplier';
-import {editorModeType, ExamplesType, SidebarDocType} from 'types';
+import {editorModeType, ExamplesType, OpenApiFormatType, SidebarDocType} from 'types';
 import {EditorContext, JDocContext, SidebarContext, SharingContext} from 'store';
 import {CurrentUrlProvider} from 'store/CurrentUrlStore';
 import {onOrientationChange} from 'utils/onOrientationChange';
@@ -23,6 +23,11 @@ import {ErrorScreen} from 'screens/Error';
 import {SharingForm} from 'components/Modals/SharingForm';
 import 'react-toastify/dist/ReactToastify.css';
 import {AnnouncementBar} from 'components/AnnouncementBar';
+
+import IconOpenAPI from 'assets/images/icons/openapi.svg';
+import IconHTMLDoc from 'assets/images/icons/htmldoc.svg';
+import IconContents from 'assets/images/icons/contents.svg';
+
 import './Editor.styles.scss';
 
 const {isExport} = window as any;
@@ -38,7 +43,8 @@ export const EditorScreen = () => {
   // left sidebar
   const [codeContentsSidebar] = useState<boolean>(false);
   //documentation sidebar on the right
-  const [currentDocSidebar, setCurrentDocSidebar] = useState<SidebarDocType>(null);
+  const [currentDocSidebar, setCurrentDocSidebar] = useState<SidebarDocType>('htmldoc');
+  const [currentOpenApiFormat, setCurrentOpenApiFormat] = useState<OpenApiFormatType>('yaml');
   const [jdocExchange, setJdocExchange] = useState<JDocType>();
   const [errorRow, setErrorRow] = useState<number | null>(null);
   const [scrollToRow, setScrollToRow] = useState<boolean>(false);
@@ -175,7 +181,7 @@ export const EditorScreen = () => {
   };
 
   const handleCurrentDocSidebar = useCallback((sidebar: SidebarDocType) => {
-    setCurrentDocSidebar((prev) => (prev === sidebar ? null : sidebar));
+    setCurrentDocSidebar((prev) => (prev === sidebar ? 'htmldoc' : sidebar));
   }, []);
 
   const handleJsightCode = useCallback((code: string) => setJsightCode(code), []);
@@ -183,12 +189,22 @@ export const EditorScreen = () => {
   const handleError = useCallback((error) => setError(error), []);
   const handleReloadedEditor = useCallback(() => reloadedEditor(), []);
 
+  const jdocValue = useMemo(
+    () => ({
+      jdocExchange,
+      jsightCode: jsightCodeDebounced,
+    }),
+    [jdocExchange, jsightCodeDebounced]
+  );
+
   const sidebarValue = useMemo(
     () => ({
       currentDocSidebar,
       setCurrentDocSidebar,
+      currentOpenApiFormat,
+      setCurrentOpenApiFormat,
     }),
-    [currentDocSidebar]
+    [currentDocSidebar, currentOpenApiFormat]
   );
 
   const editorValue = useMemo(
@@ -206,7 +222,7 @@ export const EditorScreen = () => {
   }
 
   return (
-    <JDocContext.Provider value={jdocExchange}>
+    <JDocContext.Provider value={jdocValue}>
       <AnnouncementBar
         handleCloseClick={handleCloseAnnouncementBar}
         isShow={isShowAnnouncementBar}
@@ -214,13 +230,15 @@ export const EditorScreen = () => {
       {!isExport ? (
         <div className={'p-relative'}>
           {isEditor ? (
-            <Header
-              disableSharing={disableSharing}
-              setInitialContent={setInitialContent}
-              setViewMode={setViewMode}
-              setContactModalVisible={setContactModalVisible}
-              openSharingModal={openSharingModal}
-            />
+            <SidebarContext.Provider value={sidebarValue}>
+              <Header
+                disableSharing={disableSharing}
+                setInitialContent={setInitialContent}
+                setViewMode={setViewMode}
+                setContactModalVisible={setContactModalVisible}
+                openSharingModal={openSharingModal}
+              />
+            </SidebarContext.Provider>
           ) : (
             <HeaderDoc openSharingModal={openSharingModal} setViewMode={setViewMode} />
           )}
@@ -271,19 +289,41 @@ export const EditorScreen = () => {
               <CurrentUrlProvider>
                 <SidebarContext.Provider value={sidebarValue}>
                   <Layout isEditor={isEditor}>
-                    <MainContent jdocExchange={jdocExchange} />
+                    <MainContent jdocExchange={jdocExchange} jsightCode={jsightCodeDebounced} />
                   </Layout>
                 </SidebarContext.Provider>
               </CurrentUrlProvider>
               {isEditor && (
                 <div className="side-panel right-side">
                   <div
-                    onClick={() => handleCurrentDocSidebar('content')}
+                    onClick={() => handleCurrentDocSidebar('openapi')}
                     className={clsx('side-panel-element', {
-                      active: currentDocSidebar === 'content',
+                      active: currentDocSidebar === 'openapi',
                     })}
                   >
-                    <i className="icon-list" /> Contents
+                    <img src={IconOpenAPI} /> OpenAPI
+                  </div>
+                  <div
+                    onClick={() => handleCurrentDocSidebar('htmldoc')}
+                    className={clsx('side-panel-element', {
+                      active: currentDocSidebar === 'htmldoc' || currentDocSidebar === 'rules',
+                    })}
+                  >
+                    <img src={IconHTMLDoc} /> HTML Doc
+                  </div>
+                  <div
+                    onClick={() =>
+                      currentDocSidebar !== 'openapi' && handleCurrentDocSidebar('content')
+                    }
+                    className={clsx('side-panel-element', {
+                      active: currentDocSidebar === 'content',
+                      disabled: currentDocSidebar === 'openapi',
+                    })}
+                    title={
+                      currentDocSidebar === 'openapi' ? 'Not available while in OpenAPI view' : ''
+                    }
+                  >
+                    <img src={IconContents} /> Contents
                   </div>
                 </div>
               )}

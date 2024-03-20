@@ -10,8 +10,8 @@ interface HeaderDocProps {
 }
 
 export const HeaderDoc = ({setViewMode}: HeaderDocProps) => {
-  const jdocData = useContext(JDocContext);
-  const [saveHtml] = useExport();
+  const {jdocExchange: jdocData} = useContext(JDocContext);
+  const {saveHtml} = useExport();
   const title = jdocData?.info?.title;
 
   return (

@@ -1,4 +1,4 @@
-import React, {useRef, useState, useEffect, useContext, useMemo} from 'react';
+import React, {useRef, useState, useEffect, useContext, useMemo, Fragment} from 'react';
 import {Virtuoso, VirtuosoHandle} from 'react-virtuoso';
 import {compact, each, groupBy, isEqual, map, mapValues} from 'lodash';
 import {useParams} from 'react-router-dom';
@@ -15,6 +15,8 @@ import {HttpResource} from 'components/Resource/Http';
 import './MainContent.styles.scss';
 import {JsonRpcHeader} from 'components/Resource/JsonRpc/JsonRpcHeader';
 import {JsonRpcResource} from 'components/Resource/JsonRpc';
+import clsx from 'clsx';
+import {convert} from 'api/convert';
 
 type SchemaPropertyType =
   | 'collapsedRules'
@@ -25,10 +27,11 @@ type SchemaPropertyType =
 
 interface MainContentProps {
   jdocExchange?: JDocType;
+  jsightCode?: string;
 }
 
 export const MainContent = React.memo(
-  ({jdocExchange}: MainContentProps) => {
+  ({jdocExchange, jsightCode}: MainContentProps) => {
     const divRef = useRef<HTMLDivElement | null>(null);
     const virtuosoRef = useRef<VirtuosoHandle>(null);
     const virtuosoScrollerRef = useRef<any>(null);
@@ -40,11 +43,17 @@ export const MainContent = React.memo(
       GlobalSettingsContext
     );
     const {currentUrl, setCurrentUrl} = useContext(CurrentUrlContext);
-    const {currentDocSidebar, setCurrentDocSidebar} = useContext(SidebarContext);
+    const {currentDocSidebar, setCurrentDocSidebar, currentOpenApiFormat} = useContext(
+      SidebarContext
+    );
     const [overscan, setOverscan] = useState(480);
     const [schemasView, setSchemasView] = useState<SchemaViewType[]>([]);
     const [schemasData, setSchemasData] = useState<{[key: string]: SchemaData[]}>({});
     const [resourceState, setResourceState] = useState<ResourceState[]>([]);
+
+    const [openApiContent, setOpenApiContent] = useState('');
+    const [openApiLinesCount, setOpenApiLinesCount] = useState<number | undefined>();
+
     // @ts-ignore
     window['mainContent'] = virtuosoRef;
 
@@ -126,7 +135,18 @@ export const MainContent = React.memo(
       if (currentDocSidebar === 'content') {
         setSelectedLine(null);
       }
-    }, [currentDocSidebar]);
+
+      if (currentDocSidebar === 'openapi') {
+        const convertJsight = async () => {
+          setOpenApiContent('');
+          setOpenApiLinesCount(0);
+          const result = await convert(jsightCode, currentOpenApiFormat);
+          setOpenApiContent(result);
+        };
+
+        convertJsight();
+      }
+    }, [currentDocSidebar, currentOpenApiFormat, jsightCode]);
 
     const updateSchemaView = (keyBlock: string, value: any, property: SchemaPropertyType) => {
       setSchemasView((prev) => {
@@ -293,6 +313,14 @@ export const MainContent = React.memo(
       };
     }, [jdocExchange]);
 
+    useEffect(() => {
+      const lineHeight = parseInt(window.getComputedStyle(document.body).lineHeight);
+
+      if (divRef && divRef.current && lineHeight) {
+        setOpenApiLinesCount(Math.round(divRef?.current?.scrollHeight / lineHeight) - 2);
+      }
+    }, [openApiContent]);
+
     const value = useMemo(
       () => ({
         showRightSidebar,
@@ -314,34 +342,52 @@ export const MainContent = React.memo(
 
     return (
       <div className="main-content-wrapper">
-        <div ref={divRef} className="main-content">
-          <MainContext.Provider value={value}>
-            {currentDocSidebar === 'rules' && (
-              <button
-                style={{
-                  right: `${
-                    virtuosoScrollerRef.current?.offsetWidth -
-                    virtuosoScrollerRef.current?.clientWidth +
-                    45
-                  }px`,
-                }}
-                className="sidebar-rules-close"
-                onClick={() => {
-                  setCurrentDocSidebar(null);
-                  setSelectedLine(null);
-                }}
-              >
-                <i className="icon-close" />
-              </button>
-            )}
-            <Virtuoso
-              data={jdocList}
-              itemContent={(_, item) => item}
-              ref={virtuosoRef}
-              scrollerRef={(ref) => (virtuosoScrollerRef.current = ref)}
-              increaseViewportBy={overscan}
-            />
-          </MainContext.Provider>
+        <div
+          ref={divRef}
+          className={clsx('main-content', {scrollable: currentDocSidebar === 'openapi'})}
+        >
+          {currentDocSidebar === 'openapi' && (
+            <div className="openapi-wrapper">
+              <div className="openapi-lines">
+                {Array.from(Array(openApiLinesCount).keys()).map((num) => (
+                  <Fragment key={num + 1}>
+                    {num + 1}
+                    <br />
+                  </Fragment>
+                ))}
+              </div>
+              <pre className="openapi-content">{openApiContent}</pre>
+            </div>
+          )}
+          {currentDocSidebar !== 'openapi' && (
+            <MainContext.Provider value={value}>
+              {currentDocSidebar === 'rules' && (
+                <button
+                  style={{
+                    right: `${
+                      virtuosoScrollerRef.current?.offsetWidth -
+                      virtuosoScrollerRef.current?.clientWidth +
+                      45
+                    }px`,
+                  }}
+                  className="sidebar-rules-close"
+                  onClick={() => {
+                    setCurrentDocSidebar('htmldoc');
+                    setSelectedLine(null);
+                  }}
+                >
+                  <i className="icon-close" />
+                </button>
+              )}
+              <Virtuoso
+                data={jdocList}
+                itemContent={(_, item) => item}
+                ref={virtuosoRef}
+                scrollerRef={(ref) => (virtuosoScrollerRef.current = ref)}
+                increaseViewportBy={overscan}
+              />
+            </MainContext.Provider>
+          )}
         </div>
       </div>
     );

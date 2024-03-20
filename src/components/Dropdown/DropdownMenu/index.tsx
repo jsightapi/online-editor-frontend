@@ -1,5 +1,6 @@
 import React, {useContext} from 'react';
 import {Popper} from 'react-popper';
+import {Placement} from '@popperjs/core/lib';
 import clsx from 'clsx';
 import {DropdownContext} from '../index';
 import {DropdownMenuComponent} from '../DropdownMenuComponent';
@@ -9,15 +10,21 @@ interface DropdownMenuProps {
   offsetY?: number;
   offsetX?: number;
   children?: React.ReactNode;
+  placement?: Placement;
 }
 
-export const DropdownMenu = ({children, offsetY, offsetX}: DropdownMenuProps) => {
+export const DropdownMenu = ({
+  children,
+  offsetY,
+  offsetX,
+  placement = 'bottom-start',
+}: DropdownMenuProps) => {
   const {isOpen} = useContext(DropdownContext);
 
   return (
     <Popper
       strategy="absolute"
-      placement="bottom-start"
+      placement={placement}
       onFirstUpdate={() => {}}
       modifiers={[
         {
