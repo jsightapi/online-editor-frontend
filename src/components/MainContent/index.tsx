@@ -136,7 +136,7 @@ export const MainContent = React.memo(
         setSelectedLine(null);
       }
 
-      if (currentDocSidebar === 'openapi') {
+      if (currentOpenApiFormat && currentDocSidebar === 'openapi') {
         const convertJsight = async () => {
           setOpenApiContent('');
           setOpenApiLinesCount(0);
