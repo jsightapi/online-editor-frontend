@@ -1,8 +1,7 @@
 import {runRequest} from 'utils/runRequest';
 import {JDocType} from 'types/exchange';
 import {v4 as uuidv4} from 'uuid';
-
-export const baseUrlApi = process.env.REACT_APP_API_URL || `${window.location.origin}/api`;
+import {convertJsightUrl} from './baseUrl';
 
 export const getJDocExchange = (body: string) => {
   const uuid = localStorage.getItem('uuid') || '';
@@ -16,5 +15,5 @@ export const getJDocExchange = (body: string) => {
     'Content-Type': 'text/plain',
   };
 
-  return runRequest<JDocType>(baseUrlApi, {body, headers});
+  return runRequest<JDocType>(`${convertJsightUrl}?to=jdoc-2.0`, {body, headers});
 };
