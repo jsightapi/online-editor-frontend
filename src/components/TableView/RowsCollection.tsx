@@ -34,16 +34,22 @@ export const RowsCollection = ({
     );
   } else if (content.tokenType === 'object' || content.tokenType === 'array') {
     const isArray = content.tokenType === 'array';
-    rows.push(
-      <TableRow
-        key={`${level}-${level === 0 ? 'root' : key}`}
-        keyValue={level === 0 ? '<root>' : String(key)}
-        level={level + 1}
-        property={content}
-        isNestedChild={isNestedChild}
-        isArrayLastItem={isArrayLastItem}
-      />
-    );
+
+    if (block === 'path' && level === 0) {
+      level--;
+    } else {
+      rows.push(
+        <TableRow
+          key={`${level}-${level === 0 ? 'root' : key}`}
+          keyValue={level === 0 ? '<root>' : String(key)}
+          level={level + 1}
+          property={content}
+          isNestedChild={isNestedChild}
+          isArrayLastItem={isArrayLastItem}
+        />
+      );
+    }
+
     content.children?.forEach((item, index) => {
       const childrenRows = RowsCollection({
         block,
@@ -59,7 +65,7 @@ export const RowsCollection = ({
     rows.push(
       <TableRow
         key={`${level}-${level === 0 ? 'root' : key}`}
-        keyValue={level === 0 ? '<root>' : String(key)}
+        keyValue={block !== 'path' && level === 0 ? '<root>' : String(key)}
         level={level + 1}
         property={content}
         isNestedChild={isNestedChild}
