@@ -23,7 +23,7 @@ FROM nginx:alpine
 COPY ./nginx/nginx.conf /etc/nginx/nginx.conf
 # Set working directory to nginx asset directory
 WORKDIR /usr/share/nginx/html
-# Remove default nginx static assetse
+# Remove default nginx static assets
 RUN rm -rf ./*
 # Copy from the stage 1
 COPY --from=builder /app/build .
