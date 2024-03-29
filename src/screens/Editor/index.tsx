@@ -289,7 +289,11 @@ export const EditorScreen = () => {
               <CurrentUrlProvider>
                 <SidebarContext.Provider value={sidebarValue}>
                   <Layout isEditor={isEditor}>
-                    <MainContent jdocExchange={jdocExchange} jsightCode={jsightCodeDebounced} />
+                    <MainContent
+                      jdocExchange={jdocExchange}
+                      jsightCode={jsightCodeDebounced}
+                      viewMode={viewMode}
+                    />
                   </Layout>
                 </SidebarContext.Provider>
               </CurrentUrlProvider>

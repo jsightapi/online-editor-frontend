@@ -64,8 +64,8 @@ export const RowsCollection = ({
   } else if (['number', 'string', 'boolean', 'null'].includes(content.tokenType)) {
     rows.push(
       <TableRow
-        key={`${level}-${level === 0 ? 'root' : key}`}
-        keyValue={block !== 'path' && level === 0 ? '<root>' : String(key)}
+        key={`${level}-${level === 0 && block !== 'path' ? 'root' : key}`}
+        keyValue={level === 0 && block !== 'path' ? '<root>' : String(key)}
         level={level + 1}
         property={content}
         isNestedChild={isNestedChild}

@@ -1,7 +1,6 @@
 import {runRequest} from 'utils/runRequest';
 import {v4 as uuidv4} from 'uuid';
-
-const url = `https://dev.editor.jsight.io/convert-jsight`;
+import {convertJsightUrl} from './baseUrl';
 
 export const convert = (jsightCode = '', format: string) => {
   const uuid = localStorage.getItem('uuid') || '';
@@ -18,7 +17,7 @@ export const convert = (jsightCode = '', format: string) => {
   const body = JSON.stringify(jsightCode);
 
   return runRequest<string>(
-    `${url}?to=openapi-3.0.3&format=${format}`,
+    `${convertJsightUrl}?to=openapi-3.0.3&format=${format}`,
     {body, headers},
     {responseAsText: true}
   );
