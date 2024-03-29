@@ -1,6 +1,6 @@
 # stage1 as builder
 FROM node:14-alpine as builder
-ARG API_URL="/parse-jsight"
+ARG API_URL=""
 ARG GTM_ID=""
 ARG CLOUD_URL="https://cloud.jsight.io"
 ARG CUSTOM_MESSAGE_URL="https://jsightapi.github.io/online-editor-custom-messages.json"
@@ -23,7 +23,7 @@ FROM nginx:alpine
 COPY ./nginx/nginx.conf /etc/nginx/nginx.conf
 # Set working directory to nginx asset directory
 WORKDIR /usr/share/nginx/html
-# Remove default nginx static assets
+# Remove default nginx static assetse
 RUN rm -rf ./*
 # Copy from the stage 1
 COPY --from=builder /app/build .
