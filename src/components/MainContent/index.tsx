@@ -1,6 +1,6 @@
 import React, {useRef, useState, useEffect, useContext, useMemo, Fragment} from 'react';
 import {Virtuoso, VirtuosoHandle} from 'react-virtuoso';
-import {compact, each, groupBy, isEqual, map, mapValues} from 'lodash';
+import {compact, each, groupBy, map, mapValues} from 'lodash';
 import {useParams} from 'react-router-dom';
 import {MainRouterParams} from 'types/router';
 import {ApiInfo} from 'components/ApiInfo';
