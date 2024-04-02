@@ -1,6 +1,6 @@
 # stage1 as builder
 FROM node:14-alpine as builder
-ARG API_URL=""
+ARG API_URL="/api"
 ARG GTM_ID=""
 ARG CLOUD_URL="https://cloud.jsight.io"
 ARG CUSTOM_MESSAGE_URL="https://jsightapi.github.io/online-editor-custom-messages.json"
