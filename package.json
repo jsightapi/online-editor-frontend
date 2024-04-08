@@ -34,6 +34,7 @@
     "web-vitals": "1.0.1",
     "yaml": "1.10.2"
   },
+  "proxy": "https://dev.editor.jsight.io",
   "scripts": {
     "start": "react-app-rewired start",
     "one": "./scripts/save-export-js.sh",
