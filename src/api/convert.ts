@@ -2,7 +2,7 @@ import {runRequest} from 'utils/runRequest';
 import {v4 as uuidv4} from 'uuid';
 import {convertJsightUrl} from './baseUrl';
 
-export const convert = (jsightCode = '', format: string) => {
+export const convert = (body = '', format: string) => {
   const uuid = localStorage.getItem('uuid') || '';
 
   if (!uuid) {
@@ -13,8 +13,6 @@ export const convert = (jsightCode = '', format: string) => {
     'X-Browser-UUID': uuid,
     'Content-Type': 'text/plain',
   };
-
-  const body = JSON.stringify(jsightCode);
 
   return runRequest<string>(
     `${convertJsightUrl}?to=openapi-3.0.3&format=${format}`,
