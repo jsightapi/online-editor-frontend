@@ -18,6 +18,11 @@ import {JsonRpcResource} from 'components/Resource/JsonRpc';
 import clsx from 'clsx';
 import {convert} from 'api/convert';
 import {editorModeType} from 'types';
+import {Button} from 'components/Button';
+
+import IconCopy from 'assets/images/icons/copy.svg';
+import {toast} from 'react-toastify';
+import {notificationIds} from 'utils/notificationIds';
 
 type SchemaPropertyType =
   | 'collapsedRules'
@@ -59,6 +64,30 @@ export const MainContent = React.memo(({jdocExchange, jsightCode, viewMode}: Mai
   window['mainContent'] = virtuosoRef;
 
   const showRightSidebar = useMemo(() => !!currentDocSidebar, [currentDocSidebar]);
+
+  const copyToClipboard = () => {
+    if (navigator && navigator.clipboard && navigator.clipboard.writeText && openApiContent) {
+      navigator.clipboard.writeText(openApiContent);
+
+      toast.success('OpenAPI copied', {
+        toastId: notificationIds.SUCCESS_MESSAGE_DEFAULT_ID,
+        position: 'bottom-center',
+        className: 'notification-success success',
+        autoClose: 3000,
+        hideProgressBar: true,
+        closeButton: false,
+        closeOnClick: false,
+        pauseOnHover: false,
+        draggable: false,
+        progress: undefined,
+        icon: <i className="icon-check" />,
+      });
+
+      return Promise.resolve();
+    }
+
+    return Promise.reject('The Clipboard API is not available.');
+  };
 
   useEffect(() => {
     if (!currentUrl && path) {
@@ -356,6 +385,10 @@ export const MainContent = React.memo(({jdocExchange, jsightCode, viewMode}: Mai
               ))}
             </div>
             <pre className="openapi-content">{openApiContent}</pre>
+            <Button className="openapi-copy" title="Copy all" onClick={copyToClipboard}>
+              Copy all
+              <img src={IconCopy} alt="Copy all" />
+            </Button>
           </div>
         )}
         {(currentDocSidebar !== 'openapi' || viewMode === 'doc') && (
