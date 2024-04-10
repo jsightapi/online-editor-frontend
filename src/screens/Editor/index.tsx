@@ -300,12 +300,14 @@ export const EditorScreen = () => {
               {isEditor && (
                 <div className="side-panel right-side">
                   <div
-                    onClick={() => handleCurrentDocSidebar('openapi')}
+                    onClick={() =>
+                      currentDocSidebar !== 'openapi' && handleCurrentDocSidebar('openapi')
+                    }
                     className={clsx('side-panel-element', {
                       active: currentDocSidebar === 'openapi',
                     })}
                   >
-                    <img src={IconOpenAPI} /> OpenAPI
+                    <img src={IconOpenAPI} alt="OpenAPI" /> OpenAPI
                   </div>
                   <div
                     onClick={() => handleCurrentDocSidebar('htmldoc')}
@@ -313,7 +315,7 @@ export const EditorScreen = () => {
                       active: currentDocSidebar === 'htmldoc' || currentDocSidebar === 'rules',
                     })}
                   >
-                    <img src={IconHTMLDoc} /> HTML Doc
+                    <img src={IconHTMLDoc} alt="HTMLDoc" /> HTML Doc
                   </div>
                   <div
                     onClick={() =>
@@ -327,7 +329,7 @@ export const EditorScreen = () => {
                       currentDocSidebar === 'openapi' ? 'Not available while in OpenAPI view' : ''
                     }
                   >
-                    <img src={IconContents} /> Contents
+                    <img src={IconContents} alt="Contents" /> Contents
                   </div>
                 </div>
               )}

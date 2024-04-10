@@ -166,7 +166,6 @@ export const MainContent = React.memo(({jdocExchange, jsightCode, viewMode}: Mai
       const convert = async () => {
         try {
           const result = await convertJsight(jsightCode, 'openapi-3.0.3', currentOpenApiFormat);
-          console.log(result);
           setOpenApiContent(result as string);
           toast.dismiss();
         } catch (error) {
