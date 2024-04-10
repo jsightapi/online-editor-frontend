@@ -38,7 +38,6 @@ interface MainContentProps {
 }
 
 export const MainContent = React.memo(({jdocExchange, jsightCode, viewMode}: MainContentProps) => {
-  const divRef = useRef<HTMLDivElement | null>(null);
   const virtuosoRef = useRef<VirtuosoHandle>(null);
   const virtuosoScrollerRef = useRef<any>(null);
   const [selectedLine, setSelectedLine] = useState<SelectedLineType | null>(null);
@@ -168,8 +167,6 @@ export const MainContent = React.memo(({jdocExchange, jsightCode, viewMode}: Mai
 
     if (currentOpenApiFormat && currentDocSidebar === 'openapi') {
       const convertJsight = async () => {
-        setOpenApiContent('');
-        setOpenApiLinesCount(0);
         const result = await convert(jsightCode, currentOpenApiFormat);
         setOpenApiContent(result);
       };
@@ -342,11 +339,8 @@ export const MainContent = React.memo(({jdocExchange, jsightCode, viewMode}: Mai
   }, [jdocExchange]);
 
   useEffect(() => {
-    const lineHeight = parseInt(window.getComputedStyle(document.body).lineHeight);
-
-    if (divRef && divRef.current && lineHeight) {
-      setOpenApiLinesCount(Math.round(divRef?.current?.scrollHeight / lineHeight) - 2);
-    }
+    const count = openApiContent.match(new RegExp('\n', 'g'))?.length || 1;
+    setOpenApiLinesCount(count);
   }, [openApiContent]);
 
   const value = useMemo(
@@ -370,10 +364,7 @@ export const MainContent = React.memo(({jdocExchange, jsightCode, viewMode}: Mai
 
   return (
     <div className="main-content-wrapper">
-      <div
-        ref={divRef}
-        className={clsx('main-content', {scrollable: currentDocSidebar === 'openapi'})}
-      >
+      <div className={clsx('main-content', {scrollable: currentDocSidebar === 'openapi'})}>
         {currentDocSidebar === 'openapi' && viewMode !== 'doc' && (
           <div className="openapi-wrapper">
             <div className="openapi-lines">
