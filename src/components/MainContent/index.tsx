@@ -16,13 +16,14 @@ import './MainContent.styles.scss';
 import {JsonRpcHeader} from 'components/Resource/JsonRpc/JsonRpcHeader';
 import {JsonRpcResource} from 'components/Resource/JsonRpc';
 import clsx from 'clsx';
-import {convert} from 'api/convert';
-import {editorModeType} from 'types';
+import {editorModeType, ErrorType} from 'types';
 import {Button} from 'components/Button';
 
 import IconCopy from 'assets/images/icons/copy.svg';
 import {toast} from 'react-toastify';
 import {notificationIds} from 'utils/notificationIds';
+import {convertJsight} from 'api/convertJsight';
+import {showEditorError} from 'utils/showEditorError';
 
 type SchemaPropertyType =
   | 'collapsedRules'
@@ -56,7 +57,7 @@ export const MainContent = React.memo(({jdocExchange, jsightCode, viewMode}: Mai
   const [schemasData, setSchemasData] = useState<{[key: string]: SchemaData[]}>({});
   const [resourceState, setResourceState] = useState<ResourceState[]>([]);
 
-  const [openApiContent, setOpenApiContent] = useState('');
+  const [openApiContent, setOpenApiContent] = useState<string>('');
   const [openApiLinesCount, setOpenApiLinesCount] = useState<number | undefined>();
 
   // @ts-ignore
@@ -161,19 +162,25 @@ export const MainContent = React.memo(({jdocExchange, jsightCode, viewMode}: Mai
   }, []);
 
   useEffect(() => {
-    if (currentDocSidebar === 'content') {
-      setSelectedLine(null);
-    }
-
-    if (currentOpenApiFormat && currentDocSidebar === 'openapi') {
-      const convertJsight = async () => {
-        const result = await convert(jsightCode, currentOpenApiFormat);
-        setOpenApiContent(result);
+    if (currentOpenApiFormat) {
+      const convert = async () => {
+        try {
+          const result = await convertJsight(jsightCode, 'openapi-3.0.3', currentOpenApiFormat);
+          console.log(result);
+          setOpenApiContent(result as string);
+          toast.dismiss();
+        } catch (error) {
+          showEditorError(error as ErrorType, () => {
+            if (!(error as ErrorType).Line) {
+              return;
+            }
+          });
+        }
       };
 
-      convertJsight();
+      convert();
     }
-  }, [currentDocSidebar, currentOpenApiFormat, jsightCode]);
+  }, [currentOpenApiFormat, jsightCode]);
 
   const updateSchemaView = (keyBlock: string, value: any, property: SchemaPropertyType) => {
     setSchemasView((prev) => {

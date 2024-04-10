@@ -4,7 +4,6 @@ import {toast, ToastContainer} from 'react-toastify';
 import {Resizable} from 're-resizable';
 import {Editor} from 'components/Editor';
 import {useDebounce} from 'hooks/useDebounce';
-import {getJDocExchange} from 'api/getJDocExchange';
 import {JDocType} from 'types/exchange';
 import {MainContent} from 'components/MainContent';
 import {Layout} from 'components/Layout';
@@ -23,6 +22,7 @@ import {ErrorScreen} from 'screens/Error';
 import {SharingForm} from 'components/Modals/SharingForm';
 import 'react-toastify/dist/ReactToastify.css';
 import {AnnouncementBar} from 'components/AnnouncementBar';
+import {convertJsight} from 'api/convertJsight';
 
 import IconOpenAPI from 'assets/images/icons/openapi.svg';
 import IconHTMLDoc from 'assets/images/icons/htmldoc.svg';
@@ -108,8 +108,8 @@ export const EditorScreen = () => {
       (async () => {
         if (!isExport) {
           try {
-            const jdocExchange = await getJDocExchange(jsightCodeDebounced);
-            startTransition(() => setJdocExchange(jdocExchange));
+            const jdocExchange = await convertJsight(jsightCodeDebounced, 'jdoc-2.0');
+            startTransition(() => setJdocExchange(jdocExchange as JDocType));
             toast.dismiss();
             setErrorRow(null);
           } catch (error) {

@@ -1,7 +1,7 @@
 import {useContext} from 'react';
 import {find} from 'lodash';
 import {JDocContext} from 'store';
-import {convert} from 'api/convert';
+import {convertJsight} from 'api/convertJsight';
 
 export function useExport() {
   const {jdocExchange: jdocData, jsightCode} = useContext(JDocContext);
@@ -119,16 +119,16 @@ export function useExport() {
   };
 
   const saveJson = async () => {
-    const json = await convert(jsightCode, 'json');
+    const json = await convertJsight(jsightCode, 'openapi-3.0.3', 'json');
     if (json) {
-      save(json, 'jsight-document.json', 'text/json');
+      save(json as string, 'jsight-document.json', 'text/json');
     }
   };
 
   const saveYaml = async () => {
-    const yaml = await convert(jsightCode, 'yaml');
+    const yaml = await convertJsight(jsightCode, 'openapi-3.0.3', 'yaml');
     if (yaml) {
-      save(yaml, 'jsight-document.yaml', 'application/yaml');
+      save(yaml as string, 'jsight-document.yaml', 'application/yaml');
     }
   };
 
