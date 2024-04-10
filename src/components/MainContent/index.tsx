@@ -169,6 +169,7 @@ export const MainContent = React.memo(({jdocExchange, jsightCode, viewMode}: Mai
           setIsOpenApiContentLoading(true);
           const result = await convertJsight(jsightCode, 'openapi-3.0.3', currentOpenApiFormat);
           setOpenApiContent(result as string);
+          setIsOpenApiContentLoading(false);
           toast.dismiss();
         } catch (error) {
           showEditorError(error as ErrorType, () => {
@@ -176,8 +177,6 @@ export const MainContent = React.memo(({jdocExchange, jsightCode, viewMode}: Mai
               return;
             }
           });
-        } finally {
-          setIsOpenApiContentLoading(false);
         }
       };
 
