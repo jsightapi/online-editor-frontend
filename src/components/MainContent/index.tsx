@@ -59,6 +59,7 @@ export const MainContent = React.memo(({jdocExchange, jsightCode, viewMode}: Mai
 
   const [openApiContent, setOpenApiContent] = useState<string>('');
   const [openApiLinesCount, setOpenApiLinesCount] = useState<number | undefined>();
+  const [isOpenApiContentLoading, setIsOpenApiContentLoading] = useState<boolean>(false);
 
   // @ts-ignore
   window['mainContent'] = virtuosoRef;
@@ -165,6 +166,7 @@ export const MainContent = React.memo(({jdocExchange, jsightCode, viewMode}: Mai
     if (currentOpenApiFormat) {
       const convert = async () => {
         try {
+          setIsOpenApiContentLoading(true);
           const result = await convertJsight(jsightCode, 'openapi-3.0.3', currentOpenApiFormat);
           setOpenApiContent(result as string);
           toast.dismiss();
@@ -174,6 +176,8 @@ export const MainContent = React.memo(({jdocExchange, jsightCode, viewMode}: Mai
               return;
             }
           });
+        } finally {
+          setIsOpenApiContentLoading(false);
         }
       };
 
@@ -370,7 +374,12 @@ export const MainContent = React.memo(({jdocExchange, jsightCode, viewMode}: Mai
 
   return (
     <div className="main-content-wrapper">
-      <div className={clsx('main-content', {scrollable: currentDocSidebar === 'openapi'})}>
+      <div
+        className={clsx('main-content', {
+          scrollable: currentDocSidebar === 'openapi',
+          disabled: isOpenApiContentLoading,
+        })}
+      >
         {currentDocSidebar === 'openapi' && viewMode !== 'doc' && (
           <div className="openapi-wrapper">
             <div className="openapi-lines">

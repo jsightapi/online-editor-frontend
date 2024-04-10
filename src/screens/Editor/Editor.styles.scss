@@ -63,6 +63,13 @@
         overflow-y: scroll;
       }
 
+      &.disabled {
+        overflow: hidden;
+        opacity: 0.5;
+        pointer-events: none;
+        user-select: none;
+      }
+
       .main-body {
         padding: 0;
         background-color: #ffffff;
