@@ -100,7 +100,7 @@
 
 .openapi-copy.btn {
   position: absolute;
-  bottom: 50px;
+  bottom: 20px;
   right: 50px;
   width: auto;
   padding: 11px 23px;
@@ -108,6 +108,7 @@
   border: 1px solid $secondary-stroke;
   background: $main-stroke;
   color: $main-text;
+  opacity: 0.8;
 }
 
 .openapi-copy img {
