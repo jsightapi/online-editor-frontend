@@ -16,13 +16,14 @@ import './MainContent.styles.scss';
 import {JsonRpcHeader} from 'components/Resource/JsonRpc/JsonRpcHeader';
 import {JsonRpcResource} from 'components/Resource/JsonRpc';
 import clsx from 'clsx';
-import {convert} from 'api/convert';
-import {editorModeType} from 'types';
+import {editorModeType, ErrorType} from 'types';
 import {Button} from 'components/Button';
 
 import IconCopy from 'assets/images/icons/copy.svg';
 import {toast} from 'react-toastify';
 import {notificationIds} from 'utils/notificationIds';
+import {convertJsight} from 'api/convertJsight';
+import {showEditorError} from 'utils/showEditorError';
 
 type SchemaPropertyType =
   | 'collapsedRules'
@@ -38,7 +39,6 @@ interface MainContentProps {
 }
 
 export const MainContent = React.memo(({jdocExchange, jsightCode, viewMode}: MainContentProps) => {
-  const divRef = useRef<HTMLDivElement | null>(null);
   const virtuosoRef = useRef<VirtuosoHandle>(null);
   const virtuosoScrollerRef = useRef<any>(null);
   const [selectedLine, setSelectedLine] = useState<SelectedLineType | null>(null);
@@ -57,7 +57,7 @@ export const MainContent = React.memo(({jdocExchange, jsightCode, viewMode}: Mai
   const [schemasData, setSchemasData] = useState<{[key: string]: SchemaData[]}>({});
   const [resourceState, setResourceState] = useState<ResourceState[]>([]);
 
-  const [openApiContent, setOpenApiContent] = useState('');
+  const [openApiContent, setOpenApiContent] = useState<string>('');
   const [openApiLinesCount, setOpenApiLinesCount] = useState<number | undefined>();
 
   // @ts-ignore
@@ -162,21 +162,24 @@ export const MainContent = React.memo(({jdocExchange, jsightCode, viewMode}: Mai
   }, []);
 
   useEffect(() => {
-    if (currentDocSidebar === 'content') {
-      setSelectedLine(null);
-    }
-
-    if (currentOpenApiFormat && currentDocSidebar === 'openapi') {
-      const convertJsight = async () => {
-        setOpenApiContent('');
-        setOpenApiLinesCount(0);
-        const result = await convert(jsightCode, currentOpenApiFormat);
-        setOpenApiContent(result);
+    if (currentOpenApiFormat) {
+      const convert = async () => {
+        try {
+          const result = await convertJsight(jsightCode, 'openapi-3.0.3', currentOpenApiFormat);
+          setOpenApiContent(result as string);
+          toast.dismiss();
+        } catch (error) {
+          showEditorError(error as ErrorType, () => {
+            if (!(error as ErrorType).Line) {
+              return;
+            }
+          });
+        }
       };
 
-      convertJsight();
+      convert();
     }
-  }, [currentDocSidebar, currentOpenApiFormat, jsightCode]);
+  }, [currentOpenApiFormat, jsightCode]);
 
   const updateSchemaView = (keyBlock: string, value: any, property: SchemaPropertyType) => {
     setSchemasView((prev) => {
@@ -342,11 +345,8 @@ export const MainContent = React.memo(({jdocExchange, jsightCode, viewMode}: Mai
   }, [jdocExchange]);
 
   useEffect(() => {
-    const lineHeight = parseInt(window.getComputedStyle(document.body).lineHeight);
-
-    if (divRef && divRef.current && lineHeight) {
-      setOpenApiLinesCount(Math.round(divRef?.current?.scrollHeight / lineHeight) - 2);
-    }
+    const count = openApiContent.match(new RegExp('\n', 'g'))?.length || 1;
+    setOpenApiLinesCount(count);
   }, [openApiContent]);
 
   const value = useMemo(
@@ -370,10 +370,7 @@ export const MainContent = React.memo(({jdocExchange, jsightCode, viewMode}: Mai
 
   return (
     <div className="main-content-wrapper">
-      <div
-        ref={divRef}
-        className={clsx('main-content', {scrollable: currentDocSidebar === 'openapi'})}
-      >
+      <div className={clsx('main-content', {scrollable: currentDocSidebar === 'openapi'})}>
         {currentDocSidebar === 'openapi' && viewMode !== 'doc' && (
           <div className="openapi-wrapper">
             <div className="openapi-lines">

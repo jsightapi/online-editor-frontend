@@ -42,7 +42,7 @@
   No more multiple design iterations and edits required. All you need is to share the screen between
   the participants and come up with an API together right in the Editor. All this is possible thanks
   to the compactness and simplicity of the JSight language.  
-  [Compare JSight with Open API](#scroll--jsight-api-language).
+  [Compare JSight with OpenAPI](#scroll--jsight-api-language).
 
 Supported standards: [HTTP REST](#scroll--jsight-api-language), [JSON-RPC
 2.0](#json-rpc-20-new-feature).

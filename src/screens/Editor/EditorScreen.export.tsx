@@ -10,10 +10,10 @@ import {Contacts} from 'components/Modals/Contacts';
 import {screenWidthMultiplier} from 'utils/screenWidthMultiplier';
 import {editorModeType, ErrorType, SidebarDocType} from 'types';
 import {JDocContext, SidebarContext, EditorContext, CurrentUrlProvider} from 'store';
-import {getJDocExchange} from 'api/getJDocExchange';
 import {showEditorError} from 'utils/showEditorError';
 import {useDebounce} from 'hooks/useDebounce';
 import {initCats} from 'screens/Editor/initCats';
+import {convertJsight} from 'api/convertJsight';
 
 const {isExport} = window as any;
 
@@ -54,8 +54,8 @@ export const EditorScreen = () => {
     (async () => {
       if (!isExport) {
         try {
-          const jdocExchange = await getJDocExchange(jsightCodeDebounced);
-          startTransition(() => setJdocExchange(jdocExchange));
+          const jdocExchange = await convertJsight(jsightCodeDebounced, 'jdoc-2.0');
+          startTransition(() => setJdocExchange(jdocExchange as JDocType));
           toast.dismiss();
         } catch (error) {
           showEditorError(error as ErrorType, () => {
