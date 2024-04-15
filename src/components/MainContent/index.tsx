@@ -35,12 +35,23 @@ type SchemaPropertyType =
 interface MainContentProps {
   jdocExchange?: JDocType;
   jdocExchangeError?: boolean;
+  isJdocLoading?: boolean;
   jsightCode?: string;
   viewMode?: editorModeType;
+  setScrollToRow?: React.Dispatch<React.SetStateAction<boolean>>;
+  setErrorRow?: React.Dispatch<React.SetStateAction<number | null>>;
 }
 
 export const MainContent = React.memo((props: MainContentProps) => {
-  const {jdocExchange, jdocExchangeError, jsightCode, viewMode} = props;
+  const {
+    jdocExchange,
+    jdocExchangeError,
+    isJdocLoading,
+    jsightCode,
+    viewMode,
+    setScrollToRow,
+    setErrorRow,
+  } = props;
   const virtuosoRef = useRef<VirtuosoHandle>(null);
   const virtuosoScrollerRef = useRef<any>(null);
   const [selectedLine, setSelectedLine] = useState<SelectedLineType | null>(null);
@@ -181,18 +192,23 @@ export const MainContent = React.memo((props: MainContentProps) => {
           setOpenApiContent(result as string);
           setIsOpenApiContentLoading(false);
           toast.dismiss();
+          // setErrorRow(null);
         } catch (error) {
           showEditorError(error as ErrorType, notificationIds.ERROR_MESSAGE_OPENAPI_ID, () => {
             if (!(error as ErrorType).Line) {
               return;
             }
+
+            setScrollToRow && setScrollToRow(true);
+            setTimeout(() => setScrollToRow && setScrollToRow(false), 500);
           });
+          (error as ErrorType).Line && setErrorRow && setErrorRow((error as ErrorType).Line);
         }
       };
 
       convert();
     }
-  }, [currentDocSidebar, currentOpenApiFormat, jsightCode]);
+  }, [currentDocSidebar, currentOpenApiFormat, jsightCode, setErrorRow, setScrollToRow]);
 
   const updateSchemaView = (keyBlock: string, value: any, property: SchemaPropertyType) => {
     setSchemasView((prev) => {
@@ -233,6 +249,7 @@ export const MainContent = React.memo((props: MainContentProps) => {
   };
 
   useEffect(() => {
+    console.log(jdocExchange);
     if (jdocExchange) {
       const {info, servers, tags, interactions, userTypes, userEnums} = jdocExchange;
       const jdocList: JSX.Element[] = [];
@@ -385,7 +402,8 @@ export const MainContent = React.memo((props: MainContentProps) => {
     scrollable: currentDocSidebar === 'openapi',
     disabled:
       (currentDocSidebar === 'openapi' && isOpenApiContentLoading) ||
-      (currentDocSidebar === 'htmldoc' && jdocExchangeError),
+      (currentDocSidebar === 'htmldoc' && jdocExchangeError) ||
+      (currentDocSidebar === 'htmldoc' && isJdocLoading),
   });
 
   return (

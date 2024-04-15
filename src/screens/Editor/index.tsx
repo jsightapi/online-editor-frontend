@@ -57,6 +57,7 @@ export const EditorScreen = () => {
   const [error, setError] = useState<ErrorSimpleType | null>(null);
   const [disableSharing, setDisableSharing] = useState<boolean>(true);
   const isEditor = useMemo(() => viewMode === 'editor', [viewMode]);
+  const [isJdocLoading, setIsJdocLoading] = useState<boolean>(false);
   const [isShowAnnouncementBar, setIsShowAnnouncementBar] = useState<boolean>(
     !localStorage.getItem('announcement.bar.hidden')
   );
@@ -110,11 +111,13 @@ export const EditorScreen = () => {
       (async () => {
         if (!isExport) {
           try {
+            setIsJdocLoading(true);
             const jdocExchange = await convertJsight(jsightCodeDebounced, 'jdoc-2.0');
             startTransition(() => setJdocExchange(jdocExchange as JDocType));
             toast.dismiss();
             setErrorRow(null);
             setJdocExchangeError(false);
+            setIsJdocLoading(false);
           } catch (error) {
             showEditorError(error as ErrorType, notificationIds.ERROR_MESSAGE_HTMLDOC_ID, () => {
               if (!(error as ErrorType).Line) {
@@ -297,6 +300,9 @@ export const EditorScreen = () => {
                       jdocExchangeError={jdocExchangeError}
                       jsightCode={jsightCodeDebounced}
                       viewMode={viewMode}
+                      isJdocLoading={isJdocLoading}
+                      setScrollToRow={setScrollToRow}
+                      setErrorRow={setErrorRow}
                     />
                   </Layout>
                 </SidebarContext.Provider>
