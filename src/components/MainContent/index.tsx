@@ -192,7 +192,7 @@ export const MainContent = React.memo((props: MainContentProps) => {
           setOpenApiContent(result as string);
           setIsOpenApiContentLoading(false);
           toast.dismiss();
-          // setErrorRow(null);
+          setErrorRow && setErrorRow(null);
         } catch (error) {
           showEditorError(error as ErrorType, notificationIds.ERROR_MESSAGE_OPENAPI_ID, () => {
             if (!(error as ErrorType).Line) {
