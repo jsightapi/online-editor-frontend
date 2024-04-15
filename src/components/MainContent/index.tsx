@@ -34,11 +34,13 @@ type SchemaPropertyType =
 
 interface MainContentProps {
   jdocExchange?: JDocType;
+  jdocExchangeError?: boolean;
   jsightCode?: string;
   viewMode?: editorModeType;
 }
 
-export const MainContent = React.memo(({jdocExchange, jsightCode, viewMode}: MainContentProps) => {
+export const MainContent = React.memo((props: MainContentProps) => {
+  const {jdocExchange, jdocExchangeError, jsightCode, viewMode} = props;
   const virtuosoRef = useRef<VirtuosoHandle>(null);
   const virtuosoScrollerRef = useRef<any>(null);
   const [selectedLine, setSelectedLine] = useState<SelectedLineType | null>(null);
@@ -163,7 +165,7 @@ export const MainContent = React.memo(({jdocExchange, jsightCode, viewMode}: Mai
   }, []);
 
   useEffect(() => {
-    if (currentOpenApiFormat) {
+    if (currentDocSidebar === 'openapi' && currentOpenApiFormat) {
       const convert = async () => {
         try {
           setIsOpenApiContentLoading(true);
@@ -182,7 +184,7 @@ export const MainContent = React.memo(({jdocExchange, jsightCode, viewMode}: Mai
 
       convert();
     }
-  }, [currentOpenApiFormat, jsightCode]);
+  }, [currentDocSidebar, currentOpenApiFormat, jsightCode]);
 
   const updateSchemaView = (keyBlock: string, value: any, property: SchemaPropertyType) => {
     setSchemasView((prev) => {
@@ -371,14 +373,16 @@ export const MainContent = React.memo(({jdocExchange, jsightCode, viewMode}: Mai
     [selectedLine, schemasView, schemasData, resourceState]
   );
 
+  const mainContentClasses = clsx('main-content', {
+    scrollable: currentDocSidebar === 'openapi',
+    disabled:
+      (currentDocSidebar === 'openapi' && isOpenApiContentLoading) ||
+      (currentDocSidebar === 'htmldoc' && jdocExchangeError),
+  });
+
   return (
     <div className="main-content-wrapper">
-      <div
-        className={clsx('main-content', {
-          scrollable: currentDocSidebar === 'openapi',
-          disabled: isOpenApiContentLoading,
-        })}
-      >
+      <div className={mainContentClasses}>
         {currentDocSidebar === 'openapi' && viewMode !== 'doc' && (
           <div className="openapi-wrapper">
             <div className="openapi-lines">

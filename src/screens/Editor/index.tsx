@@ -40,6 +40,7 @@ export const EditorScreen = () => {
   const [jsightCode, setJsightCode] = useState<string>(
     key ? '' : localStorage.getItem('jsightCode') || initCats
   );
+  const [jdocExchangeError, setJdocExchangeError] = useState(false);
   // left sidebar
   const [codeContentsSidebar] = useState<boolean>(false);
   //documentation sidebar on the right
@@ -112,6 +113,7 @@ export const EditorScreen = () => {
             startTransition(() => setJdocExchange(jdocExchange as JDocType));
             toast.dismiss();
             setErrorRow(null);
+            setJdocExchangeError(false);
           } catch (error) {
             showEditorError(error as ErrorType, () => {
               if (!(error as ErrorType).Line) {
@@ -122,6 +124,7 @@ export const EditorScreen = () => {
               setTimeout(() => setScrollToRow(false), 500);
             });
             (error as ErrorType).Line && setErrorRow((error as ErrorType).Line);
+            setJdocExchangeError(true);
           } finally {
             localStorage.setItem('jsightCode', jsightCodeDebounced);
           }
@@ -291,6 +294,7 @@ export const EditorScreen = () => {
                   <Layout isEditor={isEditor}>
                     <MainContent
                       jdocExchange={jdocExchange}
+                      jdocExchangeError={jdocExchangeError}
                       jsightCode={jsightCodeDebounced}
                       viewMode={viewMode}
                     />
