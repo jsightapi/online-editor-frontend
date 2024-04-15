@@ -19,17 +19,17 @@ const showErrorOptions: ToastOptions = {
   icon: IconError,
 };
 
-export const showEditorError = (error: ErrorType, setScrollToRow: () => void) => {
+export const showEditorError = (error: ErrorType, toastId: number, setScrollToRow: () => void) => {
   const title = getErrorTitle(error);
   const message = getError(error);
 
-  if (!toast.isActive(ERROR_MESSAGE_DEFAULT_ID)) {
+  if (!toast.isActive(toastId)) {
     toast.warning(
       <EditorErrorNotification message={message} title={title} setScrollToRow={setScrollToRow} />,
-      showErrorOptions
+      {...showErrorOptions, toastId}
     );
   } else {
-    toast.update(ERROR_MESSAGE_DEFAULT_ID, {
+    toast.update(toastId, {
       render: (
         <EditorErrorNotification message={message} title={title} setScrollToRow={setScrollToRow} />
       ),

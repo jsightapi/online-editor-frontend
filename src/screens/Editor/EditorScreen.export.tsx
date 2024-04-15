@@ -14,6 +14,7 @@ import {showEditorError} from 'utils/showEditorError';
 import {useDebounce} from 'hooks/useDebounce';
 import {initCats} from 'screens/Editor/initCats';
 import {convertJsight} from 'api/convertJsight';
+import {notificationIds} from 'utils/notificationIds';
 
 const {isExport} = window as any;
 
@@ -58,7 +59,7 @@ export const EditorScreen = () => {
           startTransition(() => setJdocExchange(jdocExchange as JDocType));
           toast.dismiss();
         } catch (error) {
-          showEditorError(error as ErrorType, () => {
+          showEditorError(error as ErrorType, notificationIds.ERROR_MESSAGE_DEFAULT_ID, () => {
             if (!(error as ErrorType).Line) {
               return;
             }

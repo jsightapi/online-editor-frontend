@@ -165,6 +165,14 @@ export const MainContent = React.memo((props: MainContentProps) => {
   }, []);
 
   useEffect(() => {
+    if (currentDocSidebar === 'openapi') {
+      toast.dismiss(notificationIds.ERROR_MESSAGE_HTMLDOC_ID);
+    } else if (currentDocSidebar === 'htmldoc') {
+      toast.dismiss(notificationIds.ERROR_MESSAGE_OPENAPI_ID);
+    }
+  }, [currentDocSidebar]);
+
+  useEffect(() => {
     if (currentDocSidebar === 'openapi' && currentOpenApiFormat) {
       const convert = async () => {
         try {
@@ -174,7 +182,7 @@ export const MainContent = React.memo((props: MainContentProps) => {
           setIsOpenApiContentLoading(false);
           toast.dismiss();
         } catch (error) {
-          showEditorError(error as ErrorType, () => {
+          showEditorError(error as ErrorType, notificationIds.ERROR_MESSAGE_OPENAPI_ID, () => {
             if (!(error as ErrorType).Line) {
               return;
             }

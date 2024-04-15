@@ -29,6 +29,7 @@ import IconHTMLDoc from 'assets/images/icons/htmldoc.svg';
 import IconContents from 'assets/images/icons/contents.svg';
 
 import './Editor.styles.scss';
+import {notificationIds} from 'utils/notificationIds';
 
 const {isExport} = window as any;
 
@@ -105,7 +106,7 @@ export const EditorScreen = () => {
   });
 
   useEffect(() => {
-    if (jsightCodeDebounced !== undefined) {
+    if (currentDocSidebar === 'htmldoc' && jsightCodeDebounced !== undefined) {
       (async () => {
         if (!isExport) {
           try {
@@ -115,7 +116,7 @@ export const EditorScreen = () => {
             setErrorRow(null);
             setJdocExchangeError(false);
           } catch (error) {
-            showEditorError(error as ErrorType, () => {
+            showEditorError(error as ErrorType, notificationIds.ERROR_MESSAGE_HTMLDOC_ID, () => {
               if (!(error as ErrorType).Line) {
                 return;
               }
@@ -134,8 +135,7 @@ export const EditorScreen = () => {
         }
       })();
     }
-    // eslint-disable-next-line
-  }, [jsightCodeDebounced]);
+  }, [currentDocSidebar, jsightCodeDebounced]);
 
   const classes = useMemo(
     () =>
