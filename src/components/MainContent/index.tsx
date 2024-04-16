@@ -375,8 +375,8 @@ export const MainContent = React.memo((props: MainContentProps) => {
   }, [jdocExchange]);
 
   useEffect(() => {
-    const count = openApiContent.match(new RegExp('\n', 'g'))?.length || 1;
-    setOpenApiLinesCount(count);
+    const count = openApiContent.match(new RegExp('\n', 'g'))?.length || 0;
+    setOpenApiLinesCount(count + 1);
   }, [openApiContent]);
 
   const value = useMemo(
