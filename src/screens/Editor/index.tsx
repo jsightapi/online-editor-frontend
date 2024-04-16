@@ -322,7 +322,10 @@ export const EditorScreen = () => {
                   <div
                     onClick={() => handleCurrentDocSidebar('htmldoc')}
                     className={clsx('side-panel-element', {
-                      active: currentDocSidebar === 'htmldoc' || currentDocSidebar === 'rules',
+                      active:
+                        currentDocSidebar === 'htmldoc' ||
+                        currentDocSidebar === 'rules' ||
+                        currentDocSidebar === 'content',
                     })}
                   >
                     <img src={IconHTMLDoc} alt="HTMLDoc" /> HTML Doc
