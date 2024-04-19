@@ -249,7 +249,6 @@ export const MainContent = React.memo((props: MainContentProps) => {
   };
 
   useEffect(() => {
-    console.log(jdocExchange);
     if (jdocExchange) {
       const {info, servers, tags, interactions, userTypes, userEnums} = jdocExchange;
       const jdocList: JSX.Element[] = [];

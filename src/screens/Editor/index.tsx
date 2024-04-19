@@ -97,6 +97,15 @@ export const EditorScreen = () => {
   };
 
   useEffect(() => {
+    const isMobile = /Mobi|Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(
+      navigator.userAgent
+    );
+    if (isMobile) {
+      setCurrentDocSidebar('openapi');
+    }
+  }, []);
+
+  useEffect(() => {
     const changeWidth = () => {
       const width = getEditorWidth(screenWidth);
       localStorage.setItem('editorWidth', width.toString());
