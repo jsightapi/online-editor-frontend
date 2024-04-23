@@ -10,7 +10,7 @@
     - (Optional) Add another parameter(s), e.g.:
 
       | Type    | Name              | Value                                       | Description                                                                                                                                 |
-             |---------|-------------------|---------------------------------------------|---------------------------------------------------------------------------------------------------------------------------------------------|
+      |---------|-------------------|---------------------------------------------|---------------------------------------------------------------------------------------------------------------------------------------------|
       | string  | env               | `dev` (or `stage`)                          | To run tests on the corresponding environment.                                                                                              |
       | string  | maven-test        | internal name of the test class/test method | To run a specific test(s), e.g. `CodeViewTest`.                                                                                             |
       | integer | junit-parallelism | `2` (`3`, `4`, etc)                         | For a number of threads, to run tests in parallel.                                                                                          |
