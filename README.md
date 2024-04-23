@@ -1892,7 +1892,8 @@ https://github.com/jsightapi/jsight-server/blob/main/jsight/jsight-server-api.js
 
 ## :test_tube: &nbsp; Testing
 
-The manual tests are available here: [tests/manual-tests/](./tests/manual-tests/).
+- The **manual tests** are available here: [tests/manual-tests/](./tests/manual-tests/).
+- The **automated tests** can be run via dedicated CI/CD pipelines. See more info about [running automated tests here](./tests/running-automated-tests-ci.md).
 
 <div>  
   &nbsp; 
