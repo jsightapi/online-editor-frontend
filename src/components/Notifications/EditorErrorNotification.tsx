@@ -2,7 +2,7 @@ import React, {useCallback, useEffect, useRef} from 'react';
 import './Notifications.styles.scss';
 
 export interface CustomNotificationsProps {
-  message: string | JSX.Element;
+  message: string;
   title?: string;
   setScrollToRow?: () => void;
 }
@@ -37,7 +37,7 @@ export const EditorErrorNotification = ({
   return (
     <div ref={notificationRef} className="notification-error-inner">
       {title && <div className="title">{title}</div>}
-      <div className="message">{message}</div>
+      <div className="message" dangerouslySetInnerHTML={{__html: message}} />
     </div>
   );
 };

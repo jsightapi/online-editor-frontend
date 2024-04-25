@@ -5,6 +5,7 @@ import {getError, getErrorTitle} from 'utils/getError';
 import {notificationIds} from 'utils/notificationIds';
 import {EditorErrorNotification} from 'components/Notifications/EditorErrorNotification';
 import {IconError} from 'components/Notifications/IconError';
+import {updateMessageWithUrl} from './updateMessageWithUrl';
 
 const {ERROR_MESSAGE_DEFAULT_ID} = notificationIds;
 
@@ -21,17 +22,26 @@ const showErrorOptions: ToastOptions = {
 
 export const showEditorError = (error: ErrorType, toastId: number, setScrollToRow: () => void) => {
   const title = getErrorTitle(error);
-  const message = getError(error);
+  const errorMessage = getError(error);
+  const messageWithLink = updateMessageWithUrl(errorMessage);
 
   if (!toast.isActive(toastId)) {
     toast.warning(
-      <EditorErrorNotification message={message} title={title} setScrollToRow={setScrollToRow} />,
+      <EditorErrorNotification
+        message={messageWithLink}
+        title={title}
+        setScrollToRow={setScrollToRow}
+      />,
       {...showErrorOptions, toastId}
     );
   } else {
     toast.update(toastId, {
       render: (
-        <EditorErrorNotification message={message} title={title} setScrollToRow={setScrollToRow} />
+        <EditorErrorNotification
+          message={messageWithLink}
+          title={title}
+          setScrollToRow={setScrollToRow}
+        />
       ),
     });
   }
