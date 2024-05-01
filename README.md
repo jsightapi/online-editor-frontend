@@ -200,7 +200,7 @@ Linux:
 SERVER_HOST_PORT=8080 docker-compose -f jsight-server-docker-compose.yml up -d
 ```
 
-Windows Powershell:
+Windows PowerShell:
 
 ```
 $env:SERVER_HOST_PORT=8080; docker-compose -f jsight-server-docker-compose.yml up -d --build
@@ -385,7 +385,7 @@ Linux:
 FE_HOST_PORT=80 SERVER_HOST_PORT=8080 docker-compose -f docker-compose.yml up -d --build
 ```
 
-Windows Powershell:
+Windows PowerShell:
 
 ```
 $env:FE_HOST_PORT=80; $env:SERVER_HOST_PORT=8080; docker-compose -f docker-compose.yml up -d --build
