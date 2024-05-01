@@ -194,8 +194,16 @@ Start JSight Server (on port 8080):
 </td>
 <td>
 
+Linux:
+
 ```
 SERVER_HOST_PORT=8080 docker-compose -f jsight-server-docker-compose.yml up -d
+```
+
+Windows Powershell:
+
+```
+$env:SERVER_HOST_PORT=8080; docker-compose -f jsight-server-docker-compose.yml up -d --build
 ```
 
 </td>
@@ -371,8 +379,16 @@ Build and start JSight Online Editor:
 </td>
 <td>
 
+Linux:
+
 ```
 FE_HOST_PORT=80 SERVER_HOST_PORT=8080 docker-compose -f docker-compose.yml up -d --build
+```
+
+Windows Powershell:
+
+```
+$env:FE_HOST_PORT=80; $env:SERVER_HOST_PORT=8080; docker-compose -f docker-compose.yml up -d --build
 ```
 
 </td>
