@@ -80,6 +80,8 @@
    all steps in the same browser window without refresh.
 10. **Update not last version.** Get link with several versions (e.g. 3). Try to reproduce basic
     share test cases 2 and 3, but each time use not last version of the link (e.g. 1).
+11. **OpenAPI**. Repeat all the basic tests, but each time before pressing the Share button, switch
+    to the OpenAPI tab.
 
 # Error cases
 

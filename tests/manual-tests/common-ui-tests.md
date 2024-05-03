@@ -73,8 +73,10 @@ Code content should not be changed.
    something in the code. Check that documentation stays in the same place after refresh and do not
    scroll back to the previous position.
 6. Check that Contents works fine when there are a huge amount of items (vertical scroll must work).
+7. Try to change a JSight code, when the Contents tab is opened, and check, that the HTML doc is
+   updated.
 
-# Give us a star popup panel
+## Give us a star popup panel
 
 1. Check the github link (must be opened in the new tab).
 2. Close the popup.

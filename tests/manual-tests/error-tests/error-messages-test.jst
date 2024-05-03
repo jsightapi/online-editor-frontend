@@ -19,6 +19,9 @@ SERVER @a
   BaseUrl "url"
   # BaseUrl "url" # DirectiveBaseURLAlreadyDefined
 
+# GET # Path not found
+
+
 URL /1
 # URL /1 # NotUniquePath
 
@@ -29,8 +32,6 @@ URL /1
 # INCLUDE one\two # IncludeSeparatorErr
 
 
-# GET # Path not found
-
 # Body @scalar # incorrect directive context
 
 GET /{id}
@@ -38,7 +39,7 @@ GET /{id}
   {
     "id": 1
   }
-  # Request empty // annotation
+  # Request empty // annotation is not allowed
   # Tags # RequiredParameterNotSpecified
   # Tags @tag # Tag not found
   # 200 @not_found # Type not found
@@ -70,7 +71,7 @@ TYPE @scalar # DuplicateNames
 POST /{id}/{par2}
   Path
   {
-    # "id": 1 # The parameter %q has already been defined earlier
+    # "id": 1, # The parameter %q has already been defined earlier
     "par2": 2
   }
 
@@ -102,7 +103,7 @@ TYPE @test
   # "regex": "abc" // {regex: invalid_regex} # ErrInvalidCharacter
   # "key": "value" // {wrong key} # ErrInvalidCharacterInAnnotationObjectKey
   # "key": "value" // {type: "string", type: "string"} # ErrDuplicateRule
-  # "duplicate-key": 1, "duplicate-key": 2, # ErrDuplicateKeysInSchema
+  # "duplicate-key": 1, "duplicate-key": 2 # ErrDuplicateKeysInSchema
   # "key": "value" // {"invalid_rule": ""} # ErrUnknownRule
   # "key": 42 // {min: 43, max: 44} # ErrConstraintValidation
   # "key": 1.23 // {precision: 1} # ErrConstraintValidation

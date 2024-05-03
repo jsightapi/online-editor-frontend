@@ -1,5 +1,9 @@
 # Mobile UI tests
 
+## OpenAPI mode as default
+
+1. Check, that on mobile devices the OpenAPI mode is by default.
+
 ## Run common UI tests on mobile screen
 
 Note: right now we should not check all the functions, but just simple things, which can satisfy a
