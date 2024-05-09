@@ -32,13 +32,16 @@
 </div>
 </div>
 
-**JSight Online Editor** – you've never designed API so fast. We really mean it.
+**JSight Online Editor** – the most human-friendly language for designing APIs.
 
-1. Write 2-4 times less code.
-2. Design API 2-3 times faster.
-3. Download beautiful HTML docs :book: or share API specifications in the cloud [:cloud:](https://editor.jsight.io).
-4. Do not distract from the API design because of the API description process.
-5. Design API together, it is extremely convenient with JSight language.  
+You've never designed API so fast. We really mean it.
+
+1. OpenAPI is automatically generated.
+2. Write 2-4 times less code.
+3. Design API 2-3 times faster.
+4. Download beautiful HTML docs :book: or share API specifications in the cloud [:cloud:](https://editor.jsight.io).
+5. Do not distract from the API design because of the API description process.
+6. Design API together, it is extremely convenient with JSight language.  
   No more multiple design iterations and edits required. All you need is to share the screen between
   the participants and come up with an API together right in the Editor. All this is possible thanks
   to the compactness and simplicity of the JSight language.  
@@ -60,7 +63,7 @@ Supported standards: [HTTP REST](#scroll--jsight-api-language), [JSON-RPC
   <img src="https://avatars.githubusercontent.com/u/101567029?v=4" align="left" width="40"
   height="40" alt=""/>
 
-  Constantine M., JSight CRDO.
+  Konstantin M., JSight CRDO.
 
   &nbsp;
 
@@ -130,9 +133,10 @@ Supported standards: [HTTP REST](#scroll--jsight-api-language), [JSON-RPC
 
 JSight Online Editor officially supports the latest browsers:
 
-- Chrome 102.0, 
-- Firefox 101.0,
-- Safari 15.3.
+- Chrome 124.0, 
+- Firefox 125.0,
+- Safari 17.3,
+- Edge 124.0.
 
 ### Installing
 
@@ -1720,9 +1724,10 @@ support](https://jsight.io/docs/jsight-api-0-3-quick-tutorial/lesson10).
 
 ## :book: &nbsp; Features
 
-- Description of your REST API in a very simple and intuitive [JSight API language](https://jsight.io/docs/jsight-api-0-3).
+- Description of your REST and JSON RPC API in a very simple and intuitive [JSight API language](https://jsight.io/docs/jsight-api-0-3).
+- Instant automatic OpenAPI definition generation.
 - Convenient syntax highlighting.
-- Instant automatic document generation.
+- Instant automatic HTML document generation.
 - Intuitive document navigation.
 - View data schemas in two formats: in the form of an example (Code View) and in a tabular form (Table View).
 - Expand nested data types on click.
@@ -1738,7 +1743,7 @@ support](https://jsight.io/docs/jsight-api-0-3-quick-tutorial/lesson10).
 
 - Download document also in MarkDown, PDF, and DOCX formats.
 - Quick Help built into the editor allows you to quickly access the necessary information on the JSight API language without leaving the editor.
-- Converting the JSight specification to OpenAPI and vice versa.
+- Converting the OpenAPI specification to JSight.
 - Automatic generation of API clients and API server stubs.
 - Support for other types of API: gRPC, Kafka, RabbitMQ, WebSocket. 
 - Sending test requests to the API.
@@ -1899,8 +1904,8 @@ Links to the components:
 - JSight Server API specification:
 https://github.com/jsightapi/jsight-server/blob/main/jsight/jsight-server-api.jst.  
 - JSight Server repo: https://github.com/jsightapi/jsight-server.  
-- JSight API Go Library repo: https://github.com/jsightapi/jsight-api-go-library.  
-- JSight Schema Go Library repo: https://github.com/jsightapi/jsight-schema-go-library.  
+- JSight API Go Library repo: https://github.com/jsightapi/jsight-api-core.  
+- JSight Schema Go Library repo: https://github.com/jsightapi/jsight-schema-core.
 
 <div>  
   &nbsp; 
@@ -1938,6 +1943,7 @@ document.
 <a href="https://github.com/Anton-NS"><img src="https://avatars.githubusercontent.com/u/100565250?v=4" width="100" height="100" alt=""/></a>
 <a href="https://github.com/Ekaterinacamposkuydina"><img src="https://avatars.githubusercontent.com/u/104357292?v=4" width="100" height="100" alt=""/></a>
 <a href="https://github.com/bereg2k"><img src="https://avatars.githubusercontent.com/u/42677987?v=4" width="100" height="100" alt=""/></a>
+<a href="https://github.com/tobiashochguertel"><img src="https://avatars.githubusercontent.com/u/3332669?v=4" width="100" height="100" alt=""/></a>
 
 <div>  
   &nbsp; 
@@ -2001,7 +2007,7 @@ details.
 
 - All JSight repositories: https://github.com/jsightapi.
 - GitHub discussions: https://github.com/jsightapi/online-editor-frontend/discussions.
-- JSight video lessons:
+- JSight Youtube:
   https://www.youtube.com/watch?v=AegCETY9Cdk&list=PLy9sOecVhlybvRoDhGlzyMwKVxR-gFkdX
 
 <div>  
