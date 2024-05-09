@@ -98,7 +98,7 @@ Supported standards: [HTTP REST](#scroll--jsight-api-language), [JSON-RPC
 
 &nbsp;
 
-![Demo](./img/demo.gif)
+![Demo](./img/openapi.gif)
 
 <div>  
   &nbsp; 
