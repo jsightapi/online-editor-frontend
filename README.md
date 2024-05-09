@@ -1944,6 +1944,7 @@ document.
 <a href="https://github.com/Ekaterinacamposkuydina"><img src="https://avatars.githubusercontent.com/u/104357292?v=4" width="100" height="100" alt=""/></a>
 <a href="https://github.com/bereg2k"><img src="https://avatars.githubusercontent.com/u/42677987?v=4" width="100" height="100" alt=""/></a>
 <a href="https://github.com/tobiashochguertel"><img src="https://avatars.githubusercontent.com/u/3332669?v=4" width="100" height="100" alt=""/></a>
+<a href="https://github.com/chepil"><img src="https://avatars.githubusercontent.com/u/1425370?v=4" width="100" height="100" alt=""/></a>
 
 <div>  
   &nbsp; 
