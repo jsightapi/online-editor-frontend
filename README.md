@@ -133,9 +133,10 @@ Supported standards: [HTTP REST](#scroll--jsight-api-language), [JSON-RPC
 
 JSight Online Editor officially supports the latest browsers:
 
-- Chrome 102.0, 
-- Firefox 101.0,
-- Safari 15.3.
+- Chrome 124.0, 
+- Firefox 125.0,
+- Safari 17.3,
+- Edge 124.0.
 
 ### Installing
 
