@@ -7,7 +7,9 @@ export const getErrorTitle = (error: ErrorType | undefined) => {
 
 export const getError = (error: ErrorType) => {
   const errorMessage = error.Message;
-  return errorMessage.charAt(0).toUpperCase() + errorMessage.slice(1);
+  return errorMessage
+    ? errorMessage.charAt(0).toUpperCase() + errorMessage.slice(1)
+    : 'No connection';
 };
 
 export const getDefaultErrorMessages = (status: number) => {

@@ -8,7 +8,7 @@ import './Editor.styles.scss';
 import 'react-toastify/dist/ReactToastify.css';
 import {Contacts} from 'components/Modals/Contacts';
 import {screenWidthMultiplier} from 'utils/screenWidthMultiplier';
-import {editorModeType, ErrorType, SidebarDocType} from 'types';
+import {editorModeType, ErrorType, HtmlDocPanelType, SidebarDocType} from 'types';
 import {JDocContext, SidebarContext, EditorContext, CurrentUrlProvider} from 'store';
 import {showEditorError} from 'utils/showEditorError';
 import {useDebounce} from 'hooks/useDebounce';
@@ -27,6 +27,7 @@ export const EditorScreen = () => {
 
   //documentation sidebar on the right
   const [currentDocSidebar, setCurrentDocSidebar] = useState<SidebarDocType>('htmldoc');
+  const [currentHtmlDocPanel, setCurrentHtmlDocPanel] = useState<HtmlDocPanelType>('none');
   const [jdocExchange, setJdocExchange] = useState<JDocType>();
   const jsightCodeDebounced = useDebounce<string>(jsightCode, 600);
   const [contactModalVisible, setContactModalVisible] = useState<boolean>(false);
@@ -79,15 +80,15 @@ export const EditorScreen = () => {
     () =>
       clsx({
         'editor-wrapper-inner': true,
-        'rules-sidebar': currentDocSidebar === 'rules',
-        'content-sidebar': currentDocSidebar === 'content',
+        'rules-sidebar': currentHtmlDocPanel === 'rules',
+        'content-sidebar': currentHtmlDocPanel === 'content',
         'code-sidebar': codeContentsSidebar,
       }),
-    [codeContentsSidebar, currentDocSidebar]
+    [codeContentsSidebar, currentHtmlDocPanel]
   );
 
-  const handleCurrentDocSidebar = useCallback((sidebar: SidebarDocType) => {
-    setCurrentDocSidebar((prev) => (prev === sidebar ? 'htmldoc' : sidebar));
+  const handleCurrentHtmlDocPanel = useCallback((htmldocpanel: HtmlDocPanelType) => {
+    setCurrentHtmlDocPanel((prev) => (prev === htmldocpanel ? 'none' : htmldocpanel));
   }, []);
 
   const jdocValue = useMemo(
@@ -102,8 +103,10 @@ export const EditorScreen = () => {
     () => ({
       currentDocSidebar,
       setCurrentDocSidebar,
+      currentHtmlDocPanel,
+      setCurrentHtmlDocPanel,
     }),
-    [currentDocSidebar]
+    [currentDocSidebar, currentHtmlDocPanel]
   );
 
   const editorValue = useMemo(
@@ -140,9 +143,9 @@ export const EditorScreen = () => {
               {isEditor && (
                 <div className="side-panel right-side">
                   <div
-                    onClick={() => handleCurrentDocSidebar('content')}
+                    onClick={() => handleCurrentHtmlDocPanel('content')}
                     className={clsx('side-panel-element', {
-                      active: currentDocSidebar === 'content',
+                      active: currentHtmlDocPanel === 'content',
                     })}
                   >
                     <i className="icon-list" /> Contents
