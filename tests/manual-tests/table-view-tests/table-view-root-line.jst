@@ -1,0 +1,32 @@
+JSIGHT 0.3
+
+INFO
+  Title "Test table view root line (jtest)"
+
+GET /{id}
+  Path
+    {
+      "id": 1 // MUST NOT be <root> line above ONLY HERE!
+    }
+  Query "query_par=1"
+    {
+      "query_par": 1 // MUST be <root> line above
+    }
+  201
+    Headers
+    {
+      "Switch to the Table View →": "" // MUST be <root> line above
+    }
+    Body any
+  200
+    Headers
+      @headers
+    Body
+      {
+        "Switch to the Table View ": "" // MUST be <root> line above
+      }
+
+TYPE @headers
+    {
+      "Switch to the Table View ": "" // MUST be <root> line above
+    }
