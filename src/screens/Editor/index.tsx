@@ -14,10 +14,17 @@ import {initCats, initDogs, initPigs, initJsonRpc} from './init';
 import {Contacts} from 'components/Modals/Contacts';
 import {HeaderDoc} from 'components/Header/HeaderDoc';
 import {screenWidthMultiplier} from 'utils/screenWidthMultiplier';
-import {editorModeType, ExamplesType, OpenApiFormatType, SidebarDocType} from 'types';
+import {
+  editorModeType,
+  ExamplesType,
+  OpenApiFormatType,
+  SidebarDocType,
+  HtmlDocPanelType,
+} from 'types';
 import {EditorContext, JDocContext, SidebarContext, SharingContext} from 'store';
 import {CurrentUrlProvider} from 'store/CurrentUrlStore';
 import {onOrientationChange} from 'utils/onOrientationChange';
+import {notificationIds} from 'utils/notificationIds';
 import {ErrorScreen} from 'screens/Error';
 import {SharingForm} from 'components/Modals/SharingForm';
 import 'react-toastify/dist/ReactToastify.css';
@@ -29,7 +36,6 @@ import IconHTMLDoc from 'assets/images/icons/htmldoc.svg';
 import IconContents from 'assets/images/icons/contents.svg';
 
 import './Editor.styles.scss';
-import {notificationIds} from 'utils/notificationIds';
 
 const {isExport} = window as any;
 
@@ -47,6 +53,7 @@ export const EditorScreen = () => {
   //documentation sidebar on the right
   const [currentDocSidebar, setCurrentDocSidebar] = useState<SidebarDocType>('htmldoc');
   const [currentOpenApiFormat, setCurrentOpenApiFormat] = useState<OpenApiFormatType>('yaml');
+  const [currentHtmlDocPanel, setCurrentHtmlDocPanel] = useState<HtmlDocPanelType>('none');
   const [jdocExchange, setJdocExchange] = useState<JDocType>();
   const [errorRow, setErrorRow] = useState<number | null>(null);
   const [scrollToRow, setScrollToRow] = useState<boolean>(false);
@@ -153,11 +160,11 @@ export const EditorScreen = () => {
     () =>
       clsx({
         'editor-wrapper-inner': true,
-        'rules-sidebar': currentDocSidebar === 'rules',
-        'content-sidebar': currentDocSidebar === 'content',
+        'rules-sidebar': currentHtmlDocPanel === 'rules',
+        'content-sidebar': currentHtmlDocPanel === 'content',
         'code-sidebar': codeContentsSidebar,
       }),
-    [codeContentsSidebar, currentDocSidebar]
+    [codeContentsSidebar, currentHtmlDocPanel]
   );
 
   const setInitJsightCode = (code: string) => {
@@ -199,6 +206,10 @@ export const EditorScreen = () => {
     setCurrentDocSidebar((prev) => (prev === sidebar ? 'htmldoc' : sidebar));
   }, []);
 
+  const handleCurrentHtmlDocPanel = useCallback((htmldocpanel: HtmlDocPanelType) => {
+    setCurrentHtmlDocPanel((prev) => (prev === htmldocpanel ? 'none' : htmldocpanel));
+  }, []);
+
   const handleJsightCode = useCallback((code: string) => setJsightCode(code), []);
   const handleDisableSharing = useCallback((value) => setDisableSharing(value), []);
   const handleError = useCallback((error) => setError(error), []);
@@ -218,8 +229,10 @@ export const EditorScreen = () => {
       setCurrentDocSidebar,
       currentOpenApiFormat,
       setCurrentOpenApiFormat,
+      currentHtmlDocPanel,
+      setCurrentHtmlDocPanel,
     }),
-    [currentDocSidebar, currentOpenApiFormat]
+    [currentDocSidebar, currentOpenApiFormat, currentHtmlDocPanel]
   );
 
   const editorValue = useMemo(
@@ -332,19 +345,18 @@ export const EditorScreen = () => {
                     onClick={() => handleCurrentDocSidebar('htmldoc')}
                     className={clsx('side-panel-element', {
                       active:
-                        currentDocSidebar === 'htmldoc' ||
-                        currentDocSidebar === 'rules' ||
-                        currentDocSidebar === 'content',
+                        currentDocSidebar === 'htmldoc' &&
+                        (currentHtmlDocPanel === 'rules' || currentHtmlDocPanel === 'content'),
                     })}
                   >
                     <img src={IconHTMLDoc} alt="HTMLDoc" /> HTML Doc
                   </div>
                   <div
                     onClick={() =>
-                      currentDocSidebar !== 'openapi' && handleCurrentDocSidebar('content')
+                      currentDocSidebar !== 'openapi' && handleCurrentHtmlDocPanel('content')
                     }
                     className={clsx('side-panel-element', {
-                      active: currentDocSidebar === 'content',
+                      active: currentHtmlDocPanel === 'content',
                       disabled: currentDocSidebar === 'openapi',
                     })}
                     title={

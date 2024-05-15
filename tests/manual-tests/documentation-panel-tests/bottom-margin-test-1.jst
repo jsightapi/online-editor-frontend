@@ -1,7 +1,7 @@
 JSIGHT 0.3
 
 INFO
-  Title "Bottom margin tests"
+  Title "Bottom margin tests (jtest)" # always use `jtest` in test titles for the sake of statistics
   Description
   (
     Remove directives one by one from the bottom and check their bottom margin.
@@ -46,16 +46,13 @@ INFO
 SERVER @checkServerBottomMargin // Check SERVER bottom margin
   BaseUrl http://check-BaseUrl-bottom-margin
 
-GET /check-method-bottom-margin/{var}
+GET /check-method-bottom-margin/
   Description
   (
     Check method description bottom margin.
   )
 
-Path
-  {
-    "var": "Check path bottom margin" // Check path bottom margin.
-  }
+GET /check-path-bottom-margin/{var}
   Query
   {
     "Check query bottom margin": 0
