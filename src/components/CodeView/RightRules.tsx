@@ -24,7 +24,7 @@ export const RightRules: FC<RightRulesProps> = ({
   isFirst,
 }) => {
   const divRulesRef = useRef<HTMLDivElement | null>(null);
-  const {currentDocSidebar} = useContext(SidebarContext);
+  const {currentHtmlDocPanel} = useContext(SidebarContext);
   const {selectedLine} = useContext(MainContext);
   const [topOffset, setTopOffset] = useState<number>(0);
   const [rightOffset, setRightOffset] = useState<number>(0);
@@ -43,7 +43,7 @@ export const RightRules: FC<RightRulesProps> = ({
     const rightOffset = wrapper ? parseInt(getComputedStyle(wrapper).paddingRight) : 0;
     setRightOffset(rightOffset);
 
-    if (selectedLine?.keyBlock === keyBlock && currentDocSidebar === 'rules') {
+    if (selectedLine?.keyBlock === keyBlock && currentHtmlDocPanel === 'rules') {
       const detailActiveElements = divRulesRef.current?.querySelectorAll<HTMLSpanElement>(
         `[data-name="line-${selectedLine.numberLine}"]`
       );
@@ -82,10 +82,10 @@ export const RightRules: FC<RightRulesProps> = ({
         updateHeight(detailActiveElement, codeLineDocumentOffset);
       }
     }
-  }, [selectedLine, currentDocSidebar, keyBlock]);
+  }, [selectedLine, currentHtmlDocPanel, keyBlock]);
 
   const updateDetailWrapperHeight = () => {
-    if (selectedLine?.keyBlock === keyBlock && currentDocSidebar === 'rules') {
+    if (selectedLine?.keyBlock === keyBlock && currentHtmlDocPanel === 'rules') {
       const detailActiveElements = divRulesRef.current?.querySelectorAll<HTMLSpanElement>(
         `[data-name="line-${selectedLine.numberLine}"]`
       );
@@ -138,7 +138,7 @@ export const RightRules: FC<RightRulesProps> = ({
     <div
       className="right-rules-wrapper"
       style={{
-        display: currentDocSidebar === 'rules' ? 'block' : 'none',
+        display: currentHtmlDocPanel === 'rules' ? 'block' : 'none',
         width: rightWidth || 0,
         right: offsetLeft || 0,
         height,

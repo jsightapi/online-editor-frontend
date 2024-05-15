@@ -9,8 +9,10 @@ interface LayoutProps {
 }
 
 export const Layout = ({children, isEditor}: LayoutProps) => {
-  const {currentDocSidebar} = useContext(SidebarContext);
-  const isShowSidebar = isEditor ? currentDocSidebar === 'content' : true;
+  const {currentDocSidebar, currentHtmlDocPanel} = useContext(SidebarContext);
+  const isShowSidebar = isEditor
+    ? currentHtmlDocPanel === 'content' && currentDocSidebar === 'htmldoc'
+    : true;
   const side = isEditor ? 'right' : 'left';
 
   return (
