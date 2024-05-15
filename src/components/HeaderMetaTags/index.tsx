@@ -4,7 +4,7 @@ import {JDocContext} from 'store';
 import {shorten} from 'utils/shorten';
 
 export const HeaderMetaTags = () => {
-  const jdocData = useContext(JDocContext);
+  const {jdocExchange: jdocData} = useContext(JDocContext);
 
   const getTitle = (limit: number) => {
     if (jdocData?.info?.title) {

@@ -1,10 +1,8 @@
 import {runRequest} from 'utils/runRequest';
-import {JDocType} from 'types/exchange';
 import {v4 as uuidv4} from 'uuid';
+import {convertJsightUrl} from './baseUrl';
 
-export const baseUrlApi = process.env.REACT_APP_API_URL || `${window.location.origin}/api`;
-
-export const getJDocExchange = (body: string) => {
+export const convert = (body = '', format: string) => {
   const uuid = localStorage.getItem('uuid') || '';
 
   if (!uuid) {
@@ -16,5 +14,9 @@ export const getJDocExchange = (body: string) => {
     'Content-Type': 'text/plain',
   };
 
-  return runRequest<JDocType>(baseUrlApi, {body, headers});
+  return runRequest<string>(
+    `${convertJsightUrl}?to=openapi-3.0.3&format=${format}`,
+    {body, headers},
+    {responseAsText: true}
+  );
 };

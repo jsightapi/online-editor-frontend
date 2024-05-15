@@ -29,7 +29,7 @@ export function useSelectionLine({
   const {setSelectedLine, selectedLine} = useContext(MainContext);
   const {collapsedRules} = useContext(SchemaViewContext);
   const {hoveredSchema, hiddenInheritedSchemas, keyBlock} = useContext(CodeContext);
-  const {setCurrentDocSidebar} = useContext(SidebarContext);
+  const {setCurrentDocSidebar, setCurrentHtmlDocPanel} = useContext(SidebarContext);
   const isShowDetailInfo = useShowDetailInfo(rules, notes);
 
   const isSelected = useMemo(
@@ -55,11 +55,11 @@ export function useSelectionLine({
     if (isShowDetailInfo && collapsedRules) {
       setSelectedLine((prev) => {
         if (prev?.numberLine === numberLine && prev?.keyBlock === keyBlock) {
-          setCurrentDocSidebar(null);
+          setCurrentDocSidebar('htmldoc');
           return null;
         }
 
-        setCurrentDocSidebar('rules');
+        setCurrentHtmlDocPanel('rules');
         return {
           numberLine,
           keyBlock,
@@ -67,7 +67,7 @@ export function useSelectionLine({
       });
     } else {
       setSelectedLine(null);
-      setCurrentDocSidebar(null);
+      setCurrentDocSidebar('htmldoc');
     }
   };
 

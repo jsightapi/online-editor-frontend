@@ -29,3 +29,4 @@ yarn-error.log*
 .vscode
 
 /local
+.tool-versions

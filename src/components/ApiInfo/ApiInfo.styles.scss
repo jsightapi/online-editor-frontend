@@ -17,4 +17,8 @@
   .description {
     color: $secondary-text;
   }
+
+  &.hidden {
+    display: none;
+  }
 }

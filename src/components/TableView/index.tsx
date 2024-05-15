@@ -20,7 +20,7 @@ export const TableView = ({keyBlock, schema, format, block}: TableViewProps) => 
         block,
         level: 0,
       });
-    } else if ('regex') {
+    } else {
       return (
         <TableRow
           keyValue={'<root>'}
@@ -34,8 +34,6 @@ export const TableView = ({keyBlock, schema, format, block}: TableViewProps) => 
           }}
         />
       );
-    } else {
-      return null;
     }
   };
 

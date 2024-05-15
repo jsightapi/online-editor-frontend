@@ -23,7 +23,12 @@
     }
   }
 
-  .reusable-header, .resource-header {
+  .wrapper {
+    position: relative;
+  }
+
+  .reusable-header,
+  .resource-header {
     font-size: 2.8rem;
     line-height: 3.6rem;
     font-weight: 600;
@@ -36,7 +41,7 @@
   .resource-header {
     padding: 0 3rem 1.2rem;
 
-    +.resource-wrapper {
+    + .resource-wrapper {
       padding-bottom: 3.2rem;
     }
   }
@@ -67,4 +72,44 @@
 
 .main-resources {
   height: 100%;
+}
+
+.openapi-wrapper {
+  display: flex;
+}
+
+.openapi-lines {
+  padding: 20px 0;
+  width: 54px;
+  font-family: 'JetBrainsMono', serif;
+  font-size: 14px;
+  text-align: center;
+  background-color: $secondary-grey;
+  color: $main-grey;
+  flex-shrink: 0;
+}
+
+.openapi-content {
+  margin: 0;
+  padding: 20px 24px;
+  font-family: 'JetBrainsMono', serif;
+  font-size: 14px;
+  flex: 1;
+}
+
+.openapi-copy.btn {
+  position: absolute;
+  bottom: 20px;
+  right: 50px;
+  width: auto;
+  padding: 11px 23px;
+  border-radius: 4px;
+  border: 1px solid $secondary-stroke;
+  background: $main-stroke;
+  color: $main-text;
+  opacity: 0.8;
+}
+
+.openapi-copy img {
+  margin-left: 8px;
 }

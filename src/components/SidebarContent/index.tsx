@@ -19,8 +19,8 @@ interface SidebarContentProps {
 
 export const SidebarContent = ({side, isShowSettings, isShow}: SidebarContentProps) => {
   const {setIsOpen, isOpen} = useContext(GlobalSettingsContext);
-  const {setCurrentDocSidebar} = useContext(SidebarContext);
-  const jdocData = useContext(JDocContext);
+  const {setCurrentHtmlDocPanel} = useContext(SidebarContext);
+  const {jdocExchange: jdocData} = useContext(JDocContext);
 
   const tags = useMemo(() => jdocData?.tags || {}, [jdocData]);
 
@@ -48,7 +48,7 @@ export const SidebarContent = ({side, isShowSettings, isShow}: SidebarContentPro
             <i className="icon-menu" /> <h2>Contents</h2>
           </div>
           {!(side === 'left' || isExport) && (
-            <button onClick={() => setCurrentDocSidebar(null)}>
+            <button onClick={() => setCurrentHtmlDocPanel('none')}>
               <i className="icon-close" />
             </button>
           )}

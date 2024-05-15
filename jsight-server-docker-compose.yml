@@ -1,7 +1,7 @@
 version: '3.8'
 services:
   jsight-server:
-    image: jsight/jsight-server:4
+    image: jsight/jsight-server:6.0
     environment:
       - JSIGHT_SERVER_CORS=true
       - JSIGHT_SERVER_STATISTICS

@@ -14,7 +14,7 @@ interface UsedUserElementProps {
 }
 
 const UsedUserType = ({value, keyBlock}: UsedUserElementProps) => {
-  const jdocData = useContext(JDocContext);
+  const {jdocExchange: jdocData} = useContext(JDocContext);
 
   const userType = useMemo(
     () => (jdocData?.userTypes ? getUserType(value, jdocData.userTypes) : null),
@@ -36,7 +36,7 @@ const UsedUserType = ({value, keyBlock}: UsedUserElementProps) => {
 };
 
 const UsedUserEnum = ({value, keyBlock}: UsedUserElementProps) => {
-  const jdocData = useContext(JDocContext);
+  const {jdocExchange: jdocData} = useContext(JDocContext);
 
   const userEnum = useMemo(
     () => (jdocData?.userEnums ? getUserEnum(value, jdocData.userEnums) : null),

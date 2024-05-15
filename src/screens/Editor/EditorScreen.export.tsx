@@ -8,12 +8,13 @@ import './Editor.styles.scss';
 import 'react-toastify/dist/ReactToastify.css';
 import {Contacts} from 'components/Modals/Contacts';
 import {screenWidthMultiplier} from 'utils/screenWidthMultiplier';
-import {editorModeType, ErrorType, SidebarDocType} from 'types';
+import {editorModeType, ErrorType, HtmlDocPanelType, SidebarDocType} from 'types';
 import {JDocContext, SidebarContext, EditorContext, CurrentUrlProvider} from 'store';
-import {getJDocExchange} from 'api/getJDocExchange';
 import {showEditorError} from 'utils/showEditorError';
 import {useDebounce} from 'hooks/useDebounce';
 import {initCats} from 'screens/Editor/initCats';
+import {convertJsight} from 'api/convertJsight';
+import {notificationIds} from 'utils/notificationIds';
 
 const {isExport} = window as any;
 
@@ -25,7 +26,8 @@ export const EditorScreen = () => {
   const codeContentsSidebar = false;
 
   //documentation sidebar on the right
-  const [currentDocSidebar, setCurrentDocSidebar] = useState<SidebarDocType>(null);
+  const [currentDocSidebar, setCurrentDocSidebar] = useState<SidebarDocType>('htmldoc');
+  const [currentHtmlDocPanel, setCurrentHtmlDocPanel] = useState<HtmlDocPanelType>('none');
   const [jdocExchange, setJdocExchange] = useState<JDocType>();
   const jsightCodeDebounced = useDebounce<string>(jsightCode, 600);
   const [contactModalVisible, setContactModalVisible] = useState<boolean>(false);
@@ -54,11 +56,11 @@ export const EditorScreen = () => {
     (async () => {
       if (!isExport) {
         try {
-          const jdocExchange = await getJDocExchange(jsightCodeDebounced);
-          startTransition(() => setJdocExchange(jdocExchange));
+          const jdocExchange = await convertJsight(jsightCodeDebounced, 'jdoc-2.0');
+          startTransition(() => setJdocExchange(jdocExchange as JDocType));
           toast.dismiss();
         } catch (error) {
-          showEditorError(error as ErrorType, () => {
+          showEditorError(error as ErrorType, notificationIds.ERROR_MESSAGE_DEFAULT_ID, () => {
             if (!(error as ErrorType).Line) {
               return;
             }
@@ -78,23 +80,33 @@ export const EditorScreen = () => {
     () =>
       clsx({
         'editor-wrapper-inner': true,
-        'rules-sidebar': currentDocSidebar === 'rules',
-        'content-sidebar': currentDocSidebar === 'content',
+        'rules-sidebar': currentHtmlDocPanel === 'rules',
+        'content-sidebar': currentHtmlDocPanel === 'content',
         'code-sidebar': codeContentsSidebar,
       }),
-    [codeContentsSidebar, currentDocSidebar]
+    [codeContentsSidebar, currentHtmlDocPanel]
   );
 
-  const handleCurrentDocSidebar = useCallback((sidebar: SidebarDocType) => {
-    setCurrentDocSidebar((prev) => (prev === sidebar ? null : sidebar));
+  const handleCurrentHtmlDocPanel = useCallback((htmldocpanel: HtmlDocPanelType) => {
+    setCurrentHtmlDocPanel((prev) => (prev === htmldocpanel ? 'none' : htmldocpanel));
   }, []);
+
+  const jdocValue = useMemo(
+    () => ({
+      jdocExchange,
+      jsightCode: jsightCodeDebounced,
+    }),
+    [jdocExchange, jsightCodeDebounced]
+  );
 
   const sidebarValue = useMemo(
     () => ({
       currentDocSidebar,
       setCurrentDocSidebar,
+      currentHtmlDocPanel,
+      setCurrentHtmlDocPanel,
     }),
-    [currentDocSidebar]
+    [currentDocSidebar, currentHtmlDocPanel]
   );
 
   const editorValue = useMemo(
@@ -106,7 +118,7 @@ export const EditorScreen = () => {
   );
 
   return (
-    <JDocContext.Provider value={jdocExchange}>
+    <JDocContext.Provider value={jdocValue}>
       <div
         className={clsx('d-flex editor-wrapper', {
           'only-doc': !isEditor,
@@ -131,9 +143,9 @@ export const EditorScreen = () => {
               {isEditor && (
                 <div className="side-panel right-side">
                   <div
-                    onClick={() => handleCurrentDocSidebar('content')}
+                    onClick={() => handleCurrentHtmlDocPanel('content')}
                     className={clsx('side-panel-element', {
-                      active: currentDocSidebar === 'content',
+                      active: currentHtmlDocPanel === 'content',
                     })}
                   >
                     <i className="icon-list" /> Contents

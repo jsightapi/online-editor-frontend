@@ -1,0 +1,196 @@
+###
+
+Uncomment pieces of code and see the corresponding error message:
+1. Check the message text.
+2. Check the message link to documentation (if exists).
+
+###
+
+# GET / # DirectiveJSIGHTShouldBeTheFirst
+# JSIGHT 0.4 # UnsupportedVersion
+JSIGHT 0.3
+# JSIGHT 0.3
+
+INFO
+  Title "Error test (jtest)" # always use `jtest` in test titles for the sake of statistics
+  # Title "bbb" # NotUniqueDirective
+
+SERVER @a
+  BaseUrl "url"
+  # BaseUrl "url" # DirectiveBaseURLAlreadyDefined
+
+# GET # Path not found
+
+
+URL /1
+# URL /1 # NotUniquePath
+
+# INFO # DirectiveINFOGottaBeOnlyOneTime
+
+# INCLUDE /par # IncludeRootErr
+# INCLUDE ../ # IncludeUpErr
+# INCLUDE one\two # IncludeSeparatorErr
+
+
+# Body @scalar # incorrect directive context
+
+GET /{id}
+  Path
+  {
+    "id": 1
+  }
+  # Request empty // annotation is not allowed
+  # Tags # RequiredParameterNotSpecified
+  # Tags @tag # Tag not found
+  # 200 @not_found # Type not found
+  # 200 @scalar jsight # CannotUseTheTypeAndSchemaNotationParametersTogether
+  200 @scalar
+    # Body @scalar # ParametersAreForbiddenForTheDirective
+  # 201 @scalar @scalar # ParametersIsAlreadyDefined
+    ###  
+    Headers 
+      @scalar # BodyMustBeObject
+    ###
+    # ) # ThereIsNoExplicitContextForClosure
+    # () # ApartFromTheOpeningParenthesis
+    ###
+    Description # DescriptionIsEmpty
+    (
+    )
+    ###
+
+# DELETE /{id}/{id} # PathParameterIsDuplicatedInThePath
+
+# GET /{name}
+
+###
+TYPE @scalar # DuplicateNames
+  ""
+###
+
+POST /{id}/{par2}
+  Path
+  {
+    # "id": 1, # The parameter %q has already been defined earlier
+    "par2": 2
+  }
+
+###
+GET /1
+  Path 
+    # @scalar # PathObjectErr
+    # {} # PathEmptyErr
+    # {} // {additionalProperties: true} # PathAdditionalPropertiesErr
+    # {} // {nullable: true} # PathNullableErr
+###
+
+# GET /{} # PathEmptyParameter
+
+
+
+
+# ErrUserTypeFound TODO: test for ErrUserTypeFound
+
+
+TYPE @test
+{ # // {additionalProperties: "unknown_type"} # ErrUnknownJSchemaType
+  # "key": "value" // {type: "unknown_type"} # ErrUnknownValueOfTheTypeRule
+  # "recursion": @test # ErrInfinityRecursionDetected
+  # "or":  0 // {or: [ {type: "integer", min: 1}, {type: "string"} ]} # ErrOrRuleSetValidation
+  # bad_key # ErrInvalidCharacter
+  # "key": bad_value # ErrInvalidCharacter
+  # "enum": 1 // {enum: [invalid_value]} # ErrInvalidCharacter
+  # "regex": "abc" // {regex: invalid_regex} # ErrInvalidCharacter
+  # "key": "value" // {wrong key} # ErrInvalidCharacterInAnnotationObjectKey
+  # "key": "value" // {type: "string", type: "string"} # ErrDuplicateRule
+  # "duplicate-key": 1, "duplicate-key": 2 # ErrDuplicateKeysInSchema
+  # "key": "value" // {"invalid_rule": ""} # ErrUnknownRule
+  # "key": 42 // {min: 43, max: 44} # ErrConstraintValidation
+  # "key": 1.23 // {precision: 1} # ErrConstraintValidation
+  # "key": "value" // {minLength: 10} # ErrConstraintStringLengthValidation
+  # "key": "value" // {minLength: "invalid_value"} # ErrInvalidValueOfConstraint
+  # "key": 1 // {precision: 0} # ErrZeroPrecision
+  # "key": "value" // {enum: ["one"]} # ErrDoesNotMatchAnyOfTheEnumValues
+  # "key": "value" // {regex: "\\d"} # ErrDoesNotMatchRegularExpression
+  # "key": 0 // {min: 0, max: -1} # ErrValueOfOneConstraintGreaterOrEqualToAnother
+  # "key": "" // {rule: @scalar} # ErrIncorrectRuleValueType
+  # "key": {"foo": "bar"} // {const: true} # ErrIncorrectRuleForSeveralNode
+  # "key": 1 // {or: [ {min: []}, {type: "string"} ]} # ErrLiteralValueExpected
+  # "key": "value" // {enum: [[]]} # ErrIncorrectArrayItemTypeInEnumRule
+  # "key": "value" // {enum: ["value", "value"]} # ErrDuplicationInEnumRule
+  # "key": "value" // {or: "value"} # ErrArrayWasExpectedInOrRule
+  # "key": "value" // {or: []} # ErrEmptyArrayInOrRule
+  # "key": "value" // {or: ["string"]} # ErrOneElementInArrayInOrRule
+  # "key": "value" // {or: [1,2]} # ErrIncorrectArrayItemTypeInOrRule
+  # "key": "value" // {or: [{}]} # ErrEmptyRuleSet
+  # "key": "value" // {or: [{"minLength": 1}]} # ErrTypIsRequiredInsideOr
+  # "key": @scalar // {minLength: 2} # ErrCannotSpecifyOtherRulesWithTypeReference
+  # "key": 1 // {or: ["integer", "string"], min: 1} # ErrShouldBeNoOtherRulesInSetWithOr
+  # "key": 1 // {enum: [1], min: 0} # ErrShouldBeNoOtherRulesInSetWithEnum
+  # "key": 1 // {type: "any", min: 0} # ErrShouldBeNoOtherRulesInSetWithAny
+  # "key": {} // {type: "@scalar"} # ErrInvalidChildNodeTogetherWithTypeReference
+  # "key": {} // {or: ["@scalar", "@scalar"]} # ErrInvalidChildNodeTogetherWithOrRule
+  # "key": 1 // {exclusiveMinimum: true} # ErrConstraintMinNotFound
+  # "key": 2 // {exclusiveMaximum: true} # ErrConstraintMaxNotFound
+  # "key": 3 // {type: "integer", enum: [1,2]} # ErrInvalidValueInTheTypeRule
+  # "key": 3 // {type: "decimal"} # ErrNotFoundRulePrecision
+  # "key": 3 // {type: "mixed"} # ErrNotFoundRuleOr
+  # "key": 3 // {type: "enum"} # ErrNotFoundRuleEnum
+  # "key": 3 // {type: "string"} # ErrIncompatibleTypes
+  # "key": 1 // {precision: 1} # ErrUnexpectedConstraint
+  # "key": [] // {minItems: 1} # ErrIncorrectConstraintValueForEmptyArray
+  # "key": 1 // {or: ["@string1", "@string2"]} # ErrIncorrectUserType
+  # "key": @not_found # ErrUserTypeNotFoun
+  # @any1: "" # ErrInvalidKeyShortcutType
+  # "key": 1 // {enum: true}
+  # "key": "550e8400e29b41d4a716446655440000 " // {type: "uuid"} # ErrUUIDLength
+  # "key": "z50e8400-e29b-41d4-a716-446655440000" // {type: "uuid"} # ErrUUIDFormat
+  # "key": "value" "key" // invalide character after the object property
+}
+
+
+TYPE @string1
+  ""
+
+TYPE @string2
+  ""
+
+
+TYPE @any1
+[ # // {type: "any"} # ErrInvalidNestedElementsFoundForTypeAny
+  1
+]
+
+
+TYPE @allOfWrong
+{ # // {allOf: []} # ErrTypeNameNotFoundInAllOfRule
+}
+
+TYPE @allOf
+{ # // {allOf: "42"} # ErrInvalidSchemaNameInAllOfRule
+}
+
+TYPE @allOfRecursion
+{ // # {allOf: "@allOfRecursion"} # ErrUnacceptableRecursionInAllOfRule
+}
+
+TYPE @allOfScalar
+{ # // {allOf: "@scalar"}
+}
+
+TYPE @scalar
+  "" // # {optional: true} # ErrRuleOptionalAppliesOnlyToObjectProperties
+
+TYPE @minItems
+[ # // {minItems: 3} # ErrConstraintMinItemsValidation
+  1, 2
+]
+
+TYPE @cat
+# ( # ContextNotClosed
+  {
+    "id": 1
+  }
+
+# TYPE @endOfFile # ErrUnexpectedEOF
+# { 

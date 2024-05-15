@@ -8,13 +8,19 @@ const defaultError: ErrorType = {
   Status: 'Error',
 };
 
+interface RequestAddParams {
+  responseAsText?: boolean;
+  timeout?: number;
+  times?: number;
+}
+
 export const runRequest = async <T>(
   action: string,
   {body, headers, method}: RequestInit = {},
-  timeout = 0,
-  times = 0
+  addParams?: RequestAddParams
 ): Promise<T> => {
   const fetchParams: RequestInit = {headers, body, method: method || 'POST'};
+  const {responseAsText = false, timeout = 0, times = 0} = addParams || {};
 
   let id: any;
   if (timeout > 0) {
@@ -31,7 +37,7 @@ export const runRequest = async <T>(
   if (!window.navigator.onLine && timeout > 0) {
     return new Promise<any>((resolve) => {
       setTimeout(() => {
-        resolve(runRequest(action, fetchParams, timeout, times + 1));
+        resolve(runRequest(action, fetchParams, {responseAsText, timeout, times: times + 1}));
       }, 1000);
     });
   }
@@ -40,8 +46,12 @@ export const runRequest = async <T>(
     if (response.ok) {
       const text = await response.text();
       try {
-        const json = JSON.parse(text);
-        return json;
+        if (responseAsText) {
+          return text;
+        } else {
+          const json = JSON.parse(text);
+          return json;
+        }
       } catch (err) {
         return text;
       }

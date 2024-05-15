@@ -6,12 +6,10 @@ export const getErrorTitle = (error: ErrorType | undefined) => {
 };
 
 export const getError = (error: ErrorType) => {
-  if (!error?.Line) {
-    return 'Server error, try again later';
-  }
-
   const errorMessage = error.Message;
-  return errorMessage.charAt(0).toUpperCase() + errorMessage.slice(1);
+  return errorMessage
+    ? errorMessage.charAt(0).toUpperCase() + errorMessage.slice(1)
+    : 'No connection';
 };
 
 export const getDefaultErrorMessages = (status: number) => {

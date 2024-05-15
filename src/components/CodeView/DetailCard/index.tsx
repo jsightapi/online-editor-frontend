@@ -33,7 +33,7 @@ export const DetailCard = ({
   keyBlock,
 }: DetailCardProps) => {
   const divRef = useRef<HTMLDivElement | null>(null);
-  const {setCurrentDocSidebar} = useContext(SidebarContext);
+  const {setCurrentHtmlDocPanel} = useContext(SidebarContext);
   const {setSelectedLine} = useContext(MainContext);
 
   const renderRule = (rule: RuleType, key: string, rulesLength: number, index: number) => {
@@ -80,7 +80,7 @@ export const DetailCard = ({
   };
 
   const closeDetailCard = () => {
-    setCurrentDocSidebar(null);
+    setCurrentHtmlDocPanel('none');
     setSelectedLine(null);
   };
 

@@ -1,1 +1,1 @@
-export type SidebarDocType = 'content' | 'rules' | null;
+export type SidebarDocType = 'openapi' | 'htmldoc';
