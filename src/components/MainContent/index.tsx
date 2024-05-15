@@ -62,9 +62,12 @@ export const MainContent = React.memo((props: MainContentProps) => {
     GlobalSettingsContext
   );
   const {currentUrl, setCurrentUrl} = useContext(CurrentUrlContext);
-  const {currentDocSidebar, setCurrentDocSidebar, currentOpenApiFormat} = useContext(
-    SidebarContext
-  );
+  const {
+    currentDocSidebar,
+    currentOpenApiFormat,
+    currentHtmlDocPanel,
+    setCurrentHtmlDocPanel,
+  } = useContext(SidebarContext);
   const [overscan, setOverscan] = useState(480);
   const [schemasView, setSchemasView] = useState<SchemaViewType[]>([]);
   const [schemasData, setSchemasData] = useState<{[key: string]: SchemaData[]}>({});
@@ -410,6 +413,11 @@ export const MainContent = React.memo((props: MainContentProps) => {
       <div className={mainContentClasses}>
         {currentDocSidebar === 'openapi' && viewMode !== 'doc' && (
           <div className="openapi-wrapper">
+            <ApiInfo
+              apiInfo={{title: jdocExchange?.info?.title || 'JSight Online Editor'}}
+              key="apiInfo"
+              hidden
+            />
             <div className="openapi-lines">
               {Array.from(Array(openApiLinesCount).keys()).map((num) => (
                 <Fragment key={num + 1}>
@@ -427,7 +435,7 @@ export const MainContent = React.memo((props: MainContentProps) => {
         )}
         {(currentDocSidebar !== 'openapi' || viewMode === 'doc') && (
           <MainContext.Provider value={value}>
-            {currentDocSidebar === 'rules' && (
+            {currentHtmlDocPanel === 'rules' && (
               <button
                 style={{
                   right: `${
@@ -438,7 +446,7 @@ export const MainContent = React.memo((props: MainContentProps) => {
                 }}
                 className="sidebar-rules-close"
                 onClick={() => {
-                  setCurrentDocSidebar('htmldoc');
+                  setCurrentHtmlDocPanel('none');
                   setSelectedLine(null);
                 }}
               >

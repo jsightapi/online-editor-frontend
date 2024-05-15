@@ -29,7 +29,7 @@ export function useSelectionLine({
   const {setSelectedLine, selectedLine} = useContext(MainContext);
   const {collapsedRules} = useContext(SchemaViewContext);
   const {hoveredSchema, hiddenInheritedSchemas, keyBlock} = useContext(CodeContext);
-  const {setCurrentDocSidebar} = useContext(SidebarContext);
+  const {setCurrentDocSidebar, setCurrentHtmlDocPanel} = useContext(SidebarContext);
   const isShowDetailInfo = useShowDetailInfo(rules, notes);
 
   const isSelected = useMemo(
@@ -59,7 +59,7 @@ export function useSelectionLine({
           return null;
         }
 
-        setCurrentDocSidebar('rules');
+        setCurrentHtmlDocPanel('rules');
         return {
           numberLine,
           keyBlock,

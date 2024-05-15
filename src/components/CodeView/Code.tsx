@@ -68,7 +68,12 @@ export const Code = ({schema, tab, codeViewRef, keyBlock}: CodeProps) => {
   const [height, setHeight] = useState<number>(0);
   const {selectedLine, setSchemasData, schemasData} = useContext(MainContext);
   const {expandedTypes} = useContext(SchemaViewContext);
-  const {currentDocSidebar, setCurrentDocSidebar} = useContext(SidebarContext);
+  const {
+    currentDocSidebar,
+    setCurrentDocSidebar,
+    currentHtmlDocPanel,
+    setCurrentHtmlDocPanel,
+  } = useContext(SidebarContext);
   const [isFirst, setIsFirst] = useState<boolean>(true);
 
   const schemaData = useMemo(() => {
@@ -197,8 +202,8 @@ export const Code = ({schema, tab, codeViewRef, keyBlock}: CodeProps) => {
 
   // when active live with rules is changed
   useEffect(() => {
-    if (selectedLine && currentDocSidebar !== 'content') {
-      setCurrentDocSidebar('rules');
+    if (selectedLine && currentHtmlDocPanel !== 'content') {
+      setCurrentHtmlDocPanel('rules');
     } else {
       setHeight((codeViewRef.current?.getBoundingClientRect().height || 0) + 65);
     }
