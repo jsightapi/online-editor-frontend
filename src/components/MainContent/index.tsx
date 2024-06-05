@@ -1,4 +1,4 @@
-import React, {useRef, useState, useEffect, useContext, useMemo, Fragment} from 'react';
+import React, {useRef, useState, useEffect, useContext, useMemo} from 'react';
 import {Virtuoso, VirtuosoHandle} from 'react-virtuoso';
 import {compact, each, groupBy, map, mapValues} from 'lodash';
 import {useParams} from 'react-router-dom';
@@ -24,6 +24,7 @@ import {toast} from 'react-toastify';
 import {notificationIds} from 'utils/notificationIds';
 import {convertJsight} from 'api/convertJsight';
 import {showEditorError} from 'utils/showEditorError';
+import {Editor} from 'components/Editor';
 
 type SchemaPropertyType =
   | 'collapsedRules'
@@ -73,14 +74,18 @@ export const MainContent = React.memo((props: MainContentProps) => {
   const [schemasData, setSchemasData] = useState<{[key: string]: SchemaData[]}>({});
   const [resourceState, setResourceState] = useState<ResourceState[]>([]);
 
+  const [reloadOpenApi, setReloadOpenApi] = useState<boolean>(false);
   const [openApiContent, setOpenApiContent] = useState<string>('');
-  const [openApiLinesCount, setOpenApiLinesCount] = useState<number | undefined>();
   const [isOpenApiContentLoading, setIsOpenApiContentLoading] = useState<boolean>(false);
 
   // @ts-ignore
   window['mainContent'] = virtuosoRef;
 
   const showRightSidebar = useMemo(() => !!currentDocSidebar, [currentDocSidebar]);
+
+  const handleReloadOpenapi = () => {
+    setReloadOpenApi(false);
+  };
 
   const copyToClipboard = () => {
     if (navigator && navigator.clipboard && navigator.clipboard.writeText && openApiContent) {
@@ -196,6 +201,7 @@ export const MainContent = React.memo((props: MainContentProps) => {
           setIsOpenApiContentLoading(false);
           toast.dismiss();
           setErrorRow && setErrorRow(null);
+          setReloadOpenApi(true);
         } catch (error) {
           showEditorError(error as ErrorType, notificationIds.ERROR_MESSAGE_OPENAPI_ID, () => {
             if (!(error as ErrorType).Line) {
@@ -376,11 +382,6 @@ export const MainContent = React.memo((props: MainContentProps) => {
     };
   }, [jdocExchange]);
 
-  useEffect(() => {
-    const count = openApiContent.match(new RegExp('\n', 'g'))?.length || 0;
-    setOpenApiLinesCount(count + 1);
-  }, [openApiContent]);
-
   const value = useMemo(
     () => ({
       showRightSidebar,
@@ -401,7 +402,6 @@ export const MainContent = React.memo((props: MainContentProps) => {
   );
 
   const mainContentClasses = clsx('main-content', {
-    scrollable: currentDocSidebar === 'openapi',
     disabled:
       (currentDocSidebar === 'openapi' && isOpenApiContentLoading) ||
       (currentDocSidebar === 'htmldoc' && jdocExchangeError) ||
@@ -413,20 +413,13 @@ export const MainContent = React.memo((props: MainContentProps) => {
       <div className={mainContentClasses}>
         {currentDocSidebar === 'openapi' && viewMode !== 'doc' && (
           <div className="openapi-wrapper">
-            <ApiInfo
-              apiInfo={{title: jdocExchange?.info?.title || 'JSight Online Editor'}}
-              key="apiInfo"
-              hidden
+            <Editor
+              content={openApiContent}
+              readOnly={true}
+              reload={reloadOpenApi}
+              reloadedEditor={handleReloadOpenapi}
+              currentTheme="default"
             />
-            <div className="openapi-lines">
-              {Array.from(Array(openApiLinesCount).keys()).map((num) => (
-                <Fragment key={num + 1}>
-                  {num + 1}
-                  <br />
-                </Fragment>
-              ))}
-            </div>
-            <pre className="openapi-content">{openApiContent}</pre>
             <Button className="openapi-copy" title="Copy all" onClick={copyToClipboard}>
               Copy all
               <img src={IconCopy} alt="Copy all" />
