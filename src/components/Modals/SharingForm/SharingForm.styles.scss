@@ -33,12 +33,13 @@
     display: flex;
     margin-top: 0.8rem;
 
-    input, button {
+    input,
+    button {
       border: 1px solid $secondary-stroke;
       border-radius: 4px;
     }
 
-    >input:not(:last-child) {
+    > input:not(:last-child) {
       border-top-right-radius: 0;
       border-bottom-right-radius: 0;
       flex: 1 1 auto;

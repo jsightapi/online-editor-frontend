@@ -126,8 +126,18 @@
 .icon-arrow-back:before {
   content: '\e816';
 } /* '' */
-.icon-plus:before { content: '\e817'; } /* '' */
-.icon-upload:before { content: '\e818'; } /* '' */
-.icon-copy:before { content: '\e819'; } /* '' */
-.icon-check:before { content: '\e81a'; } /* '' */
-.icon-danger:before { content: '\e81b'; } /* '' */
+.icon-plus:before {
+  content: '\e817';
+} /* '' */
+.icon-upload:before {
+  content: '\e818';
+} /* '' */
+.icon-copy:before {
+  content: '\e819';
+} /* '' */
+.icon-check:before {
+  content: '\e81a';
+} /* '' */
+.icon-danger:before {
+  content: '\e81b';
+} /* '' */
