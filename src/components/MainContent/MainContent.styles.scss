@@ -78,18 +78,23 @@
   position: relative;
   display: block;
   height: 100%;
-  // display: flex;
-}
 
-.openapi-lines {
-  padding: 20px 0;
-  width: 54px;
-  font-family: 'JetBrainsMono', serif;
-  font-size: 14px;
-  text-align: center;
-  background-color: $secondary-grey;
-  color: $main-grey;
-  flex-shrink: 0;
+  .margin-view-overlays {
+    background-color: $secondary-grey;
+    color: $main-grey;
+  }
+
+  .monaco-editor-background {
+    background-color: $secondary-grey;
+  }
+
+  .view-lines span {
+    color: $main-text;
+  }
+
+  .core-guide-indent.vertical {
+    box-shadow: 1px 0 0 0 $main-grey inset !important;
+  }
 }
 
 .openapi-content {
@@ -115,4 +120,8 @@
 
 .openapi-copy img {
   margin-left: 8px;
+}
+
+.monaco-editor-overlaymessage {
+  display: none !important;
 }

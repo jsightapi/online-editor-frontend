@@ -1,4 +1,4 @@
-import React, {useRef, useState, useEffect, useContext, useMemo, Fragment} from 'react';
+import React, {useRef, useState, useEffect, useContext, useMemo} from 'react';
 import {Virtuoso, VirtuosoHandle} from 'react-virtuoso';
 import {compact, each, groupBy, map, mapValues} from 'lodash';
 import {useParams} from 'react-router-dom';
@@ -76,7 +76,6 @@ export const MainContent = React.memo((props: MainContentProps) => {
 
   const [reloadOpenApi, setReloadOpenApi] = useState<boolean>(false);
   const [openApiContent, setOpenApiContent] = useState<string>('');
-  const [openApiLinesCount, setOpenApiLinesCount] = useState<number | undefined>();
   const [isOpenApiContentLoading, setIsOpenApiContentLoading] = useState<boolean>(false);
 
   // @ts-ignore
@@ -383,11 +382,6 @@ export const MainContent = React.memo((props: MainContentProps) => {
     };
   }, [jdocExchange]);
 
-  useEffect(() => {
-    const count = openApiContent.match(new RegExp('\n', 'g'))?.length || 0;
-    setOpenApiLinesCount(count + 1);
-  }, [openApiContent]);
-
   const value = useMemo(
     () => ({
       showRightSidebar,
@@ -419,26 +413,6 @@ export const MainContent = React.memo((props: MainContentProps) => {
     <div className="main-content-wrapper">
       <div className={mainContentClasses}>
         {currentDocSidebar === 'openapi' && viewMode !== 'doc' && (
-          // <div className="openapi-wrapper">
-          //   <ApiInfo
-          //     apiInfo={{title: jdocExchange?.info?.title || 'JSight Online Editor'}}
-          //     key="apiInfo"
-          //     hidden
-          //   />
-          //   <div className="openapi-lines">
-          //     {Array.from(Array(openApiLinesCount).keys()).map((num) => (
-          //       <Fragment key={num + 1}>
-          //         {num + 1}
-          //         <br />
-          //       </Fragment>
-          //     ))}
-          //   </div>
-          //   <pre className="openapi-content">{openApiContent}</pre>
-          //   <Button className="openapi-copy" title="Copy all" onClick={copyToClipboard}>
-          //     Copy all
-          //     <img src={IconCopy} alt="Copy all" />
-          //   </Button>
-          // </div>
           <div className="openapi-wrapper">
             <Editor
               content={openApiContent}
