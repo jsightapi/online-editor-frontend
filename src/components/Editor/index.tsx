@@ -205,7 +205,7 @@ export const Editor = React.memo(
         };
       })();
       // eslint-disable-next-line
-  }, []);
+    }, []);
 
     useEffect(() => {
       if (isEditorLoaded) {
@@ -245,7 +245,7 @@ export const Editor = React.memo(
         highlightError();
       }
       // eslint-disable-next-line
-  }, [isEditorLoaded, errorRow, content]);
+    }, [isEditorLoaded, errorRow, content]);
 
     useEffect(() => {
       if (reload && isEditorLoaded) {
@@ -253,12 +253,12 @@ export const Editor = React.memo(
         reloadedEditor && reloadedEditor();
       }
       // eslint-disable-next-line
-  }, [isEditorLoaded, reload]);
+    }, [isEditorLoaded, reload]);
 
     useEffect(() => {
       errorRow && jsightEditor.current?.revealLine(errorRow, 0);
       // eslint-disable-next-line
-  }, [scrollToRow]);
+    }, [scrollToRow]);
 
     const highlightError = () => {
       if (jsightEditor.current) {
