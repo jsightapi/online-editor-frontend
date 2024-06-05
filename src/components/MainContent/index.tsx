@@ -402,7 +402,6 @@ export const MainContent = React.memo((props: MainContentProps) => {
   );
 
   const mainContentClasses = clsx('main-content', {
-    // scrollable: currentDocSidebar === 'openapi',
     disabled:
       (currentDocSidebar === 'openapi' && isOpenApiContentLoading) ||
       (currentDocSidebar === 'htmldoc' && jdocExchangeError) ||
