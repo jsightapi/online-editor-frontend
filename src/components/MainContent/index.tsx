@@ -24,6 +24,7 @@ import {toast} from 'react-toastify';
 import {notificationIds} from 'utils/notificationIds';
 import {convertJsight} from 'api/convertJsight';
 import {showEditorError} from 'utils/showEditorError';
+import {Editor} from 'components/Editor';
 
 type SchemaPropertyType =
   | 'collapsedRules'
@@ -73,6 +74,7 @@ export const MainContent = React.memo((props: MainContentProps) => {
   const [schemasData, setSchemasData] = useState<{[key: string]: SchemaData[]}>({});
   const [resourceState, setResourceState] = useState<ResourceState[]>([]);
 
+  const [reloadOpenApi, setReloadOpenApi] = useState<boolean>(false);
   const [openApiContent, setOpenApiContent] = useState<string>('');
   const [openApiLinesCount, setOpenApiLinesCount] = useState<number | undefined>();
   const [isOpenApiContentLoading, setIsOpenApiContentLoading] = useState<boolean>(false);
@@ -81,6 +83,10 @@ export const MainContent = React.memo((props: MainContentProps) => {
   window['mainContent'] = virtuosoRef;
 
   const showRightSidebar = useMemo(() => !!currentDocSidebar, [currentDocSidebar]);
+
+  const handleReloadOpenapi = () => {
+    setReloadOpenApi(false);
+  };
 
   const copyToClipboard = () => {
     if (navigator && navigator.clipboard && navigator.clipboard.writeText && openApiContent) {
@@ -196,6 +202,7 @@ export const MainContent = React.memo((props: MainContentProps) => {
           setIsOpenApiContentLoading(false);
           toast.dismiss();
           setErrorRow && setErrorRow(null);
+          setReloadOpenApi(true);
         } catch (error) {
           showEditorError(error as ErrorType, notificationIds.ERROR_MESSAGE_OPENAPI_ID, () => {
             if (!(error as ErrorType).Line) {
@@ -401,7 +408,7 @@ export const MainContent = React.memo((props: MainContentProps) => {
   );
 
   const mainContentClasses = clsx('main-content', {
-    scrollable: currentDocSidebar === 'openapi',
+    // scrollable: currentDocSidebar === 'openapi',
     disabled:
       (currentDocSidebar === 'openapi' && isOpenApiContentLoading) ||
       (currentDocSidebar === 'htmldoc' && jdocExchangeError) ||
@@ -412,21 +419,34 @@ export const MainContent = React.memo((props: MainContentProps) => {
     <div className="main-content-wrapper">
       <div className={mainContentClasses}>
         {currentDocSidebar === 'openapi' && viewMode !== 'doc' && (
+          // <div className="openapi-wrapper">
+          //   <ApiInfo
+          //     apiInfo={{title: jdocExchange?.info?.title || 'JSight Online Editor'}}
+          //     key="apiInfo"
+          //     hidden
+          //   />
+          //   <div className="openapi-lines">
+          //     {Array.from(Array(openApiLinesCount).keys()).map((num) => (
+          //       <Fragment key={num + 1}>
+          //         {num + 1}
+          //         <br />
+          //       </Fragment>
+          //     ))}
+          //   </div>
+          //   <pre className="openapi-content">{openApiContent}</pre>
+          //   <Button className="openapi-copy" title="Copy all" onClick={copyToClipboard}>
+          //     Copy all
+          //     <img src={IconCopy} alt="Copy all" />
+          //   </Button>
+          // </div>
           <div className="openapi-wrapper">
-            <ApiInfo
-              apiInfo={{title: jdocExchange?.info?.title || 'JSight Online Editor'}}
-              key="apiInfo"
-              hidden
+            <Editor
+              content={openApiContent}
+              readOnly={true}
+              reload={reloadOpenApi}
+              reloadedEditor={handleReloadOpenapi}
+              currentTheme="default"
             />
-            <div className="openapi-lines">
-              {Array.from(Array(openApiLinesCount).keys()).map((num) => (
-                <Fragment key={num + 1}>
-                  {num + 1}
-                  <br />
-                </Fragment>
-              ))}
-            </div>
-            <pre className="openapi-content">{openApiContent}</pre>
             <Button className="openapi-copy" title="Copy all" onClick={copyToClipboard}>
               Copy all
               <img src={IconCopy} alt="Copy all" />

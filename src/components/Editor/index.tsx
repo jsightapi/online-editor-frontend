@@ -20,13 +20,15 @@ import('textmate/themes/jsight-dark.json').then((data: any) => {
 
 interface EditorProps {
   content: string;
-  setContent: (value: string) => void;
-  errorRow: number | null;
-  scrollToRow: boolean;
-  reload: boolean;
-  reloadedEditor(): void;
-  setDisableSharing: React.Dispatch<React.SetStateAction<boolean>>;
-  setError: React.Dispatch<React.SetStateAction<ErrorSimpleType | null>>;
+  setContent?: (value: string) => void;
+  errorRow?: number | null;
+  scrollToRow?: boolean;
+  reload?: boolean;
+  reloadedEditor?: () => void;
+  setDisableSharing?: React.Dispatch<React.SetStateAction<boolean>>;
+  setError?: React.Dispatch<React.SetStateAction<ErrorSimpleType | null>>;
+  readOnly?: boolean;
+  currentTheme?: string;
 }
 
 function initializeEditor(
@@ -64,6 +66,7 @@ export const Editor = React.memo(
     setError,
     reload,
     reloadedEditor,
+    readOnly = false,
   }: EditorProps) => {
     const {key, version, history} = useContext(SharingContext);
     const ref = useRef<HTMLDivElement | null>(null);
@@ -83,9 +86,10 @@ export const Editor = React.memo(
 
     const onContentChange = (editor: monaco.editor.IStandaloneCodeEditor) => {
       const content = getEditorValue(editor);
-      setContent(content);
+
+      setContent && setContent(content);
       if (!dontUpdateSharingBtn.current) {
-        setDisableSharing(false);
+        setDisableSharing && setDisableSharing(false);
       }
     };
 
@@ -179,6 +183,7 @@ export const Editor = React.memo(
 
           editor.updateOptions({
             unicodeHighlight: {ambiguousCharacters: false},
+            readOnly,
           });
 
           const model = editor?.getModel();
@@ -220,15 +225,16 @@ export const Editor = React.memo(
               highlightError();
             } catch (error) {
               if (error.Code) {
-                setError({
-                  code: error.Code,
-                  message: getDefaultErrorMessages(error.Code),
-                });
+                setError &&
+                  setError({
+                    code: error.Code,
+                    message: getDefaultErrorMessages(error.Code),
+                  });
               }
             }
           })();
         } else {
-          setDisableSharing(false);
+          setDisableSharing && setDisableSharing(false);
         }
       }
     }, [isEditorLoaded, key, version]);
@@ -244,7 +250,7 @@ export const Editor = React.memo(
     useEffect(() => {
       if (reload && isEditorLoaded) {
         jsightEditor.current?.setValue(content);
-        reloadedEditor();
+        reloadedEditor && reloadedEditor();
       }
       // eslint-disable-next-line
   }, [isEditorLoaded, reload]);

@@ -75,7 +75,10 @@
 }
 
 .openapi-wrapper {
-  display: flex;
+  position: relative;
+  display: block;
+  height: 100%;
+  // display: flex;
 }
 
 .openapi-lines {
