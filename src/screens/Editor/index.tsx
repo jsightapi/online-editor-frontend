@@ -51,7 +51,7 @@ export const EditorScreen = () => {
   // left sidebar
   const [codeContentsSidebar] = useState<boolean>(false);
   //documentation sidebar on the right
-  const [currentDocSidebar, setCurrentDocSidebar] = useState<SidebarDocType>('htmldoc');
+  const [currentDocSidebar, setCurrentDocSidebar] = useState<SidebarDocType>('openapi');
   const [currentOpenApiFormat, setCurrentOpenApiFormat] = useState<OpenApiFormatType>('yaml');
   const [currentHtmlDocPanel, setCurrentHtmlDocPanel] = useState<HtmlDocPanelType>('none');
   const [jdocExchange, setJdocExchange] = useState<JDocType>();
@@ -102,15 +102,6 @@ export const EditorScreen = () => {
     localStorage.setItem('editorWidth', finalNewWidth.toString());
     setEditorWidth(finalNewWidth);
   };
-
-  useEffect(() => {
-    const isMobile = /Mobi|Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(
-      navigator.userAgent
-    );
-    if (isMobile) {
-      setCurrentDocSidebar('openapi');
-    }
-  }, []);
 
   useEffect(() => {
     const changeWidth = () => {
