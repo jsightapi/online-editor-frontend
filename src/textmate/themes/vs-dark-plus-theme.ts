@@ -55,8 +55,8 @@ export default {
       },
     },
     {
-      name: 'JSight «Protocol» directive',
-      scope: 'keyword.control.jsight.directive.protocol',
+      name: 'JSight meta-directives (Protocol, OperationId, ...)',
+      scope: 'keyword.control.jsight.directive.meta',
       settings: {
         foreground: '#48cccb',
       },
