@@ -28,7 +28,7 @@ export const ReusableResource = ({
   className,
 }: ReusableResourceProps) => {
   const {headersBodiesTypesCode} = useContext(GlobalSettingsContext);
-  const annotationLines = String(JSON.parse(`"${annotation}"`)).split(`\n`);
+  const annotationLines = annotation?.split(`\\n`);
 
   const userTypesViewMode = useMemo(() => (headersBodiesTypesCode ? 'code' : 'table'), [
     headersBodiesTypesCode,
