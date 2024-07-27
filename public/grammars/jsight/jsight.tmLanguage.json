@@ -24,6 +24,9 @@
 		{
 			"include": "#protocolDir"
 		},
+    {
+      "include": "#operationIdDir"
+    },
 		{
 			"include": "#typeDir"
 		},
@@ -240,7 +243,7 @@
 							"name": "entity.other.attribute-name.jsight.parameter.name.server"
 						}
 					},
-					"end": "(?=^\\s*(\\d\\d\\d|TESTDIR|JSIGHT|INFO|SERVER|MACRO|PASTE|INCLUDE|DIR|TAG|TYPE|ENUM|URL|GET|POST|PUT|PATCH|DELETE|BaseUrl|Title|Version|Description|Request|Headers|Query|Path|Body|Tags|Protocol|Method|Params|Result)\\b)",
+					"end": "(?=^\\s*(\\d\\d\\d|TESTDIR|JSIGHT|INFO|SERVER|MACRO|PASTE|INCLUDE|DIR|TAG|TYPE|ENUM|URL|GET|POST|PUT|PATCH|DELETE|BaseUrl|Title|Version|Description|Request|Headers|Query|Path|Body|Tags|Protocol|OperationId|Method|Params|Result)\\b)",
 					"contentName": "debug.directive.Server.afterKeyAndParams",
 					"patterns": [
 						{
@@ -267,7 +270,7 @@
 							"name": "constant.language.jsight.parameter.notation"
 						}
 					},
-					"end": "^(?=\\s*(TESTDIR|JSIGHT|INFO|SERVER|MACRO|PASTE|INCLUDE|DIR|TAG|TYPE|ENUM|URL|GET|POST|PUT|PATCH|DELETE|BaseUrl|Title|Version|Description|Request|Headers|Query|Path|Body|Tags|Protocol|Method|Params|Result)\\b)",
+					"end": "^(?=\\s*(TESTDIR|JSIGHT|INFO|SERVER|MACRO|PASTE|INCLUDE|DIR|TAG|TYPE|ENUM|URL|GET|POST|PUT|PATCH|DELETE|BaseUrl|Title|Version|Description|Request|Headers|Query|Path|Body|Tags|Protocol|OperationId|Method|Params|Result)\\b)",
 					"contentName": "debug.directive.Type.afterKeyAndParams",
 					"patterns": [
 						{
@@ -275,7 +278,7 @@
 						},
 						{
 							"begin": "(?=^\\s*(@[a-zA-Z_][a-zA-Z_0-9]*|\\{|\\[|true|false|null|\".*\"|\\d+))",
-							"end": "^(?=\\s*(TESTDIR|JSIGHT|INFO|SERVER|MACRO|PASTE|INCLUDE|DIR|TAG|TYPE|ENUM|URL|GET|POST|PUT|PATCH|DELETE|BaseUrl|Title|Version|Description|Request|Headers|Query|Path|Body|Tags|Protocol|Method|Params|Result)\\b)",
+							"end": "^(?=\\s*(TESTDIR|JSIGHT|INFO|SERVER|MACRO|PASTE|INCLUDE|DIR|TAG|TYPE|ENUM|URL|GET|POST|PUT|PATCH|DELETE|BaseUrl|Title|Version|Description|Request|Headers|Query|Path|Body|Tags|Protocol|OperationId|Method|Params|Result)\\b)",
 							"contentName": "debug.directive.Type.afterKeyAndParams.body",
 							"patterns": [
 								{
@@ -304,7 +307,7 @@
 							"name": "entity.other.attribute-name.jsight.parameter.name.usertype.definition"
 						}
 					},
-					"end": "^(?=\\s*(TESTDIR|JSIGHT|INFO|SERVER|MACRO|PASTE|INCLUDE|DIR|TAG|TYPE|ENUM|URL|GET|POST|PUT|PATCH|DELETE|BaseUrl|Title|Version|Description|Request|Headers|Query|Path|Body|Tags|Protocol|Method|Params|Result)\\b)",
+					"end": "^(?=\\s*(TESTDIR|JSIGHT|INFO|SERVER|MACRO|PASTE|INCLUDE|DIR|TAG|TYPE|ENUM|URL|GET|POST|PUT|PATCH|DELETE|BaseUrl|Title|Version|Description|Request|Headers|Query|Path|Body|Tags|Protocol|OperationId|Method|Params|Result)\\b)",
 					"contentName": "debug.directive.Enum.afterKeyAndParams",
 					"patterns": [
 						{
@@ -312,7 +315,7 @@
 						},
 						{
 							"begin": "(?=^\\s*(\\[))",
-							"end": "^(?=\\s*(TESTDIR|JSIGHT|INFO|SERVER|MACRO|PASTE|INCLUDE|DIR|TAG|TYPE|ENUM|URL|GET|POST|PUT|PATCH|DELETE|BaseUrl|Title|Version|Description|Request|Headers|Query|Path|Body|Tags|Protocol|Method|Params|Result)\\b)",
+							"end": "^(?=\\s*(TESTDIR|JSIGHT|INFO|SERVER|MACRO|PASTE|INCLUDE|DIR|TAG|TYPE|ENUM|URL|GET|POST|PUT|PATCH|DELETE|BaseUrl|Title|Version|Description|Request|Headers|Query|Path|Body|Tags|Protocol|OperationId|Method|Params|Result)\\b)",
 							"contentName": "debug.directive.Enum.afterKeyAndParams.body",
 							"patterns": [
 								{
@@ -374,7 +377,7 @@
 					}]
 				}
 			},
-			"end": "(?=^\\s*(\\d\\d\\d|TESTDIR|JSIGHT|INFO|SERVER|MACRO|PASTE|INCLUDE|DIR|TAG|TYPE|ENUM|URL|GET|POST|PUT|PATCH|DELETE|BaseUrl|Title|Version|Description|Request|Headers|Query|Path|Body|Tags|Protocol|Method|Params|Result)\\b)",
+			"end": "(?=^\\s*(\\d\\d\\d|TESTDIR|JSIGHT|INFO|SERVER|MACRO|PASTE|INCLUDE|DIR|TAG|TYPE|ENUM|URL|GET|POST|PUT|PATCH|DELETE|BaseUrl|Title|Version|Description|Request|Headers|Query|Path|Body|Tags|Protocol|OperationId|Method|Params|Result)\\b)",
 			"contentName": "debug.directive.Url.afterKeyAndParams",
 			"patterns": [
 				{
@@ -400,7 +403,7 @@
 							]
 						}
 					},
-					"end": "(?=^\\s*(\\d\\d\\d|TESTDIR|JSIGHT|INFO|SERVER|MACRO|PASTE|INCLUDE|DIR|TAG|TYPE|ENUM|URL|GET|POST|PUT|PATCH|DELETE|BaseUrl|Title|Version|Description|Request|Headers|Query|Path|Body|Tags|Protocol|Method|Params|Result)\\b)",
+					"end": "(?=^\\s*(\\d\\d\\d|TESTDIR|JSIGHT|INFO|SERVER|MACRO|PASTE|INCLUDE|DIR|TAG|TYPE|ENUM|URL|GET|POST|PUT|PATCH|DELETE|BaseUrl|Title|Version|Description|Request|Headers|Query|Path|Body|Tags|Protocol|OperationId|Method|Params|Result)\\b)",
 					"contentName": "debug.directive.Method.afterKeyAndParams",
 					"patterns": [
 						{
@@ -424,7 +427,7 @@
 							]
 						}
 					},
-					"end": "(?=^\\s*(\\d\\d\\d|TESTDIR|JSIGHT|INFO|SERVER|MACRO|PASTE|INCLUDE|DIR|TAG|TYPE|ENUM|URL|GET|POST|PUT|PATCH|DELETE|BaseUrl|Title|Version|Description|Request|Headers|Query|Path|Body|Tags|Protocol|Method|Params|Result)\\b)",
+					"end": "(?=^\\s*(\\d\\d\\d|TESTDIR|JSIGHT|INFO|SERVER|MACRO|PASTE|INCLUDE|DIR|TAG|TYPE|ENUM|URL|GET|POST|PUT|PATCH|DELETE|BaseUrl|Title|Version|Description|Request|Headers|Query|Path|Body|Tags|Protocol|OperationId|Method|Params|Result)\\b)",
 					"contentName": "debug.directive.Method.afterKeyAndParams",
 					"patterns": [
 						{
@@ -439,8 +442,15 @@
 		"protocolDir": {
 			"comment": "«Protocol»",
 			"patterns": [{
-				"name": "keyword.control.jsight.directive.protocol",
+				"name": "keyword.control.jsight.directive.meta.protocol",
 				"match": "^\\s*(Protocol)\\b"
+			}]
+		},
+		"operationIdDir": {
+			"comment": "«OperationId»",
+			"patterns": [{
+				"name": "keyword.control.jsight.directive.meta.operationId",
+				"match": "^\\s*(OperationId)\\b"
 			}]
 		},
 		"rpcMethodDir": {
@@ -456,7 +466,7 @@
 							"name": "entity.other.attribute-name.jsight.parameter.name.rpc"
 						}
 					},
-					"end": "(?=^\\s*(\\d\\d\\d|TESTDIR|JSIGHT|INFO|SERVER|MACRO|PASTE|INCLUDE|DIR|TAG|TYPE|ENUM|URL|GET|POST|PUT|PATCH|DELETE|BaseUrl|Title|Version|Description|Request|Headers|Query|Path|Body|Tags|Protocol|Method|Params|Result)\\b)",
+					"end": "(?=^\\s*(\\d\\d\\d|TESTDIR|JSIGHT|INFO|SERVER|MACRO|PASTE|INCLUDE|DIR|TAG|TYPE|ENUM|URL|GET|POST|PUT|PATCH|DELETE|BaseUrl|Title|Version|Description|Request|Headers|Query|Path|Body|Tags|Protocol|OperationId|Method|Params|Result)\\b)",
 					"contentName": "debug.directive.Method.rpc.afterKeyAndParams",
 					"patterns": [
 						{
@@ -476,12 +486,12 @@
 							"name": "keyword.control.jsight.directive.inner"
 						}
 					},
-					"end": "(?=^\\s*(TESTDIR|JSIGHT|INFO|SERVER|MACRO|PASTE|INCLUDE|DIR|TAG|TYPE|ENUM|URL|GET|POST|PUT|PATCH|DELETE|BaseUrl|Title|Version|Description|Request|Headers|Query|Path|Body|Tags|Protocol|Method|Params|Result)\\b)",
+					"end": "(?=^\\s*(TESTDIR|JSIGHT|INFO|SERVER|MACRO|PASTE|INCLUDE|DIR|TAG|TYPE|ENUM|URL|GET|POST|PUT|PATCH|DELETE|BaseUrl|Title|Version|Description|Request|Headers|Query|Path|Body|Tags|Protocol|OperationId|Method|Params|Result)\\b)",
 					"patterns": [
 						{
 							"comment": "Matching before valid jschema syntax to pass to to jschema highlighter",
 							"begin": "(?=\\s*(@[a-zA-Z_][a-zA-Z_0-9]*|\\d+|\\{|\\[|true|false|null|\".*\"))",
-							"end": "(?=^\\s*(TESTDIR|JSIGHT|INFO|SERVER|MACRO|PASTE|INCLUDE|DIR|TAG|TYPE|ENUM|URL|GET|POST|PUT|PATCH|DELETE|BaseUrl|Title|Version|Description|Request|Headers|Query|Path|Body|Tags|Protocol|Method|Params|Result)\\b)",
+							"end": "(?=^\\s*(TESTDIR|JSIGHT|INFO|SERVER|MACRO|PASTE|INCLUDE|DIR|TAG|TYPE|ENUM|URL|GET|POST|PUT|PATCH|DELETE|BaseUrl|Title|Version|Description|Request|Headers|Query|Path|Body|Tags|Protocol|OperationId|Method|Params|Result)\\b)",
 							"contentName": "debug.rpcParamsOrResult.body",
 							"patterns": [
 								{
@@ -521,7 +531,7 @@
 							"name": "string.quoted.double.jsight.parameter.baseurl"
 						}
 					},
-					"end": "(?=^\\s*(\\d\\d\\d|TESTDIR|JSIGHT|INFO|SERVER|MACRO|PASTE|INCLUDE|DIR|TAG|TYPE|ENUM|URL|GET|POST|PUT|PATCH|DELETE|BaseUrl|Title|Version|Description|Request|Headers|Query|Path|Body|Tags|Protocol|Method|Params|Result)\\b)",
+					"end": "(?=^\\s*(\\d\\d\\d|TESTDIR|JSIGHT|INFO|SERVER|MACRO|PASTE|INCLUDE|DIR|TAG|TYPE|ENUM|URL|GET|POST|PUT|PATCH|DELETE|BaseUrl|Title|Version|Description|Request|Headers|Query|Path|Body|Tags|Protocol|OperationId|Method|Params|Result)\\b)",
 					"contentName": "debug.directive.BaseUrl.afterKeyAndParams",
 					"patterns": [
 						{
@@ -544,7 +554,7 @@
 							"name": "comment.line.jsight"
 						}
 					},
-					"end": "(?<=^\\s*\\))|((?=^\\s*(\\d\\d\\d|TESTDIR|JSIGHT|INFO|SERVER|MACRO|PASTE|INCLUDE|DIR|TAG|TYPE|ENUM|URL|GET|POST|PUT|PATCH|DELETE|BaseUrl|Title|Version|Description|Request|Headers|Query|Path|Body|Tags|Protocol|Method|Params|Result)))",
+					"end": "(?<=^\\s*\\))|((?=^\\s*(\\d\\d\\d|TESTDIR|JSIGHT|INFO|SERVER|MACRO|PASTE|INCLUDE|DIR|TAG|TYPE|ENUM|URL|GET|POST|PUT|PATCH|DELETE|BaseUrl|Title|Version|Description|Request|Headers|Query|Path|Body|Tags|Protocol|OperationId|Method|Params|Result)))",
 					"contentName": "debug.directive.Description.body",
 					"patterns": [
 						{
@@ -554,7 +564,7 @@
 						},
 						{
 							"begin": "^",
-							"end": "(?=^\\s*(\\d\\d\\d|TESTDIR|JSIGHT|INFO|SERVER|MACRO|PASTE|INCLUDE|DIR|TAG|TYPE|ENUM|URL|GET|POST|PUT|PATCH|DELETE|BaseUrl|Title|Version|Description|Request|Headers|Query|Path|Body|Tags|Protocol|Method|Params|Result))",
+							"end": "(?=^\\s*(\\d\\d\\d|TESTDIR|JSIGHT|INFO|SERVER|MACRO|PASTE|INCLUDE|DIR|TAG|TYPE|ENUM|URL|GET|POST|PUT|PATCH|DELETE|BaseUrl|Title|Version|Description|Request|Headers|Query|Path|Body|Tags|Protocol|OperationId|Method|Params|Result))",
 							"contentName": "debug.directive.Description.body.markdown"
 						}
 					]
@@ -571,11 +581,11 @@
 							"name": "keyword.control.jsight.directive.inner"
 						}
 					},
-					"end": "(?=^\\s*(\\d\\d\\d|TESTDIR|JSIGHT|INFO|SERVER|MACRO|PASTE|INCLUDE|DIR|TAG|TYPE|ENUM|URL|GET|POST|PUT|PATCH|DELETE|BaseUrl|Title|Version|Description|Request|Headers|Query|Path|Body|Tags|Protocol|Method|Params|Result)\\b)",
+					"end": "(?=^\\s*(\\d\\d\\d|TESTDIR|JSIGHT|INFO|SERVER|MACRO|PASTE|INCLUDE|DIR|TAG|TYPE|ENUM|URL|GET|POST|PUT|PATCH|DELETE|BaseUrl|Title|Version|Description|Request|Headers|Query|Path|Body|Tags|Protocol|OperationId|Method|Params|Result)\\b)",
 					"patterns": [
 						{
 							"begin": "(?=^\\s*(@[a-zA-Z_][a-zA-Z_0-9]*|\\{))",
-							"end": "(?=^\\s*(\\d\\d\\d|TESTDIR|JSIGHT|INFO|SERVER|MACRO|PASTE|INCLUDE|DIR|TAG|TYPE|ENUM|URL|GET|POST|PUT|PATCH|DELETE|BaseUrl|Title|Version|Description|Request|Headers|Query|Path|Body|Tags|Protocol|Method|Params|Result)\\b)",
+							"end": "(?=^\\s*(\\d\\d\\d|TESTDIR|JSIGHT|INFO|SERVER|MACRO|PASTE|INCLUDE|DIR|TAG|TYPE|ENUM|URL|GET|POST|PUT|PATCH|DELETE|BaseUrl|Title|Version|Description|Request|Headers|Query|Path|Body|Tags|Protocol|OperationId|Method|Params|Result)\\b)",
 							"contentName": "debug.HeadersOrPath.body",
 							"patterns": [
 								{
@@ -606,11 +616,11 @@
 							"name": "constant.language.jsight.parameter.query.format"
 						}
 					},
-					"end": "(?=^\\s*(\\d\\d\\d|TESTDIR|JSIGHT|INFO|SERVER|MACRO|PASTE|INCLUDE|DIR|TAG|TYPE|ENUM|URL|GET|POST|PUT|PATCH|DELETE|BaseUrl|Title|Version|Description|Request|Headers|Query|Path|Body|Tags|Protocol|Method|Params|Result)\\b)",
+					"end": "(?=^\\s*(\\d\\d\\d|TESTDIR|JSIGHT|INFO|SERVER|MACRO|PASTE|INCLUDE|DIR|TAG|TYPE|ENUM|URL|GET|POST|PUT|PATCH|DELETE|BaseUrl|Title|Version|Description|Request|Headers|Query|Path|Body|Tags|Protocol|OperationId|Method|Params|Result)\\b)",
 					"patterns": [
 						{
 							"begin": "(?=^\\s*(@[a-zA-Z_][a-zA-Z_0-9]*|\\{|\\[|\"))",
-							"end": "(?=^\\s*(\\d\\d\\d|TESTDIR|JSIGHT|INFO|SERVER|MACRO|PASTE|INCLUDE|DIR|TAG|TYPE|ENUM|URL|GET|POST|PUT|PATCH|DELETE|BaseUrl|Title|Version|Description|Request|Headers|Query|Path|Body|Tags|Protocol|Method|Params|Result)\\b)",
+							"end": "(?=^\\s*(\\d\\d\\d|TESTDIR|JSIGHT|INFO|SERVER|MACRO|PASTE|INCLUDE|DIR|TAG|TYPE|ENUM|URL|GET|POST|PUT|PATCH|DELETE|BaseUrl|Title|Version|Description|Request|Headers|Query|Path|Body|Tags|Protocol|OperationId|Method|Params|Result)\\b)",
 							"contentName": "debug.Query.body",
 							"patterns": [
 								{
@@ -630,7 +640,7 @@
 				{
 					"comment": "Responses-jsight. MATCHING before three-digit response code keyword (with jsight notation param or no params) to deal with everything inside patterns. Ending right before any directive except response.",
 					"begin": "(?=^\\s*(\\d\\d\\d)\\s*)",
-					"end": "(?=^\\s*(TESTDIR|JSIGHT|INFO|SERVER|MACRO|PASTE|INCLUDE|DIR|TAG|TYPE|ENUM|URL|GET|POST|PUT|PATCH|DELETE|BaseUrl|Title|Version|Description|Request|Headers|Query|Path|Body|Tags|Protocol|Method|Params|Result)\\b)",
+					"end": "(?=^\\s*(TESTDIR|JSIGHT|INFO|SERVER|MACRO|PASTE|INCLUDE|DIR|TAG|TYPE|ENUM|URL|GET|POST|PUT|PATCH|DELETE|BaseUrl|Title|Version|Description|Request|Headers|Query|Path|Body|Tags|Protocol|OperationId|Method|Params|Result)\\b)",
 					"patterns": [
 						{
 							"comment": "Responses-regex. MATCHING three-digit code keyword with regex notation. Ending with regex string. Allowing annotations and comments in between.",
@@ -708,7 +718,7 @@
 						{
 							"comment": "PASSING jschema body to jschema highlighter",
 							"begin": "(?=\\s*(@[a-zA-Z_][a-zA-Z_0-9]*|\\{|\\[|true|false|null|\".*\"))",
-							"end": "(?=^\\s*(\\d\\d\\d|TESTDIR|JSIGHT|INFO|SERVER|MACRO|PASTE|INCLUDE|DIR|TAG|TYPE|ENUM|URL|GET|POST|PUT|PATCH|DELETE|BaseUrl|Title|Version|Description|Request|Headers|Query|Path|Body|Tags|Protocol|Method|Params|Result)\\b)",
+							"end": "(?=^\\s*(\\d\\d\\d|TESTDIR|JSIGHT|INFO|SERVER|MACRO|PASTE|INCLUDE|DIR|TAG|TYPE|ENUM|URL|GET|POST|PUT|PATCH|DELETE|BaseUrl|Title|Version|Description|Request|Headers|Query|Path|Body|Tags|Protocol|OperationId|Method|Params|Result)\\b)",
 							"patterns": [
 								{
 									"include": "source.jschema"
@@ -725,7 +735,7 @@
 				{
 					"comment": "Request. MATCHING before «Request» keyword to deal with everything inside patterns. Ending right before any directive except «Request» (no problems since Requests cannot be chained)",
 					"begin": "(?=^\\s*(Request)\\s*)",
-					"end": "(?=^\\s*(TESTDIR|JSIGHT|INFO|SERVER|MACRO|PASTE|INCLUDE|DIR|TAG|TYPE|ENUM|URL|GET|POST|PUT|PATCH|DELETE|BaseUrl|Title|Version|Description|Headers|Query|Path|Body|Tags|Protocol|Method|Params|Result)\\b)",
+					"end": "(?=^\\s*(TESTDIR|JSIGHT|INFO|SERVER|MACRO|PASTE|INCLUDE|DIR|TAG|TYPE|ENUM|URL|GET|POST|PUT|PATCH|DELETE|BaseUrl|Title|Version|Description|Headers|Query|Path|Body|Tags|Protocol|OperationId|Method|Params|Result)\\b)",
 					"contentName": "debug.directive.Request.whole",
 					"patterns": [
 						{
@@ -815,7 +825,7 @@
 				{
 					"comment": "MATCHING before «Body» keyword to deal with everything inside patterns. Ending right before any directive except «Body» (no problems since Body cannot be chained)",
 					"begin": "(?=^\\s*(Body)\\s*)",
-					"end": "(?=^\\s*(TESTDIR|JSIGHT|INFO|SERVER|MACRO|PASTE|INCLUDE|DIR|TAG|TYPE|ENUM|URL|GET|POST|PUT|PATCH|DELETE|BaseUrl|Title|Version|Description|Request|Headers|Query|Path|Tags|Protocol|Method|Params|Result)\\b)",
+					"end": "(?=^\\s*(TESTDIR|JSIGHT|INFO|SERVER|MACRO|PASTE|INCLUDE|DIR|TAG|TYPE|ENUM|URL|GET|POST|PUT|PATCH|DELETE|BaseUrl|Title|Version|Description|Request|Headers|Query|Path|Tags|Protocol|OperationId|Method|Params|Result)\\b)",
 					"contentName": "debug.directive.Body.whole",
 					"patterns": [
 						{
@@ -918,7 +928,7 @@
 			"patterns": [
 				{
 					"begin": "(?=^\\s*(@[a-zA-Z_][a-zA-Z_0-9]*|\\{|\\[|true|false|null|\".*\"))",
-					"end": "(?=^\\s*(\\d\\d\\d|TESTDIR|JSIGHT|INFO|SERVER|MACRO|PASTE|INCLUDE|DIR|TAG|TYPE|ENUM|URL|GET|POST|PUT|PATCH|DELETE|BaseUrl|Title|Version|Description|Request|Headers|Query|Path|Body|Tags|Protocol|Method|Params|Result)\\b)",
+					"end": "(?=^\\s*(\\d\\d\\d|TESTDIR|JSIGHT|INFO|SERVER|MACRO|PASTE|INCLUDE|DIR|TAG|TYPE|ENUM|URL|GET|POST|PUT|PATCH|DELETE|BaseUrl|Title|Version|Description|Request|Headers|Query|Path|Body|Tags|Protocol|OperationId|Method|Params|Result)\\b)",
 					"patterns": [
 						{
 							"include": "source.jschema"
