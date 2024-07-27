@@ -28,6 +28,7 @@ export const ReusableResource = ({
   className,
 }: ReusableResourceProps) => {
   const {headersBodiesTypesCode} = useContext(GlobalSettingsContext);
+  const annotationLines = String(JSON.parse(`"${annotation}"`)).split(`\n`);
 
   const userTypesViewMode = useMemo(() => (headersBodiesTypesCode ? 'code' : 'table'), [
     headersBodiesTypesCode,
@@ -37,7 +38,13 @@ export const ReusableResource = ({
     <div className="resource-wrapper">
       <div className={clsx(['resource-content', className])}>
         <h4 className="type">{name}</h4>
-        {annotation && <div className="annotation">{annotation}</div>}
+        {annotationLines && (
+          <div className="annotation">
+            {annotationLines?.map((line, index) => (
+              <p key={index}>{line}</p>
+            ))}
+          </div>
+        )}
         {schema ? (
           <SchemaView
             typeBlock="header-body"
