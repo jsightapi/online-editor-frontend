@@ -30,7 +30,7 @@ export function useSharing() {
     ? (window as any).jsightEditor
     : null;
 
-  const createState = () => {
+  const createState = async () => {
     const content = jsightEditor.current?.getValue();
 
     if (content !== undefined) {
@@ -47,7 +47,7 @@ export function useSharing() {
     }
   };
 
-  const updateExistState = () => {
+  const updateExistState = async () => {
     const content = jsightEditor.current?.getValue();
 
     if (content !== undefined) {

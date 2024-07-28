@@ -416,6 +416,7 @@ export const MainContent = React.memo((props: MainContentProps) => {
             <Editor
               content={openApiContent}
               readOnly={true}
+              jsightEditorId="openApiViewer"
               reload={reloadOpenApi}
               reloadedEditor={handleReloadOpenapi}
               currentTheme="default"

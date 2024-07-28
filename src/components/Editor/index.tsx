@@ -29,6 +29,7 @@ interface EditorProps {
   setError?: React.Dispatch<React.SetStateAction<ErrorSimpleType | null>>;
   readOnly?: boolean;
   currentTheme?: string;
+  jsightEditorId?: string;
 }
 
 function initializeEditor(
@@ -67,6 +68,7 @@ export const Editor = React.memo(
     reload,
     reloadedEditor,
     readOnly = false,
+    jsightEditorId = 'jsightEditor',
   }: EditorProps) => {
     const {key, version, history} = useContext(SharingContext);
     const ref = useRef<HTMLDivElement | null>(null);
@@ -78,7 +80,7 @@ export const Editor = React.memo(
     const currentLanguage = 'jsight';
 
     // @ts-ignore
-    window['jsightEditor'] = jsightEditor;
+    window[jsightEditorId] = jsightEditor;
 
     const languages: monaco.languages.ILanguageExtensionPoint[] = languagesList.map((id) => ({
       id,
