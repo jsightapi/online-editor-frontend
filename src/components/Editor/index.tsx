@@ -75,6 +75,7 @@ export const Editor = React.memo(
     const jsightEditor = useRef<monaco.editor.IStandaloneCodeEditor | null>(null);
     const decorationsRef = useRef<string[]>([]);
     const [isEditorLoaded, setIsEditorLoaded] = useState<boolean>(false);
+    const [isContentRendered, setIsContentRendered] = useState<boolean>(false);
     const dontUpdateSharingBtn = useRef<boolean>(false);
     const languagesList = ['jsight', 'jschema', 'markdown'];
     const currentLanguage = 'jsight';
@@ -212,6 +213,8 @@ export const Editor = React.memo(
     useEffect(() => {
       if (isEditorLoaded) {
         if (key) {
+          //   if (isContentRendered && readOnly) return;
+
           dontUpdateSharingBtn.current = true;
           (async () => {
             try {
@@ -225,6 +228,7 @@ export const Editor = React.memo(
                 history.push(`/r/${result.code}/${result.version}`);
               }
               highlightError();
+              setIsContentRendered(true);
             } catch (error) {
               if (error.Code) {
                 setError &&
