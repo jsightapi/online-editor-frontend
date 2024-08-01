@@ -408,14 +408,18 @@ export const MainContent = React.memo((props: MainContentProps) => {
       (currentDocSidebar === 'htmldoc' && isJdocLoading),
   });
 
+  /* TODO: This is workaround. Refactor to avoid openapi compatibility check */
+  const isValidOpenApiContent = openApiContent.substr(0, 7) === 'openapi';
+
   return (
     <div className="main-content-wrapper">
       <div className={mainContentClasses}>
-        {currentDocSidebar === 'openapi' && viewMode !== 'doc' && (
+        {currentDocSidebar === 'openapi' && viewMode !== 'doc' && isValidOpenApiContent && (
           <div className="openapi-wrapper">
             <Editor
               content={openApiContent}
               readOnly={true}
+              jsightEditorId="openApiViewer"
               reload={reloadOpenApi}
               reloadedEditor={handleReloadOpenapi}
               currentTheme="default"

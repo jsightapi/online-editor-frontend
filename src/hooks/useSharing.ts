@@ -1,4 +1,4 @@
-import {createNewState, updateState} from 'api/codeSharing';
+import {createNewState, updateState, CodeSharingParamsType} from 'api/codeSharing';
 import {useParams} from 'react-router-dom';
 import {toast} from 'react-toastify';
 import {ToastOptions} from 'react-toastify/dist/types';
@@ -30,13 +30,18 @@ export function useSharing() {
     ? (window as any).jsightEditor
     : null;
 
-  const createState = () => {
+  const getUrl = (response: CodeSharingParamsType) =>
+    `/r/${response.code}/${response.version}${path ? `#${path}` : ''}`;
+
+  const createState = async () => {
     const content = jsightEditor.current?.getValue();
 
     if (content !== undefined) {
       return createNewState(content)
         .then((response) => {
-          history.push(`/r/${response.code}/${response.version}${path ? `#${path}` : ''}`);
+          const url = getUrl(response);
+          console.log(url);
+          window.history.pushState({}, document.title, url);
         })
         .catch(() => {
           toast.warning(SharingErrorNotification, errorOptions);
@@ -47,13 +52,14 @@ export function useSharing() {
     }
   };
 
-  const updateExistState = () => {
+  const updateExistState = async () => {
     const content = jsightEditor.current?.getValue();
 
     if (content !== undefined) {
       return updateState(key, content)
         .then((response) => {
-          history.push(`/r/${response.code}/${response.version}${path ? `#${path}` : ''}`);
+          const url = getUrl(response);
+          window.history.pushState({}, document.title, url);
         })
         .catch(() => {
           toast.warning(SharingErrorNotification, errorOptions);

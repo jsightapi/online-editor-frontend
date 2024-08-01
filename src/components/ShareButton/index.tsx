@@ -17,9 +17,16 @@ export const ShareButton: React.FC<ShareButtonProps> = ({openSharingModal, disab
   const {key, version} = useContext(SharingContext);
   const isAbleUpdate = useMemo(() => key && version, [key, version]);
 
-  const handleNewState = async (updateOrCreateState: () => void) => {
+  const handleCreateState = async () => {
     try {
-      await updateOrCreateState();
+      await createState();
+      openSharingModal();
+    } catch (err) {}
+  };
+
+  const handleUpdateState = async () => {
+    try {
+      await updateExistState();
       openSharingModal();
     } catch (err) {}
   };
@@ -37,7 +44,7 @@ export const ShareButton: React.FC<ShareButtonProps> = ({openSharingModal, disab
           </div>
         </DropdownToggle>
         <DropdownMenu offsetX={-160}>
-          <div className="menu-item" onClick={() => handleNewState(updateExistState)}>
+          <div className="menu-item" onClick={handleUpdateState}>
             <div>
               <i className="icon-upload" />
             </div>
@@ -47,7 +54,7 @@ export const ShareButton: React.FC<ShareButtonProps> = ({openSharingModal, disab
             </div>
           </div>
           <hr />
-          <div className="menu-item" onClick={() => handleNewState(createState)}>
+          <div className="menu-item" onClick={handleCreateState}>
             <div>
               <i className="icon-plus" />
             </div>
@@ -64,7 +71,7 @@ export const ShareButton: React.FC<ShareButtonProps> = ({openSharingModal, disab
       disabled={disableSharing || !process.env.REACT_APP_CLOUD_URL}
       icon="link"
       className="save-by-link-btn"
-      onClick={() => handleNewState(createState)}
+      onClick={handleCreateState}
     >
       Share
     </Button>
