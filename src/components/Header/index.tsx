@@ -20,6 +20,7 @@ interface HeaderProps {
   setContactModalVisible: React.Dispatch<React.SetStateAction<boolean>>;
   openSharingModal(): void;
   disableSharing: boolean;
+  sharingContent?: string;
 }
 
 export const Header = ({
@@ -28,6 +29,7 @@ export const Header = ({
   setContactModalVisible,
   openSharingModal,
   disableSharing,
+  sharingContent,
 }: HeaderProps) => {
   const [docsMenuVisible, setDocsMenuVisible] = useState<boolean>(false);
   const [fileMenuVisible, setFileMenuVisible] = useState<boolean>(false);
@@ -102,7 +104,11 @@ export const Header = ({
               />
             </Button>
           </div>
-          <ShareButton disableSharing={disableSharing} openSharingModal={openSharingModal} />
+          <ShareButton
+            disableSharing={disableSharing}
+            openSharingModal={openSharingModal}
+            sharingContent={sharingContent}
+          />
         </div>
       </div>
     </div>

@@ -256,6 +256,7 @@ export const EditorScreen = () => {
                 setViewMode={setViewMode}
                 setContactModalVisible={setContactModalVisible}
                 openSharingModal={openSharingModal}
+                sharingContent={jsightCode}
               />
             </SidebarContext.Provider>
           ) : (

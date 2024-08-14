@@ -77,9 +77,6 @@ export const Editor = React.memo(
     const languagesList = ['jsight', 'jschema', 'markdown'];
     const currentLanguage = 'jsight';
 
-    // @ts-ignore
-    window['jsightEditor'] = jsightEditor;
-
     const languages: monaco.languages.ILanguageExtensionPoint[] = languagesList.map((id) => ({
       id,
     }));
@@ -224,11 +221,12 @@ export const Editor = React.memo(
               }
               highlightError();
             } catch (error) {
-              if (error.Code) {
+              const {Code} = error as {Code: number};
+              if (Code) {
                 setError &&
                   setError({
-                    code: error.Code,
-                    message: getDefaultErrorMessages(error.Code),
+                    code: Code,
+                    message: getDefaultErrorMessages(Code),
                   });
               }
             }
