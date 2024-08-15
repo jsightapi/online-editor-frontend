@@ -1,4 +1,4 @@
-import {createNewState, updateState} from 'api/codeSharing';
+import {createNewState, updateState, CodeSharingParamsType} from 'api/codeSharing';
 import {useParams} from 'react-router-dom';
 import {toast} from 'react-toastify';
 import {ToastOptions} from 'react-toastify/dist/types';
@@ -8,7 +8,6 @@ import {MainRouterParams} from 'types';
 import {notificationIds} from 'utils/notificationIds';
 import {SharingErrorNotification} from 'components/Notifications/SharingErrorNotification';
 import {IconError} from 'components/Notifications/IconError';
-import * as monaco from 'monaco-editor';
 
 const errorOptions: ToastOptions = {
   closeOnClick: false,
@@ -23,20 +22,17 @@ const errorOptions: ToastOptions = {
 
 export function useSharing() {
   const {path} = useParams<MainRouterParams>();
-  const {key, history} = useContext(SharingContext);
-  const jsightEditor: React.MutableRefObject<monaco.editor.IStandaloneCodeEditor | null> = window.hasOwnProperty(
-    'jsightEditor'
-  )
-    ? (window as any).jsightEditor
-    : null;
+  const {key} = useContext(SharingContext);
 
-  const createState = () => {
-    const content = jsightEditor.current?.getValue();
+  const getUrl = ({code, version}: CodeSharingParamsType) =>
+    `/r/${code}/${version}${path ? `#${path}` : ''}`;
 
+  const createState = (content?: string) => {
     if (content !== undefined) {
       return createNewState(content)
         .then((response) => {
-          history.push(`/r/${response.code}/${response.version}${path ? `#${path}` : ''}`);
+          // history.push(`/r/${response.code}/${response.version}${path ? `#${path}` : ''}`);
+          window.history.pushState({}, document.title, getUrl(response));
         })
         .catch(() => {
           toast.warning(SharingErrorNotification, errorOptions);
@@ -47,13 +43,12 @@ export function useSharing() {
     }
   };
 
-  const updateExistState = () => {
-    const content = jsightEditor.current?.getValue();
-
+  const updateExistState = (content?: string) => {
     if (content !== undefined) {
       return updateState(key, content)
         .then((response) => {
-          history.push(`/r/${response.code}/${response.version}${path ? `#${path}` : ''}`);
+          // history.push(`/r/${response.code}/${response.version}${path ? `#${path}` : ''}`);
+          window.history.pushState({}, document.title, getUrl(response));
         })
         .catch(() => {
           toast.warning(SharingErrorNotification, errorOptions);
