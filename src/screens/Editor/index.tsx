@@ -1,4 +1,12 @@
-import React, {useState, useEffect, useMemo, startTransition, useCallback, useContext} from 'react';
+import React, {
+  useState,
+  useEffect,
+  useMemo,
+  startTransition,
+  useCallback,
+  useContext,
+  useRef,
+} from 'react';
 import clsx from 'clsx';
 import {toast, ToastContainer} from 'react-toastify';
 import {Resizable} from 're-resizable';
@@ -36,13 +44,15 @@ import IconHTMLDoc from 'assets/images/icons/htmldoc.svg';
 import IconContents from 'assets/images/icons/contents.svg';
 
 import './Editor.styles.scss';
+import {getExistingState} from 'api/codeSharing';
+import {getDefaultErrorMessages} from 'utils/getError';
 
 const {isExport} = window as any;
 
 const SCROLLBAR_WIDTH = 20;
 
 export const EditorScreen = () => {
-  const {key, history} = useContext(SharingContext);
+  const {key, version, history} = useContext(SharingContext);
   const [viewMode, setViewMode] = useState<editorModeType>(isExport ? 'doc' : 'editor');
   const [jsightCode, setJsightCode] = useState<string>(
     key ? '' : localStorage.getItem('jsightCode') || initCats
@@ -68,6 +78,7 @@ export const EditorScreen = () => {
   const [isShowAnnouncementBar, setIsShowAnnouncementBar] = useState<boolean>(
     !localStorage.getItem('announcement.bar.hidden')
   );
+  const dontUpdateSharingBtn = useRef<boolean>(false);
 
   const handleCloseAnnouncementBar = () => {
     setIsShowAnnouncementBar(false);
@@ -112,6 +123,21 @@ export const EditorScreen = () => {
 
     onOrientationChange(changeWidth);
   });
+
+  useEffect(() => {
+    if (key) {
+      dontUpdateSharingBtn.current = true;
+      getExistingState(key, version)
+        .then((result) => {
+          setInitJsightCode(result.data.content);
+          dontUpdateSharingBtn.current = false;
+          !version && history.push(`/r/${result.code}/${result.version}`);
+        })
+        .catch(({Code: code}) => code && setError({code, message: getDefaultErrorMessages(code)}));
+    } else {
+      setDisableSharing(false);
+    }
+  }, [history, key, version]);
 
   useEffect(() => {
     if (currentDocSidebar === 'htmldoc' && jsightCodeDebounced !== undefined) {
@@ -201,9 +227,12 @@ export const EditorScreen = () => {
     setCurrentHtmlDocPanel((prev) => (prev === htmldocpanel ? 'none' : htmldocpanel));
   }, []);
 
-  const handleJsightCode = useCallback((code: string) => setJsightCode(code), []);
-  const handleDisableSharing = useCallback((value) => setDisableSharing(value), []);
-  const handleError = useCallback((error) => setError(error), []);
+  const handleJsightCode = useCallback((code: string) => {
+    setJsightCode(code);
+    if (!dontUpdateSharingBtn.current) {
+      setDisableSharing(false);
+    }
+  }, []);
   const handleReloadedEditor = useCallback(() => reloadedEditor(), []);
 
   const jdocValue = useMemo(
@@ -295,8 +324,6 @@ export const EditorScreen = () => {
                 scrollToRow={scrollToRow}
                 reload={reloadEditor}
                 setContent={handleJsightCode}
-                setDisableSharing={handleDisableSharing}
-                setError={handleError}
                 reloadedEditor={handleReloadedEditor}
               />
             </Resizable>
