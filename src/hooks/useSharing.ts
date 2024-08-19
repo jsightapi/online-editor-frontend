@@ -1,4 +1,4 @@
-import {createNewState, updateState, CodeSharingParamsType} from 'api/codeSharing';
+import {createNewState, updateState} from 'api/codeSharing';
 import {useParams} from 'react-router-dom';
 import {toast} from 'react-toastify';
 import {ToastOptions} from 'react-toastify/dist/types';
@@ -22,17 +22,13 @@ const errorOptions: ToastOptions = {
 
 export function useSharing() {
   const {path} = useParams<MainRouterParams>();
-  const {key} = useContext(SharingContext);
-
-  const getUrl = ({code, version}: CodeSharingParamsType) =>
-    `/r/${code}/${version}${path ? `#${path}` : ''}`;
+  const {key, history} = useContext(SharingContext);
 
   const createState = (content?: string) => {
     if (content !== undefined) {
       return createNewState(content)
         .then((response) => {
-          // history.push(`/r/${response.code}/${response.version}${path ? `#${path}` : ''}`);
-          window.history.pushState({}, document.title, getUrl(response));
+          history.push(`/r/${response.code}/${response.version}${path ? `#${path}` : ''}`);
         })
         .catch(() => {
           toast.warning(SharingErrorNotification, errorOptions);
@@ -47,8 +43,7 @@ export function useSharing() {
     if (content !== undefined) {
       return updateState(key, content)
         .then((response) => {
-          // history.push(`/r/${response.code}/${response.version}${path ? `#${path}` : ''}`);
-          window.history.pushState({}, document.title, getUrl(response));
+          history.push(`/r/${response.code}/${response.version}${path ? `#${path}` : ''}`);
         })
         .catch(() => {
           toast.warning(SharingErrorNotification, errorOptions);

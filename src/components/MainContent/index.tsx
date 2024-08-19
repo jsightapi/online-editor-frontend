@@ -196,7 +196,10 @@ export const MainContent = React.memo((props: MainContentProps) => {
       const convert = async () => {
         try {
           setIsOpenApiContentLoading(true);
-          const result = await convertJsight(jsightCode, 'openapi-3.0.3', currentOpenApiFormat);
+          const result =
+            jsightCode === ''
+              ? ''
+              : await convertJsight(jsightCode, 'openapi-3.0.3', currentOpenApiFormat);
           setOpenApiContent(result as string);
           setIsOpenApiContentLoading(false);
           toast.dismiss();
