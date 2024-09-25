@@ -114,6 +114,36 @@ export const EditorScreen = () => {
     setEditorWidth(finalNewWidth);
   };
 
+  const updateJdocExchange = useCallback(async () => {
+    if (!isExport) {
+      try {
+        setIsJdocLoading(true);
+        const jdocExchange = await convertJsight(jsightCodeDebounced, 'jdoc-2.0');
+        startTransition(() => setJdocExchange(jdocExchange as JDocType));
+        toast.dismiss();
+        setErrorRow(null);
+        setJdocExchangeError(false);
+        setIsJdocLoading(false);
+      } catch (error) {
+        showEditorError(error as ErrorType, notificationIds.ERROR_MESSAGE_HTMLDOC_ID, () => {
+          if (!(error as ErrorType).Line) {
+            return;
+          }
+
+          setScrollToRow(true);
+          setTimeout(() => setScrollToRow(false), 500);
+        });
+        (error as ErrorType).Line && setErrorRow((error as ErrorType).Line);
+        setJdocExchangeError(true);
+      } finally {
+        localStorage.setItem('jsightCode', jsightCodeDebounced);
+      }
+    } else {
+      // @ts-ignore
+      setJdocExchange(window?.jdoc);
+    }
+  }, [jsightCodeDebounced]);
+
   useEffect(() => {
     const changeWidth = () => {
       const width = getEditorWidth(screenWidth);
@@ -140,38 +170,14 @@ export const EditorScreen = () => {
   }, [history, key, version]);
 
   useEffect(() => {
-    if (currentDocSidebar === 'htmldoc' && jsightCodeDebounced !== undefined) {
-      (async () => {
-        if (!isExport) {
-          try {
-            setIsJdocLoading(true);
-            const jdocExchange = await convertJsight(jsightCodeDebounced, 'jdoc-2.0');
-            startTransition(() => setJdocExchange(jdocExchange as JDocType));
-            toast.dismiss();
-            setErrorRow(null);
-            setJdocExchangeError(false);
-            setIsJdocLoading(false);
-          } catch (error) {
-            showEditorError(error as ErrorType, notificationIds.ERROR_MESSAGE_HTMLDOC_ID, () => {
-              if (!(error as ErrorType).Line) {
-                return;
-              }
+    updateJdocExchange();
+  }, [updateJdocExchange]);
 
-              setScrollToRow(true);
-              setTimeout(() => setScrollToRow(false), 500);
-            });
-            (error as ErrorType).Line && setErrorRow((error as ErrorType).Line);
-            setJdocExchangeError(true);
-          } finally {
-            localStorage.setItem('jsightCode', jsightCodeDebounced);
-          }
-        } else {
-          // @ts-ignore
-          setJdocExchange(window?.jdoc);
-        }
-      })();
+  useEffect(() => {
+    if (currentDocSidebar === 'htmldoc' && jsightCodeDebounced !== undefined) {
+      updateJdocExchange();
     }
-  }, [currentDocSidebar, jsightCodeDebounced]);
+  }, [currentDocSidebar, jsightCodeDebounced, updateJdocExchange]);
 
   const classes = useMemo(
     () =>
