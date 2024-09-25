@@ -325,6 +325,7 @@ export const EditorScreen = () => {
                 reload={reloadEditor}
                 setContent={handleJsightCode}
                 reloadedEditor={handleReloadedEditor}
+                globalTestId="jsightEditor"
               />
             </Resizable>
             <div
