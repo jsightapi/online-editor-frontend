@@ -23,6 +23,7 @@ interface EditorProps {
   reloadedEditor?: () => void;
   readOnly?: boolean;
   currentTheme?: string;
+  globalTestId?: string;
 }
 
 function initializeEditor(
@@ -59,6 +60,7 @@ export const Editor = React.memo(
     reload,
     reloadedEditor,
     readOnly = false,
+    globalTestId,
   }: EditorProps) => {
     const ref = useRef<HTMLDivElement | null>(null);
     const jsightEditor = useRef<monaco.editor.IStandaloneCodeEditor | null>(null);
@@ -66,6 +68,11 @@ export const Editor = React.memo(
     const [isEditorLoaded, setIsEditorLoaded] = useState<boolean>(false);
     const languagesList = ['jsight', 'jschema', 'markdown'];
     const currentLanguage = 'jsight';
+
+    if (globalTestId !== undefined) {
+      // @ts-ignore
+      window[globalTestId] = jsightEditor;
+    }
 
     const languages: monaco.languages.ILanguageExtensionPoint[] = languagesList.map((id) => ({
       id,
