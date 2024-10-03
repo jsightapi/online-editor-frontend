@@ -68,6 +68,7 @@ export const Editor = React.memo(
     const [isEditorLoaded, setIsEditorLoaded] = useState<boolean>(false);
     const languagesList = ['jsight', 'jschema', 'markdown'];
     const currentLanguage = 'jsight';
+    const skipContentChange = useRef(true);
 
     if (globalTestId !== undefined) {
       // @ts-ignore
@@ -79,6 +80,11 @@ export const Editor = React.memo(
     }));
 
     const onContentChange = (editor: monaco.editor.IStandaloneCodeEditor) => {
+      if (skipContentChange.current) {
+        skipContentChange.current = false;
+        return;
+      }
+
       const content = getEditorValue(editor);
       setContent && setContent(content);
     };
