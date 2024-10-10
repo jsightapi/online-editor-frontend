@@ -36,10 +36,16 @@ SERVER @PROD
 
 #------------------------------------------- CATS ------------------------------------------------------
 
+TAG @cats
+TAG @dogs // The dogs
+TAG @getAll
+
 URL /cats
+  Tags @cats
 
   GET /* Get all 
          the cats. */
+    Tags @getAll
     Query "page=1&per_page=50&filter[size]=XXL"
     {
       "page": 1,
@@ -49,6 +55,7 @@ URL /cats
         "age" : 12     // {optional: true                      } - Cat age filter.
       }
     }
+    OperationId getAllCats
 
     200 // Cat’s list.
       Headers
@@ -89,6 +96,7 @@ URL /cats/{id}
   }
 
   GET // Get a cat by it’s id.
+    OperationId "getCatById"
     Description
       Returns a cat’s definition by it’s id.
 
@@ -158,6 +166,7 @@ URL /cats/astronauts
 GET /pets // Get all pets.
   Query htmlFormEncoded
     @standardQuery
+  Tags @getAll
   
   200 [@pet]
 
@@ -168,6 +177,8 @@ GET /pets/{passportNumber} // Get all pets by passport number.
   200 [@pet]
 
 #------------------------------------------- DOGS ------------------------------------------------------
+
+
 
 URL /dogs
 
@@ -182,6 +193,7 @@ URL /dogs
                            - Hunting ability filter. */
       }
     }
+    Tags @dogs @getAll
 
     200
       [ // {minItems: 0, maxItems: 100}
@@ -408,7 +420,7 @@ TYPE @petPathVariables
   "passportNumber": 12312312
 }
 
-TYPE @catList
+TYPE @catList // Line 1 \n Line 2
 [
   @cat
 ]

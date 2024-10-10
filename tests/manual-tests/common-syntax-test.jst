@@ -1,10 +1,13 @@
 JSIGHT 0.3
 
+TAG @cat // cat
+
 GET /test-directive/parameters-escaping
   Query "check quotation mark escaping \" and backslash escaping \\ "
     {}
 
 GET /test-directive/explicit-boundaries
+  Tags @cat
   Description
   (
     Start of description.
@@ -15,6 +18,7 @@ GET /test-directive/explicit-boundaries
 
     End of description. 
   )
+  OperationId explicit-boundaries
 
   200
   (

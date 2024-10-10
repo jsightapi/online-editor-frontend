@@ -15,6 +15,9 @@ TYPE @testAnnotation2 jsight // Check another type annotation.
 TYPE @testAnnotation3 regex // Check one more type annotation.
   /^OK$/
 
+TYPE @testAnnotation_with_hack_breaks // Line 1 \n Line 2 \n Line 3 with dangerous characters: " \" \\", \ \\ \\\, \t, \u0123.
+  ""
+
 TYPE @testNotationJSight jsight
 {
   "field": 1
