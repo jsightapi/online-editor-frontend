@@ -78,6 +78,7 @@ export const EditorScreen = () => {
   const [isShowAnnouncementBar, setIsShowAnnouncementBar] = useState<boolean>(
     !localStorage.getItem('announcement.bar.hidden')
   );
+  const dontUpdateSharingBtn = useRef<boolean>(false);
 
   const handleCloseAnnouncementBar = () => {
     setIsShowAnnouncementBar(false);
@@ -96,6 +97,7 @@ export const EditorScreen = () => {
 
   const reloadedEditor = () => {
     setReloadEditor(false);
+    dontUpdateSharingBtn.current = false;
   };
 
   const editorWidthFinal = () => localStorage.getItem('editorWidth') || getEditorWidth(screenWidth);
@@ -157,6 +159,7 @@ export const EditorScreen = () => {
     if (key) {
       getExistingState(key, version)
         .then((result) => {
+          dontUpdateSharingBtn.current = true;
           setInitJsightCode(result.data.content);
           !version && history.push(`/r/${result.code}/${result.version}`);
         })
@@ -232,7 +235,9 @@ export const EditorScreen = () => {
 
   const handleJsightCode = useCallback((code: string) => {
     setJsightCode(code);
-    setDisableSharing(false);
+    if (!dontUpdateSharingBtn.current) {
+      setDisableSharing(false);
+    }
   }, []);
   const handleReloadedEditor = useCallback(() => reloadedEditor(), []);
 
