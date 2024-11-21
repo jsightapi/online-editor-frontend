@@ -16,14 +16,12 @@ import './MainContent.styles.scss';
 import {JsonRpcHeader} from 'components/Resource/JsonRpc/JsonRpcHeader';
 import {JsonRpcResource} from 'components/Resource/JsonRpc';
 import clsx from 'clsx';
-import {editorModeType, ErrorType} from 'types';
+import {editorModeType} from 'types';
 import {Button} from 'components/Button';
 
 import IconCopy from 'assets/images/icons/copy.svg';
 import {toast} from 'react-toastify';
 import {notificationIds} from 'utils/notificationIds';
-import {convertJsight} from 'api/convertJsight';
-import {showEditorError} from 'utils/showEditorError';
 import {Editor} from 'components/Editor';
 
 type SchemaPropertyType =
@@ -34,25 +32,14 @@ type SchemaPropertyType =
   | 'typeBlock';
 
 interface MainContentProps {
+  openApiContent?: string;
   jdocExchange?: JDocType;
-  jdocExchangeError?: boolean;
-  isJdocLoading?: boolean;
-  jsightCode?: string;
+  disabled?: boolean;
   viewMode?: editorModeType;
-  setScrollToRow?: React.Dispatch<React.SetStateAction<boolean>>;
-  setErrorRow?: React.Dispatch<React.SetStateAction<number | null>>;
 }
 
 export const MainContent = React.memo((props: MainContentProps) => {
-  const {
-    jdocExchange,
-    jdocExchangeError,
-    isJdocLoading,
-    jsightCode,
-    viewMode,
-    setScrollToRow,
-    setErrorRow,
-  } = props;
+  const {openApiContent = '', jdocExchange, disabled, viewMode} = props;
   const virtuosoRef = useRef<VirtuosoHandle>(null);
   const virtuosoScrollerRef = useRef<any>(null);
   const [selectedLine, setSelectedLine] = useState<SelectedLineType | null>(null);
@@ -63,20 +50,15 @@ export const MainContent = React.memo((props: MainContentProps) => {
     GlobalSettingsContext
   );
   const {currentUrl, setCurrentUrl} = useContext(CurrentUrlContext);
-  const {
-    currentDocSidebar,
-    currentOpenApiFormat,
-    currentHtmlDocPanel,
-    setCurrentHtmlDocPanel,
-  } = useContext(SidebarContext);
+  const {currentDocSidebar, currentHtmlDocPanel, setCurrentHtmlDocPanel} = useContext(
+    SidebarContext
+  );
   const [overscan, setOverscan] = useState(480);
   const [schemasView, setSchemasView] = useState<SchemaViewType[]>([]);
   const [schemasData, setSchemasData] = useState<{[key: string]: SchemaData[]}>({});
   const [resourceState, setResourceState] = useState<ResourceState[]>([]);
 
   const [reloadOpenApi, setReloadOpenApi] = useState<boolean>(false);
-  const [openApiContent, setOpenApiContent] = useState<string>('');
-  const [isOpenApiContentLoading, setIsOpenApiContentLoading] = useState<boolean>(false);
 
   // @ts-ignore
   window['mainContent'] = virtuosoRef;
@@ -191,36 +173,7 @@ export const MainContent = React.memo((props: MainContentProps) => {
     }
   }, [currentDocSidebar]);
 
-  useEffect(() => {
-    if (currentDocSidebar === 'openapi' && currentOpenApiFormat) {
-      const convert = async () => {
-        try {
-          setIsOpenApiContentLoading(true);
-          const result =
-            jsightCode === ''
-              ? ''
-              : await convertJsight(jsightCode, 'openapi-3.0.3', currentOpenApiFormat);
-          setOpenApiContent(result as string);
-          setIsOpenApiContentLoading(false);
-          toast.dismiss();
-          setErrorRow && setErrorRow(null);
-          setReloadOpenApi(true);
-        } catch (error) {
-          showEditorError(error as ErrorType, notificationIds.ERROR_MESSAGE_OPENAPI_ID, () => {
-            if (!(error as ErrorType).Line) {
-              return;
-            }
-
-            setScrollToRow && setScrollToRow(true);
-            setTimeout(() => setScrollToRow && setScrollToRow(false), 500);
-          });
-          (error as ErrorType).Line && setErrorRow && setErrorRow((error as ErrorType).Line);
-        }
-      };
-
-      convert();
-    }
-  }, [currentDocSidebar, currentOpenApiFormat, jsightCode, setErrorRow, setScrollToRow]);
+  useEffect(() => setReloadOpenApi(true), [openApiContent]);
 
   const updateSchemaView = (keyBlock: string, value: any, property: SchemaPropertyType) => {
     setSchemasView((prev) => {
@@ -404,16 +357,9 @@ export const MainContent = React.memo((props: MainContentProps) => {
     [selectedLine, schemasView, schemasData, resourceState]
   );
 
-  const mainContentClasses = clsx('main-content', {
-    disabled:
-      (currentDocSidebar === 'openapi' && isOpenApiContentLoading) ||
-      (currentDocSidebar === 'htmldoc' && jdocExchangeError) ||
-      (currentDocSidebar === 'htmldoc' && isJdocLoading),
-  });
-
   return (
     <div className="main-content-wrapper">
-      <div className={mainContentClasses}>
+      <div className={clsx('main-content', {disabled})}>
         {currentDocSidebar === 'openapi' && viewMode !== 'doc' && (
           <div className="openapi-wrapper">
             <Editor

@@ -2,30 +2,22 @@ import {useContext} from 'react';
 import {find} from 'lodash';
 import {JDocContext} from 'store';
 import {convertJsight} from 'api/convertJsight';
+import {JDocType} from 'types';
 
 export function useExport() {
-  const {jdocExchange: jdocData, jsightCode} = useContext(JDocContext);
+  const {jsightCode} = useContext(JDocContext);
 
-  const renderHtml: () => Promise<string | null> = async () => {
-    const styles = document.querySelectorAll('style');
-    let stylesResult = '';
-    for (let i = 0; i < styles.length; ++i) {
-      stylesResult += `<style>${styles[i].innerHTML}</style>`;
-    }
-
+  const renderHtml = async (jdocExchange: JDocType): Promise<string | null> => {
     const hostName = window.location.protocol + '//' + window.location.host;
 
-    let scriptLink = '';
-    let styleLink = '';
+    let scriptLink = hostName + '/static/js/export-main.js';
+    let styleLink = hostName + '/static/css/export-main.css';
 
     if (process.env.NODE_ENV !== 'production') {
       const scripts = document.querySelectorAll('script');
       scriptLink = find(scripts, (script) => script.src.indexOf('static/js') !== -1)?.src || '';
       const links = document.querySelectorAll('link');
       styleLink = find(links, (style) => style.href.indexOf('static/css') !== -1)?.href || '';
-    } else {
-      scriptLink = hostName + '/static/js/export-main.js';
-      styleLink = hostName + '/static/css/export-main.css';
     }
 
     if (scriptLink) {
@@ -84,7 +76,7 @@ export function useExport() {
             <title>JSight Online Editor</title>
             <script>
                 window.isExport = true;
-                var jdoc = ${JSON.stringify(jdocData)}
+                var jdoc = ${JSON.stringify(jdocExchange)}
             </script>
             <script type="module">
                 ${scriptText}
@@ -112,7 +104,8 @@ export function useExport() {
   };
 
   const saveHtml = async () => {
-    const html = await renderHtml();
+    const json = await convertJsight(jsightCode, 'jdoc-2.0');
+    const html = await renderHtml(json as JDocType);
     if (html) {
       save(html, 'jsight-document.html', 'text/html');
     }

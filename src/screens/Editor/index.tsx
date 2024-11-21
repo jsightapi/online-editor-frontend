@@ -64,6 +64,7 @@ export const EditorScreen = () => {
   const [currentDocSidebar, setCurrentDocSidebar] = useState<SidebarDocType>('openapi');
   const [currentOpenApiFormat, setCurrentOpenApiFormat] = useState<OpenApiFormatType>('yaml');
   const [currentHtmlDocPanel, setCurrentHtmlDocPanel] = useState<HtmlDocPanelType>('none');
+  const [openApiContent, setOpenApiContent] = useState<string>('');
   const [jdocExchange, setJdocExchange] = useState<JDocType>();
   const [errorRow, setErrorRow] = useState<number | null>(null);
   const [scrollToRow, setScrollToRow] = useState<boolean>(false);
@@ -97,6 +98,7 @@ export const EditorScreen = () => {
 
   const reloadedEditor = () => {
     setReloadEditor(false);
+    dontUpdateSharingBtn.current = false;
   };
 
   const editorWidthFinal = () => localStorage.getItem('editorWidth') || getEditorWidth(screenWidth);
@@ -114,6 +116,58 @@ export const EditorScreen = () => {
     setEditorWidth(finalNewWidth);
   };
 
+  const updateJdocExchange = useCallback(
+    async (
+      jsightCodeDebounced: string,
+      currentDocSidebar: SidebarDocType,
+      currentOpenApiFormat?: OpenApiFormatType
+    ) => {
+      if (isExport) {
+        // @ts-ignore
+        setJdocExchange(window?.jdoc);
+        return;
+      }
+
+      try {
+        setIsJdocLoading(true);
+        if (currentDocSidebar === 'openapi') {
+          const content =
+            jsightCodeDebounced === ''
+              ? ''
+              : await convertJsight(jsightCodeDebounced, 'openapi-3.0.3', currentOpenApiFormat);
+          startTransition(() => setOpenApiContent(content as string));
+        } else {
+          const content = await convertJsight(jsightCodeDebounced, 'jdoc-2.0');
+          startTransition(() => setJdocExchange(content as JDocType));
+        }
+        toast.dismiss();
+        setErrorRow(null);
+        setJdocExchangeError(false);
+        setIsJdocLoading(false);
+      } catch (error) {
+        showEditorError(
+          error as ErrorType,
+          currentDocSidebar === 'openapi'
+            ? notificationIds.ERROR_MESSAGE_OPENAPI_ID
+            : notificationIds.ERROR_MESSAGE_HTMLDOC_ID,
+          () => {
+            if (!(error as ErrorType).Line) {
+              return;
+            }
+
+            setScrollToRow(true);
+            setTimeout(() => setScrollToRow(false), 500);
+          }
+        );
+        (error as ErrorType).Line && setErrorRow((error as ErrorType).Line);
+        setJdocExchangeError(true);
+      } finally {
+        localStorage.setItem('jsightCode', jsightCodeDebounced);
+      }
+    },
+    []
+  );
+
   useEffect(() => {
     const changeWidth = () => {
       const width = getEditorWidth(screenWidth);
@@ -126,11 +180,10 @@ export const EditorScreen = () => {
 
   useEffect(() => {
     if (key) {
-      dontUpdateSharingBtn.current = true;
       getExistingState(key, version)
         .then((result) => {
+          dontUpdateSharingBtn.current = true;
           setInitJsightCode(result.data.content);
-          dontUpdateSharingBtn.current = false;
           !version && history.push(`/r/${result.code}/${result.version}`);
         })
         .catch(({Code: code}) => code && setError({code, message: getDefaultErrorMessages(code)}));
@@ -140,38 +193,18 @@ export const EditorScreen = () => {
   }, [history, key, version]);
 
   useEffect(() => {
-    if (currentDocSidebar === 'htmldoc' && jsightCodeDebounced !== undefined) {
-      (async () => {
-        if (!isExport) {
-          try {
-            setIsJdocLoading(true);
-            const jdocExchange = await convertJsight(jsightCodeDebounced, 'jdoc-2.0');
-            startTransition(() => setJdocExchange(jdocExchange as JDocType));
-            toast.dismiss();
-            setErrorRow(null);
-            setJdocExchangeError(false);
-            setIsJdocLoading(false);
-          } catch (error) {
-            showEditorError(error as ErrorType, notificationIds.ERROR_MESSAGE_HTMLDOC_ID, () => {
-              if (!(error as ErrorType).Line) {
-                return;
-              }
+    // JSight document changed
+    // or sidebar tab switched
+    // or OpenAPI format changed
+    updateJdocExchange(jsightCodeDebounced, currentDocSidebar, currentOpenApiFormat);
+  }, [jsightCodeDebounced, currentDocSidebar, currentOpenApiFormat, updateJdocExchange]);
 
-              setScrollToRow(true);
-              setTimeout(() => setScrollToRow(false), 500);
-            });
-            (error as ErrorType).Line && setErrorRow((error as ErrorType).Line);
-            setJdocExchangeError(true);
-          } finally {
-            localStorage.setItem('jsightCode', jsightCodeDebounced);
-          }
-        } else {
-          // @ts-ignore
-          setJdocExchange(window?.jdoc);
-        }
-      })();
+  useEffect(() => {
+    if (viewMode === 'doc') {
+      // switched from Editor to Preview
+      updateJdocExchange(jsightCodeDebounced, 'htmldoc');
     }
-  }, [currentDocSidebar, jsightCodeDebounced]);
+  }, [viewMode, jsightCodeDebounced, updateJdocExchange]);
 
   const classes = useMemo(
     () =>
@@ -338,13 +371,10 @@ export const EditorScreen = () => {
                 <SidebarContext.Provider value={sidebarValue}>
                   <Layout isEditor={isEditor}>
                     <MainContent
+                      openApiContent={openApiContent}
                       jdocExchange={jdocExchange}
-                      jdocExchangeError={jdocExchangeError}
-                      jsightCode={jsightCodeDebounced}
+                      disabled={isJdocLoading || jdocExchangeError}
                       viewMode={viewMode}
-                      isJdocLoading={isJdocLoading}
-                      setScrollToRow={setScrollToRow}
-                      setErrorRow={setErrorRow}
                     />
                   </Layout>
                 </SidebarContext.Provider>
