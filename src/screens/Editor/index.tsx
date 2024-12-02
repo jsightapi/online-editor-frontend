@@ -116,8 +116,18 @@ export const EditorScreen = () => {
     setEditorWidth(finalNewWidth);
   };
 
-  const updateJdocExchange = useCallback(async () => {
-    if (!isExport) {
+  const updateJdocExchange = useCallback(
+    async (
+      jsightCodeDebounced: string,
+      currentDocSidebar: SidebarDocType,
+      currentOpenApiFormat?: OpenApiFormatType
+    ) => {
+      if (isExport) {
+        // @ts-ignore
+        setJdocExchange(window?.jdoc);
+        return;
+      }
+
       try {
         setIsJdocLoading(true);
         if (currentDocSidebar === 'openapi') {
@@ -154,11 +164,9 @@ export const EditorScreen = () => {
       } finally {
         localStorage.setItem('jsightCode', jsightCodeDebounced);
       }
-    } else {
-      // @ts-ignore
-      setJdocExchange(window?.jdoc);
-    }
-  }, [currentDocSidebar, jsightCodeDebounced, currentOpenApiFormat]);
+    },
+    []
+  );
 
   useEffect(() => {
     const changeWidth = () => {
@@ -185,8 +193,18 @@ export const EditorScreen = () => {
   }, [history, key, version]);
 
   useEffect(() => {
-    updateJdocExchange();
-  }, [currentDocSidebar, jsightCodeDebounced, updateJdocExchange]);
+    // JSight document changed
+    // or sidebar tab switched
+    // or OpenAPI format changed
+    updateJdocExchange(jsightCodeDebounced, currentDocSidebar, currentOpenApiFormat);
+  }, [jsightCodeDebounced, currentDocSidebar, currentOpenApiFormat, updateJdocExchange]);
+
+  useEffect(() => {
+    if (viewMode === 'doc') {
+      // switched from Editor to Preview
+      updateJdocExchange(jsightCodeDebounced, 'htmldoc');
+    }
+  }, [viewMode, jsightCodeDebounced, updateJdocExchange]);
 
   const classes = useMemo(
     () =>
@@ -376,9 +394,7 @@ export const EditorScreen = () => {
                   <div
                     onClick={() => handleCurrentDocSidebar('htmldoc')}
                     className={clsx('side-panel-element', {
-                      active:
-                        currentDocSidebar === 'htmldoc' &&
-                        (currentHtmlDocPanel === 'rules' || currentHtmlDocPanel === 'content'),
+                      active: currentDocSidebar === 'htmldoc',
                     })}
                   >
                     <img src={IconHTMLDoc} alt="HTMLDoc" /> HTML Doc

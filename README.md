@@ -225,7 +225,7 @@ Check that the JSight Server is working by running the following command:
 Linux:
 
 ```
-curl --location --request POST "http://localhost:8080/" \
+curl --location --request POST "http://localhost:8080/convert-jsight?to=jdoc-2.0" \
 --header "Content-Type: text/plain" \
 --data-raw "JSIGHT 0.3"
 ```
@@ -233,7 +233,7 @@ curl --location --request POST "http://localhost:8080/" \
 Windows cmd:
 
 ```
-curl --location --request POST "http://localhost:8080/" ^
+curl --location --request POST "http://localhost:8080/convert-jsight?to=jdoc-2.0" ^
 --header "Content-Type: text/plain" ^
 --data-raw "JSIGHT 0.3"
 ```
@@ -241,7 +241,7 @@ curl --location --request POST "http://localhost:8080/" ^
 Windows PowerShell:
 
 ```
-curl --location --request POST "http://localhost:8080/" `
+curl --location --request POST "http://localhost:8080/convert-jsight?to=jdoc-2.0" `
 --header "Content-Type: text/plain" `
 --data-raw "JSIGHT 0.3"
 ```
@@ -259,7 +259,7 @@ If everything is in order, then you should receive a json in response, something
 <td>
 
 ```
-{"jdocExchangeFileSchemaVersion":"0.3.0","jsight":"0.3","resourceMethods":{},"tags":{}}
+{"jdocExchangeVersion":"2.0.0","jsight":"0.3","interactions":{},"tags":{}}
 ```
 
 </td>
