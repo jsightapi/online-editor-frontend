@@ -61,7 +61,7 @@ export const EditorScreen = () => {
   // left sidebar
   const [codeContentsSidebar] = useState<boolean>(false);
   //documentation sidebar on the right
-  const [currentDocSidebar, setCurrentDocSidebar] = useState<SidebarDocType>('htmldoc');
+  const [currentDocSidebar, setCurrentDocSidebar] = useState<SidebarDocType>('openapi');
   const [currentOpenApiFormat, setCurrentOpenApiFormat] = useState<OpenApiFormatType>('yaml');
   const [currentHtmlDocPanel, setCurrentHtmlDocPanel] = useState<HtmlDocPanelType>('none');
   const [openApiContent, setOpenApiContent] = useState<string>('');
