@@ -10,16 +10,21 @@ import './ShareButton.styles.scss';
 interface ShareButtonProps {
   openSharingModal(): void;
   disableSharing: boolean;
+  sharingContent?: string;
 }
 
-export const ShareButton: React.FC<ShareButtonProps> = ({openSharingModal, disableSharing}) => {
+export const ShareButton: React.FC<ShareButtonProps> = ({
+  openSharingModal,
+  disableSharing,
+  sharingContent,
+}) => {
   const [createState, updateExistState] = useSharing();
   const {key, version} = useContext(SharingContext);
   const isAbleUpdate = useMemo(() => key && version, [key, version]);
 
-  const handleNewState = async (updateOrCreateState: () => void) => {
+  const handleNewState = async (updateOrCreateState: (content?: string) => void) => {
     try {
-      await updateOrCreateState();
+      await updateOrCreateState(sharingContent);
       openSharingModal();
     } catch (err) {}
   };

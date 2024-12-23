@@ -1,4 +1,4 @@
-import React, {useState, useEffect, useRef, useContext} from 'react';
+import React, {useState, useEffect, useRef} from 'react';
 import * as monaco from 'monaco-editor';
 import {createOnigScanner, createOnigString, loadWASM} from 'vscode-oniguruma';
 import {SimpleLanguageInfoProvider} from 'textmate/providers';
@@ -7,10 +7,6 @@ import {rehydrateRegexps} from 'textmate/configuration';
 import VsCodeDarkTheme from 'textmate/themes/vs-dark-plus-theme';
 import type {LanguageId} from 'textmate/register';
 import type {ScopeName, TextMateGrammar, ScopeNameInfo} from 'textmate/providers';
-import {getExistingState} from 'api/codeSharing';
-import {getDefaultErrorMessages} from 'utils/getError';
-import {SharingContext} from 'store/SharingStore';
-import {ErrorSimpleType} from 'types';
 import './Editor.styles.scss';
 
 import('textmate/themes/jsight-dark.json').then((data: any) => {
@@ -20,13 +16,14 @@ import('textmate/themes/jsight-dark.json').then((data: any) => {
 
 interface EditorProps {
   content: string;
-  setContent: (value: string) => void;
-  errorRow: number | null;
-  scrollToRow: boolean;
-  reload: boolean;
-  reloadedEditor(): void;
-  setDisableSharing: React.Dispatch<React.SetStateAction<boolean>>;
-  setError: React.Dispatch<React.SetStateAction<ErrorSimpleType | null>>;
+  setContent?: (value: string) => void;
+  errorRow?: number | null;
+  scrollToRow?: boolean;
+  reload?: boolean;
+  reloadedEditor?: () => void;
+  readOnly?: boolean;
+  currentTheme?: string;
+  globalTestId?: string;
 }
 
 function initializeEditor(
@@ -60,22 +57,22 @@ export const Editor = React.memo(
     setContent,
     errorRow,
     scrollToRow,
-    setDisableSharing,
-    setError,
     reload,
     reloadedEditor,
+    readOnly = false,
+    globalTestId,
   }: EditorProps) => {
-    const {key, version, history} = useContext(SharingContext);
     const ref = useRef<HTMLDivElement | null>(null);
     const jsightEditor = useRef<monaco.editor.IStandaloneCodeEditor | null>(null);
     const decorationsRef = useRef<string[]>([]);
     const [isEditorLoaded, setIsEditorLoaded] = useState<boolean>(false);
-    const dontUpdateSharingBtn = useRef<boolean>(false);
     const languagesList = ['jsight', 'jschema', 'markdown'];
     const currentLanguage = 'jsight';
 
-    // @ts-ignore
-    window['jsightEditor'] = jsightEditor;
+    if (globalTestId !== undefined) {
+      // @ts-ignore
+      window[globalTestId] = jsightEditor;
+    }
 
     const languages: monaco.languages.ILanguageExtensionPoint[] = languagesList.map((id) => ({
       id,
@@ -83,10 +80,7 @@ export const Editor = React.memo(
 
     const onContentChange = (editor: monaco.editor.IStandaloneCodeEditor) => {
       const content = getEditorValue(editor);
-      setContent(content);
-      if (!dontUpdateSharingBtn.current) {
-        setDisableSharing(false);
-      }
+      setContent && setContent(content);
     };
 
     // TODO: "source.${language} is not correct for markdown. MD scope is "text.html.markdown".
@@ -179,6 +173,7 @@ export const Editor = React.memo(
 
           editor.updateOptions({
             unicodeHighlight: {ambiguousCharacters: false},
+            readOnly,
           });
 
           const model = editor?.getModel();
@@ -200,38 +195,7 @@ export const Editor = React.memo(
         };
       })();
       // eslint-disable-next-line
-  }, []);
-
-    useEffect(() => {
-      if (isEditorLoaded) {
-        if (key) {
-          dontUpdateSharingBtn.current = true;
-          (async () => {
-            try {
-              const result = await getExistingState(key, version);
-              const resultContent = result.data.content;
-              if (jsightEditor.current) {
-                jsightEditor.current?.setValue(resultContent);
-              }
-              dontUpdateSharingBtn.current = false;
-              if (!version) {
-                history.push(`/r/${result.code}/${result.version}`);
-              }
-              highlightError();
-            } catch (error) {
-              if (error.Code) {
-                setError({
-                  code: error.Code,
-                  message: getDefaultErrorMessages(error.Code),
-                });
-              }
-            }
-          })();
-        } else {
-          setDisableSharing(false);
-        }
-      }
-    }, [isEditorLoaded, key, version]);
+    }, []);
 
     // process errors
     useEffect(() => {
@@ -239,20 +203,20 @@ export const Editor = React.memo(
         highlightError();
       }
       // eslint-disable-next-line
-  }, [isEditorLoaded, errorRow, content]);
+    }, [isEditorLoaded, errorRow, content]);
 
     useEffect(() => {
       if (reload && isEditorLoaded) {
         jsightEditor.current?.setValue(content);
-        reloadedEditor();
+        reloadedEditor && reloadedEditor();
       }
       // eslint-disable-next-line
-  }, [isEditorLoaded, reload]);
+    }, [isEditorLoaded, reload]);
 
     useEffect(() => {
       errorRow && jsightEditor.current?.revealLine(errorRow, 0);
       // eslint-disable-next-line
-  }, [scrollToRow]);
+    }, [scrollToRow]);
 
     const highlightError = () => {
       if (jsightEditor.current) {

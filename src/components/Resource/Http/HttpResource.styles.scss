@@ -18,11 +18,12 @@
       border-bottom-left-radius: 4px;
     }
 
-    &:last-of-type, &.active {
+    &:last-of-type,
+    &.active {
       border-right-width: 1px;
     }
 
-    &.active+button {
+    &.active + button {
       border-left-width: 0;
     }
   }
@@ -46,7 +47,7 @@
 .method-label {
   color: #fff;
   &.get {
-    border-color: #0D739E;
+    border-color: #0d739e;
     background-color: $secondary-blue;
   }
   &.post {
@@ -54,19 +55,19 @@
     background-color: $secondary-green;
   }
   &.put {
-    border-color: #DAA431;
+    border-color: #daa431;
     background-color: $secondary-yellow;
   }
   &.patch {
-    border-color: #54A9A8;
+    border-color: #54a9a8;
     background-color: $secondary-azure;
   }
   &.delete {
-    border-color: #AD301E;
+    border-color: #ad301e;
     background-color: $secondary-red;
   }
   &.head {
-    border-color: #6925D8;
+    border-color: #6925d8;
     background-color: $main-purple;
   }
   &.options {
